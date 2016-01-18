@@ -14,21 +14,20 @@ CoinsContainer container = new CoinsContainer(conf);
 CoinsModel store = container.getModel();
 
 // Create object
-NCS0025091Impl object = new NCS0025091Impl(store, defaultPerson);
+PumpImpl pump = new PumpImpl(store, defaultPerson);
 
 // Create value
-NCS0026889Impl value = new NCS0026889Impl(store, defaultPerson);
+WattsImpl value = new WattsImpl(store, defaultPerson);
 
 // Create property
-NCR0149407Impl property = new NCR0149407Impl(store, defaultPerson);
+PowerConsumptionImpl property = new PowerConsumptionImpl(store, defaultPerson);
 property.addObjectValueImpl(value);
-object.addHasObjectProperty_NCR0149407Impl(property);
+pump.addHasObjectProperty_PowerConsumptionImpl(property);
 
 // Find the saved elements
-System.out.println("Search results:");
-Iterator<NCS0025091Impl> searchResult = store.findCoinsObjects(NCS0025091Impl.class, NCS0025091Impl.CLASS_URI);
+Iterator<PumpImpl> searchResult = store.findCoinsObjects(PumpImpl.class, PumpImpl.CLASS_URI);
 while(searchResult.hasNext()) {
-  System.out.println(searchResult.next());
+  log.info(searchResult.next());
 }
 ```
 
