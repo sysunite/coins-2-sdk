@@ -1,0 +1,19 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/2.04#"
+    xml:base="http://rws.com/starterkit/2.04#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:about="#StringProperty_filepathNEN-norm">
+    <rdf:type rdf:resource="cbim.rdf#StringProperty"/>
+    <cbim:datatypeValue rdf:datatype="xs:string">NEN-normen.docx</cbim:datatypeValue>
+    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
+</rdf:RDF>

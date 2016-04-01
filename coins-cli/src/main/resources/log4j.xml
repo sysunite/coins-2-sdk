@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+  <!-- Log4j configuration of coins-cli -->
+
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern"
+             value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+    </layout>
+  </appender>
+
+  <!-- added in code: -->
+
+  <!--<appender name="file" class="org.apache.log4j.RollingFileAppender">-->
+    <!--<param name="append" value="false" />-->
+    <!--<param name="maxFileSize" value="10MB" />-->
+    <!--<param name="maxBackupIndex" value="10" />-->
+    <!--<param name="file" value="coins-cli.log" />-->
+    <!--<layout class="org.apache.log4j.PatternLayout">-->
+      <!--<param name="ConversionPattern"-->
+             <!--value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />-->
+    <!--</layout>-->
+  <!--</appender>-->
+
+  <logger name="freemarker">
+    <level value="WARN"/>
+  </logger>
+
+  <logger name="com.hp.hpl.jena">
+    <level value="WARN"/>
+  </logger>
+
+  <logger name="org.apache.jena">
+    <level value="WARN"/>
+  </logger>
+
+  <logger name="tdb">
+    <level value="WARN"/>
+  </logger>
+
+  <logger name="nl.coinsweb">
+    <level value="TRACE"/>
+  </logger>
+
+  <root>
+  </root>
+
+</log4j:configuration>

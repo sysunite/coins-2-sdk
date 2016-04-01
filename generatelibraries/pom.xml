@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>nl.coinsweb.sdk</groupId>
+    <artifactId>coins-2-sdk</artifactId>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>generatelibraries</artifactId>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>nl.coinsweb.sdk</groupId>
+      <artifactId>coins-cli</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+
+
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>generate sources without dlls</id>
+
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+      <plugins>
+
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <executions>
+
+            <execution>
+              <id>generate core model</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>
+                  coins-cli
+                </executable>
+                <commandlineArgs>
+                  generate
+
+
+                  -i ${basedir}/../coins-api/src/main/resources/Cbim-2.0.rdf
+                     ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
+                  -o ${basedir}/../tmp/generated-sources/java
+                  -jarto ${basedir}/../dist/library/jar
+
+
+                </commandlineArgs>
+              </configuration>
+            </execution>
+
+            <execution>
+              <id>generate elephant model</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>
+                  coins-cli
+                </executable>
+                <commandlineArgs>
+                  generate
+
+
+                  -i ${basedir}/../integrationtests/src/test/resources/D4/olifant.rdf
+                  -o ${basedir}/../tmp/generated-sources/java
+                  -jarto ${basedir}/../integrationtests/lib
+                  -q
+
+                </commandlineArgs>
+              </configuration>
+            </execution>
+
+
+
+
+
+          </executions>
+        </plugin>
+
+
+      </plugins>
+    </build>
+
+    </profile>
+    <profile>
+      <id>generate sources with dlls</id>
+
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+
+      <build>
+        <plugins>
+
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+
+              <execution>
+                <id>generate core model</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>
+                    coins-cli
+                  </executable>
+                  <commandlineArgs>
+                    generate
+
+                    -a ${basedir}/../dist/sdk/dll/coins-api.dll
+                    -i ${basedir}/../coins-api/src/main/resources/Cbim-2.0.rdf
+                       ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
+                    -o ${basedir}/../tmp/generated-sources/java
+                    -jarto ${basedir}/../dist/library/jar
+                    -dllto ${basedir}/../dist/library/dll
+                    -sources
+
+                  </commandlineArgs>
+                </configuration>
+              </execution>
+
+
+
+
+
+            </executions>
+          </plugin>
+
+
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
+
+
+</project>

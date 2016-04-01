@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# put this file in /usr/local/bin
+java -jar /Users/bastiaan/.m2/repository/coins-2/0/coins-cli/1.0/coins-cli-1.0-jar-with-dependencies.jar "$@"

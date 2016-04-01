@@ -1,0 +1,25 @@
+<#list objectProperties as property>
+<#if property.single>
+
+  public ${property.returnType} get${property.relationName}() {
+    return model.getObject(getUri(), "${property.relationUri}", ${property.returnType}.class);
+  }
+  public void set${property.relationName}(${property.returnType}Class object) {
+    model.setObject(getUri(), "${property.relationUri}", object);
+  }
+  public void set${property.relationName}(String objectUri) {
+    model.setObject(getUri(), "${property.relationUri}", objectUri);
+  }
+<#else>
+
+  public Iterator<${property.returnType}> get${property.relationName}() {
+    return model.getObjects(getUri(), "${property.relationUri}", ${property.returnType}.class);
+  }
+  public void add${property.relationName}(${property.returnType}Class object) {
+    model.addObject(getUri(), "${property.relationUri}", object);
+  }
+  public void add${property.relationName}(String objectUri) {
+    model.addObject(getUri(), "${property.relationUri}", objectUri);
+  }
+</#if>
+</#list>

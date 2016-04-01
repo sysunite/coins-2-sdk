@@ -1,0 +1,84 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/5.01#"
+    xml:base="http://rws.com/starterkit/5.01#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:about="#Portal">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#CataloguePart"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Decomposable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="cbim.rdf#hasDecomposition"/>
+    <owl:allValuesFrom rdf:resource="#Decomposition_Portal"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="cbim.rdf#hasParts"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="#Column"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="cbim.rdf#hasParts"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onClass rdf:resource="#Beam"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="#Decomposition_Portal">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Decomposition"/>
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Beam">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#CataloguePart"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Decomposable"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Column">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#CataloguePart"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Decomposable"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Portal_1">
+    <rdf:type rdf:resource="mijnbib#Portal"/>
+    <cbim:hasDecomposition rdf:resource="#Decomposition_Portal_1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Decomposition_Portal_1">
+    <rdf:type rdf:resource="mijnbib#Decomposition_Portal"/>
+    <cbim:hasParts rdf:resource="#Beam_1"/>
+    <cbim:hasParts rdf:resource="#Column_2"/>
+    <cbim:hasParts rdf:resource="#Column_1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Beam_1">
+    <rdf:type rdf:resource="mijnbib#Beam"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Column_1">
+    <rdf:type rdf:resource="mijnbib#Column"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Column_2">
+    <rdf:type rdf:resource="mijnbib#Column"/>
+  </rdf:Description>
+
+
+</rdf:RDF>

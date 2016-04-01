@@ -1,0 +1,57 @@
+<ul class="header-inner clearfix">
+    <li style="margin-right:20px" class="logo hidden-xs">
+        <a>COINS 2.0 Viewer</a>
+    </li>
+    <li class="pull-left">
+        <ul class="top-menu">
+
+            <li data-ui-sref-active="open" class="dropdown" uib-dropdown>
+                <a data-ui-sref="base.classes"  href="">
+                    <i tooltip-placement="bottom" uib-tooltip="Classes" class="tm-icon zmdi zmdi-circle-o"></i>
+                </a>
+            </li>
+            <li data-ui-sref-active="open" class="dropdown" uib-dropdown>
+                <a data-ui-sref="base.individuals" href="">
+                    <i tooltip-placement="bottom" uib-tooltip="Individuals" class="tm-icon zmdi zmdi-dot-circle"></i>
+                </a>
+            </li>
+
+            </ul>
+    </li>
+
+    <li class="pull-right">
+        <ul class="top-menu">
+
+
+            <li id="top-search">
+                <a tooltip-placement="bottom" uib-tooltip="Search"  href="" data-ng-click="hctrl.openSearch()"><i class="tm-icon zmdi zmdi-search"></i></a>
+            </li>
+
+            <li class="dropdown" uib-dropdown>
+                <a uib-dropdown-toggle href="">
+                    <i tooltip-placement="bottom" uib-tooltip="Options"  class="tm-icon zmdi zmdi-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dm-icon pull-right">
+
+                    <li class="hidden-xs">
+                        <a data-ng-click="hctrl.fullScreen()" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle Fullscreen</a>
+                    </li>
+                    <li>
+                        <a data-ng-click="hctrl.clearLocalStorage()" href=""><i class="zmdi zmdi-delete"></i> Clear Local Storage</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="hidden-xs" data-target="chat" data-toggle-sidebar data-model-right="mactrl.sidebarToggle.right" data-ng-class="{ 'open': mactrl.sidebarToggle.right === true }">
+                <a href=""><i tooltip-placement="bottom" uib-tooltip="Files"  class="tm-icon zmdi zmdi-file-text"></i></a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<!-- Top Search Content -->
+<div id="top-search-wrap">
+    <div class="tsw-inner">
+        <i tooltip-placement="bottom" uib-tooltip="Close"  id="top-search-close" class="zmdi zmdi-arrow-left" data-ng-click="hctrl.closeSearch()"></i>
+        <input type="text">
+    </div>
+</div>

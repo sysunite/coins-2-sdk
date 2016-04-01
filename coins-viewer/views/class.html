@@ -1,0 +1,164 @@
+<div class="container" data-ng-controller="ClassCtrl">
+    <div class="block-header" style="text-align: center">
+        <h2 style="font-size: 25px; "><span>{{class.label}}</span></h2>
+        <h2>{{class.uri}}</h2>
+
+        <ul class="actions">
+            <li class="dropdown" uib-dropdown>
+                <a href="" uib-dropdown-toggle>
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a href="">Download</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div class="mini-charts" style="margin-top: -65px;">
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <div class="mini-charts-item bgm-orange">
+                    <div class="clearfix">
+                        <div class="chart stats-bar"></div>
+                        <div class="count">
+                            <small>view</small>
+                            <h2>CLASS</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Comment</h2>
+
+            <ul class="actions">
+                <li class="dropdown action-show" uib-dropdown>
+                    <a href="" uib-dropdown-toggle>
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body card-padding">
+            <p class="lead">{{class.comment}}</p>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <!-- Recent Items -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Superclasses <small>All classes that this class subclasses to</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown" uib-dropdown>
+                            <a href="" uib-dropdown-toggle>
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body m-t-0">
+                    <table class="table table-inner table-vmiddle">
+                        <thead>
+                        <tr>
+                            <th>URI</th>
+                            <th>Label</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="superclass in class.superclasses">
+                            <td class="f-500 c-cyan"><a ui-sref="base.class({uri: superclass.uri})">{{ superclass.uri }}</a></td>
+                            <td>{{ superclass.label }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <!-- Recent Items -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Subclasses <small>All classes that subclass to this type</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown" uib-dropdown>
+                            <a href="" uib-dropdown-toggle>
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body m-t-0">
+                  <table class="table table-inner table-vmiddle">
+                    <thead>
+                    <tr>
+                      <th>URI</th>
+                      <th>Label</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="subclass in class.subclasses">
+                      <td class="f-500 c-cyan"><a ui-sref="base.class({uri: subclass.uri})">{{ subclass.uri }}</a></td>
+                      <td>{{ subclass.label }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent Items -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Individuals<small>All individuals that have this class as type</small></h2>
+            <ul class="actions">
+                <li class="dropdown" uib-dropdown>
+                    <a href="" uib-dropdown-toggle>
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body m-t-0">
+            <table class="table table-inner table-vmiddle">
+                <thead>
+                <tr>
+                    <th>URI</th>
+                    <th>Name</th>
+                    <th>User</th>
+
+                    <th>version</th>
+                    <th>modifier</th>
+                    <th>modification date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="individual in class.individuals">
+                    <td class="f-500 c-cyan"><a ui-sref="base.individual({uri: individual.uri})">{{ individual.uri }}</a></td>
+                    <td>{{ individual.name }}</td>
+                    <td>{{ individual.user }}</td>
+                    <td>{{ individual.version }}</td>
+                    <td>{{ individual.modifier }}</td>
+                    <td>{{ individual.modificationDate }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

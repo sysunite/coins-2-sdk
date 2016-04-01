@@ -1,0 +1,12 @@
+<http://rws.com/starterkit/3.02> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Object_Perron> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#CoinsContainerObject> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Object_Perron> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#Object> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Object_Perron> <http://www.coinsweb.nl/cbim.rdf#name> "Perron"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Object_Zitbank> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#CoinsContainerObject> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Object_Zitbank> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#Object> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Object_Zitbank> <http://www.coinsweb.nl/cbim.rdf#name> "Zitbank"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Zitbank_staat_op_Perron_verbinding> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#CoinsContainerObject> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Zitbank_staat_op_Perron_verbinding> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#Connection> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Zitbank_staat_op_Perron_verbinding> <http://www.coinsweb.nl/cbim.rdf#hasConnectedObjects> <http://rws.com/starterkit/3.02#Object_Perron> <http://rws.com/starterkit/3.02#> .
+<http://rws.com/starterkit/3.02#Zitbank_staat_op_Perron_verbinding> <http://www.coinsweb.nl/cbim.rdf#hasConnectedObjects> <http://rws.com/starterkit/3.02#Object_Zitbank> <http://rws.com/starterkit/3.02#> .

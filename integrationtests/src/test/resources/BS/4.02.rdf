@@ -1,0 +1,70 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/4.02#"
+    xml:base="http://rws.com/starterkit/4.02#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="#hasColumnProfileType"/>
+    <owl:hasValue rdf:resource="#StringProperty_ProfileType_300"/>
+  </rdf:Description>
+
+  <!-- added for Jena testcase, borrowed from 4.03 -->
+  <rdf:Description rdf:about="#Column">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#CataloguePart"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#Object"/>
+  </rdf:Description>
+  <!-- added for Jena testcase -->
+
+  <rdf:Description rdf:about="#Column_300">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="#Column"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#hasColumnProfileType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="cbim.rdf#hasProperties"/>
+    <rdfs:domain rdf:resource="#Column_300"/>
+    <!--   this might not be allowed, because the full owl reasoner interprets from this that _300 is a subclass of _400
+    <rdfs:domain rdf:resource="#Column_400"/>
+    -->
+    <rdfs:range rdf:resource="#StringProperty_ProfileType"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#StringProperty_ProfileType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#StringProperty"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#FloatProperty_Hoogte">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="cbim.rdf#FloatProperty"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#StringProperty_ProfileType_300">
+    <rdf:type rdf:resource="#StringProperty_ProfileType"/>
+    <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">300</cbim:datatypeValue>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Column_300_1">
+    <!-- used to be in documentation:
+    <rdf:type rdf:resource="mijnbib#Column_300"/>
+    <mijnbib:hasColumnHeight rdf:resource="#FloatProperty_Hoogte_10"/>
+    <mijnbib:hasColumnProfileType rdf:resource="mijnbib#StringProperty_ProfileType_300"/>
+     -->
+    <rdf:type rdf:resource="#Column_300"/>
+    <cbim:hasColumnHeight rdf:resource="#FloatProperty_Hoogte_10"/>
+    <cbim:hasColumnProfileType rdf:resource="#StringProperty_ProfileType_300"/>
+  </rdf:Description>
+
+
+</rdf:RDF>

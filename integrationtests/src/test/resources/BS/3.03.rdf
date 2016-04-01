@@ -1,0 +1,31 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/3.03#"
+    xml:base="http://rws.com/starterkit/3.03#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:about="#Zitbank_staat_op_Perron_verbinding">
+    <rdf:type rdf:resource="cbim.rdf#Connection"/>
+    <cbim:hasConnectedObjects rdf:resource="#Object_Zitbank"/>
+    <cbim:hasConnectedObjects rdf:resource="#Object_Perron"/>
+    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="cbim.rdf#CbimExpiredEntity"/>
+    <cbim:nextTrunkVersion rdf:resource="#Zitbank_staat_naast_Perron_verbinding"/>
+    <cbim:versionID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</cbim:versionID>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Zitbank_staat_naast_Perron_verbinding">
+    <rdf:type rdf:resource="cbim.rdf#Connection"/>
+    <cbim:hasConnectedObjects rdf:resource="#Object_Zitbank"/>
+    <cbim:hasConnectedObjects rdf:resource="#Object_Perron"/>
+    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <cbim:versionID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</cbim:versionID>
+  </rdf:Description>
+
+</rdf:RDF>

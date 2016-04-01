@@ -1,0 +1,49 @@
+<div class="container" data-ng-controller="ClassesCtrl as tctrl">
+
+    <div class="block-header">
+        <h2><span style="font-size: 20pt;">Classes</span><small>Below are all the classes inside your COINS container. Read more <a target="_blank" href="">here</a> for detailed documentation.</small></h2>
+
+        <ul class="actions m-t-20 hidden-xs">
+            <li class="dropdown" uib-dropdown>
+                <a href="" uib-dropdown-toggle>
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a href="">Export as CSV</a>
+                    </li>
+                    <li>
+                      <a href="">Export as Turtle</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="card">
+        <div class="card-header">
+          <h2>All <small>Type something in any filter</small></h2>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table ng-table="tctrl.tableFilter" class="table table-striped table-vmiddle" show-filter="true">
+                    <tr ng-repeat="w in $data">
+                        <td data-title="'URI'" sortable="'uri'" filter="{ 'uri': 'text' }">
+                            <a ui-sref="base.class({uri: w.uri})">{{ w.uri }}</a>
+                        </td>
+                        <td data-title="'label'" sortable="'label'" filter="{ 'label': 'text' }">
+                            {{ w.label }}
+                        </td>
+                        <td data-title="'comment'" sortable="'comment'" filter="{ 'comment': 'text' }">
+                            {{ w.comment }}
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

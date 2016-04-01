@@ -1,0 +1,21 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/2.11#"
+    xml:base="http://rws.com/starterkit/2.11#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:about="#InternalDocument_NEN-normen">
+    <rdf:type rdf:resource="cbim.rdf#InternalDocumentReference"/>
+    <cbim:filePath rdf:resource="#StringProperty_filepathNEN-norm"/>
+    <cbim:creator rdf:resource="#Person_Ik"/>
+    <cbim:creationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-09-03T15:00:00</cbim:creationDate>
+    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
+</rdf:RDF>

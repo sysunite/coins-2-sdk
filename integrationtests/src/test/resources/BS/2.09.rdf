@@ -1,0 +1,20 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/2.09#"
+    xml:base="http://rws.com/starterkit/2.09#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:about="#FloatProperty_Eenkwart">
+    <rdf:type rdf:resource="cbim.rdf#FloatProperty"/>
+    <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.25</cbim:datatypeValue>
+    <cbim:unit rdf:resource="http://qudt.org/vocab/unit#Meter"/>
+    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
+</rdf:RDF>

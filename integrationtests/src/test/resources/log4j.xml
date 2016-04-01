@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern"
+             value="%-5p %c{1}:%-5.5L - %m%n" />
+    </layout>
+  </appender>
+
+
+
+  <logger name="com.hp.hpl.jena">
+    <level value="INFO"/>
+  </logger>
+
+  <logger name="org.apache.jena">
+    <level value="INFO"/>
+  </logger>
+
+  <logger name="com.hp.hpl.jena.tdb">
+    <level value="INFO"/>
+  </logger>
+
+  <logger name="freemarker.template">
+    <level value="WARN"/>
+  </logger>
+
+  <logger name="nl.rws">
+    <level value="TRACE"/>
+  </logger>
+
+  <root>
+    <level value="TRACE" />
+    <appender-ref ref="console" />
+  </root>
+
+</log4j:configuration>

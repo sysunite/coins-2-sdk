@@ -1,0 +1,19 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://rws.com/starterkit/3.01#"
+    xml:base="http://rws.com/starterkit/3.01#">
+
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+
+  <rdf:Description rdf:about="#Object_Zitbank">
+    <rdf:type rdf:resource="cbim.rdf#Object"/>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zitbank</cbim:name>
+    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
+</rdf:RDF>
