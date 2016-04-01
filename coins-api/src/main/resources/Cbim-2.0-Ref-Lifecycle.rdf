@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:cbim-2.0="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns="http://www.buildingbits.nl/coins2/lifecycle#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://www.buildingbits.nl/coins2/lifecycle">
+  <owl:Ontology rdf:about="">
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created with TopBraid Composer</owl:versionInfo>
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+  <owl:Class rdf:ID="LifeCycle">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#LifeCycle"/>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="ObjectState"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Entity"/>
+    <rdfs:label xml:lang="nl-NL">LifeCycle</rdfs:label>
+    <rdfs:label xml:lang="en-GB">LifeCycle</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#name"/>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#ObjectState">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ObjectState"/>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:label xml:lang="nl-NL">ObjectState</rdfs:label>
+    <rdfs:label xml:lang="en-GB">ObjectState</rdfs:label>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="hasLifeCycleState">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="hasObjects"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#LifeCycle"/>
+    <rdfs:domain rdf:resource="#ObjectState"/>
+    <rdfs:label xml:lang="en-GB">hasLifeCycleState</rdfs:label>
+    <rdfs:label xml:lang="en-GB">heeftLifeCycleState</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasObjects">
+    <rdfs:label xml:lang="en-GB">hasObjects</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">heeftObjecten</rdfs:label>
+  </owl:ObjectProperty>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->

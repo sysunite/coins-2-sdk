@@ -1,0 +1,175 @@
+<div class="container" data-ng-controller="IndividualCtrl">
+    <div class="block-header" style="text-align: center">
+        <h2 style="font-size: 25px; "><span>{{individual.name}}</span></h2>
+        <h2>{{individual.uri}}</h2>
+
+        <ul class="actions">
+            <li class="dropdown" uib-dropdown>
+                <a href="" uib-dropdown-toggle>
+                    <i class="zmdi zmdi-more-vert"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a href="">Download</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div class="mini-charts" style="margin-top: -65px;">
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <div class="mini-charts-item bgm-green">
+                    <div class="clearfix">
+                        <div class="chart stats-bar"></div>
+                        <div class="count">
+                            <small>view</small>
+                            <h2>INDIVIDUAL</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Types -->
+    <div class="card" >
+        <div class="card-header">
+            <h2>Types<small>All classes that have this individual has as type</small></h2>
+            <ul class="actions">
+                <li class="dropdown" uib-dropdown>
+                    <a href="" uib-dropdown-toggle>
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body m-t-0">
+            <table class="table table-inner table-vmiddle">
+                <thead>
+                <tr>
+                    <th>URI</th>
+                    <th>Label</th>
+                    <th>Comment</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="type in individual.types">
+                    <td class="f-500 c-cyan"><a ui-sref="base.class({uri: type.uri})">{{ type.uri }}</a></td>
+                    <td>{{ type.label }}</td>
+                    <td>{{ type.comment }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Properties -->
+    <div class="card" >
+        <div class="card-header">
+            <h2>Properties<small>All non-relational properties</small></h2>
+            <ul class="actions">
+                <li class="dropdown" uib-dropdown>
+                    <a href="" uib-dropdown-toggle>
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body m-t-0">
+            <table class="table table-inner table-vmiddle">
+                <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                    <th>Datatype</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="property in individual.properties">
+                    <td>{{ property.key }}</td>
+                    <td>{{ property.value }}</td>
+                    <td>{{ property.datatype }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <!-- Recent Items -->
+            <div class="card" >
+                <div class="card-header">
+                    <h2>Incoming Relations <small>All subjects that this individual is a relation for</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown" uib-dropdown>
+                            <a href="" uib-dropdown-toggle>
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body m-t-0">
+                    <table class="table table-inner table-vmiddle">
+                        <thead>
+                        <tr>
+                            <th>Relation</th>
+                            <th>Subject URI</th>
+                            <th>Subject Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="relation in individual.incomingRelations">
+                            <td>{{ relation.relation }}</td>
+                            <td class="f-500 c-cyan"><a ui-sref="base.individual({uri: relation.subjectUri})">{{ relation.subjectUri }}</a></td>
+                            <td class="f-500 c-cyan">{{ relation.subjectName }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <!-- Recent Items -->
+            <div class="card" >
+                <div class="card-header">
+                    <h2>Outgoing Relations <small>All objects that this individual has a relation to</small></h2>
+                    <ul class="actions">
+                        <li class="dropdown" uib-dropdown>
+                            <a href="" uib-dropdown-toggle>
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body m-t-0">
+                  <table class="table table-inner table-vmiddle">
+                    <thead>
+                    <tr>
+                      <th>Relation</th>
+                      <th>Object URI</th>
+                      <th>Object Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="relation in individual.outgoingRelations">
+                      <td>{{ relation.relation }}</td>
+                      <td class="f-500 c-cyan"><a ui-sref="base.individual({uri: relation.objectUri})">{{ relation.objectUri }}</a></td>
+                      <td >{{ relation.objectName }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

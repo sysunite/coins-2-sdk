@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:cbim-2.0="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns="http://playground.com/elephant#"
+    xml:base="http://playground.com/elephant">
+
+  <owl:Ontology rdf:about="">
+  </owl:Ontology>
+
+
+
+
+
+  <owl:Class rdf:ID="Ding">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Ding"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#next"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Dier">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Ding"/>
+    </rdfs:subClassOf>
+
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Lichaamsdeel"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#heeftOnderdeel"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Olifant">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Dier"/>
+    </rdfs:subClassOf>
+
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Slagtand"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#heeftOnderdeel"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Tafel">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Ding"/>
+    </rdfs:subClassOf>
+
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Tafelpoot"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#heeftOnderdeel"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Lichaamsdeel">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Ding"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Pilaar">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Ding"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Tafelpoot">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Pilaar"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+  <owl:Class rdf:ID="Slagtand">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Lichaamsdeel"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Pilaar"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+
+
+</rdf:RDF>

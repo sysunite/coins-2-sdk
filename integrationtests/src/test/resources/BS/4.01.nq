@@ -1,0 +1,17 @@
+<http://rws.com/starterkit/4.01#FloatProperty_Hoogte10> <http://www.coinsweb.nl/cbim.rdf#unit> <http://qudt.org/vocab/unit#Meter> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#FloatProperty_Hoogte10> <http://www.coinsweb.nl/cbim.rdf#datatypeValue> "10"^^<http://www.w3.org/2001/XMLSchema#float> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#FloatProperty_Hoogte10> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/mijnbib#FloatProperty_Hoogte> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#FloatProperty_Hoogte> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#FloatProperty_Hoogte> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://rws.com/starterkit/cbim.rdf#FloatProperty> <http://rws.com/starterkit/4.01#> .
+_:BX2D136d961bX3A1528862f0bbX3AX2D7f9b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> <http://rws.com/starterkit/4.01#> .
+_:BX2D136d961bX3A1528862f0bbX3AX2D7f9b <http://www.w3.org/2002/07/owl#onClass> <http://rws.com/starterkit/4.01#FloatProperty_Hoogte> <http://rws.com/starterkit/4.01#> .
+_:BX2D136d961bX3A1528862f0bbX3AX2D7f9b <http://www.w3.org/2002/07/owl#qualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#integer> <http://rws.com/starterkit/4.01#> .
+_:BX2D136d961bX3A1528862f0bbX3AX2D7f9b <http://www.w3.org/2002/07/owl#onProperty> <http://rws.com/starterkit/cbim.rdf#hasProperties> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#Column_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/mijnbib#Column> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#Column_1> <http://www.coinsweb.nl/cbim.rdf#hasProperties> <http://rws.com/starterkit/4.01#FloatProperty_Hoogte10> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#Column> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#Column> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:BX2D136d961bX3A1528862f0bbX3AX2D7f9b <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#Column> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://rws.com/starterkit/cbim.rdf#Object> <http://rws.com/starterkit/4.01#> .
+<http://rws.com/starterkit/4.01#Column> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://rws.com/starterkit/cbim.rdf#CataloguePart> <http://rws.com/starterkit/4.01#> .

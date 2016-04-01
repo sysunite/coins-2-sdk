@@ -1,0 +1,13 @@
+**/*.iml
+.idea
+**/target
+**/.metadata
+.DS_Store
+*coins-cli.log
+coins-cli/src/main/resources/html
+coins-viewer/_TEMPLATE
+coins-viewer/bower_components
+coins-viewer/node_modules
+coins-viewer/vendors/bower_components
+buildNumber.properties
+tmp/

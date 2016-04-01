@@ -1,0 +1,19 @@
+<div class="chat-search">
+    <div class="fg-line">
+        <input type="text" class="form-control" placeholder="Search File">
+    </div>
+</div>
+
+<div ng-repeat="file in files" class="listview">
+    <a class="lv-item" href="{{file.location}}">
+        <div class="media">
+            <div class="pull-left p-relative">
+                <i style="margin-left: 20px;" class="tm-icon zmdi zmdi-file-text"></i>
+            </div>
+            <div class="media-body">
+                <div class="lv-title">{{file.name}}</div>
+                <small class="lv-small">{{file.location | pathName}}</small>
+            </div>
+        </div>
+    </a>
+</div>
