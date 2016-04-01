@@ -1,5 +1,5 @@
 # COINS 2 SDK
-This is the official COINS 2.0 software development kit from the Dutch RWS.
+This is the official COINS 2 software development kit for Java and .NET.
 
 ###Main components
 ![Main components](/doc/img/summary.jpg?raw=true "Main components")
