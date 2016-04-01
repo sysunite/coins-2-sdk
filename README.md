@@ -17,9 +17,8 @@ Download the latest build, for dotNET:
 * [dist/sdk/dll/coins-api.dll](/dist/sdk/dll/coins-api.dll?raw=true)
 
 ###Examples
-
-###Documentation
 ```java
-
 ```
 
+###Documentation
+Visit the [documentation](https://github.com/sysunite/coins-2-sdk/wiki) page for more information.
