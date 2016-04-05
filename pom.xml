@@ -79,8 +79,8 @@
     <module>coins-api</module>
     <module>coins-owlgenerator</module>
     <module>coins-cli</module>
-    <module>generatelibraries</module>
-    <module>integrationtests</module>
+    <module>mvn-generate-libraries</module>
+    <module>testsuite</module>
   </modules>
 
   <dependencies>

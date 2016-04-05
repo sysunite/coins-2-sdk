@@ -28,7 +28,59 @@
 
   <profiles>
     <profile>
-      <id>generate sources without dlls</id>
+      <id>generate library jars for testsuite</id>
+
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+      <plugins>
+
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <executions>
+
+
+
+            <execution>
+              <id>generate elephant model</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>
+                  coins-cli
+                </executable>
+                <commandlineArgs>
+                  generate
+
+
+                  -i ${basedir}/../testsuite/src/test/resources/D4/olifant.rdf
+                  -o ${basedir}/../tmp/generated-sources/java
+                  -jarto ${basedir}/../testsuite/lib
+                  -q
+
+                </commandlineArgs>
+              </configuration>
+            </execution>
+
+
+
+
+
+          </executions>
+        </plugin>
+
+
+      </plugins>
+    </build>
+
+    </profile>
+    <profile>
+      <id>generate libraries without dlls</id>
 
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -66,28 +118,7 @@
               </configuration>
             </execution>
 
-            <execution>
-              <id>generate elephant model</id>
-              <phase>generate-sources</phase>
-              <goals>
-                <goal>exec</goal>
-              </goals>
-              <configuration>
-                <executable>
-                  coins-cli
-                </executable>
-                <commandlineArgs>
-                  generate
 
-
-                  -i ${basedir}/../integrationtests/src/test/resources/D4/olifant.rdf
-                  -o ${basedir}/../tmp/generated-sources/java
-                  -jarto ${basedir}/../integrationtests/lib
-                  -q
-
-                </commandlineArgs>
-              </configuration>
-            </execution>
 
 
 
@@ -102,7 +133,7 @@
 
     </profile>
     <profile>
-      <id>generate sources with dlls</id>
+      <id>generate libraries with dlls</id>
 
       <activation>
         <activeByDefault>false</activeByDefault>
