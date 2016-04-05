@@ -69,7 +69,7 @@ public class B10_SettingUnits {
     a.addHasProperties(property);
 
     property.setSimpleProperty(11.3f);
-    property.setUnit(new LengthUnit(model, "http://qudt.org/vocab/unit#Millimeter"));
+    property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
 
 
 
