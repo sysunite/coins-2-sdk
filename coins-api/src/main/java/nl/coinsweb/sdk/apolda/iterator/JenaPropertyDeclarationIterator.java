@@ -135,7 +135,6 @@ public class JenaPropertyDeclarationIterator implements ClosableIterator {
         }
         declaration.setPropertyUri(ontProperty.getURI());
         declaration.setPropertyName(ontProperty.getLocalName());
-        // todo set label
 
 
         if (restriction.isCardinalityRestriction()) {
