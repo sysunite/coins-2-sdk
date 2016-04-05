@@ -17,7 +17,7 @@ The SDK consists of a set of tools:
 * coins-cli
 * coins-owlgenerator
 
-And a set of generated libraries:
+And a set of [generated libraries](/dist/library):
 * core
 * qudt
 
@@ -28,4 +28,30 @@ Visit the [documentation](https://github.com/sysunite/coins-2-sdk/wiki) page for
 
 ###Examples
 ```java
+JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+
+Assembly a = new Assembly(model);
+
+Iterator<String> individuals = model.listIndividualUris(LengthUnit.classUri).iterator();
+while(individuals.hasNext()) {
+  System.out.println(individuals.next());
+
+//  Result:
+//  ...
+//  http://qudt.org/vocab/unit#Point
+//  http://qudt.org/vocab/unit#Decimeter
+//  http://qudt.org/vocab/unit#Millimeter
+//  http://qudt.org/vocab/unit#NauticalMile
+//  http://qudt.org/vocab/unit#Centimeter
+//  http://qudt.org/vocab/unit#Fathom
+//  ...
+}
+
+FloatProperty property = new FloatProperty(model);
+a.addHasProperties(property);
+
+property.setSimpleProperty(11.3f);
+property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
+
+model.export("/tmp/container.ccr");
 ```
