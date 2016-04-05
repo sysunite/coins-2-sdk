@@ -740,6 +740,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
 
   @Override
+  public void addCreator(String instanceUri, CoinsParty party) {
+    addStatement(instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creator", party.getUri());
+  }
+  @Override
+  public void addCreatedNow(String instanceUri) {
+    setLiteralValue(instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creationDate", new Date());
+  }
+  @Override
   public void addCoinsContainerObjectType(String instanceUri) {
     addStatement(instanceUri, RDF.type.getURI(), "http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject");
   }

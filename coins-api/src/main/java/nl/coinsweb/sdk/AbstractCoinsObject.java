@@ -78,8 +78,8 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
     // Save this new instance to model
     model.addType(getUri(), getClassUri());
-
-    // todo: set creator
+    model.addCreator(getUri(), model.getActiveParty());
+    model.addCreatedNow(getUri());
   }
 
   /**

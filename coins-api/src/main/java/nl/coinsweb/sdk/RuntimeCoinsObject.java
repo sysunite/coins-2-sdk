@@ -63,11 +63,12 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
 
     // Create fields for this new instance
     this.uri = model.generateUri();
-    log.info("set uri to " + this.uri);
 
 
     // Save this new instance to model
     model.addType(getUri(), getClassUri());
+    model.addCreator(getUri(), model.getActiveParty());
+    model.addCreatedNow(getUri());
   }
 
   /**
