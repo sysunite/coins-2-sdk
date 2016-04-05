@@ -194,6 +194,21 @@ public interface CoinsModel {
   public Iterator<Map<String,String>> query(String sparqlQuery);
 
   /**
+   * Set the creator.
+   *
+   * @param instanceUri the uri to supply with the extra type definition
+   * @param party the party object carrying the uri of the creator
+   */
+  public void addCreator(String instanceUri, CoinsParty party);
+
+  /**
+   * Set the creation date to now.
+   *
+   * @param instanceUri the uri to supply with the extra type definition
+   */
+  public void addCreatedNow(String instanceUri);
+
+  /**
    * Add a type definition to the coins2:CoinsContainerObject object from the supplied uri.
    *
    * @param instanceUri the uri to supply with the extra type definition
