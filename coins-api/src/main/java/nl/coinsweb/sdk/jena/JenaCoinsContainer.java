@@ -1065,7 +1065,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public <T> void setLiteralValue(String subject, String predicate, T object) {
 
-    // TODO remove previous value
+    removeStatement(subject, predicate);
 
     if(object instanceof Date) {
 

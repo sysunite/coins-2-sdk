@@ -261,6 +261,8 @@ public interface BindingCoinsModel extends CoinsModel {
    * If the property can only have one value, set the value of a property. A predicate needs to be supplied
    * that is used to relate the property to the value.
    *
+   * First removes any predicate-relationship starting from the instanceUri.
+   *
    * @param instanceUri  the uri of the instance
    * @param predicate  uri used between property and value
    * @param object  the new value

@@ -202,11 +202,26 @@ public interface CoinsModel {
   public void addCreator(String instanceUri, CoinsParty party);
 
   /**
+   * Set the creator on all individuals in the instance model that do not have a creator yet
+   * (internally uses listIndividuals()).
+   *
+   * @param party the party object carrying the uri of the creator
+   */
+//  public void batchAddCreator(String instanceUri, CoinsParty party);
+
+  /**
    * Set the creation date to now.
    *
    * @param instanceUri the uri to supply with the extra type definition
    */
   public void addCreatedNow(String instanceUri);
+
+  /**
+   * Set the creation date to now on all individuals in the instance model that do not have a date yet
+   * (internally uses listIndividuals()).
+   *
+   */
+//  public void batchAddCreatedNow();
 
   /**
    * Add a type definition to the coins2:CoinsContainerObject object from the supplied uri.
