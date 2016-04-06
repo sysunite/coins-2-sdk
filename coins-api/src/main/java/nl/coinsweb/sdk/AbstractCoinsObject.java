@@ -26,7 +26,6 @@ package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
-import nl.coinsweb.sdk.exceptions.CoinsObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   protected AbstractCoinsObject() {}
 
   /**
-   * Constructor for new ...
+   * Constructor for new Individual.
    */
   public AbstractCoinsObject(ExpertCoinsModel model) {
     this.model = model;
@@ -75,15 +74,13 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
     // Create fields for this new instance
     this.uri = model.generateUri();
-
-    // Save this new instance to model
     model.addType(getUri(), getClassUri());
     model.addCreator(getUri(), model.getActiveParty());
     model.addCreatedNow(getUri());
   }
 
   /**
-   * Constructor for existing ...
+   * Constructor for Individual with specified uri. Check if the uri already exists and if not create new.
    */
   public AbstractCoinsObject(ExpertCoinsModel model, String uri) {
     this(model, uri, false);
@@ -94,15 +91,22 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     // Verify if the rdf files that where the origin for this class have been presented to the current CoinsModel
     registerSourceFiles();
 
-    // Check if the object with the specified uri exists and if it may be cast to this type
+
+    this.uri = uri;
+    log.info("set uri to "+this.uri);
+
+    // Create fields for this new instance
+    if(((OntModel)model.getUnionJenaOntModel()).getIndividual(uri)==null) {
+      log.info("Uri "+uri+" not found, creating new individual with this uri.");
+
+      // Save this new instance to model
+      model.addType(getUri(), getClassUri());
+      model.addCreator(getUri(), model.getActiveParty());
+      model.addCreatedNow(getUri());
+    }
+
+    // Check if the object with the specified uri may be cast to this type
     if(!dontCheck) {
-
-
-      if(((OntModel)model.getUnionJenaOntModel()).getIndividual(uri)==null) {
-        throw new CoinsObjectNotFoundException("Requested uri "+uri+" was not found in the container.");
-      }
-
-
       boolean foundClassDef = false;
       Iterator<String> classes = model.listClassUris(uri).iterator();
       while (classes.hasNext()) {
@@ -118,9 +122,6 @@ public abstract class AbstractCoinsObject implements CoinsObject {
       }
     }
 
-
-    this.uri = uri;
-    log.info("set uri to "+this.uri);
   }
 
 
