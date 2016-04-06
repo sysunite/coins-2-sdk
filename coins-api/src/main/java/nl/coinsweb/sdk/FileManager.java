@@ -69,12 +69,10 @@ public class FileManager {
   private static final String LIB_FOLDER = "coinsgloballibraries/";
 
 
-  private static HashMap<Namespace, File> globalLibFiles = new HashMap<>();
-
-
-  private static String RDF_PATH = "bim";
-  private static String ATTACHMENT_PATH = "doc";
-  private static String WOA_PATH = "woa";
+  private static String RDF_PATH = "bim/";
+  private static String ONTOLOGIES_PATH = "bim/repository/";
+  private static String ATTACHMENT_PATH = "doc/";
+  private static String WOA_PATH = "woa/";
 
 
 
@@ -151,6 +149,13 @@ public class FileManager {
         throw new CoinsFileNotFoundException("Not able to create temp path "+rdfPathFile+".");
       }
     }
+    Path ontologiesPath = homePath.resolve(ONTOLOGIES_PATH);
+    File ontologiesPathFile = ontologiesPath.toFile();
+    if(!ontologiesPathFile.exists()){
+      if(!ontologiesPathFile.mkdirs()) {
+        throw new CoinsFileNotFoundException("Not able to create temp path "+ontologiesPathFile+".");
+      }
+    }
     Path attachmentPath = homePath.resolve(ATTACHMENT_PATH);
     File attachmentPathFile = attachmentPath.toFile();
     if(!attachmentPathFile.exists()){
@@ -178,6 +183,8 @@ public class FileManager {
     File candidate = rdfPath.resolve(fileName).toFile();
     if(candidate.exists()) {
       log.debug("File in container already exists, will be overriding.");
+    } else {
+      candidate.getParentFile().mkdirs();
     }
     return candidate;
   }
@@ -260,7 +267,8 @@ public class FileManager {
         ze = zis.getNextEntry();
 
         // If this did not throw exceptions add it to the indexes
-        if(newFile.toPath().startsWith(homePath.resolve(RDF_PATH))) {
+        if(newFile.toPath().startsWith(homePath.resolve(RDF_PATH)) &&
+           !newFile.toPath().startsWith(homePath.resolve(ONTOLOGIES_PATH))) {
           rdfFiles.put(fileName, newFile);
         }
 
@@ -305,7 +313,7 @@ public class FileManager {
       final ZipOutputStream zos = new ZipOutputStream(fos);
       final byte[] buffer = new byte[1024];
 
-      Files.walkFileTree(homePath, EnumSet.noneOf(FileVisitOption.class), 2, new SimpleFileVisitor<Path>() {
+      Files.walkFileTree(homePath, EnumSet.noneOf(FileVisitOption.class), 3, new SimpleFileVisitor<Path>() {
 
 
         @Override
@@ -319,6 +327,7 @@ public class FileManager {
           // Register entry
           ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString() + "/");
           zos.putNextEntry(ze);
+          log.trace("adding to zip: "+ze);
 
           return FileVisitResult.CONTINUE;
         }
@@ -327,10 +336,13 @@ public class FileManager {
         public FileVisitResult visitFile(Path dir, BasicFileAttributes attrs) throws IOException {
 
           // Register entry
-          ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString());
-          zos.putNextEntry(ze);
+
 
           if(dir.toFile().isFile()) {
+
+            ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString());
+            zos.putNextEntry(ze);
+            log.trace("adding to zip: "+ze);
 
             // Write file content
             FileInputStream in = new FileInputStream(dir.toFile());
@@ -341,6 +353,13 @@ public class FileManager {
             }
 
             in.close();
+
+          } else if(dir.toFile().isDirectory()) {
+
+            ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString() + "/");
+            zos.putNextEntry(ze);
+            log.trace("adding to zip: "+ze);
+
           }
 
           return FileVisitResult.CONTINUE;
@@ -443,14 +462,6 @@ public class FileManager {
           return matchingFile.toURI();
         }
       }
-
-      if (globalLibFiles.containsKey(resourceAsNs)) {
-
-        File matchingFile = new File(globalLibFiles.get(resourceAsNs).getAbsolutePath());
-        log.trace("found file as previously registered " + matchingFile.getAbsolutePath());
-        copyAndLinkLibrary(internalRef, matchingFile);
-        return matchingFile.toURI();
-      }
     }
 
 
@@ -471,14 +482,6 @@ public class FileManager {
 
     log.trace("Import resource can not be found in the ccr and is not available online.");
     throw new CoinsResourceNotFoundException("Import resource can not be found in the ccr and is not available online.");
-  }
-
-  public static String getLibrary(Namespace ns) {
-
-    if(globalLibFiles.containsKey(ns)) {
-      return globalLibFiles.get(ns).getAbsolutePath();
-    }
-    return null;
   }
 
 
@@ -577,7 +580,7 @@ public class FileManager {
       throw new CoinsFileManagerException("Registering rdf file in non existing coins container.");
     }
     Path homePath = getTempZipPath().resolve(internalRef);
-    Path rdfPath = homePath.resolve(RDF_PATH);
+    Path rdfPath = homePath.resolve(ONTOLOGIES_PATH);
     Path absoluteTempPath = rdfPath.resolve(contentFileName);
 
     // check if the folder is empty (it should)
@@ -597,7 +600,7 @@ public class FileManager {
       throw new CoinsFileManagerException("Registering rdf file in non existing coins container.");
     }
     Path homePath = getTempZipPath().resolve(internalRef);
-    Path rdfPath = homePath.resolve(ATTACHMENT_PATH);
+    Path rdfPath = homePath.resolve(ONTOLOGIES_PATH);
     Path absoluteTempPath = rdfPath.resolve(source.getName());
 
     if(absoluteTempPath.toFile().exists()) {
@@ -612,7 +615,7 @@ public class FileManager {
       log.error(e.getMessage(), e);
     }
   }
-  public static Namespace copyAndRegisterLibrary(InputStream stream, String fileName) {
+  public static Namespace copyAndRegisterLibrary(InputStream stream, String fileName, HashMap<Namespace, File> availableLibraryFiles) {
 
     if(stream == null) {
       log.warn("failed saving file "+fileName+", stream is null");
@@ -649,9 +652,9 @@ public class FileManager {
     Model libraryModel = ModelFactory.createDefaultModel();
     libraryModel.read(fullPathUri.toString());
     Namespace ns = getLeadingNamespace(fullPathFile, libraryModel);
-    if(!globalLibFiles.containsKey(ns)) {
+    if(!availableLibraryFiles.containsKey(ns)) {
       log.info("registering for namespace " + ns + " for file " + fileName);
-      globalLibFiles.put(ns,fullPathFile);
+      availableLibraryFiles.put(ns,fullPathFile);
     } else {
       log.info("skipping, already a file registered for namespace " + ns);
       // Remove file and folder too
@@ -660,7 +663,7 @@ public class FileManager {
     }
     return ns;
   }
-  public static Namespace registerLibrary(URI fileUri, Namespace fallbackNs) {
+  public static Namespace registerLibrary(URI fileUri, Namespace fallbackNs, HashMap<Namespace, File> availableLibraryFiles) {
     File newFile = new File(fileUri);
     Model libraryModel = ModelFactory.createDefaultModel();
     libraryModel.read(fileUri.toString());
@@ -674,11 +677,8 @@ public class FileManager {
     }
     log.info("registering for namespace "+ns+" for file "+newFile.getName());
 
-    globalLibFiles.put(ns, newFile);
+    availableLibraryFiles.put(ns, newFile);
     return ns;
-  }
-  public static void resetGlobalRegister() {
-    globalLibFiles.clear();
   }
 
   private static boolean isRdfFile(File file) {

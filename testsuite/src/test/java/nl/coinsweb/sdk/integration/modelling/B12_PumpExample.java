@@ -64,7 +64,7 @@ public class B12_PumpExample {
     intProperty.setSimpleProperty(240);
     intProperty.setUnit(new Unit(model, PowerUnit.WATT));
 
-    model.export("/tmp/zhejiangdayuan.ccr");
+    model.export("/tmp/coinstest/zhejiangdayuan.ccr");
 
 
 
@@ -75,7 +75,7 @@ public class B12_PumpExample {
   @Test
   public void bReopenCcr() {
 
-    JenaCoinsContainer model = new InMemCoinsContainer("/tmp/zhejiangdayuan.ccr","http://zhejiangdayuan.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("/tmp/coinstest/zhejiangdayuan.ccr","http://zhejiangdayuan.com/");
     DatasetAsserts.logTriples(model.getJenaModel());
   }
 

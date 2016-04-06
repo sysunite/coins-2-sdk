@@ -49,8 +49,8 @@ public class D2_DynamicLoadElephant {
 
         "coins-cli generate -q"+
             " -i "+ IntegrationHelper.getResourceFile("D4","olifant.rdf").getAbsolutePath() +
-            " -o /tmp/D2/java/ " +
-            " -jarto /tmp/D2/jar/";
+            " -o /tmp/coinstest/D2/java/ " +
+            " -jarto /tmp/coinstest/D2/jar/";
 
     String result = runner.getCli(command);
 
@@ -60,7 +60,7 @@ public class D2_DynamicLoadElephant {
 
     try {
 
-      URL jarUrl = new URL("file:/tmp/D2/jar/elephant.jar");
+      URL jarUrl = new URL("file:/tmp/coinstest/D2/jar/elephant.jar");
       URL[] jars = { jarUrl};
       URLClassLoader child = new URLClassLoader(jars, this.getClass().getClassLoader());
 
@@ -84,7 +84,7 @@ public class D2_DynamicLoadElephant {
 
 
 
-      FileUtils.deleteDirectory(new File("/tmp/D2"));
+      FileUtils.deleteDirectory(new File("/tmp/coinstest/D2"));
 
     } catch (ClassNotFoundException e) {
       log.error(e.getMessage(), e);

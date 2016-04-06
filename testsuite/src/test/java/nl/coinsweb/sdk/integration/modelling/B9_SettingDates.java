@@ -33,7 +33,7 @@ public class B9_SettingDates {
     a.setModificationDate(new Date());
 
     DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(8, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
   }
 
 

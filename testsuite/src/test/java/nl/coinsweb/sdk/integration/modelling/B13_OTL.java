@@ -54,14 +54,14 @@ public class B13_OTL {
 
     DatasetAsserts.logTriples(ontModel);
 
-    model.export("/tmp/otl.ccr");
+    model.export("/tmp/coinstest/otl.ccr");
 
   }
 
   @Test
   public void bReloadContainer() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("/tmp/otl.ccr", "http://sandbox.com/");
+    JenaCoinsContainer model = new TDBCoinsContainer("/tmp/coinstest/otl.ccr", "http://sandbox.com/");
 
     DatasetAsserts.logTriples(model.getJenaOntModel());
   }
