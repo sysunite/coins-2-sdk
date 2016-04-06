@@ -45,7 +45,7 @@ public class B11_SimpleProperties {
 
 
     DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(21, DatasetAsserts.countTriples(model.getJenaModel()));
   }
 
 

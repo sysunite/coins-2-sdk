@@ -45,9 +45,11 @@ public class C1_CreateLargeInstanceBase {
 
     rdfZipContent = new HashSet<>();
     rdfZipContent.add("bim/content.rdf");
-    rdfZipContent.add("doc/Cbim-2.0.rdf");
-    rdfZipContent.add("doc/units-2.0.rdf");
-    rdfZipContent.add("doc/COINSWOA.rdf");
+    rdfZipContent.add("bim/repository/Cbim-2.0.rdf");
+    rdfZipContent.add("bim/repository/units-2.0.rdf");
+    rdfZipContent.add("bim/repository/COINSWOA.rdf");
+    rdfZipContent.add("doc/");
+    rdfZipContent.add("woa/");
   }
 
 
@@ -85,21 +87,6 @@ public class C1_CreateLargeInstanceBase {
     // Create the container
     JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, "http://www.example.com/");
 
-    // Add the one line rdf
-//    Model defaultModel = ((JenaCoinsModel)ccr.getCoinsModel()).getJenaModel();
-
-    // Create random plant
-//    for (int i = 0; i<SOMANY_INSTANCES; i++) {
-//      String name = RandomStringUtils.random(20, true, false);
-//      defaultModel.add(new StatementImpl(new ResourceImpl("http://example.com/" + name), RDF.type, new ResourceImpl("http://example.com/plants")));
-//
-//
-//      if(new Random().nextDouble() < SAMPLE_PROBABILITY) {
-//        sampleList.add(new ResourceImpl("http://example.com/" + name));
-//      }
-//    }
-//
-//
 
 
 
@@ -108,13 +95,13 @@ public class C1_CreateLargeInstanceBase {
 
 
     // Export all the rdf data to the container
-    ccr.exportOwlModel("/tmp/content.rdf", RDFFormat.RDFXML);
+    ccr.exportOwlModel("/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
     MemoryAsserts.sample();
     TimeAsserts.sample();
-    ccr.exportOwlModel("/tmp/content.ttl", RDFFormat.TTL);
+    ccr.exportOwlModel("/tmp/coinstest/content.ttl", RDFFormat.TTL);
     MemoryAsserts.sample();
     TimeAsserts.sample();
-    ccr.exportOwlModel("/tmp/content.jsonld", RDFFormat.JSONLD);
+    ccr.exportOwlModel("/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
 
 
 
@@ -128,14 +115,14 @@ public class C1_CreateLargeInstanceBase {
 
 
     // Create the container file
-    ccr.export(Paths.get("/tmp/bigrdf.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/bigrdf.ccr").toFile().toString());
 
     MemoryAsserts.sample();
     TimeAsserts.sample();
 
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/bigrdf.ccr"), rdfZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/bigrdf.ccr"), rdfZipContent, false));
     assertTrue(MemoryAsserts.neverUnderMbFree(10));
 //    assertTrue(MemoryAsserts.neverOverMbUsed(1024));
     assertTrue(TimeAsserts.neverLongerSec(120));

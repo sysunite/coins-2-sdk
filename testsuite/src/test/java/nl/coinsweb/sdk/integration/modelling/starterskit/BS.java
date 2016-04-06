@@ -1,12 +1,12 @@
 package nl.coinsweb.sdk.integration.modelling.starterskit;
 
-import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.AfterClass;
@@ -53,13 +53,14 @@ public class BS {
     emptyZipContent = new HashSet<>();
     emptyZipContent.add("bim/");
     emptyZipContent.add("bim/content.rdf");
-    emptyZipContent.add("doc/Cbim-2.0.rdf");
-    emptyZipContent.add("doc/units-2.0.rdf");
-    emptyZipContent.add("doc/COINSWOA.rdf");
+    emptyZipContent.add("bim/repository/Cbim-2.0.rdf");
+    emptyZipContent.add("bim/repository/units-2.0.rdf");
+    emptyZipContent.add("bim/repository/COINSWOA.rdf");
+    emptyZipContent.add("doc/");
     emptyZipContent.add("woa/");
 
     rdfZipContent = new HashSet<>();
-    rdfZipContent.add("doc/Cbim-2.0.rdf");
+    rdfZipContent.add("bim/repository/Cbim-2.0.rdf");
 //    rdfZipContent.add("doc/units-2.0.rdf");
 //    rdfZipContent.add("doc/COINSWOA.rdf");
   }
@@ -126,35 +127,35 @@ public class BS {
 
     // Create the container
     JenaCoinsContainer inMemCcr = inMemModel;
-    inMemCcr.exportOwlModel("/tmp/content.rdf", RDFFormat.RDFXML);
-    inMemCcr.exportOwlModel("/tmp/content.ttl", RDFFormat.TTL);
-    inMemCcr.exportOwlModel("/tmp/content.jsonld", RDFFormat.JSONLD);
+    inMemCcr.exportOwlModel("/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    inMemCcr.exportOwlModel("/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    inMemCcr.exportOwlModel("/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
     assertEquals(inMemCcr.getAttachments().size(), 0);
-    inMemCcr.export(Paths.get("/tmp/starterskit" + nr + "_inmem.ccr").toFile().toString());
+    inMemCcr.export(Paths.get("/tmp/coinstest/starterskit" + nr + "_inmem.ccr").toFile().toString());
     assertTrue(DatasetAsserts.verifyCompleteContent(inMemCcr, verifyFiles.iterator()));
     inMemCcr.close();
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/starterskit"+nr+"_inmem.ccr"), rdfZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/starterskit"+nr+"_inmem.ccr"), rdfZipContent, false));
 
     JenaCoinsContainer tdbCcr = tdbModel;
-    tdbCcr.exportOwlModel("/tmp/content.rdf", RDFFormat.RDFXML);
-    tdbCcr.exportOwlModel("/tmp/content.ttl", RDFFormat.TTL);
-    tdbCcr.exportOwlModel("/tmp/content.jsonld", RDFFormat.JSONLD);
+    tdbCcr.exportOwlModel("/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    tdbCcr.exportOwlModel("/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    tdbCcr.exportOwlModel("/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
     assertEquals(tdbCcr.getAttachments().size(), 0);
-    tdbCcr.export(Paths.get("/tmp/starterskit" + nr + "_tdb.ccr").toFile().toString());
+    tdbCcr.export(Paths.get("/tmp/coinstest/starterskit" + nr + "_tdb.ccr").toFile().toString());
     assertTrue(DatasetAsserts.verifyCompleteContent(tdbCcr, verifyFiles.iterator()));
     tdbCcr.close();
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/starterskit" + nr + "_tdb.ccr"), rdfZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/starterskit" + nr + "_tdb.ccr"), rdfZipContent, false));
 
 
-    rdfZipContent.remove("bim/"+nr+".rdf");
+    rdfZipContent.remove("bim/coinstest/"+nr+".rdf");
 
 
 
     // Reopen the ccr
-    JenaCoinsContainer inMemCcr2 = new InMemCoinsContainer(defaultPerson, "/tmp/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
+    JenaCoinsContainer inMemCcr2 = new InMemCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
     inMemCcr2.close();
-    JenaCoinsContainer tdbCcr2 = new TDBCoinsContainer(defaultPerson, "/tmp/starterskit"+nr+"_tdb.ccr", "http://www.example.com/");
+    JenaCoinsContainer tdbCcr2 = new TDBCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+nr+"_tdb.ccr", "http://www.example.com/");
     tdbCcr2.close();
 
 

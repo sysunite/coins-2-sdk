@@ -1,4 +1,4 @@
-package nl.coinsweb.sdk.integration.modelling.starterskit;
+package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.Connection;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;

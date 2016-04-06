@@ -70,8 +70,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
 
 
-
-
   private String internalRef;      // pointer for use in FileManager
 
   private HashMap<String, File> attachments = new HashMap<>();
@@ -159,17 +157,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     // Add core model
     InputStream fileStream = getClass().getResourceAsStream("/Cbim-2.0.rdf");
-    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, "Cbim-2.0.rdf");
+    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, "Cbim-2.0.rdf", availableLibraryFiles);
     addImport(null, coreModelNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
     // Add core model
     fileStream = getClass().getResourceAsStream("/units-2.0.rdf");
-    Namespace unitsNamespace = FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf");
+    Namespace unitsNamespace = FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf", availableLibraryFiles);
     addImport(null, unitsNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
     // Add core model
     fileStream = getClass().getResourceAsStream("/COINSWOA.rdf");
-    Namespace woaNamespace = FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf");
+    Namespace woaNamespace = FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
     addImport(null, woaNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
   }
@@ -191,14 +189,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     this.individualNamespace = new Namespace(namespace);
 
     doModelPreparation();
-
-    // Prepare models to be found
-    InputStream fileStream = getClass().getResourceAsStream("/Cbim-2.0.rdf");
-    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, "Cbim-2.0.rdf");
-    fileStream = getClass().getResourceAsStream("/units-2.0.rdf");
-    Namespace unitsNamespace = FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf");
-    fileStream = getClass().getResourceAsStream("/COINSWOA.rdf");
-    Namespace woaNamespace = FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf");
 
     // Load an existing
     this.load(filePath);
@@ -257,6 +247,18 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     // Try to interpret as rdf-file
     } else {
 
+
+
+
+      // Prepare models to be found
+      InputStream fileStream = getClass().getResourceAsStream("/Cbim-2.0.rdf");
+      FileManager.copyAndRegisterLibrary(fileStream, "Cbim-2.0.rdf", availableLibraryFiles);
+      fileStream = getClass().getResourceAsStream("/units-2.0.rdf");
+      FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf", availableLibraryFiles);
+      fileStream = getClass().getResourceAsStream("/COINSWOA.rdf");
+      FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
+
+
       log.info("Create CoinsContainer from rdf file: "+file.getName());
 
       this.originalContainerFile = null;
@@ -264,9 +266,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
       this.rdfFile = file;
       this.rdfFileName = file.getName();
-
-      // Copy file to file manager
-      FileManager.copyAndLinkRdfFile(internalRef, file, rdfFileName);
     }
 
 
@@ -329,6 +328,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     try {
 
       File file = new File(toFileName);
+      file.getParentFile().mkdirs();
       file.createNewFile(); // create if not already there
 
 
@@ -468,9 +468,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
         throw new CoinsFileNotFoundException("Requested to add file "+filePath+" to the doc folder, but the file cannot be found.");
       }
       if(namespace != null) {
-        actualNamespace = FileManager.registerLibrary(new File(filePath).toURI(), new Namespace(namespace));
+        actualNamespace = FileManager.registerLibrary(new File(filePath).toURI(), new Namespace(namespace), availableLibraryFiles);
       } else {
-        actualNamespace = FileManager.registerLibrary(new File(filePath).toURI(), null);
+        actualNamespace = FileManager.registerLibrary(new File(filePath).toURI(), null, availableLibraryFiles);
       }
     }
 
@@ -1158,10 +1158,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public void setObject(String subject, String predicate, CoinsObject object) {
+    removeStatement(subject, predicate);
     addStatement(subject, predicate, object.getUri());
   }
   @Override
   public void setObject(String subject, String predicate, String objectUri) {
+    removeStatement(subject, predicate);
     addStatement(subject, predicate, objectUri);
   }
   @Override
@@ -1361,11 +1363,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     return result;
   }
 
-  private void addNamedModelForImports(Model model) {
+  public void addNamedModelForImports(Model model) {
 
     OntModel enrichedModel = asOntModel(model);
 
     for(String imp : enrichedModel.listImportedOntologyURIs()) {
+      log.trace("need to load "+imp);
       Namespace namespace = new Namespace(imp);
       loadLibraryContent(namespace);
     }

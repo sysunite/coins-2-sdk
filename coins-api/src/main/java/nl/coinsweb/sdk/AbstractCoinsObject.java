@@ -335,7 +335,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
         log.trace("register "+fileName+" from jar");
 
         InputStream fileStream = getClass().getResourceAsStream("/"+fileName);
-        Namespace ns = FileManager.copyAndRegisterLibrary(fileStream, fileName);
+        Namespace ns = FileManager.copyAndRegisterLibrary(fileStream, fileName, model.getAvailableLibraryFiles());
         model.addImport(null, ns.toString(), true, true, false);
 
       }

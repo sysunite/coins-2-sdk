@@ -43,6 +43,7 @@ public class A2_OpenExistingCcrWithAttachments {
 
   @Before
   public void unsetWorkspaceConf() {
+
     FileManager.TEMP_ZIP_PATH = null;
   }
 
@@ -73,7 +74,7 @@ public class A2_OpenExistingCcrWithAttachments {
 
 
 
-    JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, "/tmp/not-existing.ccr", "http://www.example.com/");
+    JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, "/tmp/coinstest/not-existing.ccr", "http://www.example.com/");
     ccr.close();
 
   }
@@ -83,21 +84,11 @@ public class A2_OpenExistingCcrWithAttachments {
 
 
 
-  @Test
-  public void cOpenCcrTDB() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    cOpenCcr(new TDBCoinsContainer(defaultPerson, "http://www.example.com/"));
-  }
+
+
 
   @Test
-  public void cOpenCcrInMem() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    cOpenCcr(new InMemCoinsContainer(defaultPerson, "http://www.example.com/"));
-  }
-
-  public void cOpenCcr(CoinsModel workspace) {
-
-
+  public void cOpenCcr() {
 
     // Init the coins api
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
@@ -109,15 +100,13 @@ public class A2_OpenExistingCcrWithAttachments {
     JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, file.toString(), "http://www.example.com/");
 
 
-
     // Zip the result
-    ccr.export("/tmp/rezipped_sample.ccr");
+    ccr.export("/tmp/coinstest/rezipped_sample.ccr");
     ccr.close();
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/rezipped_sample.ccr"), groverAttachmentsWithoutFolders, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/rezipped_sample.ccr"), groverAttachmentsWithoutFolders, false));
 
-    workspace.asExpertCoinsModel().close();
   }
 
 
@@ -160,20 +149,20 @@ public class A2_OpenExistingCcrWithAttachments {
 
 
     // Zip the result
-    ccr1.export("/tmp/rezipped_sample1.ccr");
+    ccr1.export("/tmp/coinstest/rezipped_sample1.ccr");
     ccr1.close();
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/rezipped_sample1.ccr"), koekiemonsterAttachmentsWithFolders, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/rezipped_sample1.ccr"), koekiemonsterAttachmentsWithFolders, false));
 
 
 
     // Zip the result
-    ccr2.export("/tmp/rezipped_sample2.ccr");
+    ccr2.export("/tmp/coinstest/rezipped_sample2.ccr");
     ccr2.close();
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/rezipped_sample2.ccr"), groverAttachmentsWithoutFolders, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/rezipped_sample2.ccr"), groverAttachmentsWithoutFolders, false));
 
 
     workspace1.asExpertCoinsModel().close();
@@ -195,9 +184,9 @@ public class A2_OpenExistingCcrWithAttachments {
     groverAttachmentsWithoutFolders = new HashSet<>();
     groverAttachmentsWithoutFolders.add("bim/sample.rdf");
     groverAttachmentsWithoutFolders.add("doc/TopBraid Composer Free v0.2.pdf");
-    groverAttachmentsWithoutFolders.add("doc/Cbim-2.0-RC18.rdf");
-    groverAttachmentsWithoutFolders.add("doc/Cbim-2.0-Units-RC3.rdf");
-    groverAttachmentsWithoutFolders.add("doc/Cbim-2.0-WOA-RC2.rdf");
+    groverAttachmentsWithoutFolders.add("bim/repository/Cbim-2.0-RC18.rdf");
+    groverAttachmentsWithoutFolders.add("bim/repository/Cbim-2.0-Units-RC3.rdf");
+    groverAttachmentsWithoutFolders.add("bim/repository/Cbim-2.0-WOA-RC2.rdf");
     groverAttachmentsWithoutFolders.add("doc/Voorbeelden COINS2.0 v0_9.pdf");
     groverAttachmentsWithoutFolders.add("doc/grover.jpeg");
 
@@ -207,9 +196,9 @@ public class A2_OpenExistingCcrWithAttachments {
     koekiemonsterAttachmentsWithFolders.add("doc/");
     koekiemonsterAttachmentsWithFolders.add("bim/sample.rdf");
     koekiemonsterAttachmentsWithFolders.add("doc/TopBraid Composer Free v0.2.pdf");
-    koekiemonsterAttachmentsWithFolders.add("doc/Cbim-2.0-RC18.rdf");
-    koekiemonsterAttachmentsWithFolders.add("doc/Cbim-2.0-Units-RC3.rdf");
-    koekiemonsterAttachmentsWithFolders.add("doc/Cbim-2.0-WOA-RC2.rdf");
+    koekiemonsterAttachmentsWithFolders.add("bim/repository/Cbim-2.0-RC18.rdf");
+    koekiemonsterAttachmentsWithFolders.add("bim/repository/Cbim-2.0-Units-RC3.rdf");
+    koekiemonsterAttachmentsWithFolders.add("bim/repository/Cbim-2.0-WOA-RC2.rdf");
     koekiemonsterAttachmentsWithFolders.add("doc/Voorbeelden COINS2.0 v0_9.pdf");
     koekiemonsterAttachmentsWithFolders.add("doc/koekiemonster.jpeg");
     koekiemonsterAttachmentsWithFolders.add("woa/");

@@ -24,6 +24,8 @@
  **/
 package nl.coinsweb.sdk;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -315,6 +317,8 @@ public interface BindingCoinsModel extends CoinsModel {
    * If the instance can only have one relation to these type of objects, set a new object of the relation.
    * A predicate needs to be supplied that is used to point to the new object.
    *
+   * First removes any predicate-relationship starting from the instanceUri.
+   *
    * @param instanceUri  the uri of the instance
    * @param predicate  uri used between instance and object
    * @param object  CoinsObject representation of the object
@@ -325,6 +329,8 @@ public interface BindingCoinsModel extends CoinsModel {
   /**
    * If the instance can only have one relation to these type of objects, set a new object of the relation.
    * A predicate needs to be supplied that is used to point to the new object.
+   *
+   * First removes any predicate-relationship starting from the instanceUri.
    *
    * @param instanceUri  the uri of the instance
    * @param predicate  uri used between instance and object
@@ -362,5 +368,12 @@ public interface BindingCoinsModel extends CoinsModel {
    * @param instanceUri  the uri of the instance
    */
   public void removeIndividualAndProperties(String instanceUri);
+
+  /**
+   * Return the archive of ontology files available to load to the container.
+   *
+   * @return  a map containing namespaces and a file containing an ontology listed under this namespace
+   */
+  public HashMap<Namespace, File> getAvailableLibraryFiles();
 
 }

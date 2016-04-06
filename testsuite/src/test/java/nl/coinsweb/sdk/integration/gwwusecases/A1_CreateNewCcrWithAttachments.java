@@ -49,17 +49,17 @@ public class A1_CreateNewCcrWithAttachments {
 
     emptyZipContent = new HashSet<>();
     emptyZipContent.add("bim/content.rdf");
-    emptyZipContent.add("doc/Cbim-2.0.rdf");
-    emptyZipContent.add("doc/units-2.0.rdf");
-    emptyZipContent.add("doc/COINSWOA.rdf");
+    emptyZipContent.add("bim/repository/Cbim-2.0.rdf");
+    emptyZipContent.add("bim/repository/units-2.0.rdf");
+    emptyZipContent.add("bim/repository/COINSWOA.rdf");
+    emptyZipContent.add("doc/");
     emptyZipContent.add("woa/");
 
     attachmentsZipContent = new HashSet<>();
     attachmentsZipContent.add("bim/content.rdf");
-    attachmentsZipContent.add("doc/");
-    attachmentsZipContent.add("doc/Cbim-2.0.rdf");
-    attachmentsZipContent.add("doc/units-2.0.rdf");
-    attachmentsZipContent.add("doc/COINSWOA.rdf");
+    attachmentsZipContent.add("bim/repository/Cbim-2.0.rdf");
+    attachmentsZipContent.add("bim/repository/units-2.0.rdf");
+    attachmentsZipContent.add("bim/repository/COINSWOA.rdf");
     attachmentsZipContent.add("doc/koekiemonster.jpeg");
     attachmentsZipContent.add("doc/plan-d117e182-6308-4826-98bd-378163d8814b (2).svg");
     attachmentsZipContent.add("woa/");
@@ -67,9 +67,9 @@ public class A1_CreateNewCcrWithAttachments {
     rdfZipContent = new HashSet<>();
     rdfZipContent.add("bim/content.rdf");
     rdfZipContent.add("doc/");
-    rdfZipContent.add("doc/Cbim-2.0.rdf");
-    rdfZipContent.add("doc/units-2.0.rdf");
-    rdfZipContent.add("doc/COINSWOA.rdf");
+    rdfZipContent.add("bim/repository/Cbim-2.0.rdf");
+    rdfZipContent.add("bim/repository/units-2.0.rdf");
+    rdfZipContent.add("bim/repository/COINSWOA.rdf");
 
     nodesPlant = new HashSet();
     nodesPlant.add(new ResourceImpl("http://example.com/tree"));
@@ -107,10 +107,10 @@ public class A1_CreateNewCcrWithAttachments {
 
     // Create the container content
     JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, "http://www.example.com/");
-    ccr.export(Paths.get("/tmp/empty.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/empty.ccr").toFile().toString());
     ccr.close();
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/empty.ccr"), emptyZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/empty.ccr"), emptyZipContent, false));
 
     workspace.asExpertCoinsModel().close();
   }
@@ -135,13 +135,12 @@ public class A1_CreateNewCcrWithAttachments {
 
 
   public void createCcrWithAttachment(CoinsModel workspace) {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
 
 
 
 
     // Create the container content
-    JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new InMemCoinsContainer("http://www.example.com/");
 
     // Add an attachment
     ccr.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
@@ -156,13 +155,13 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container file
-    ccr.export(Paths.get("/tmp/withattachment.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/withattachment.ccr").toFile().toString());
     ccr.close();
 
 
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/withattachment.ccr"), attachmentsZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/withattachment.ccr"), attachmentsZipContent, false));
 
 
 
@@ -194,9 +193,9 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Export all the rdf data to the container
-    ccr.exportOwlModel("/tmp/content.rdf", RDFFormat.RDFXML);
-    ccr.exportOwlModel("/tmp/content.ttl", RDFFormat.TTL);
-    ccr.exportOwlModel("/tmp/content.jsonld", RDFFormat.JSONLD);
+    ccr.exportOwlModel("/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    ccr.exportOwlModel("/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    ccr.exportOwlModel("/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
 
 
 
@@ -204,19 +203,19 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container file
-    ccr.export(Paths.get("/tmp/onelineofrdf.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/onelineofrdf.ccr").toFile().toString());
     ccr.close();
 
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/onelineofrdf.ccr"), rdfZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/onelineofrdf.ccr"), rdfZipContent, false));
 
 
     FileManager.destroy(ccr.getInternalRef());
 
 
     // Reopen the ccr
-    JenaCoinsContainer ccr2 = new InMemCoinsContainer(defaultPerson, "/tmp/onelineofrdf.ccr", "http://www.example.com/");
+    JenaCoinsContainer ccr2 = new InMemCoinsContainer(defaultPerson, "/tmp/coinstest/onelineofrdf.ccr", "http://www.example.com/");
     ccr2.close();
   }
 
@@ -233,22 +232,21 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createEmptyCcrWithLibraries() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
+    // 1) An empty container
+    JenaCoinsContainer emptyCcr = new InMemCoinsContainer("http://example.com");
+
 
     File otlFile = IntegrationHelper.getResourceFile("A5", "otl-coins-2016-02-09.ttl");
-    FileManager.registerLibrary(otlFile.toURI(), new Namespace("http://otl.rws.nl/otl#"));
+    FileManager.registerLibrary(otlFile.toURI(), new Namespace("http://otl.rws.nl/otl#"), emptyCcr.getAvailableLibraryFiles());
 
-
-    // 1) An empty container
-    JenaCoinsContainer emptyCcr = new InMemCoinsContainer(defaultPerson, "http://example.com");
 
     emptyCcr.exportOwlModel();
-    emptyCcr.export("/tmp/testLinkToCore.ccr");
+    emptyCcr.export("/tmp/coinstest/testLinkToCore.ccr");
 
     log.info("#will reload now");
 
 
-    JenaCoinsContainer reloaded = new InMemCoinsContainer(defaultPerson, "/tmp/testLinkToCore.ccr", "http://www.example.com/");
+    JenaCoinsContainer reloaded = new InMemCoinsContainer("/tmp/coinstest/testLinkToCore.ccr", "http://www.example.com/");
   }
 
 }

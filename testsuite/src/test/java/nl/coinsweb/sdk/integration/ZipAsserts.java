@@ -57,6 +57,7 @@ public class ZipAsserts {
       zis.close();
 
     } catch (IOException e) {
+      log.error("Problem reading zip file "+zipFile.getAbsolutePath(), e);
       return false;
     }
 

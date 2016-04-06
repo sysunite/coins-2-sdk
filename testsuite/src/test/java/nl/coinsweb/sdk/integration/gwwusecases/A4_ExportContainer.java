@@ -10,8 +10,6 @@ import org.junit.Test;
 import java.io.File;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * Usecase A4:
  *
@@ -24,8 +22,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class A4_ExportContainer {
 
-  String tempPath = "/tmp/A4_test";
-  File containerFile = Paths.get("/tmp/A4_Test.ccr").toFile();
+  String tempPath = "/tmp/coinstest/A4_test";
+  File containerFile = Paths.get("/tmp/coinstest/A4_Test.ccr").toFile();
   String testNameSpace = "http://www.example.com/";
 
   JenaCoinsContainer container;
@@ -49,50 +47,12 @@ public class A4_ExportContainer {
     }
   }
 
-  void export() {
+  @Test
+  public void export() {
 
     container.export(containerFile.toString());
   }
 
-  public static class EmptyExport extends A4_ExportContainer {
-    @Test
-    public void testEmptyContainer() {
-      export();
-      assertTrue("Exported container exists", containerFile.exists());
-    }
-  }
 
-  public static class ExportWithData extends A4_ExportContainer {
-//    @Test
-    public void testLibraryImport() {
-//      NCS0025090Impl object = new NCS0025090Impl(workspace);
-//      NCS0025090Impl object2 = new NCS0025090Impl(workspace);
-//
-//      Iterator<NCS0025090> originalIterator = workspace.findCoinsObjects(NCS0025090Impl.atom);
-//      int originalCount = 0;
-//      while(originalIterator.hasNext()) {
-//        originalCount++;
-//        originalIterator.next();
-//      }
-//
-//      assertEquals("number of created objects", 2, originalCount);
-//
-//      export();
-//      assertTrue("exported container exists", containerFile.exists());
-//
-//      CoinsContainer imported = FileManager.existingCoinsContainer(new InMemCoinsModelCreator(), containerFile);
-//      CoinsModel importedModel = imported.getCoinsModel("content.rdf");
-//      Iterator<NCS0025090> iterator = importedModel.findCoinsObjects(NCS0025090Impl.atom);
-//      int count = 0;
-//      while(iterator.hasNext()) {
-//        count++;
-//        iterator.next();
-//      }
-//
-//      assertEquals("number of created objects", 2, count);
-
-    }
-
-  }
 
 }
