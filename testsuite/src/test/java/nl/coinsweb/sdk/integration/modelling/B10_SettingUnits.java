@@ -2,6 +2,7 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.FloatProperty;
+import nl.coinsweb.sdk.CoinsObject;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBCoinsContainer;
@@ -70,6 +71,7 @@ public class B10_SettingUnits {
     a.addHasProperties(property);
 
     property.setSimpleProperty(11.3f);
+    property.setUnit("a");
     property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
 
 
@@ -86,15 +88,17 @@ public class B10_SettingUnits {
       log.debug(row.toString());
     }
 
-
     result = model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
     while(result.hasNext()) {
       Map<String, String> row = result.next();
       log.debug(row.toString());
     }
 
+    Iterator<CoinsObject> iterator = a.listProperties();
+    while(iterator.hasNext()) {
+      CoinsObject obj = iterator.next();
+      log.debug(obj.getUri() + " with class " +obj.getClassUri());
+    }
 
   }
-
-
 }

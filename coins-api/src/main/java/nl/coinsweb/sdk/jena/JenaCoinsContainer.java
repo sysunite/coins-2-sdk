@@ -39,6 +39,8 @@ import com.hp.hpl.jena.rdf.model.impl.StatementImpl;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.vocabulary.XSD;
 import nl.coinsweb.sdk.*;
 import nl.coinsweb.sdk.apolda.impl.XSDAnySimpleTypeLiteral;
 import nl.coinsweb.sdk.apolda.iterator.SparqlPropertyDeclarationIterator;
@@ -164,8 +166,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
     // Add core model
-    InputStream fileStream = getClass().getResourceAsStream("/Cbim-2.0.rdf");
-    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, "Cbim-2.0.rdf", availableLibraryFiles);
+    InputStream fileStream = getClass().getResourceAsStream("/cbim-2.0.rdf");
+    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, "cbim-2.0.rdf", availableLibraryFiles);
     addImport(null, coreModelNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
     // Add core model
@@ -280,8 +282,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
       // Prepare models to be found
-      InputStream fileStream = getClass().getResourceAsStream("/Cbim-2.0.rdf");
-      FileManager.copyAndRegisterLibrary(fileStream, "Cbim-2.0.rdf", availableLibraryFiles);
+      InputStream fileStream = getClass().getResourceAsStream("/cbim-2.0.rdf");
+      FileManager.copyAndRegisterLibrary(fileStream, "cbim-2.0.rdf", availableLibraryFiles);
       fileStream = getClass().getResourceAsStream("/units-2.0.rdf");
       FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf", availableLibraryFiles);
       fileStream = getClass().getResourceAsStream("/COINSWOA.rdf");
@@ -891,10 +893,30 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties();
     while(iterator.hasNext()) {
+
       Statement statement = iterator.nextStatement();
+
       RDFNode object = statement.getObject();
+
       if(object.isResource() && !object.isAnon()) {
-        buffer.add(new RuntimeCoinsObject(this, OWL.Thing.getURI(), object.asResource().getURI()));        // todo: find the appropriate property class
+
+        Individual property = asOntModel(instanceModel).getIndividual(object.asResource().getURI());
+        if(property != null) {
+
+          ExtendedIterator<OntClass> classes = property.listOntClasses(true);
+
+          while(classes.hasNext()) {
+            String classUri = classes.next().getURI();
+            if(classUri.startsWith(RDF.getURI())) continue;
+            if(classUri.startsWith(RDFS.getURI())) continue;
+            if(classUri.startsWith(OWL.getURI())) continue;
+            if(classUri.startsWith(XSD.getURI())) continue;
+            buffer.add(new RuntimeCoinsObject(this, classUri, object.asResource().getURI()));
+            break;
+          }
+
+
+        }
       }
     }
 

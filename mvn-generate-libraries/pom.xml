@@ -69,6 +69,31 @@
 
 
 
+            <execution>
+              <id>generate lifecycle</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>
+                  coins-cli
+                </executable>
+                <commandlineArgs>
+                  generate
+
+                  -i ${basedir}/../testsuite/src/test/resources/B15/lifecycle.rdf
+                  -o ${basedir}/../tmp/generated-sources/java
+                  -jarto ${basedir}/../testsuite/lib
+                  -sources
+                  -q
+
+                </commandlineArgs>
+              </configuration>
+            </execution>
+
+
+
 
 
           </executions>
@@ -108,17 +133,16 @@
                   generate
 
 
-                  -i ${basedir}/../coins-api/src/main/resources/Cbim-2.0.rdf
+                  -i ${basedir}/../coins-api/src/main/resources/cbim-2.0.rdf
                      ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
                   -o ${basedir}/../tmp/generated-sources/java
                   -jarto ${basedir}/../dist/library/jar
+                  -sources
 
 
                 </commandlineArgs>
               </configuration>
             </execution>
-
-
 
 
 
@@ -162,7 +186,7 @@
                     generate
 
                     -a ${basedir}/../dist/sdk/dll/coins-api.dll
-                    -i ${basedir}/../coins-api/src/main/resources/Cbim-2.0.rdf
+                    -i ${basedir}/../coins-api/src/main/resources/cbim-2.0.rdf
                        ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
                     -o ${basedir}/../tmp/generated-sources/java
                     -jarto ${basedir}/../dist/library/jar

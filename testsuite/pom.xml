@@ -40,6 +40,14 @@
 
     <dependency>
       <groupId>libs</groupId>
+      <artifactId>lib-lifecycle</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/lifecycle.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>libs</groupId>
       <artifactId>lib-elephant</artifactId>
       <version>1.0</version>
       <scope>system</scope>

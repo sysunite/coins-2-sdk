@@ -145,7 +145,7 @@ public interface ExpertCoinsModel extends CoinsModel {
 
   /**
    * Iterate over all the properties of an instance. All properties are currently returned as a
-   * RuntimeCoinsObject that has as class uri the owl:Thing.
+   * RuntimeCoinsObject. If no classUri is detected it has as class uri owl:Thing.
    *
    * @param instanceUri  the uri of the instance
    *

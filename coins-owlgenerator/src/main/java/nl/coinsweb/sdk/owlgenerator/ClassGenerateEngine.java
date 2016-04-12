@@ -43,7 +43,7 @@ public class ClassGenerateEngine {
 
 
   private List<String> subjectIgnoreList = Arrays.asList(new String[]{RDF.getURI(), RDFS.getURI(), OWL.getURI(), XSD.getURI()});
-  private List<String> predicateIgnoreList = Arrays.asList(new String[]{RDF.getURI(), RDFS.getURI(), OWL.getURI(), XSD.getURI()});   // todo revisit ignoring the qudt  , "http://qudt.org/schema/qudt#"
+  private List<String> predicateIgnoreList = Arrays.asList(new String[]{RDF.getURI(), RDFS.getURI(), OWL.getURI(), XSD.getURI()});
 
 
   public static final boolean useDosNL = false;

@@ -58,7 +58,7 @@ public class B6_DatasetUse {
 
 
     Assembly assembly = new Assembly(model,parentUri,true);
-//    assembly.getHasContainsRelation();                // TODO this is a already reported error
+    assembly.getHasContainsRelation();
 
 
     ContainsRelation hs = new ContainsRelation(model);
@@ -93,7 +93,7 @@ public class B6_DatasetUse {
     addDecomposition(model, toplaag.getUri(), asfaltPlak.getUri());
     FloatProperty dikte = new FloatProperty(model);
     dikte.addType("http://otl.rws.nl/otl#OB02859-PR00501");
-//    dikte.setSimpleProperty(10);
+    dikte.setSimpleProperty(10);
     dikte.setUnit(new LengthUnit(model).as(Unit.class));
 
 
