@@ -51,7 +51,7 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
   /**
    * Constructor for new ...
    */
-  public RuntimeCoinsObject(BindingCoinsModel model, String classUri) {
+  public RuntimeCoinsObject(ExpertCoinsModel model, String classUri) {
 
     this.model = model;
     this.classUri = classUri;
