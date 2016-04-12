@@ -26,6 +26,7 @@ package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
+import nl.coinsweb.sdk.injectors.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +97,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     log.info("set uri to "+this.uri);
 
     // Create fields for this new instance
-    if(((OntModel)model.getUnionJenaOntModel()).getIndividual(uri)==null) {
+    if(((OntModel)model.getUnionJenaOntModel()).getIndividual(uri) == null) {
       log.info("Uri "+uri+" not found, creating new individual with this uri.");
 
       // Save this new instance to model
@@ -105,20 +106,25 @@ public abstract class AbstractCoinsObject implements CoinsObject {
       model.addCreatedNow(getUri());
     }
 
+    // Creating an instance based on an existing uri can be concidered a read
+    for(Injector injector : model.getInjectors()) {
+      injector.proposeRead(model, uri);
+    }
+
     // Check if the object with the specified uri may be cast to this type
     if(!dontCheck) {
       boolean foundClassDef = false;
       Iterator<String> classes = model.listClassUris(uri).iterator();
       while (classes.hasNext()) {
         String candidateClassUri = classes.next();
-        log.trace("try if " + candidateClassUri + " as candidate equals where we want to cast to " + getClassUri());
+        log.trace("Try if " + candidateClassUri + " as candidate equals where we want to cast to " + getClassUri());
         if (candidateClassUri.equals(getClassUri())) {
           foundClassDef = true;
           break;
         }
       }
       if (!foundClassDef) {
-        throw new CoinsObjectCastNotAllowedException("Can not cast to " + this.getClass().getCanonicalName() + " because not rdf class for this type was found.");
+        throw new CoinsObjectCastNotAllowedException("Can not cast to " + this.getClass().getCanonicalName() + " because no rdf class for this type was found.");
       }
     }
 

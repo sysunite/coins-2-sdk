@@ -22,17 +22,22 @@
  * IN THE SOFTWARE.
  *
  **/
-package nl.coinsweb.sdk.injectors;
-
-import nl.coinsweb.sdk.CoinsModel;
+package nl.coinsweb.sdk.exceptions;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
-public interface Injector {
+public class WOAAccessDeniedException extends RuntimeException {
 
-  public boolean proposeRead(CoinsModel model, String subject);
-  public boolean proposeRead(CoinsModel model, String subject, String predicate);
-  public boolean proposeWrite(CoinsModel model, String subject, String predicate, String object);
+  public WOAAccessDeniedException() {
+    super();
+  }
 
+  public WOAAccessDeniedException(String message) {
+    super(message);
+  }
+
+  public WOAAccessDeniedException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

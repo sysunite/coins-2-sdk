@@ -26,6 +26,7 @@ package nl.coinsweb.sdk;
 
 import nl.coinsweb.sdk.injectors.Injector;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,14 @@ public interface CoinsModel {
    * @param injector
    */
   public void addInjector(Injector injector);
+
+
+  /**
+   * Return the currently active list of injectors.
+   *
+   * @return  a list of injectors
+   */
+  public ArrayList<Injector> getInjectors();
 
   /**
    * Configuration option to specify which namespace will be used for the instance model.
