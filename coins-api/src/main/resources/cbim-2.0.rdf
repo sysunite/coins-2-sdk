@@ -1,0 +1,2011 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xml:base="http://www.coinsweb.nl/cbim-2.0.rdf">
+  <owl:Ontology rdf:about="">
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >COINS 2.0 by COINS technical management group</owl:versionInfo>
+    <creator>
+      <Organisation rdf:ID="COINSTechnicalManagementGroup">
+        <description rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >COINS Technical Management Group</description>
+        <userID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >COINSTMG</userID>
+        <creationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+        >2015-11-27T09:39:27.831</creationDate>
+        <name rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >COINS Technical Management Group</name>
+        <creator rdf:resource="#COINSTechnicalManagementGroup"/>
+        <rdf:type>
+          <owl:Class rdf:ID="CoinsContainerObject"/>
+        </rdf:type>
+      </Organisation>
+    </creator>
+    <creationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</creationDate>
+  </owl:Ontology>
+  <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#anySimpleType"/>
+  <owl:Class rdf:ID="ExpiredEntity">
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="en-GB">Defines individuals that are expired</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">ExpiredEntity</rdfs:label>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="en-NL">Definieert verlopen individuals</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="nl-NL">VerlopenEntiteit</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Concept"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ExternalDocumentReference">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="InternalDocumentReference"/>
+    </owl:disjointWith>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="en-GB">External document referentie</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">Extern document referentie buiten de COINS Container</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="documentUri"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#ExternalDocumentReference"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="nl-NL">Extern document referentie</rdfs:label>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:comment xml:lang="en-GB">External document reference residing outside the COINSContainer</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="DocumentReference"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="CartesianLocator">
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="en-GB">CartesianLocator</rdfs:label>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="translation"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Specifier for position and orientation using a 3D Euclidean space for relative placement of shaperepresentations.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="primaryOrientation"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Locator"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="secondaryOrientation"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">Specificeert een positie en orientatie in 3D Euclidische ruimte voor relatieve plaatsing van vormrepresentaties</rdfs:comment>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#CartesianLocator"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Vector"/>
+    </owl:disjointWith>
+    <rdfs:label xml:lang="nl-NL">Plaatsbepaling</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="EntityProperty"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Party"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="ContainsRelation">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Part"/>
+    </owl:disjointWith>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#ContainsRelation"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">ContainsRelation</rdfs:label>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Assembly"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasAssembly"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasPart"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="nl-NL">OnderdeelRelatie</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">ContainsRelation</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Entity"/>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:comment xml:lang="nl-NL">OnderdeelRelatie</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="SimpleProperty">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#EntityProperty"/>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">SimpleProperty</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">Simpel kenmerk</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="datatypeValue"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#SimpleProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:label xml:lang="nl-NL">Simpel kenmerk</rdfs:label>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:comment xml:lang="en-GB">Simple Property</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+  </owl:Class>
+  <owl:Class rdf:about="#EntityProperty">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onClass>
+          <owl:Class rdf:about="#Entity"/>
+        </owl:onClass>
+        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:minQualifiedCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="propertyBelongsTo"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">EntityProperty</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:ID="ComplexProperty"/>
+          <owl:Class rdf:about="#SimpleProperty"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="nl-NL">Entiteit kenmerk</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassExtendable>
+    <rdfs:comment xml:lang="en-GB">Entity property</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">EntiteitKenmerk</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#EntityProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+  </owl:Class>
+  <owl:Class rdf:about="#DocumentReference">
+    <rdfs:comment xml:lang="en-GB">Document reference klasse voor het beschrijven van referenties naar documenten</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ComplexPropertyValue"/>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="nl-NL">Document referentie</rdfs:label>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">Document referentie class for describing referals to documents</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#DocumentReference"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="en-GB">Document reference</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#InternalDocumentReference"/>
+          <owl:Class rdf:about="#ExternalDocumentReference"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+  </owl:Class>
+  <owl:Class rdf:about="#Party">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Party"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="nl-NL">Partij</rdfs:label>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">Abstracte Partij</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Abstract reference to a LegalEntity.</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassExtendable>
+    <rdfs:label xml:lang="en-GB">Party</rdfs:label>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:ID="Organisation"/>
+          <owl:Class rdf:ID="Person"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="SecuredDocumentReference">
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="nl-NL">Beveiligd document referentie</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#DocumentReference"/>
+    <rdfs:label xml:lang="nl-NL">Beveiligd document referentie</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:ID="SecuredExternalDocumentReference"/>
+          <owl:Class rdf:ID="SecuredInternalDocumentReference"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <rdfs:comment xml:lang="en-GB">Secured document reference</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#SecuredDocumentReference"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="en-GB">Secured document reference</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="UriProperty">
+    <rdfs:comment xml:lang="nl-NL">Uri kenmerk</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">Uri kenmerk</rdfs:label>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SimpleProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#UriProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">UriProperty</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="BooleanProperty"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Uri Property</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#SimpleProperty"/>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="DateTimeProperty"/>
+    </owl:disjointWith>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="NumericProperty"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="StringProperty"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#Concept">
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <rdfs:label xml:lang="nl-NL">Concept</rdfs:label>
+    <rdfs:label xml:lang="en-GB">Concept</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassExtendable>
+    <rdfs:comment xml:lang="nl-NL">supertype voor alle COINS klasses. Deze klasse bevat geen kenmerken of relaties</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">superclass for all COINS classes. This class is without any properties or relations</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+  </owl:Class>
+  <owl:Class rdf:ID="DirectedConnection">
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">Gerichte connectie object tussen Objecten</rdfs:comment>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="en-GB">DirectedConnection</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="fromObject"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Connection"/>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Directed connection object between Objects</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="toObject"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="nl-NL">GerichteConnectie</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#DirectedConnection"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="FloatProperty">
+    <rdfs:comment xml:lang="nl-NL">Getal kenmerk</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">Getal kenmerk</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#NumericProperty"/>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">FloatProperty</rdfs:label>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SimpleProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom>
+              <owl:NamedIndividual rdf:about="http://www.w3.org/2001/XMLSchema#float"/>
+            </owl:allValuesFrom>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:comment xml:lang="en-GB">FloatProperty</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="IntegerProperty"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#FloatProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Assembly">
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="nl-NL">Assembly</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">Parent</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:label xml:lang="en-GB">Assembly</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">Assembly</rdfs:label>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+  </owl:Class>
+  <owl:Class rdf:about="#InternalDocumentReference">
+    <rdfs:label xml:lang="nl-NL">Intern document referentie</rdfs:label>
+    <rdfs:label xml:lang="en-GB">Internal document reference</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">intern document referentie in de Coins container</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="filePath"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#ExternalDocumentReference"/>
+    <rdfs:subClassOf rdf:resource="#DocumentReference"/>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:comment xml:lang="en-GB">internal document within the Coins container</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#InternalDocumentReference"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+  </owl:Class>
+  <owl:Class rdf:about="#Connection">
+    <rdfs:label xml:lang="en-GB">Connection</rdfs:label>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="nl-NL">Connectie</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasConnectedObjects"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >2</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:comment xml:lang="en-GB">undirected Connection between Objects</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Connection"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="nl-NL">ongerichte connectie tussen Objecten</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#ComplexPropertyValue">
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">Complex kenmerk waarde</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">ComplexKenmerkwaarde</rdfs:label>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ComplexPropertyValue"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">ComplexPropertyValue</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Complex property value</rdfs:comment>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+  </owl:Class>
+  <owl:Class rdf:ID="LocatorProperty">
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0RC10</classVersionID>
+    <rdfs:label xml:lang="en-GB">LocatorProperty</rdfs:label>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ComplexProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:ID="objectValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom>
+              <owl:Class rdf:about="#Locator"/>
+            </owl:allValuesFrom>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#objectValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Locator"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="nl-NL">LocatieKenmerk</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">Locatie kenmerk</rdfs:comment>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="en-GB">Locator property</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ComplexProperty"/>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+  </owl:Class>
+  <owl:Class rdf:ID="Object">
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:comment xml:lang="en-GB">Object</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">Object</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#CoinsContainerObject"/>
+          <owl:Class rdf:ID="CataloguePart"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:label xml:lang="nl-NL">Object</rdfs:label>
+    <rdfs:label xml:lang="en-GB">Object</rdfs:label>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Object"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+  </owl:Class>
+  <owl:Class rdf:about="#StringProperty">
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:label xml:lang="nl-NL">String kenmerk</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#NumericProperty"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#StringProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:NamedIndividual rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">String Property</rdfs:label>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SimpleProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <owl:disjointWith rdf:resource="#UriProperty"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="en-GB">String Property</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">String kenmerk</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BooleanProperty"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#SimpleProperty"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#DateTimeProperty"/>
+    </owl:disjointWith>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+  </owl:Class>
+  <owl:Class rdf:ID="DocumentProperty">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ComplexProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:about="#objectValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom rdf:resource="#DocumentReference"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:label xml:lang="nl-NL">heeftDocument</rdfs:label>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:label xml:lang="en-GB">HasDocument</rdfs:label>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:comment xml:lang="en-GB">HasDocument</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#objectValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#DocumentReference"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ComplexProperty"/>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="nl-NL">heeftDocument</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  <owl:Class rdf:about="#DateTimeProperty">
+    <rdfs:label xml:lang="nl-NL">DatumTijdKenmerk</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">DateTimeProperty</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SimpleProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#DateTimeProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BooleanProperty"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#StringProperty"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#NumericProperty"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="en-GB">DateTimeProperty</rdfs:label>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:comment xml:lang="nl-NL">DatumTijdKenmerk</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf rdf:resource="#SimpleProperty"/>
+    <owl:disjointWith rdf:resource="#UriProperty"/>
+  </owl:Class>
+  <owl:Class rdf:ID="VersionObject">
+    <rdfs:comment xml:lang="nl-NL">VersieObject biedt ondersteuning voor versiemanagement van zijn individuals</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf rdf:resource="#Concept"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="en-GB">VersionObject</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">VersionObject enables individuals to specificy their next version.</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="nl-NL">VersieObject</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#SecuredExternalDocumentReference">
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="nl-NL">Extern beveiligd document referentie</rdfs:label>
+    <rdfs:label xml:lang="en-GB">External secured document reference</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ExternalDocumentReference"/>
+          <owl:Class rdf:about="#SecuredDocumentReference"/>
+        </owl:intersectionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#SecuredExternalDocumentReference"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="nl-NL">Extern beveiligd document referentie buiten de COINS container</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="checksumUriAlgorithm"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#SecuredDocumentReference"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="checksumUri"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Exernal secured document reference residing outside the COINS Container</rdfs:comment>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+  </owl:Class>
+  <owl:Class rdf:about="#Vector">
+    <owl:disjointWith rdf:resource="#CartesianLocator"/>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="nl-NL">Vector</rdfs:label>
+    <rdfs:label xml:lang="en-GB">Vector</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#ComplexPropertyValue"/>
+    <owl:disjointWith rdf:resource="#EntityProperty"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Vector"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#Party"/>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">3D Vector</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="en-GB">3D Vector specifier.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#BooleanProperty">
+    <rdfs:comment xml:lang="en-GB">BooleanProperty</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SimpleProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom>
+              <owl:NamedIndividual rdf:about="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:allValuesFrom>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:label xml:lang="nl-NL">Boolean kenmerk</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#NumericProperty"/>
+    </owl:disjointWith>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="nl-NL">Boolean kenmerk</rdfs:comment>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#BooleanProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="en-GB">BooleanProperty</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <owl:disjointWith rdf:resource="#UriProperty"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf rdf:resource="#SimpleProperty"/>
+    <owl:disjointWith rdf:resource="#DateTimeProperty"/>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+  </owl:Class>
+  <owl:Class rdf:about="#CataloguePart">
+    <rdfs:comment xml:lang="nl-NL">Generiek catalogus onderdeel voor harmonisatie van externe bibliotheekobjecten</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">Catalogusobject</rdfs:label>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:subClassOf rdf:resource="#Concept"/>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:label xml:lang="en-GB">Cataloguepart</rdfs:label>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#CataloguePart"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Generic catalogue part for alignement of external ObjectTypeLibraries.</rdfs:comment>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Concept"/>
+          <owl:Class rdf:about="#Entity"/>
+        </owl:intersectionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ShapeRepresentation">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#ShapeRepresentation"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="en-GB">Shaperepresentation</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#DocumentReference"/>
+    <rdfs:comment xml:lang="en-GB">Shape document link object.</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:label xml:lang="nl-NL">Vormrepresentatie</rdfs:label>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:comment xml:lang="nl-NL">Object voor het refereren naar een vorm representatie</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+  </owl:Class>
+  <owl:Class rdf:about="#CoinsContainerObject">
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:label xml:lang="en-GB">CoinsContainerObject</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">CoinsContainerObject</rdfs:label>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="nl-NL">CoinsContainerObject</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">CoinsContainerObject</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#CoinsContainerObject"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#Concept"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Part">
+    <rdfs:label xml:lang="en-GB">Part</rdfs:label>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:label xml:lang="nl-NL">Onderdeel</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Parent</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">Assembly</rdfs:comment>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+  </owl:Class>
+  <owl:Class rdf:about="#NumericProperty">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#FloatProperty"/>
+          <owl:Class rdf:about="#IntegerProperty"/>
+        </owl:unionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:label xml:lang="nl-GB">NumeriekKenmerk</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#SimpleProperty"/>
+    <rdfs:comment xml:lang="nl-NL">Geobjectificeerde numeriek kenmerk</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">NumericProperty</rdfs:label>
+    <owl:disjointWith rdf:resource="#DateTimeProperty"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <owl:disjointWith rdf:resource="#UriProperty"/>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#NumericProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="en-GB">Objectified numeric property</rdfs:comment>
+    <owl:disjointWith rdf:resource="#StringProperty"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#FloatProperty"/>
+          <owl:Class rdf:about="#IntegerProperty"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#BooleanProperty"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Locator">
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:label xml:lang="en-GB">Locator</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">Locator</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Locator"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="en-GB">Locator</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">Locator</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf rdf:resource="#ComplexPropertyValue"/>
+  </owl:Class>
+  <owl:Class rdf:about="#ComplexProperty">
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf rdf:resource="#EntityProperty"/>
+    <owl:disjointWith rdf:resource="#SimpleProperty"/>
+    <rdfs:comment xml:lang="en-GB">Complex property</rdfs:comment>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="nl-NL">ComplexKenmerk</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onClass rdf:resource="#ComplexPropertyValue"/>
+        <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:qualifiedCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#objectValue"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment xml:lang="nl-NL">Complex Kenmerk</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:label xml:lang="en-GB">ComplexProperty</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ComplexProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#IntegerProperty">
+    <rdfs:label xml:lang="nl-NL">Integer kenmerk</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#NumericProperty"/>
+    <rdfs:comment xml:lang="en-GB">IntegerProperty</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#IntegerProperty"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">IntegerProperty</rdfs:label>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="nl-NL">Integer kenmerk</rdfs:comment>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SimpleProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#datatypeValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Entity">
+    <rdfs:comment xml:lang="en-GB">Entity of all C-BIM classes with some relations and properties.</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#EntityProperty"/>
+              <owl:Class rdf:about="#Connection"/>
+              <owl:Class rdf:about="#Object"/>
+              <owl:Class rdf:about="#ComplexPropertyValue"/>
+              <owl:Class rdf:about="#ContainsRelation"/>
+              <owl:Class rdf:about="#Party"/>
+            </owl:unionOf>
+          </owl:Class>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#CoinsContainerObject"/>
+              <owl:Class rdf:about="#CataloguePart"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf rdf:resource="#Concept"/>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassAbstract>
+    <rdfs:label xml:lang="nl-NL">Entiteit</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#CoinsContainerObject"/>
+          <owl:Class rdf:about="#CataloguePart"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassExtendable>
+    <rdfs:subClassOf rdf:resource="#VersionObject"/>
+    <rdfs:label xml:lang="en-GB">Entity</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="modifier"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#EntityProperty"/>
+          <owl:Class rdf:about="#Connection"/>
+          <owl:Class rdf:about="#Object"/>
+          <owl:Class rdf:about="#ComplexPropertyValue"/>
+          <owl:Class rdf:about="#ContainsRelation"/>
+          <owl:Class rdf:about="#Party"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:comment xml:lang="nl-NL">Entiteit voor alle C-BIM Klassen met enkele relaties en kenmerken</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="creator"/>
+        </owl:onProperty>
+        <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:maxCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ShapeRepresentationProperty">
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ComplexProperty"/>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:about="#objectValue"/>
+            </owl:onProperty>
+            <owl:allValuesFrom rdf:resource="#ShapeRepresentation"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#objectValue"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#ShapeRepresentation"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:label xml:lang="en-GB">HasShapeRepresentation</rdfs:label>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:label xml:lang="nl-NL">HeeftVormRepresentatie</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">HeeftVormRepresentatie</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf rdf:resource="#DocumentProperty"/>
+    <rdfs:comment xml:lang="en-GB">HasShapeRepresentation</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#Person">
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <rdfs:label xml:lang="en-GB">Person</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">Persoon</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:subClassOf rdf:resource="#Party"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:comment xml:lang="en-GB">Person</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">Persoon</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Person"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#SecuredInternalDocumentReference">
+    <rdfs:comment xml:lang="en-GB">Reference to a secured document within this COINSContainer</rdfs:comment>
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <rdfs:label xml:lang="en-GB">Secured intern document referentie</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="checksumFileAlgorithm"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="nl-NL">BeveiligdInternDocument</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#SecuredInternalDocumentReference"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="nl-NL">Verwijzing naar een beveiligd document in de COINSContainer</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#SecuredDocumentReference"/>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#InternalDocumentReference"/>
+          <owl:Class rdf:about="#SecuredDocumentReference"/>
+        </owl:intersectionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="checksumFile"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Organisation">
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:label xml:lang="nl-NL">Organisatie</rdfs:label>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:comment xml:lang="en-GB">Organisation</rdfs:comment>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <owl:disjointWith rdf:resource="#Person"/>
+    <rdfs:subClassOf rdf:resource="#Party"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Organisation"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="nl-NL">Organisatie</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">Organisation</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ContainsRelationGroup">
+    <classCreator rdf:resource="#COINSTechnicalManagementGroup"/>
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#nextTrunkVersion"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#ContainsRelationGroup"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <classVersionID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >v1.0</classVersionID>
+    <isClassAbstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >false</isClassAbstract>
+    <rdfs:comment xml:lang="nl-NL">OnderdeelRelatieGroep</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">OnderdeelRelatieGroep</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">ContainsRelationGroup</rdfs:comment>
+    <classCreationDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+    >2016-04-04T12:00:00.00</classCreationDate>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="belongsToAssembly"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">ContainsRelationGroup</rdfs:label>
+    <isClassExtendable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isClassExtendable>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="#hasConnectedObjects">
+    <rdfs:domain rdf:resource="#Connection"/>
+    <rdfs:range rdf:resource="#Object"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="hasConnections"/>
+    </owl:inverseOf>
+    <rdfs:label xml:lang="en-GB">hasConnectedObjects</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">heeftVerbondenObjecten</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">has connected Objects</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">heeft verbonden Objecten</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#checksumUri">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="hasProperties"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="#UriProperty"/>
+    <rdfs:label xml:lang="nl-NL">checksumUri</rdfs:label>
+    <rdfs:label xml:lang="en-GB">checksumUri</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Checksum hash of the URI linked document.</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">Checksum hash of the URI linked document.</rdfs:comment>
+    <rdfs:domain rdf:resource="#SecuredExternalDocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#checksumFileAlgorithm">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#hasProperties"/>
+    </rdfs:subPropertyOf>
+    <rdfs:comment xml:lang="en-GB">The checksum algorithm (e.g. SHA1, MD5, ...) that was used to generate the checksum of the attached file.</rdfs:comment>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="en-GB">checksum file algorithm</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">checksum file algorithm</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">The checksum algorithm (e.g. SHA1, MD5, ...) that was used to generate the checksum of the attached file.</rdfs:comment>
+    <rdfs:domain rdf:resource="#SecuredInternalDocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="groupedBy">
+    <rdfs:domain rdf:resource="#ContainsRelation"/>
+    <rdfs:range rdf:resource="#ContainsRelationGroup"/>
+    <rdfs:label xml:lang="en-GB">groupedBy</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">gegroepeerdDoor</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">gegroepeerdDoor</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">groupedBy</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasOutgoingConnections">
+    <rdfs:comment xml:lang="en-GB">has Outgoing Connections</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">heeft uitgaande Connecties</rdfs:label>
+    <rdfs:label xml:lang="en-GB">has Outgoing Connections</rdfs:label>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#fromObject"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#DirectedConnection"/>
+    <rdfs:domain rdf:resource="#Object"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#hasConnections"/>
+    </rdfs:subPropertyOf>
+    <rdfs:comment xml:lang="nl-NL">heeft uitgaande Connecties</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="partOf">
+    <rdfs:domain rdf:resource="#Part"/>
+    <rdfs:label xml:lang="nl-NL">onderdeelVan</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">part of</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">partOf</rdfs:label>
+    <owl:inverseOf>
+      <owl:FunctionalProperty rdf:about="#hasPart"/>
+    </owl:inverseOf>
+    <rdfs:comment xml:lang="nl-NL">onderdeel van</rdfs:comment>
+    <rdfs:range rdf:resource="#ContainsRelation"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#propertyBelongsTo">
+    <rdfs:domain rdf:resource="#EntityProperty"/>
+    <rdfs:label xml:lang="en-GB">propertyBelongsTo</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">property belongs to</rdfs:comment>
+    <rdfs:range rdf:resource="#Entity"/>
+    <rdfs:comment xml:lang="nl-NL">kenmerk hoort bij</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">kenmerk hoort bij</rdfs:label>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasProperties"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="IDFieldname">
+    <rdfs:label xml:lang="nl-NL">ID veldnaam</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">Veldnaam (of kolom naam) waar ID waardes gevonden kunnen worden</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">IDField name</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Fieldname (or column name) where the ID of the shape/feature can be found</rdfs:comment>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:domain rdf:resource="#ShapeRepresentation"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasProperties">
+    <rdfs:range rdf:resource="#EntityProperty"/>
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:comment xml:lang="nl-NL">heeft kenmerken relatie</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">has properties relationship</rdfs:comment>
+    <rdfs:label xml:lang="EN-gb">has properties</rdfs:label>
+    <rdfs:label xml:lang="NL-nl">heeft kenmerken</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasContainsRelation">
+    <rdfs:range rdf:resource="#ContainsRelation"/>
+    <rdfs:comment xml:lang="en-GB">has ContainsRelations</rdfs:comment>
+    <rdfs:domain rdf:resource="#Assembly"/>
+    <rdfs:comment xml:lang="nl-NL">bevat ContainsRelaties</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">hasContainsRelation</rdfs:label>
+    <owl:inverseOf>
+      <owl:FunctionalProperty rdf:about="#hasAssembly"/>
+    </owl:inverseOf>
+    <rdfs:label xml:lang="nl-NL">heeftContainsRelatie</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#creator">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#VersionObject"/>
+          <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Ontology"/>
+          <owl:Class rdf:about="#Entity"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:label xml:lang="nl-NL">creator</rdfs:label>
+    <rdfs:range rdf:resource="#Party"/>
+    <rdfs:label xml:lang="en-GB">creator</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The range person or organisation is creator of the domain object.</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">De relatie naar de creator van dit object.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#fromObject">
+    <rdfs:comment xml:lang="nl-NL">van Object</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">from Object</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">van Object</rdfs:label>
+    <rdfs:label xml:lang="en-GB">from Object</rdfs:label>
+    <rdfs:range rdf:resource="#Object"/>
+    <rdfs:domain rdf:resource="#DirectedConnection"/>
+    <rdfs:subPropertyOf rdf:resource="#hasConnectedObjects"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasIncomingConnections">
+    <rdfs:comment xml:lang="nl-NL">heeft inkomende Connecties</rdfs:comment>
+    <rdfs:range rdf:resource="#DirectedConnection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#hasConnections"/>
+    </rdfs:subPropertyOf>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#toObject"/>
+    </owl:inverseOf>
+    <rdfs:label xml:lang="nl-NL">heeft inkomende Connecties</rdfs:label>
+    <rdfs:domain rdf:resource="#Object"/>
+    <rdfs:label xml:lang="en-GB">has incoming Connections</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">has incoming Connections</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="groups">
+    <rdfs:label xml:lang="en-GB">groups</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">groepeert</rdfs:comment>
+    <rdfs:range rdf:resource="#ContainsRelation"/>
+    <rdfs:label xml:lang="nl-NL">groepeert</rdfs:label>
+    <rdfs:domain rdf:resource="#ContainsRelationGroup"/>
+    <rdfs:comment xml:lang="en-GB">groups</rdfs:comment>
+    <owl:inverseOf rdf:resource="#groupedBy"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasConnections">
+    <rdfs:label xml:lang="en-GB">has Connections</rdfs:label>
+    <rdfs:domain rdf:resource="#Object"/>
+    <rdfs:comment xml:lang="en-GB">has Connections</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">heeft Connecties</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">heeft Connecties</rdfs:label>
+    <rdfs:range rdf:resource="#Connection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#objectValue">
+    <rdfs:domain rdf:resource="#ComplexProperty"/>
+    <rdfs:comment xml:lang="nl-NL">functionele object waarde</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">objectValue</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">objectwaarde</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">functional object value</rdfs:comment>
+    <rdfs:range rdf:resource="#ComplexPropertyValue"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#checksumFile">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:comment xml:lang="nl-NL">Checksum code van het bijgevoegde bestand</rdfs:comment>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="nl-NL">checksum bestand</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Checksum hash of the attached file.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">checksum file</rdfs:label>
+    <rdfs:domain rdf:resource="#SecuredInternalDocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#nextTrunkVersion">
+    <rdfs:range rdf:resource="#VersionObject"/>
+    <rdfs:comment xml:lang="en-GB">The domain CbimObject points to the range CbimObject as its next version.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">next version</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">De relatie naar de volgende versie van dit object</rdfs:comment>
+    <rdfs:domain rdf:resource="#VersionObject"/>
+    <rdfs:label xml:lang="nl-NL">volgende versie</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#documentUri">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:range rdf:resource="#UriProperty"/>
+    <rdfs:comment xml:lang="nl-NL">De URI van een document</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">The URI of the document or identifiable object inside the document.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">document URI</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">dokument URI</rdfs:label>
+    <rdfs:domain rdf:resource="#ExternalDocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#toObject">
+    <rdfs:comment xml:lang="nl-NL">van Connectie naar Object</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">naar Object</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">from Connection to Object</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">to Object</rdfs:label>
+    <rdfs:range rdf:resource="#Object"/>
+    <rdfs:domain rdf:resource="#DirectedConnection"/>
+    <rdfs:subPropertyOf rdf:resource="#hasConnectedObjects"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#modifier">
+    <rdfs:domain rdf:resource="#VersionObject"/>
+    <rdfs:range rdf:resource="#Party"/>
+    <rdfs:label xml:lang="en-GB">modifier</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The range person or organisation is modifier of the domain object.</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">modifier</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="modificationDate">
+    <rdfs:domain rdf:resource="#VersionObject"/>
+    <rdfs:comment xml:lang="nl-NL">De laatste modificatie datum van dit C-BIM object.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:label xml:lang="nl-NL">modificatie datum</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The last modification date of the C-BIM object.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">modification date</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="name">
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="nl-NL">De naam van het C-BIM object</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">naam</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The name of the C-BIM object.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">name</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="userID">
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:comment xml:lang="nl-NL">Gebruikers ID voor het C-BIM Object</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="nl-NL">gebruikers ID</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The user defined ID of the C-BIM object.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">user ID</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="cointainerID">
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="en-GB">cointainerID</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">cointainerID</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">property for annotating an ontology</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">kenmerk voor het annoteren van een coinscontainer ontologie</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="creationDate">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#VersionObject"/>
+          <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Ontology"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="nl-NL">De creatie datum van dit C-BIM object.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:label xml:lang="nl-NL">creatie datum</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The creation date of the C-BIM object.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">creation date</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="description">
+    <rdfs:label xml:lang="nl-NL">beschrijving</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="nl-NL">Beschrijving van het C-BIM Object</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">The description of the C-BIM object.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">description</rdfs:label>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Entity"/>
+          <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Ontology"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="versionID">
+    <rdfs:domain rdf:resource="#VersionObject"/>
+    <rdfs:label xml:lang="en-GB">versionID</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">versieID</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Optional version number for COINS objects</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">Optionele versie nummer voor COINS objecten</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="xCoordinate">
+    <rdfs:label xml:lang="NL-nl">x coordinaat</rdfs:label>
+    <rdfs:label xml:lang="EN-gb">x coordinate</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">De x coordinaat van de vector.</rdfs:comment>
+    <rdfs:domain rdf:resource="#Vector"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:comment xml:lang="en-GB">The x coordinate of the vector.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="zCoordinate">
+    <rdfs:comment xml:lang="en-GB">The z coordinate of the vector.</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">De z coordinaat van de vector</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">z coordinaat</rdfs:label>
+    <rdfs:domain rdf:resource="#Vector"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:label xml:lang="en-GB">z coordinate</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="yCoordinate">
+    <rdfs:comment xml:lang="en-GB">The y coordinate of the vector.</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">y coordinaat</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">De y coordinaat van de vector.</rdfs:comment>
+    <rdfs:domain rdf:resource="#Vector"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:label xml:lang="en-GB">y coordinate</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:FunctionalProperty rdf:about="#filePath">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:comment xml:lang="en-GB">The filepath for the internal stored copy of the document in the doc directory within the COINS Container.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">filepath</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">de bestandsnaam voor het intern opgeslagen dokument in de doc folder van de COINS container.</rdfs:comment>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="nl-NL">filepath</rdfs:label>
+    <rdfs:domain rdf:resource="#InternalDocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#primaryOrientation">
+    <rdfs:comment xml:lang="nl-NL">Een relatie naar een Vector voor de primaire orientatie</rdfs:comment>
+    <rdfs:range rdf:resource="#Vector"/>
+    <rdfs:label xml:lang="nl-NL">primaire orientatie</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The range vector that specifies the primary orientation of the domain locator.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">primary orientation</rdfs:label>
+    <rdfs:domain rdf:resource="#CartesianLocator"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="documentFragment">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:comment xml:lang="en-GB">The fragment addresses a specific location in the document.</rdfs:comment>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="en-GB">document fragment</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">document fragment</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">Het fragment ter indificatie van een specifieke locatie in het dokument .</rdfs:comment>
+    <rdfs:domain rdf:resource="#DocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasPart">
+    <rdfs:comment xml:lang="nl-NL">heeft onderdelen</rdfs:comment>
+    <rdfs:domain rdf:resource="#ContainsRelation"/>
+    <owl:inverseOf rdf:resource="#partOf"/>
+    <rdfs:comment xml:lang="en-GB">has parts</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">hasPart</rdfs:label>
+    <rdfs:range rdf:resource="#Part"/>
+    <rdfs:label xml:lang="nl-NL">heeftOnderdeel</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasAssembly">
+    <rdfs:comment xml:lang="nl-NL">heeft Assembly</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">hasAssembly</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">has Assembly</rdfs:comment>
+    <rdfs:range rdf:resource="#Assembly"/>
+    <rdfs:label xml:lang="nl-NL">heeftAssembly</rdfs:label>
+    <owl:inverseOf rdf:resource="#hasContainsRelation"/>
+    <rdfs:domain rdf:resource="#ContainsRelation"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#secondaryOrientation">
+    <rdfs:comment xml:lang="nl-NL">De relatie naar een Vector voor een secundaire orientatie</rdfs:comment>
+    <rdfs:range rdf:resource="#Vector"/>
+    <rdfs:comment xml:lang="en-GB">The range vector that specifies the secondary orientation of the domain locator.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">secondary orientation</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">secundaire orientatie</rdfs:label>
+    <rdfs:domain rdf:resource="#CartesianLocator"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#datatypeValue">
+    <rdfs:comment xml:lang="NL-nl">Simpel datatype kenmerk</rdfs:comment>
+    <rdfs:label xml:lang="EN-gb">Simple property</rdfs:label>
+    <rdfs:label xml:lang="NL-nl">Simpel kenmerk</rdfs:label>
+    <rdfs:comment xml:lang="EN-gb">Simple datatype property</rdfs:comment>
+    <rdfs:domain rdf:resource="#SimpleProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#checksumUriAlgorithm">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:comment xml:lang="nl-NL">The checksum algorithm (e.g. SHA1, MD5, ...) that was used to generate the checksum of the URI linked document.</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">The checksum algorithm (e.g. SHA1, MD5, ...) that was used to generate the checksum of the URI linked document.</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">checksum URI algorithm</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">checksum URI algorithm</rdfs:label>
+    <rdfs:domain rdf:resource="#SecuredExternalDocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="documentType">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:comment xml:lang="en-GB">The type of the document.</rdfs:comment>
+    <rdfs:domain rdf:resource="#DocumentReference"/>
+    <rdfs:label xml:lang="en-GB">document type</rdfs:label>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="nl-NL">dokument type</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">De type van het dokument.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#belongsToAssembly">
+    <rdfs:domain rdf:resource="#ContainsRelationGroup"/>
+    <rdfs:range rdf:resource="#Assembly"/>
+    <rdfs:label xml:lang="en-GB">belongsToAssembly</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">behoortBijAssembly</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">belongsToAssembly</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">behoortBijAssembly</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="documentMimeType">
+    <rdfs:subPropertyOf rdf:resource="#hasProperties"/>
+    <rdfs:comment xml:lang="nl-NL">De mimetype van het dokument.</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">dokument mimetype</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">The mimetype of the document.</rdfs:comment>
+    <rdfs:range rdf:resource="#StringProperty"/>
+    <rdfs:label xml:lang="en-GB">document mimetype</rdfs:label>
+    <rdfs:domain rdf:resource="#DocumentReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#translation">
+    <rdfs:label xml:lang="nl-NL">translatie</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">De relatie naar de translatie vector</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">The range vector that specifies the translation of the domain locator.</rdfs:comment>
+    <rdfs:range rdf:resource="#Vector"/>
+    <rdfs:label xml:lang="en-GB">translation</rdfs:label>
+    <rdfs:domain rdf:resource="#CartesianLocator"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="unit">
+    <rdfs:label xml:lang="en-GB">unit</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">eenheid</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">unit using QUDT units</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">eenheden mbv QUDT eenheden</rdfs:comment>
+    <rdfs:domain rdf:resource="#NumericProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:NamedIndividual rdf:about="http://www.w3.org/2001/XMLSchema#int"/>
+  <owl:AnnotationProperty rdf:ID="classCreationDate">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+  </owl:AnnotationProperty>
+  <owl:AnnotationProperty rdf:ID="classCreator">
+    <rdfs:range rdf:resource="#Party"/>
+  </owl:AnnotationProperty>
+  <owl:AnnotationProperty rdf:ID="nextClassVersion"/>
+  <owl:AnnotationProperty rdf:ID="classVersionID">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:AnnotationProperty>
+  <owl:AnnotationProperty rdf:ID="isClassAbstract">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:AnnotationProperty>
+  <owl:AnnotationProperty rdf:ID="isClassExtendable">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:AnnotationProperty>
+  <owl:AllDisjointClasses>
+    <owl:members rdf:parseType="Collection">
+      <owl:Class rdf:about="#BooleanProperty"/>
+      <owl:Class rdf:about="#DateTimeProperty"/>
+      <owl:Class rdf:about="#NumericProperty"/>
+      <owl:Class rdf:about="#StringProperty"/>
+      <owl:Class rdf:about="#UriProperty"/>
+    </owl:members>
+  </owl:AllDisjointClasses>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->
