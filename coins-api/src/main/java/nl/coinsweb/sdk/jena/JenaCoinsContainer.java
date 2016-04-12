@@ -676,7 +676,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Query query = QueryFactory.create(sparqlQuery);
 
     // Execute the query and obtain results
-    QueryExecution qe = QueryExecutionFactory.create(query, getUnionJenaOntModel());
+    QueryExecution qe = QueryExecutionFactory.create(query, dataset);
     ResultSet results = qe.execSelect();
 
     // Output query results
@@ -1340,6 +1340,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       log.info("send close to " + model.getInstanceNamespace());
       model.close();
     }
+    FileManager.destroy(this.internalRef);
   }
 
 

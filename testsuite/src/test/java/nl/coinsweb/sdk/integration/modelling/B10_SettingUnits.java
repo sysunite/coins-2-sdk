@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -79,8 +80,18 @@ public class B10_SettingUnits {
 
 
 
+    Iterator<Map<String, String>> result = model.query("SELECT * WHERE { GRAPH <http://www.coinsweb.nl/units-2.0.rdf#> { ?s ?p ?o}}");
+    while(result.hasNext()) {
+      Map<String, String> row = result.next();
+      log.debug(row.toString());
+    }
 
 
+    result = model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
+    while(result.hasNext()) {
+      Map<String, String> row = result.next();
+      log.debug(row.toString());
+    }
 
 
   }
