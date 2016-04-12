@@ -21,7 +21,7 @@ public class B7_NextTrunkVersionOverloading {
 
 
   @Test
-  public void iteratePerson() {
+  public void iterate() {
 
 
 
@@ -30,7 +30,7 @@ public class B7_NextTrunkVersionOverloading {
 
 //    model.setReasoner(OntModelSpec.OWL_MEM);
 
-    Iterator<PropertyDeclaration> iterator = model.listPropertyDeclarations("http://www.coinsweb.nl/cbim-2.0.rdf#Part");
+    Iterator<PropertyDeclaration> iterator = model.listPropertyDeclarations("http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty");
     while(iterator.hasNext()) {
       PropertyDeclaration prop = iterator.next();
       log.debug(prop.getPropertyUri() + "  -->  " + prop.getRangeUri() + " (owner "+prop.getPropertyOwner()+")");
