@@ -85,20 +85,27 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   protected Dataset dataset;
 
-  private Namespace individualNamespace;
   private CoinsParty party;
   private File originalContainerFile;
+
+
   private File rdfFile;
   private String rdfFileName = "content.rdf";
+  private Namespace instanceNamespace;
   private Model instanceModel;
+
+  private File woaFile;
+  private String woaFileName = "woa.rdf";
+  public Namespace woaNamespace = new Namespace("http://woa.coinsweb.nl/");
   private Model woaModel;
+
+
   private Map<Namespace, Model> libraryModels;
 
 
   private ArrayList<Injector> injectors = new ArrayList<>();
 
   private String containerId;
-  public Namespace woaNamespace = new Namespace("http://woa.coinsweb.nl/");
 
 
 
@@ -124,7 +131,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     this.injectors.add(new AttachmentInjector());
 
-    this.individualNamespace = new Namespace(namespace);
+    this.instanceNamespace = new Namespace(namespace);
 
     this.internalRef = FileManager.newCoinsContainer();
     this.containerId = UUID.randomUUID().toString();
@@ -134,23 +141,23 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     this.libraryModels = new HashMap<>();
 
     // Prepare an empty dataset
-    if(this.individualNamespace == null) {
+    if(this.instanceNamespace == null) {
       throw new InvalidNamespaceException("Please provide a namespace if an empty CoinsModel is constructed.");
     }
     try {
-      new URI(this.individualNamespace.toString());
+      new URI(this.instanceNamespace.toString());
     } catch (URISyntaxException e) {
-      throw new InvalidNamespaceException("Please provide a valid namespace, problems with "+this.individualNamespace +".", e);
+      throw new InvalidNamespaceException("Please provide a valid namespace, problems with "+this.instanceNamespace +".", e);
     }
 
     // Create empty model
     instanceModel = ModelFactory.createDefaultModel();
-    instanceModel.setNsPrefix("", individualNamespace.toString());
+    instanceModel.setNsPrefix("", instanceNamespace.toString());
     instanceModel.setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
     addOntologyHeader();
 
-    dataset.addNamedModel(individualNamespace.toString(), instanceModel);
-    log.info("Added instance model with name "+ individualNamespace);
+    dataset.addNamedModel(instanceNamespace.toString(), instanceModel);
+    log.info("Added instance model with name "+ instanceNamespace);
 
 
     woaModel = ModelFactory.createDefaultModel();
@@ -187,7 +194,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     this.injectors.add(new AttachmentInjector());
 
-    this.individualNamespace = new Namespace(namespace);
+    this.instanceNamespace = new Namespace(namespace);
 
     doModelPreparation();
 
@@ -237,10 +244,11 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
       // Analyse the rdf-files
       HashMap<String, File> rdfFiles = new HashMap<>();
-      this.internalRef = FileManager.existingCoinsContainer(file, rdfFiles, attachments, availableLibraryFiles);
+      HashMap<String, File> woaFiles = new HashMap<>();
+      this.internalRef = FileManager.existingCoinsContainer(file, rdfFiles, woaFiles, attachments, availableLibraryFiles);
 
       if(rdfFiles.isEmpty()) {
-        if(this.individualNamespace == null) {
+        if(this.instanceNamespace == null) {
           throw new InvalidNamespaceException("No rdf file contained in coins container, please specify preferred namespace.");
         }
         this.rdfFile = null;
@@ -249,8 +257,19 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
           log.warn("More than one rdf file found, picking a random first.");
         }
         this.rdfFile = rdfFiles.get(rdfFiles.keySet().iterator().next());
-        log.info("Found file: " + rdfFile.toURI().toString());
+        log.info("Found file: " + this.rdfFile.toURI().toString());
         this.rdfFileName = this.rdfFile.getName();
+      }
+
+      if(woaFiles.isEmpty()) {
+        this.woaFile = null;
+      } else {
+        if(woaFiles.size()>1) {
+          log.warn("More than one woa file found, picking a random first.");
+        }
+        this.woaFile = woaFiles.get(woaFiles.keySet().iterator().next());
+        log.info("Found file: " + this.woaFile.toURI().toString());
+        this.woaFileName = this.woaFile.getName();
       }
 
 
@@ -269,7 +288,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
 
 
-      log.info("Create CoinsContainer from rdf file: "+file.getName());
+      log.info("Create CoinsContainer from rdf file: " + file.getName());
 
       this.originalContainerFile = null;
       this.internalRef = FileManager.newCoinsContainer();
@@ -283,27 +302,37 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     instanceModel = ModelFactory.createDefaultModel();
     if(rdfFile != null) {
       instanceModel.read(this.rdfFile.toURI().toString());
-      individualNamespace = FileManager.getLeadingNamespace(this.rdfFile, instanceModel);
+      instanceNamespace = FileManager.getLeadingNamespace(this.rdfFile, instanceModel);
     }
-    instanceModel.setNsPrefix("", individualNamespace.toString());
+    instanceModel.setNsPrefix("", instanceNamespace.toString());
     instanceModel.setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
-    dataset.addNamedModel(individualNamespace.toString(), instanceModel);
-    log.info("Added instance model with name "+ individualNamespace);
+    dataset.addNamedModel(instanceNamespace.toString(), instanceModel);
+    log.info("Added instance model with name "+ instanceNamespace);
 
-    Statement searchResult = instanceModel.getProperty(new ResourceImpl(this.individualNamespace.withoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
+    Statement searchResult = instanceModel.getProperty(new ResourceImpl(this.instanceNamespace.withoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
     if(searchResult!=null && searchResult.getObject() != null) {
       this.containerId = searchResult.getObject().asLiteral().getLexicalForm();
     } else {
       this.containerId = UUID.randomUUID().toString();
       log.warn("No containerId found, setting it to: "+containerId+".");
       instanceModel.add(new StatementImpl(
-          new ResourceImpl(this.individualNamespace.withoutHash()),
+          new ResourceImpl(this.instanceNamespace.withoutHash()),
           new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
           instanceModel.createTypedLiteral(containerId)));
     }
 
     log.info("Found containerId "+this.containerId);
     addNamedModelForImports(instanceModel);
+
+    // Create woa model and read the woa base model
+    woaModel = ModelFactory.createDefaultModel();
+    if(woaFile != null) {
+      woaModel.read(this.woaFile.toURI().toString());
+      woaNamespace = FileManager.getLeadingNamespace(this.woaFile, woaModel);
+    }
+    woaModel.setNsPrefix("", woaNamespace.toString());
+    dataset.addNamedModel(woaNamespace.toString(), woaModel);
+    log.info("Added woa model with name "+ woaNamespace);
   }
 
 
@@ -441,12 +470,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public void setInstanceNamespace(String namespace) {
-    this.individualNamespace = new Namespace(namespace);
+    this.instanceNamespace = new Namespace(namespace);
   }
 
   @Override
   public String getInstanceNamespace() {
-    return this.individualNamespace.toString();
+    return this.instanceNamespace.toString();
   }
 
   @Override
@@ -454,7 +483,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     if(!hasOntologyHeader()) {
       return false;
     }
-    return instanceModel.contains(new ResourceImpl(this.individualNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespace));
+    return instanceModel.contains(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespace));
   }
 
 
@@ -502,7 +531,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       if (!hasOntologyHeader()) {
         addOntologyHeader();
       }
-      Statement statement = new StatementImpl(new ResourceImpl(this.individualNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespaceImpl.toString()));
+      Statement statement = new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespaceImpl.toString()));
       instanceModel.add(statement);
     }
 
@@ -519,11 +548,11 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   public void setActiveParty(CoinsParty party) {
     this.party = party;
     instanceModel.getGraph().remove(
-        new ResourceImpl(this.individualNamespace.withoutHash()).asNode(),
+        new ResourceImpl(this.instanceNamespace.withoutHash()).asNode(),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator").asNode(),
         Node.ANY);
     instanceModel.add(new StatementImpl(
-        new ResourceImpl(this.individualNamespace.withoutHash()),
+        new ResourceImpl(this.instanceNamespace.withoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
         new ResourceImpl(party.getUri())));
   }
@@ -1241,30 +1270,30 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public boolean hasOntologyHeader() {
-    return instanceModel.contains(new StatementImpl(new ResourceImpl(this.individualNamespace.withoutHash()), RDF.type, OWL.Ontology));
+    return instanceModel.contains(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), RDF.type, OWL.Ontology));
   }
 
   @Override
   public void addOntologyHeader() {
 
     // Add header itself
-    log.info("use this as subject for ontology header "+this.individualNamespace);
-    instanceModel.add(new StatementImpl(new ResourceImpl(this.individualNamespace.withoutHash()), RDF.type, OWL.Ontology));
+    log.info("use this as subject for ontology header "+this.instanceNamespace);
+    instanceModel.add(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), RDF.type, OWL.Ontology));
 
     // Add creator and containerId
     instanceModel.add(new StatementImpl(
-        new ResourceImpl(this.individualNamespace.withoutHash()),
+        new ResourceImpl(this.instanceNamespace.withoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
         new ResourceImpl(getActiveParty().getUri())));
     instanceModel.add(new StatementImpl(
-        new ResourceImpl(this.individualNamespace.withoutHash()),
+        new ResourceImpl(this.instanceNamespace.withoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
         instanceModel.createTypedLiteral(containerId)));
 
     // Add import statements
     for(Namespace key : libraryModels.keySet()) {
       log.info("add an imports statement to "+key.toString());
-      instanceModel.add(new StatementImpl(new ResourceImpl(this.individualNamespace.withoutHash()), OWL.imports, new ResourceImpl(key.toString())));
+      instanceModel.add(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(key.toString())));
     }
   }
 
@@ -1300,7 +1329,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public String generateUri() {
-    return individualNamespace + UUID.randomUUID().toString();
+    return instanceNamespace + UUID.randomUUID().toString();
   }
 
 
@@ -1474,7 +1503,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       writer.write(instanceModel, output, null);
 
     } else {
-      dataset.getNamedModel(individualNamespace.toString());
+      dataset.getNamedModel(instanceNamespace.toString());
       RDFDataMgr.write(output, instanceModel, format);
     }
   }
@@ -1500,7 +1529,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       writer.write(instanceModel, boas, null);
 
     } else {
-      dataset.getNamedModel(individualNamespace.toString());
+      dataset.getNamedModel(instanceNamespace.toString());
       RDFDataMgr.write(boas, instanceModel, format);
     }
 
@@ -1551,7 +1580,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public Iterator<String> listModelNames() {
     List<String> buffer = new ArrayList<>();
-    buffer.add(individualNamespace.toString());
+    buffer.add(instanceNamespace.toString());
     buffer.add(woaNamespace.toString());
     Set<Namespace> namespaces = libraryModels.keySet();
     for(Namespace namespace : namespaces) {
@@ -1568,7 +1597,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public Model getJenaModel(String namespace) {
     Namespace ns = new Namespace(namespace);
-    if(this.individualNamespace.equals(ns)) {
+
+    if(this.instanceNamespace.equals(ns)) {
       return instanceModel;
     }
     if(this.woaNamespace.equals(ns)) {
@@ -1576,6 +1606,13 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
     if(libraryModels.containsKey(ns)) {
       return libraryModels.get(ns);
+    }
+
+    log.warn("Requested model could not be found: "+ns.toString()+", pick from:");
+    log.warn("InstanceModel: "+instanceNamespace.toString());
+    log.warn("WoaModel: "+woaNamespace.toString());
+    for(Namespace candidate : libraryModels.keySet()) {
+      log.warn("libraries: "+candidate.toString());
     }
     return null;
   }

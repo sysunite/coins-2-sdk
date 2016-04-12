@@ -87,7 +87,11 @@ public class FileManager {
     return internalRef;
   }
 
-  public static String existingCoinsContainer(File sourceFile, HashMap<String, File> rdfFiles, HashMap<String, File> attachments, HashMap<Namespace, File> libraryFiles) {
+  public static String existingCoinsContainer(File sourceFile,
+                                              HashMap<String, File> rdfFiles,
+                                              HashMap<String, File> woaFiles,
+                                              HashMap<String, File> attachments,
+                                              HashMap<Namespace, File> libraryFiles) {
 
     if (!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
@@ -100,7 +104,7 @@ public class FileManager {
 
 
 
-    FileManager.indexZipFile(sourceFile, internalRef, rdfFiles, attachments, libraryFiles);
+    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, libraryFiles);
 
 
     return internalRef;
@@ -271,61 +275,71 @@ public class FileManager {
     }
   }
 
-  public static void indexZipFile(File sourceFile,
-                                  String internalRef,
+  public static void indexZipFile(String internalRef,
                                   HashMap<String, File> rdfFiles,
+                                  HashMap<String, File> woaFiles,
                                   HashMap<String, File> attachments,
                                   HashMap<Namespace, File> libraryFiles) {
 
     Path homePath = getTempZipPath().resolve(internalRef);
 
-    try {
 
-      // Get the zip file content
-      ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFile));
-      ZipEntry ze = zis.getNextEntry();
+    File folder;
+    File[] listOfFiles;
 
-      while(ze!=null){
+    folder = new File(homePath.resolve(RDF_PATH).toString());
+    listOfFiles = folder.listFiles();
 
-        if(ze.isDirectory()) {
-          ze = zis.getNextEntry();
-          continue;
-        }
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isFile()) {
+        log.info("Index file as rdf: "+listOfFiles[i].getName());
+        rdfFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+      }
+    }
 
-        String fileName = ze.getName();
-        File newFile = new File(homePath + File.separator + fileName);
+    folder = new File(homePath.resolve(WOA_PATH).toString());
+    listOfFiles = folder.listFiles();
 
-        log.info("index file from ccr "+newFile.getAbsolutePath());
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isFile()) {
+        log.info("Index file as woa: "+listOfFiles[i].getName());
+        woaFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
+      }
+    }
 
-        ze = zis.getNextEntry();
 
-        // If this did not throw exceptions add it to the indexes
-        if(newFile.toPath().startsWith(homePath.resolve(RDF_PATH)) &&
-           !newFile.toPath().startsWith(homePath.resolve(ONTOLOGIES_PATH))) {
-          rdfFiles.put(fileName, newFile);
-        }
+    folder = new File(homePath.resolve(ONTOLOGIES_PATH).toString());
+    listOfFiles = folder.listFiles();
 
-        if(newFile.toPath().startsWith(homePath.resolve(ATTACHMENT_PATH))) {
-          attachments.put(fileName, newFile);
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isFile()) {
+        if(isRdfFile(listOfFiles[i])) {
 
-          if(isRdfFile(newFile)) {
-            Model libraryModel = ModelFactory.createDefaultModel();
-            libraryModel.read(newFile.toURI().toString());
-            Namespace ns = getLeadingNamespace(newFile, libraryModel);
-            log.info("found leading namespace " + ns + " for file " + fileName);
+          log.info("Index file as ontology file: "+listOfFiles[i].getName());
 
-            libraryFiles.put(ns, newFile);
-          }
+          Model libraryModel = ModelFactory.createDefaultModel();
+          libraryModel.read(listOfFiles[i].toURI().toString());
+          Namespace ns = getLeadingNamespace(listOfFiles[i], libraryModel);
+          log.info("Found leading namespace " + ns + " for file " + listOfFiles[i].getName()+".");
 
+          libraryFiles.put(ns, listOfFiles[i]);
+        } else {
+          log.warn("Failed to interpret file as ontology file: "+listOfFiles[i]);
         }
       }
-
-      zis.closeEntry();
-      zis.close();
-
-    } catch(IOException ex) {
-      ex.printStackTrace();
     }
+
+    folder = new File(homePath.resolve(ATTACHMENT_PATH).toString());
+    listOfFiles = folder.listFiles();
+
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isFile()) {
+        log.info("index file as attachment");
+        attachments.put(listOfFiles[i].getName(), listOfFiles[i]);
+
+      }
+    }
+
   }
 
   /**
