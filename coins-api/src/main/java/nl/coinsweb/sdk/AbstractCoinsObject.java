@@ -45,7 +45,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
   protected static final Logger log = LoggerFactory.getLogger(AbstractCoinsObject.class);
 
-  protected BindingCoinsModel model;
+  protected ExpertCoinsModel model;
 
 
 
@@ -377,7 +377,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
 
   @Override
-  public BindingCoinsModel getCoinsModel() {
+  public ExpertCoinsModel getCoinsModel() {
     return model;
   }
 

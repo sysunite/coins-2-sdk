@@ -65,7 +65,7 @@ import java.util.*;
 /**
  * @author Bastian Bijl
  */
-public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, BindingCoinsModel, ExpertCoinsModel {
+public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoinsModel {
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
 
@@ -704,7 +704,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
   /**
-   * BindingCoinsModel
+   * ExpertCoinsModel
    */
 
   @Override
@@ -1216,13 +1216,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
 
-
-
-
-
-  /**
-   * ExpertCoinsModel
-   */
 
 
   @Override
