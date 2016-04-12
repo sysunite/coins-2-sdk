@@ -45,7 +45,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
   protected static final Logger log = LoggerFactory.getLogger(AbstractCoinsObject.class);
 
-  protected ExpertCoinsModel model;
+  public ExpertCoinsModel model;
 
 
 

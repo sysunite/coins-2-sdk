@@ -92,7 +92,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   private String rdfFileName = "content.rdf";
   private Model instanceModel;
   private Model woaModel;
-  private Map<Namespace, Model> libraryModels = new HashMap<>();
+  private Map<Namespace, Model> libraryModels;
 
 
   private ArrayList<Injector> injectors = new ArrayList<>();
@@ -131,6 +131,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     doModelPreparation();
     this.dataset = createDataset();
+    this.libraryModels = new HashMap<>();
 
     // Prepare an empty dataset
     if(this.individualNamespace == null) {
@@ -210,6 +211,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     // Start with a clean sheet
     this.dataset = createDataset();
+    this.libraryModels = new HashMap<>();
 
     File file = new File(sourceFile);
 
@@ -219,6 +221,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     // See what file type it is
     if(file.getName().endsWith(".ccr") || file.getName().endsWith(".zip")) {
+
+      log.info("Reset current config");
+
+      if(this.internalRef != null) {
+        FileManager.destroy(this.internalRef);
+      }
+
+
 
       log.info("Create CoinsContainer from ccr/zip file: "+file.getName());
 

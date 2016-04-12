@@ -197,6 +197,7 @@ public class FileManager {
   public static void unzipTo(File sourceFile, Path destinationPath) {
 
     byte[] buffer = new byte[1024];
+    Path startFolder = null;
 
     try {
 
@@ -204,7 +205,7 @@ public class FileManager {
       ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFile));
       ZipEntry ze = zis.getNextEntry();
 
-      while(ze!=null){
+      while(ze != null) {
 
         if(ze.isDirectory()) {
           ze = zis.getNextEntry();
@@ -213,7 +214,39 @@ public class FileManager {
 
         String fileName = ze.getName();
 
-        File newFile = new File(destinationPath + File.separator + fileName);
+        // If the first folder is a somename/bim/file.ref skip it
+        Path filePath = Paths.get(fileName);
+        Path pathPath = filePath.getParent();
+
+        if(pathPath.endsWith("bim") ||
+           pathPath.endsWith("bim/repository") ||
+           pathPath.endsWith("doc") ||
+           pathPath.endsWith("woa")) {
+
+
+          Path pathRoot = pathPath.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
+
+          Path newStartFolder = Paths.get("");
+          if (pathRoot != null) {
+            newStartFolder = pathRoot;
+          }
+
+          if(startFolder == null) {
+            startFolder = newStartFolder;
+            log.debug("File root set to: "+startFolder);
+
+          } else if(startFolder != null && !newStartFolder.equals(startFolder)) {
+            throw new InvalidContainerFileException("The container file has an inconsistent file root, was "+startFolder+", now dealing with "+newStartFolder+".");
+          }
+        } else {
+          log.debug("Skipping file: "+filePath.toString());
+          continue;
+        }
+
+
+        Path insideStartFolder = startFolder.relativize(filePath);
+        File newFile = new File(destinationPath + File.separator + insideStartFolder);
+        log.info("Extract "+newFile+".");
 
         // Create all non exists folders
         // else you will hit FileNotFoundException for compressed folder
