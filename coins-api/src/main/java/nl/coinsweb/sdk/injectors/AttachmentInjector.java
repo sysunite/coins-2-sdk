@@ -36,7 +36,12 @@ public class AttachmentInjector implements Injector {
   protected static final Logger log = LoggerFactory.getLogger(AttachmentInjector.class);
 
   @Override
-  public boolean proposeRead(CoinsModel model, String subject, String predicate, String object) {
+  public boolean proposeRead(CoinsModel model, String subject) {
+    return true;
+  }
+
+  @Override
+  public boolean proposeRead(CoinsModel model, String subject, String predicate) {
     return true;
   }
 

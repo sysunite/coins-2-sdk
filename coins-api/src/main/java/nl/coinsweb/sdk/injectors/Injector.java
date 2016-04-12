@@ -31,7 +31,8 @@ import nl.coinsweb.sdk.CoinsModel;
  */
 public interface Injector {
 
-  public boolean proposeRead(CoinsModel model, String subject, String predicate, String object);
+  public boolean proposeRead(CoinsModel model, String subject);
+  public boolean proposeRead(CoinsModel model, String subject, String predicate);
   public boolean proposeWrite(CoinsModel model, String subject, String predicate, String object);
 
 }

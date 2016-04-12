@@ -49,6 +49,7 @@ import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.exceptions.*;
 import nl.coinsweb.sdk.injectors.AttachmentInjector;
 import nl.coinsweb.sdk.injectors.Injector;
+import nl.coinsweb.sdk.injectors.WOAInjector;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
@@ -105,7 +106,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   private Map<Namespace, Model> libraryModels;
 
 
-  private ArrayList<Injector> injectors = new ArrayList<>();
+  private ArrayList<Injector> injectors;
 
   private String containerId;
 
@@ -130,8 +131,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     this.party = party;
     this.party.setModel(this);
-
-    this.injectors.add(new AttachmentInjector());
 
     this.instanceNamespace = new Namespace(namespace);
 
@@ -180,6 +179,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Namespace woaNamespace = FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
     addImport(null, woaNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
+
+    initInjectors();
   }
 
   /**
@@ -194,21 +195,27 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     this.party = party;
     this.party.setModel(this);
 
-    this.injectors.add(new AttachmentInjector());
-
     this.instanceNamespace = new Namespace(namespace);
 
     doModelPreparation();
 
     // Load an existing
     this.load(filePath);
+
+
+
+    initInjectors();
   }
 
 
   protected abstract void doModelPreparation();
   protected abstract Dataset createDataset();
 
-
+  private void initInjectors() {
+    this.injectors = new ArrayList<>();
+    this.injectors.add(new AttachmentInjector());
+    this.injectors.add(new WOAInjector(woaModel));
+  }
 
 
   /**
@@ -335,6 +342,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     woaModel.setNsPrefix("", woaNamespace.toString());
     dataset.addNamedModel(woaNamespace.toString(), woaModel);
     log.info("Added woa model with name "+ woaNamespace);
+
+    initInjectors();
   }
 
 
@@ -468,6 +477,11 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public void addInjector(Injector injector) {
     injectors.add(injector);
+  }
+
+  @Override
+  public ArrayList<Injector> getInjectors() {
+    return injectors;
   }
 
   @Override
@@ -750,6 +764,10 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public Set<String> listClassUris(String instanceUri) {
+
+    for(Injector injector : injectors) {
+      injector.proposeRead(this, instanceUri);
+    }
 
     HashSet<String> buffer = new HashSet<>();
     log.info("Try to find classes for uri "+instanceUri);
@@ -1323,30 +1341,65 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   public void addStatement(String subject, String predicate, String object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), new ResourceImpl(object));
     log.info("Adding statement " + statement);
-    instanceModel.add(statement);
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeWrite(this, subject, predicate, object);
+    }
+    if(permission) {
+      instanceModel.add(statement);
+    }
   }
   @Override
   public void addStatement(String subject, String predicate, RDFNode object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), object);
     log.info("Adding statement "+statement);
-    instanceModel.add(statement);
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeWrite(this, subject, predicate, object.toString());
+    }
+    if(permission) {
+      instanceModel.add(statement);
+    }
   }
 
   @Override
   public void removeStatement(String subject, String predicate, String object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), new ResourceImpl(object));
     log.info("Removing statement " + statement);
-    instanceModel.remove(statement);
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeWrite(this, subject, predicate, object);
+    }
+    if(permission) {
+      instanceModel.remove(statement);
+    }
   }
   @Override
   public void removeStatement(String subject, String predicate, RDFNode object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), object);
     log.info("Removing statement " + statement);
-    instanceModel.remove(statement);
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeWrite(this, subject, predicate, object.toString());
+    }
+    if(permission) {
+      instanceModel.remove(statement);
+    }
   }
   public void removeStatement(String subject, String predicate) {
     log.info("Removing statement " + subject + " -> "+predicate+" -> any");
-    instanceModel.getGraph().remove(new ResourceImpl(subject).asNode(), new PropertyImpl(predicate).asNode(), Node.ANY);
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeWrite(this, subject, predicate, null);
+    }
+    if(permission) {
+      instanceModel.getGraph().remove(new ResourceImpl(subject).asNode(), new PropertyImpl(predicate).asNode(), Node.ANY);
+    }
   }
 
   @Override
@@ -1621,12 +1674,15 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Namespace ns = new Namespace(namespace);
 
     if(this.instanceNamespace.equals(ns)) {
+      log.info("InstanceModel requested.");
       return instanceModel;
     }
     if(this.woaNamespace.equals(ns)) {
+      log.info("WoaModel requested.");
       return woaModel;
     }
     if(libraryModels.containsKey(ns)) {
+      log.info("Some library model requested.");
       return libraryModels.get(ns);
     }
 

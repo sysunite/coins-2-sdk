@@ -49,7 +49,7 @@ public class A1_CreateNewCcrWithAttachments {
 
     emptyZipContent = new HashSet<>();
     emptyZipContent.add("bim/content.rdf");
-    emptyZipContent.add("bim/repository/Cbim-2.0.rdf");
+    emptyZipContent.add("bim/repository/cbim-2.0.rdf");
     emptyZipContent.add("bim/repository/units-2.0.rdf");
     emptyZipContent.add("bim/repository/COINSWOA.rdf");
     emptyZipContent.add("doc/");
@@ -57,7 +57,7 @@ public class A1_CreateNewCcrWithAttachments {
 
     attachmentsZipContent = new HashSet<>();
     attachmentsZipContent.add("bim/content.rdf");
-    attachmentsZipContent.add("bim/repository/Cbim-2.0.rdf");
+    attachmentsZipContent.add("bim/repository/cbim-2.0.rdf");
     attachmentsZipContent.add("bim/repository/units-2.0.rdf");
     attachmentsZipContent.add("bim/repository/COINSWOA.rdf");
     attachmentsZipContent.add("doc/koekiemonster.jpeg");
@@ -67,7 +67,7 @@ public class A1_CreateNewCcrWithAttachments {
     rdfZipContent = new HashSet<>();
     rdfZipContent.add("bim/content.rdf");
     rdfZipContent.add("doc/");
-    rdfZipContent.add("bim/repository/Cbim-2.0.rdf");
+    rdfZipContent.add("bim/repository/cbim-2.0.rdf");
     rdfZipContent.add("bim/repository/units-2.0.rdf");
     rdfZipContent.add("bim/repository/COINSWOA.rdf");
 

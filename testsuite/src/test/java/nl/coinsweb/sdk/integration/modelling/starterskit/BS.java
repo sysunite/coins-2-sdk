@@ -53,14 +53,14 @@ public class BS {
     emptyZipContent = new HashSet<>();
     emptyZipContent.add("bim/");
     emptyZipContent.add("bim/content.rdf");
-    emptyZipContent.add("bim/repository/Cbim-2.0.rdf");
+    emptyZipContent.add("bim/repository/cbim-2.0.rdf");
     emptyZipContent.add("bim/repository/units-2.0.rdf");
     emptyZipContent.add("bim/repository/COINSWOA.rdf");
     emptyZipContent.add("doc/");
     emptyZipContent.add("woa/");
 
     rdfZipContent = new HashSet<>();
-    rdfZipContent.add("bim/repository/Cbim-2.0.rdf");
+    rdfZipContent.add("bim/repository/cbim-2.0.rdf");
 //    rdfZipContent.add("doc/units-2.0.rdf");
 //    rdfZipContent.add("doc/COINSWOA.rdf");
   }
