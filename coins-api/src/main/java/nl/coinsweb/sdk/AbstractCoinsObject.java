@@ -325,6 +325,10 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     }
     return getUri().equals(((CoinsObject)that).getUri());
   }
+  @Override
+  public int hashCode() {
+    return getUri().hashCode();
+  }
 
 
 
