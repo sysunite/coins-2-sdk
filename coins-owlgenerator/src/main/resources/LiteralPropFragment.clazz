@@ -1,10 +1,10 @@
 <#list literalProperties as property>
 <#if property.single>
 
-  public ${property.returnType} get${property.relationName}() {
+  public ${property.simpleReturnType} get${property.relationName}() {
     return model.getLiteralValue(getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
-  public void set${property.relationName}(${property.returnType} object) {
+  public void set${property.relationName}(${property.simpleReturnType} object) {
     model.setLiteralValue(getUri(), "${property.relationUri}", object);
   }
 <#else>
@@ -12,7 +12,7 @@
   public Iterator<${property.returnType}> get${property.relationName}() {
     return model.getLiteralValues(getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
-  public void add${property.relationName}(${property.returnType} object) {
+  public void add${property.relationName}(${property.simpleReturnType} object) {
     model.addLiteralValue(getUri(), "${property.relationUri}", object);
   }
 </#if>

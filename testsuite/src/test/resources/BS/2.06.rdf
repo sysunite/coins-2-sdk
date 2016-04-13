@@ -1,5 +1,5 @@
 <rdf:RDF
-    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -8,12 +8,14 @@
 
   <owl:Ontology rdf:about="">
     <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2.06</cbim:containerId>
   </owl:Ontology>
 
   <rdf:Description rdf:about="#DateTimeProperty_Vandaag">
-    <rdf:type rdf:resource="cbim.rdf#DateTimeProperty"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty"/>
     <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-09-03T15:18:00</cbim:datatypeValue>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
   </rdf:Description>
+
 
 </rdf:RDF>

@@ -35,6 +35,14 @@ public interface CoinsContainer {
 
 
   /**
+   * Get the containerId of this container.
+   *
+   * @return  a string used as identifier for this container
+   */
+  public String getContainerId();
+
+
+  /**
    * Import the model content and all registered attachments from a .ccr file specified by the target file path.
    *
    * This triggers a reinitialisation of the complete CoinsContainer object.

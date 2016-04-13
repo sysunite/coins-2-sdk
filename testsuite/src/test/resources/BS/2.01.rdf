@@ -8,6 +8,7 @@
 
   <owl:Ontology rdf:about="">
     <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2.01</cbim:containerId>
   </owl:Ontology>
 
   <rdf:Description rdf:about="#Organisation_COINS">
@@ -15,5 +16,6 @@
     <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">COINS</cbim:name>
     <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
   </rdf:Description>
+
 
 </rdf:RDF>

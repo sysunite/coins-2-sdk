@@ -1,5 +1,5 @@
 <rdf:RDF
-    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -8,18 +8,17 @@
 
   <owl:Ontology rdf:about="">
     <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <owl:imports rdf:resource="http://custom.library.com#"/>
+    <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2.12</cbim:containerId>
   </owl:Ontology>
 
-  <rdf:Description rdf:about="#Column">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="cbim.rdf#CataloguePart"/>
-    <rdfs:subClassOf rdf:resource="cbim.rdf#Object"/>
-  </rdf:Description>
+
 
   <rdf:Description rdf:about="#Object_Column_1">
-    <rdf:type rdf:resource="mijnbib#Column"/>
+    <rdf:type rdf:resource="http://custom.library.com#Column"/>
     <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Column1</cbim:name>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
   </rdf:Description>
+
 
 </rdf:RDF>

@@ -383,6 +383,15 @@ public interface CoinsObject {
   public void removeIndividualAndProperties();
 
 
+  /**
+   * Compare two coins objects, if they have the same uri, the are the same.
+   *
+   * @param that  the CoinsContainer to compare this to
+   * @return  true if both uri's are the same
+   */
+  @Override
+  public boolean equals(Object that);
+
 
   /**
    * Return the associated CoinsModel object.

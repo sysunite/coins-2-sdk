@@ -1,5 +1,0 @@
-<http://rws.com/starterkit/2.08> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/2.08#> .
-<http://rws.com/starterkit/2.08> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/2.08#> .
-<http://rws.com/starterkit/2.08#FloatProperty_Eenkwart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#CoinsContainerObject> <http://rws.com/starterkit/2.08#> .
-<http://rws.com/starterkit/2.08#FloatProperty_Eenkwart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#FloatProperty> <http://rws.com/starterkit/2.08#> .
-<http://rws.com/starterkit/2.08#FloatProperty_Eenkwart> <http://www.coinsweb.nl/cbim.rdf#datatypeValue> "0.25"^^<http://www.w3.org/2001/XMLSchema#float> <http://rws.com/starterkit/2.08#> .

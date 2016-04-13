@@ -318,7 +318,13 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
 
 
-
+  @Override
+  public boolean equals(Object that) {
+    if(!(that instanceof CoinsObject)) {
+      return false;
+    }
+    return getUri().equals(((CoinsObject)that).getUri());
+  }
 
 
 

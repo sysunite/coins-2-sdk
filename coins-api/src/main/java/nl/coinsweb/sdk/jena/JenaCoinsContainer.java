@@ -85,6 +85,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 //  private OntModelSpec reasoner = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
   private OntModelSpec reasoner = OntModelSpec.OWL_MEM_RDFS_INF;
+//  private OntModelSpec reasoner = OntModelSpec.OWL_MEM;
 
   protected Dataset dataset;
 
@@ -221,6 +222,11 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   /**
    * CoinsContainer interface
    */
+
+  @Override
+  public String getContainerId() {
+    return containerId;
+  }
 
   @Override
   public void load(String sourceFile) {
@@ -1076,23 +1082,37 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
       RDFNode single = result.next();
       if(single.isLiteral()) {
-        if(clazz.equals(XSDAnySimpleTypeLiteral.class) &&
-           single.asLiteral().getDatatypeURI().equals("http://www.w3.org/2001/XMLSchema#anySimpleType")) {
+        if(single.asLiteral().getDatatypeURI().equals("http://www.w3.org/2001/XMLSchema#anySimpleType")) {
 
 
           if(result.hasNext()) {
             log.warn(subject+" -"+predicate+"-> ... has more than one value");
           }
 
-          return (T) new XSDAnySimpleTypeLiteral(single.asLiteral());
+          if(clazz.equals(XSDAnySimpleTypeLiteral.class)) {
+
+            return (T) new XSDAnySimpleTypeLiteral(single.asLiteral());
+          } else if(clazz.equals(Boolean.class)) {
+            return (T) new Boolean(Boolean.getBoolean(single.asLiteral().getLexicalForm()));
+          } else {
+            return (T) single.asLiteral().getLexicalForm();
+          }
 
         } else if(clazz.equals(Date.class)) {
 
-          OntProperty prop = getJenaOntModel().getOntProperty(predicate);
+          OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
           Individual instance = getJenaOntModel().getIndividual(subject);
+          if(prop == null || instance == null) {
+            throw new CoinsPropertyNotFoundException("The predicate "+predicate+" could not be found as Property when requesting literal value.");
+          }
           XSDDateTime date = (XSDDateTime) instance.getProperty(prop).getLiteral().getValue();
           return (T) new Date(date.asCalendar().getTimeInMillis());
 
+
+        } else if(single.asLiteral().getDatatypeURI().equals(XSD.integer.getURI()) ||
+            single.asLiteral().getDatatypeURI().equals(XSD.xint.getURI())) {
+
+          return (T) Integer.valueOf(single.asLiteral().getLexicalForm());
 
         } else if(single.asLiteral().getDatatypeURI().equals(datatype.getURI())) {
 
