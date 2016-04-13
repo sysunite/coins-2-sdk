@@ -1,6 +1,7 @@
 package nl.coinsweb.sdk.integration.modelling.starterskit;
 
 import nl.coinsweb.cbim.*;
+import nl.coinsweb.cbim.Object;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
@@ -292,6 +293,7 @@ public class BS {
     assertTrue(column.canAs(CoinsContainerObject.class));
 
   }
+
   @Test 
   public void mReadRdfFileRdf() {
 
@@ -301,9 +303,11 @@ public class BS {
     // Do asserts on objects
     assertEquals("3.01", model.getContainerId());
 
-
+    Object zitbank = new Object(model, "http://rws.com/starterkit/3.01#Object_Zitbank");
+    assertEquals("Zitbank", zitbank.getName());
 
   }
+
   @Test 
   public void nReadRdfFileRdf() {
 
@@ -313,9 +317,25 @@ public class BS {
     // Do asserts on objects
     assertEquals("3.02", model.getContainerId());
 
+    HashSet<Object> objects = new HashSet<>();
 
+    Object perron = new Object(model, "http://rws.com/starterkit/3.02#Object_Perron");
+    assertEquals("Perron", perron.getName());
+    objects.add(perron);
+
+    Object zitbank = new Object(model, "http://rws.com/starterkit/3.02#Object_Zitbank");
+    assertEquals("Zitbank", zitbank.getName());
+    objects.add(zitbank);
+
+    Connection connection = new Connection(model, "http://rws.com/starterkit/3.02#Zitbank_staat_op_Perron_verbinding");
+    Iterator<Object> iterator = connection.getHasConnectedObjects();
+    while(iterator.hasNext()) {
+      Object object = iterator.next();
+      assertTrue(objects.contains(object));
+    }
 
   }
+
   @Test 
   public void oReadRdfFileRdf() {
 
@@ -325,9 +345,35 @@ public class BS {
     // Do asserts on objects
     assertEquals("3.03", model.getContainerId());
 
+    HashSet<Object> objects = new HashSet<>();
 
+    Object perron = new Object(model, "http://rws.com/starterkit/3.03#Object_Perron");
+    assertEquals("Perron", perron.getName());
+    objects.add(perron);
+
+    Object zitbank = new Object(model, "http://rws.com/starterkit/3.03#Object_Zitbank");
+    assertEquals("Zitbank", zitbank.getName());
+    objects.add(zitbank);
+
+    Connection connection = new Connection(model, "http://rws.com/starterkit/3.03#Zitbank_staat_op_Perron_verbinding");
+    assertEquals(1, connection.getVersionID());
+    Iterator<Object> iterator = connection.getHasConnectedObjects();
+    while(iterator.hasNext()) {
+      Object object = iterator.next();
+      assertTrue(objects.contains(object));
+    }
+
+    Connection connection2 = connection.getNextVersion().next();
+    assertEquals(2, connection2.getVersionID());
+    assertEquals("http://rws.com/starterkit/3.03#Zitbank_staat_naast_Perron_verbinding", connection2.getUri());
+    Iterator<Object> iterator2 = connection2.getHasConnectedObjects();
+    while(iterator2.hasNext()) {
+      Object object = iterator2.next();
+      assertTrue(objects.contains(object));
+    }
 
   }
+
   @Test 
   public void pReadRdfFileRdf() {
 
@@ -337,9 +383,30 @@ public class BS {
     // Do asserts on objects
     assertEquals("3.04", model.getContainerId());
 
+    HashSet<Part> parts = new HashSet<>();
 
+    Part links = new Part(model, "http://rws.com/starterkit/3.04#Object_SteunLinks");
+    assertEquals("SteunLinks", links.getName());
+    parts.add(links);
+
+    Part rechts = new Part(model, "http://rws.com/starterkit/3.04#Object_SteunRechts");
+    assertEquals("SteunRechts", rechts.getName());
+    parts.add(rechts);
+
+    Part ligger = new Part(model, "http://rws.com/starterkit/3.04#Object_Ligger");
+    assertEquals("Ligger", ligger.getName());
+    parts.add(ligger);
+
+    Assembly zitbank = new Assembly(model, "http://rws.com/starterkit/3.04#Object_Zitbank");
+    assertEquals("Zitbank", zitbank.getName());
+    Iterator<ContainsRelation> iterator = zitbank.getHasContainsRelation();
+    while(iterator.hasNext()) {
+      ContainsRelation relation = iterator.next();
+      assertTrue(parts.contains(relation.getHasPart()));
+    }
 
   }
+
   @Test 
   public void qReadRdfFileRdf() {
 

@@ -11,6 +11,18 @@
     <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3.03</cbim:containerId>
   </owl:Ontology>
 
+  <rdf:Description rdf:about="#Object_Perron">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Perron</cbim:name>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Object_Zitbank">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zitbank</cbim:name>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
   <rdf:Description rdf:about="#Zitbank_staat_op_Perron_verbinding">
     <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Connection"/>
     <cbim:hasConnectedObjects rdf:resource="#Object_Zitbank"/>
