@@ -394,6 +394,15 @@ public interface CoinsObject {
 
 
   /**
+   * Produce a hash that is unique for this instance.
+   *
+   * @return  int that is unique for the uri
+   */
+  @Override
+  public int hashCode();
+
+
+  /**
    * Return the associated CoinsModel object.
    *
    * @return  the CoinsModel related to this container
