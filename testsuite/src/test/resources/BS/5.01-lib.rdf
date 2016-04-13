@@ -1,0 +1,77 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://custom.library.com#"
+    xml:base="http://custom.library.com#">
+
+
+  <rdf:Description rdf:about="#Portal">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Assembly"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onClass rdf:resource="#PortalColumnRelation"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:qualifiedCardinality>
+    <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasContainsRelation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onClass rdf:resource="#PortalBeamRelation"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasContainsRelation"/>
+  </rdf:Description>
+
+
+
+
+
+
+
+  <rdf:Description rdf:about="#Column">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Beam">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#PortalColumnRelation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onClass rdf:resource="#Column"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasPart"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#PortalBeamRelation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onClass rdf:resource="#Beam"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasPart"/>
+  </rdf:Description>
+
+
+</rdf:RDF>

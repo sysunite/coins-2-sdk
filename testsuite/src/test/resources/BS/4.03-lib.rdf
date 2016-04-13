@@ -1,0 +1,23 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://custom.library.com#"
+    xml:base="http://custom.library.com#">
+
+
+  <rdf:Description rdf:about="#FoundationPlate">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Column">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
+  </rdf:Description>
+
+
+</rdf:RDF>

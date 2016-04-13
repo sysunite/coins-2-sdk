@@ -1,0 +1,6 @@
+<http://rws.com/starterkit/2.04> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/2.04#> .
+<http://rws.com/starterkit/2.04> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/2.04#> .
+<http://rws.com/starterkit/2.04#StringProperty_filepathNEN-norm> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/2.04#> .
+<http://rws.com/starterkit/2.04#StringProperty_filepathNEN-norm> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://rws.com/starterkit/2.04#> .
+<http://rws.com/starterkit/2.04#StringProperty_filepathNEN-norm> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "NEN-normen.docx"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/2.04#> .
+<http://rws.com/starterkit/2.04> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "2.04"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/2.04#> .

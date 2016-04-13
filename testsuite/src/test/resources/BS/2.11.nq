@@ -1,7 +1,0 @@
-<http://rws.com/starterkit/2.11> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/2.11#> .
-<http://rws.com/starterkit/2.11> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/2.11#> .
-<http://rws.com/starterkit/2.11#InternalDocument_NEN-normen> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#CoinsContainerObject> <http://rws.com/starterkit/2.11#> .
-<http://rws.com/starterkit/2.11#InternalDocument_NEN-normen> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/cbim.rdf#InternalDocumentReference> <http://rws.com/starterkit/2.11#> .
-<http://rws.com/starterkit/2.11#InternalDocument_NEN-normen> <http://www.coinsweb.nl/cbim.rdf#creationDate> "2015-09-03T15:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://rws.com/starterkit/2.11#> .
-<http://rws.com/starterkit/2.11#InternalDocument_NEN-normen> <http://www.coinsweb.nl/cbim.rdf#creator> <http://rws.com/starterkit/2.11#Person_Ik> <http://rws.com/starterkit/2.11#> .
-<http://rws.com/starterkit/2.11#InternalDocument_NEN-normen> <http://www.coinsweb.nl/cbim.rdf#filePath> <http://rws.com/starterkit/2.11#StringProperty_filepathNEN-norm> <http://rws.com/starterkit/2.11#> .

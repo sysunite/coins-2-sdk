@@ -27,6 +27,11 @@ public class DatasetAsserts {
   }
   public static boolean verifyCompleteContent(JenaCoinsContainer model, Iterator<File> nquadFiles, boolean quick) {
 
+    if(quick)
+      log.trace("start quick verification");
+    else
+      log.trace("start thorough verification");
+
     boolean allLinesFoundInVerificationFile = true;
 
     try {
@@ -46,7 +51,6 @@ public class DatasetAsserts {
           } else {
             verificationLines.put(line, 1);
           }
-          log.trace("added to verifylines: " + line);
         }
       }
 
@@ -58,9 +62,10 @@ public class DatasetAsserts {
 
 
       String line = null;
+      log.error("lines from coinsmodel was not found in verification file:");
       while ((line = normalizeBlankNode(reader.readLine())) != null) {
         if(!verificationLines.containsKey(line)) {
-          log.error("line from coinsmodel was not found in verification file: " + line);
+          log.error(line);
           allLinesFoundInVerificationFile = false;
           if(quick) {
             return allLinesFoundInVerificationFile;

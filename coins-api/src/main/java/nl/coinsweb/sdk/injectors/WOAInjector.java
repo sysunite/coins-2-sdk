@@ -65,16 +65,14 @@ public class WOAInjector implements Injector {
 
     String queryString =
 
-        " PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-        " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>      " +
-        " PREFIX owl: <http://www.w3.org/2002/07/owl#>              " +
-        " SELECT ?level                                             " +
-        " WHERE                                                     " +
-        " {                                                         " +
-        "    <"+uri+">  rdf:type    ?level .                        " +
+        " PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+        " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>      \n" +
+        " PREFIX owl: <http://www.w3.org/2002/07/owl#>              \n" +
+        " SELECT ?level                                             \n" +
+        " WHERE                                                     \n" +
+        " {                                                         \n" +
+        "    <"+uri+">  rdf:type    ?level .                        \n" +
         " }                                                         ";
-
-    log.trace(queryString);
 
     // Execute the query and obtain results
     QueryExecution queryExecution = QueryExecutionFactory.create(queryString, Syntax.syntaxSPARQL_11, woaModel);

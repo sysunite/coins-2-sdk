@@ -1,0 +1,6 @@
+<http://rws.com/starterkit/2.02#Person_Ik> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/2.02#> .
+<http://rws.com/starterkit/2.02#Person_Ik> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://rws.com/starterkit/2.02#> .
+<http://rws.com/starterkit/2.02#Person_Ik> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "MijnNaam"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/2.02#> .
+<http://rws.com/starterkit/2.02> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/2.02#> .
+<http://rws.com/starterkit/2.02> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/2.02#> .
+<http://rws.com/starterkit/2.02> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "2.02"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/2.02#> .

@@ -1,5 +1,5 @@
 <rdf:RDF
-    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -8,22 +8,24 @@
 
   <owl:Ontology rdf:about="">
     <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2.03</cbim:containerId>
   </owl:Ontology>
 
   <rdf:Description rdf:about="#Person_Ik">
-    <rdf:type rdf:resource="cbim.rdf#Person"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Person"/>
     <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MijnNaam</cbim:name>
     <cbim:nextTrunkVersion rdf:resource="#Person_Ik2"/>
     <cbim:versionID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</cbim:versionID>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
-    <rdf:type rdf:resource="cbim.rdf#CbimExpiredEntity"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity"/>
   </rdf:Description>
 
   <rdf:Description rdf:about="#Person_Ik2">
-    <rdf:type rdf:resource="cbim.rdf#Person"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Person"/>
     <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MijnVolledigeNaam</cbim:name>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
     <cbim:versionID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</cbim:versionID>
   </rdf:Description>
+
 
 </rdf:RDF>

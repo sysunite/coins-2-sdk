@@ -1,5 +1,5 @@
 <rdf:RDF
-    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -8,43 +8,57 @@
 
   <owl:Ontology rdf:about="">
     <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3.04</cbim:containerId>
   </owl:Ontology>
 
-  <rdf:Description rdf:about="#Object_Ligger">
-    <rdf:type rdf:resource="cbim.rdf#Object"/>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
-    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ligger</cbim:name>
-    <rdf:type rdf:resource="cbim.rdf#Decomposable"/>
+  <rdf:Description rdf:about="#Object_Zitbank">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zitbank</cbim:name>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Assembly"/>
+    <cbim:hasContainsRelation rdf:resource="#Zitbank_Contains_SteunLinks"/>
+    <cbim:hasContainsRelation rdf:resource="#Zitbank_Contains_SteunRechts"/>
+    <cbim:hasContainsRelation rdf:resource="#Zitbank_Contains_Ligger"/>
   </rdf:Description>
 
   <rdf:Description rdf:about="#Object_SteunLinks">
-    <rdf:type rdf:resource="cbim.rdf#Object"/>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
     <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SteunLinks</cbim:name>
-    <rdf:type rdf:resource="cbim.rdf#Decomposable"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
   </rdf:Description>
 
   <rdf:Description rdf:about="#Object_SteunRechts">
-    <rdf:type rdf:resource="cbim.rdf#Object"/>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
     <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SteunRechts</cbim:name>
-    <rdf:type rdf:resource="cbim.rdf#Decomposable"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="#Object_Zitbank">
-    <rdf:type rdf:resource="cbim.rdf#Object"/>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
-    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Zitbank</cbim:name>
-    <rdf:type rdf:resource="cbim.rdf#Decomposable"/>
-    <cbim:hasDecomposition rdf:resource="#Decomposition_Zitbank"/>
+  <rdf:Description rdf:about="#Object_Ligger">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ligger</cbim:name>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="#Decomposition_Zitbank">
-    <rdf:type rdf:resource="cbim.rdf#Decomposition"/>
-    <cbim:hasParts rdf:resource="#Object_SteunLinks"/>
-    <cbim:hasParts rdf:resource="#Object_SteunRechts"/>
-    <cbim:hasParts rdf:resource="#Object_Ligger"/>
-    <rdf:type rdf:resource="cbim.rdf#CoinsContainerObject"/>
+  <rdf:Description rdf:about="#Zitbank_Contains_Ligger">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation"/>
+    <cbim:hasPart rdf:resource="#Object_Ligger"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
   </rdf:Description>
+
+  <rdf:Description rdf:about="#Zitbank_Contains_SteunLinks">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation"/>
+    <cbim:hasPart rdf:resource="#Object_SteunLinks"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Zitbank_Contains_SteunRechts">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation"/>
+    <cbim:hasPart rdf:resource="#Object_SteunRechts"/>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+  </rdf:Description>
+
 
 </rdf:RDF>

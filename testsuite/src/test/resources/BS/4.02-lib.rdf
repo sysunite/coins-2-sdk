@@ -1,0 +1,79 @@
+<rdf:RDF
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://custom.library.com#"
+    xml:base="http://custom.library.com#">
+
+
+  <rdf:Description rdf:about="#Column">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <owl:onProperty rdf:resource="#hasHeight"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#hasHeight">
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:domain rdf:resource="#Column"/>
+    <rdfs:range rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#hasProfile">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:range rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty"/>
+    <rdfs:domain rdf:resource="#Column300"/>
+    <rdfs:domain rdf:resource="#Column400"/>
+  </rdf:Description>
+
+
+
+
+
+
+
+
+  <rdf:Description rdf:about="#Column300">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="#Column"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="#hasProfile"/>
+    <owl:hasValue rdf:resource="#StringProperty_Profile300"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#Column400">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="#Column"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="#hasProfile"/>
+    <owl:hasValue rdf:resource="#StringProperty_Profile400"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#StringProperty_Profile300">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty"/>
+    <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">300</cbim:datatypeValue>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Profile300</cbim:name>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="#StringProperty_Profile400">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty"/>
+    <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">400</cbim:datatypeValue>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Profile400</cbim:name>
+  </rdf:Description>
+
+
+</rdf:RDF>

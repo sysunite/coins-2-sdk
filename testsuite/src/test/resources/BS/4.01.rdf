@@ -1,43 +1,47 @@
 <rdf:RDF
-    xmlns:cbim="http://www.coinsweb.nl/cbim.rdf#"
+    xmlns:cbim="http://www.coinsweb.nl/cbim-2.0.rdf#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:lib="http://custom.library.com#"
     xmlns="http://rws.com/starterkit/4.01#"
     xml:base="http://rws.com/starterkit/4.01#">
 
   <owl:Ontology rdf:about="">
     <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <cbim:containerId rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4.01</cbim:containerId>
   </owl:Ontology>
 
   <rdf:Description rdf:about="#Column">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="cbim.rdf#CataloguePart"/>
-    <rdfs:subClassOf rdf:resource="cbim.rdf#Object"/>
     <rdfs:subClassOf rdf:nodeID="A0"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart"/>
   </rdf:Description>
 
   <rdf:Description rdf:nodeID="A0">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="cbim.rdf#hasProperties"/>
-    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
-    <owl:onClass rdf:resource="#FloatProperty_Hoogte"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <owl:onProperty rdf:resource="#hasHeight"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="#FloatProperty_Hoogte">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="cbim.rdf#FloatProperty"/>
+
+
+
+
+  <rdf:Description rdf:about="#Object_Column_1">
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject"/>
+    <rdf:type rdf:resource="MyLibrary#Column"/>
+    <cbim:name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Column1</cbim:name>
+    <lib:hasHeight rdf:resource="#FloatProperty_Height10"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="#Column_1">
-    <rdf:type rdf:resource="mijnbib#Column"/>
-    <cbim:hasProperties rdf:resource="#FloatProperty_Hoogte10"/>
-  </rdf:Description>
 
-  <rdf:Description rdf:about="#FloatProperty_Hoogte10">
-    <rdf:type rdf:resource="mijnbib#FloatProperty_Hoogte"/>
-    <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float">10</cbim:datatypeValue>
+  <rdf:Description rdf:about="#FloatProperty_Height10">
     <cbim:unit rdf:resource="http://qudt.org/vocab/unit#Meter"/>
+    <cbim:datatypeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float">10</cbim:datatypeValue>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty"/>
   </rdf:Description>
+
 
 </rdf:RDF>

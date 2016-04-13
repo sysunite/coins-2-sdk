@@ -362,6 +362,15 @@ public class ClassGenerateEngine {
             literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "XSDAnySimpleTypeLiteral", propertyClassName));
             imports.add("XSDAnySimpleTypeLiteral");
 
+          } else if(XSD.integer.getURI().equals(datatype.getURI())) {
+
+            literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "int", "Integer", propertyClassName));
+            imports.add("java.lang.Integer");
+
+//          } else if("http://www.w3.org/2001/XMLSchema#string".equals(datatype.getURI())) {
+//
+//            literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "String", propertyClassName));
+
           } else if("http://www.w3.org/2001/XMLSchema#dateTime".equals(datatype.getURI())) {
 
             literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "Date", propertyClassName));
@@ -376,7 +385,7 @@ public class ClassGenerateEngine {
             Class javaClass = datatype.getJavaClass();
             if (javaClass != null) {
 
-              literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), simplify(javaClass.getSimpleName()), propertyClassName));
+              literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), simplify(javaClass.getSimpleName()), javaClass.getSimpleName(), propertyClassName));
               imports.add(javaClass.getCanonicalName());
             } else {
               log.debug("no java class found by TypeMapper/RDFDatatype for range uri " + declaration.getRangeUri() + ", using String");
@@ -487,12 +496,22 @@ public class ClassGenerateEngine {
   public class PropBlock {
     public Boolean single;
     public String relationUri;
+    public String simpleReturnType;
     public String returnType;
     public String relationName;
 
     public PropBlock(Boolean single, String uri, String type, String name) {
       this.single = single;
       this.relationUri = uri;
+      this.simpleReturnType = type;
+      this.returnType = type;
+      this.relationName = name;
+    }
+
+    public PropBlock(Boolean single, String uri, String simpleType, String type, String name) {
+      this.single = single;
+      this.relationUri = uri;
+      this.simpleReturnType = simpleType;
       this.returnType = type;
       this.relationName = name;
     }
@@ -506,6 +525,9 @@ public class ClassGenerateEngine {
       return relationUri;
     }
 
+    public String getSimpleReturnType() {
+      return simpleReturnType;
+    }
     public String getReturnType() {
       return returnType;
     }
