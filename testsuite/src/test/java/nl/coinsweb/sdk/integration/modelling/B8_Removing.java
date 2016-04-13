@@ -3,8 +3,8 @@ package nl.coinsweb.sdk.integration.modelling;
 import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.EntityProperty;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
+import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class B8_Removing {
 
 
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
     assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
     model.addStatement("http://subj","http://subj","http://subj");
@@ -45,7 +45,7 @@ public class B8_Removing {
 
 
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
 
     assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
@@ -74,7 +74,7 @@ public class B8_Removing {
   @Test
   public void removeIndividualWithProperties() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
     assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
 

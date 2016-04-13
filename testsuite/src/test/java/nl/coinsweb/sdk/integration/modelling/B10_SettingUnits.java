@@ -4,8 +4,8 @@ import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.FloatProperty;
 import nl.coinsweb.sdk.CoinsObject;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
+import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.Test;
 import org.qudt.schema.qudt.LengthUnit;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnits() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 

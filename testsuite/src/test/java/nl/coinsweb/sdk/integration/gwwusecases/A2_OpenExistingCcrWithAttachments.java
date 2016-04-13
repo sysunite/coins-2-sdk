@@ -9,7 +9,6 @@ import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
@@ -114,13 +113,6 @@ public class A2_OpenExistingCcrWithAttachments {
 
 
 
-  @Test
-  public void dCreateTwoCcrsAtTheSameTimeTDB() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    dCreateTwoCcrsAtTheSameTime(
-        new TDBCoinsContainer(defaultPerson, "http://www.example.com/"),
-        new TDBCoinsContainer(defaultPerson, "http://www.example.com/"));
-  }
 
   @Test
   public void dCreateTwoCcrsAtTheSameTimeInMem() {

@@ -7,7 +7,6 @@ import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -46,7 +45,7 @@ public class B1_CreateTreeWithoutLibrary {
      * Create a model with two instances
      */
 
-    JenaCoinsContainer container = new TDBCoinsContainer(defaultPerson, "http://gardening.com/");
+    JenaCoinsContainer container = new InMemCoinsContainer(defaultPerson, "http://gardening.com/");
     AbstractCoinsObject gardenPiece_1 = new RuntimeCoinsObject(container, "http://gardening.com/Tree");
     AbstractCoinsObject gardenPiece_2 = new RuntimeCoinsObject(container, "http://gardening.com/Oak");
 

@@ -5,8 +5,8 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
+import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -28,7 +28,7 @@ public class B13_OTL {
   @Test
   public void aCreateContainer() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://sandbox.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://sandbox.com/");
 
 
     String fileToImport =  IntegrationHelper.getResourceFile("B13", "otl-coins-subset-2016-02-09.ttl").toPath().toString();
@@ -61,7 +61,7 @@ public class B13_OTL {
   @Test
   public void bReloadContainer() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("/tmp/coinstest/otl.ccr", "http://sandbox.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("/tmp/coinstest/otl.ccr", "http://sandbox.com/");
 
     DatasetAsserts.logTriples(model.getJenaOntModel());
   }
