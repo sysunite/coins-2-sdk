@@ -5,8 +5,8 @@ import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.IntegerProperty;
 import nl.coinsweb.cbim.StringProperty;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
+import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.Test;
 import org.qudt.schema.qudt.Unit;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class B11_SimpleProperties {
   @Test
   public void createProperties() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 

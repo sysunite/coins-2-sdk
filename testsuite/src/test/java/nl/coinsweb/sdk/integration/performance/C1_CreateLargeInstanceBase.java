@@ -9,7 +9,6 @@ import nl.coinsweb.sdk.integration.TimeAsserts;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -63,11 +62,6 @@ public class C1_CreateLargeInstanceBase {
 
   private Set<RDFNode> sampleList = new HashSet<>();
 
-  @Test
-  public void createCcrWithManyTriplesRdfTDB() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    createCcrWithManyTriplesRdf(new TDBCoinsContainer(defaultPerson, "http://www.example.com/"));
-  }
 
   @Test
   public void createCcrWithManyTriplesRdfInMem() {

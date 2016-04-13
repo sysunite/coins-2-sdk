@@ -2,8 +2,8 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
+import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -23,7 +23,7 @@ public class B15_ReferenceModel {
   @Test
   public void aOpenContainer() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 

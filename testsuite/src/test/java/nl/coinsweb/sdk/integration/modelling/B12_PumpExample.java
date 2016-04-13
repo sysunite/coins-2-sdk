@@ -6,7 +6,6 @@ import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -28,7 +27,7 @@ public class B12_PumpExample {
   @Test
   public void aCreateContainer() {
 
-    JenaCoinsContainer model = new TDBCoinsContainer("http://zhejiangdayuan.com/");
+    JenaCoinsContainer model = new InMemCoinsContainer("http://zhejiangdayuan.com/");
 
     Assembly a = new Assembly(model);
 
