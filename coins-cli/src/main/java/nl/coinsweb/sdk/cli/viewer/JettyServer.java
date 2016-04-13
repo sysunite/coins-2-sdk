@@ -3,8 +3,10 @@ package nl.coinsweb.sdk.cli.viewer;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
+import nl.coinsweb.sdk.ExpertCoinsModel;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.apolda.language.Language;
 import nl.coinsweb.sdk.cli.viewer.servlet.ApiServlet;
@@ -55,6 +57,66 @@ public class JettyServer {
     for(ApiServlet servlet : servlets) {
       servlet.setContainer(container);
     }
+  }
+
+  public class Thing {
+
+    public Thing(String uri, ExpertCoinsModel model) {
+      this.uri = uri;
+
+
+      this.clazz = ((OntModel)model.getUnionJenaOntModel()).getOntClass(uri);
+      if (clazz != null) {
+
+        if (Language.getLabel(clazz) != null) {
+          label = Language.getLabel(clazz);
+        }
+
+        if (clazz.getComment("EN") != null) {
+          comment = clazz.getComment("EN");
+        }
+      }
+
+      try {
+        String foundName = model.getLiteralValue(uri, "http://www.coinsweb.nl/cbim-2.0.rdf#name", String.class);
+        if(foundName != null) {
+          name = foundName;
+        }
+      } catch (RuntimeException e) {}
+
+      try {
+        Integer foundVersion = model.getLiteralValue(uri, "http://www.coinsweb.nl/cbim-2.0.rdf#versionID", Integer.class);
+        if(foundVersion != null) {
+          version = foundVersion.toString();
+        }
+      } catch (RuntimeException e) {}
+
+      try {
+        Iterator<RuntimeCoinsObject> iterator = model.listProperties(uri, "http://www.coinsweb.nl/cbim-2.0.rdf#creator", "http://www.coinsweb.nl/cbim-2.0.rdf#Party");
+        if(iterator.hasNext()) {
+          user = iterator.next().getUri();
+        }
+      } catch (RuntimeException e) {}
+    }
+
+    String label = "";
+    String getLabel() { return label; }
+    String name = "";
+    String getName() { return name; }
+    String user = "";
+    String getUser() { return user; }
+    String version = "";
+    String getVersion() { return version; }
+    String modifier = "";
+    String getModifier() { return modifier; }
+    String modificationDate = "";
+    String getModificationDate() { return modificationDate; }
+    String comment = "";
+    String getComment() { return comment; }
+    String uri;
+    String getUri() { return uri; }
+    OntClass clazz;
+    OntClass getClazz() { return clazz; }
   }
 
   public void run() {
@@ -117,23 +179,13 @@ public class JettyServer {
           Iterator<String> classes = container.listClasses();
           while(classes.hasNext()) {
             String classUri = classes.next();
-            OntClass clazz = container.getUnionJenaOntModel().getOntClass(classUri);
-
-            String label = "";
-            if(Language.getLabel(clazz)!= null) {
-              label = Language.getLabel(clazz);
-            }
-
-            String comment = "";
-            if(clazz.getComment("EN")!=null) {
-              comment = clazz.getComment("EN");
-            }
+            Thing thing = new Thing(classUri, container);
 
             result +=
                 "{\n" +
                 "\"uri\": \""+classUri+"\",\n" +
-                "\"label\": \""+ label+"\",\n" +
-                "\"comment\": \""+comment +"\"\n" +
+                "\"label\": \""+ thing.getLabel()+"\",\n" +
+                "\"comment\": \""+thing.getComment() +"\"\n" +
                 "},";
 
           }
@@ -164,26 +216,20 @@ public class JettyServer {
         if(container != null && request.getParameter("uri") != null) {
 
           String classUri = request.getParameter("uri");
+          Thing thing = new Thing(classUri, container);
 
-          OntClass clazz = container.getUnionJenaOntModel().getOntClass(classUri);
+          OntClass clazz = thing.getClazz();
           if (clazz != null) {
 
-            String label = "";
-            if(Language.getLabel(clazz)!= null) {
-              label = Language.getLabel(clazz);
-            }
 
-            String comment = "";
-            if(clazz.getComment("EN")!=null) {
-              comment = clazz.getComment("EN");
-            }
 
             String superClasses = "";
             ExtendedIterator<OntClass> superClassIterator = clazz.listSuperClasses();
             while(superClassIterator.hasNext()) {
               OntClass superClass = superClassIterator.next();
               if(!superClass.isAnon()) {
-                superClasses += "{\"uri\":\"" + superClass.getURI() + "\",\"label\":\"label\"},";
+                Thing indiv = new Thing(superClass.getURI(), container);
+                superClasses += "{\"uri\":\"" + superClass.getURI() + "\",\"label\":\""+indiv.getLabel()+"\"},";
               }
             }
             if(!superClasses.isEmpty()) {
@@ -195,7 +241,9 @@ public class JettyServer {
             while(subClassIterator.hasNext()) {
               OntClass subClass = subClassIterator.next();
               if(!subClass.isAnon()) {
-                subClasses += "{\"uri\":\"" + subClass.getURI() + "\",\"label\":\"label\"},";
+                Thing indiv = new Thing(subClass.getURI(), container);
+
+                subClasses += "{\"uri\":\"" + subClass.getURI() + "\",\"label\":\""+indiv.getLabel()+"\"},";
               }
             }
             if(!subClasses.isEmpty()) {
@@ -206,7 +254,15 @@ public class JettyServer {
             Iterator<String> individualIterator = container.listIndividuals(classUri);
             while(individualIterator.hasNext()) {
               String individualUri = individualIterator.next();
-              individuals+="{\"uri\":\""+individualUri+"\",\"name\":\"name\",\"user\":\"user\",\"version\":\"version\",\"modifier\":\"modifier\",\"modificationDate\":\"modificationDate\"},";
+
+              Thing indiv = new Thing(individualUri, container);
+
+              individuals+="{\"uri\":\""+individualUri+"\",\"" +
+                              "name\":\""+indiv.getName()+"\",\"" +
+                              "user\":\""+indiv.getUser()+"\",\"" +
+                              "version\":\""+indiv.getVersion()+"\",\"" +
+                              "modifier\":\""+indiv.getModifier()+"\",\"" +
+                              "modificationDate\":\""+indiv.getModificationDate()+"\"},";
             }
             if(!individuals.isEmpty()) {
               individuals = individuals.substring(0, individuals.length() - 1);
@@ -217,8 +273,8 @@ public class JettyServer {
               result =
                   "{\n" +
                   "\"uri\": \"" + classUri + "\",\n" +
-                  "\"label\": \""+label+"\",\n" +
-                  "\"comment\": \""+comment+"\",\n" +
+                  "\"label\": \""+thing.getLabel()+"\",\n" +
+                  "\"comment\": \""+thing.getComment()+"\",\n" +
                   "\"superclasses\": ["+superClasses+"],\n" +
                   "\"subclasses\": ["+subClasses+"],\n" +
                   "\"individuals\": ["+individuals+"]\n" +
@@ -268,15 +324,15 @@ public class JettyServer {
             while(individuals.hasNext()) {
               String individualUri = individuals.next();
 
+              Thing indiv = new Thing(individualUri, container);
+
               result +=
-                  "{\n" +
-                      "\"uri\": \""+individualUri+"\",\n" +
-                      "\"name\": \"name\",\n" +
-                      "\"user\": \"user\",\n" +
-                      "\"version\": \"version\",\n" +
-                      "\"modifier\": \"modifier\",\n" +
-                      "\"modificationDate\": \"modificationDate\"\n" +
-                      "},";
+                  "{\"uri\":\""+individualUri+"\",\"" +
+                      "name\":\""+indiv.getName()+"\",\"" +
+                      "user\":\""+indiv.getUser()+"\",\"" +
+                      "version\":\""+indiv.getVersion()+"\",\"" +
+                      "modifier\":\""+indiv.getModifier()+"\",\"" +
+                      "modificationDate\":\""+indiv.getModificationDate()+"\"},";
 
             }
             if(!result.isEmpty()) {
@@ -319,7 +375,10 @@ public class JettyServer {
               Iterator<String> typeIterator = individual.listClassUris().iterator();
               while(typeIterator.hasNext()) {
                 String typeUri = typeIterator.next();
-                types+="{\"uri\":\""+typeUri+"\",\"label\":\"label\",\"comment\":\"comment\"},";
+
+
+                Thing indiv = new Thing(typeUri, container);
+                types+="{\"uri\":\""+typeUri+"\",\"label\":\""+indiv.getLabel()+"\",\"comment\":\""+indiv.getComment()+"\"},";
               }
               if(!types.isEmpty()) {
                 types = types.substring(0, types.length() - 1);
@@ -343,7 +402,8 @@ public class JettyServer {
               ExtendedIterator<Triple> incomingIterator = container.getJenaModel().getGraph().find(Node.ANY, Node.ANY, new ResourceImpl(individualUri).asNode());
               while(incomingIterator.hasNext()) {
                 Triple triple = incomingIterator.next();
-                incoming+="{\"relation\":\""+triple.getPredicate().getURI()+"\",\"subjectUri\":\""+triple.getSubject().getURI()+"\",\"subjectName\":\"name\"},";
+                Thing indiv = new Thing(triple.getSubject().getURI(), container);
+                incoming+="{\"relation\":\""+triple.getPredicate().getURI()+"\",\"subjectUri\":\""+triple.getSubject().getURI()+"\",\"subjectName\":\""+indiv.getName()+"\"},";
               }
               if(!incoming.isEmpty()) {
                 incoming = incoming.substring(0, incoming.length() - 1);
@@ -354,21 +414,23 @@ public class JettyServer {
               while(outgoingIterator.hasNext()) {
                 Triple triple = outgoingIterator.next();
                 if(triple.getObject().isURI()) {
-                  outgoing += "{\"relation\":\"" + triple.getPredicate().getURI() + "\",\"objectUri\":\"" + triple.getObject().getURI() + "\",\"objectName\":\"name\"},";
+                  Thing indiv = new Thing(triple.getObject().getURI(), container);
+                  outgoing += "{\"relation\":\"" + triple.getPredicate().getURI() + "\",\"objectUri\":\"" + triple.getObject().getURI() + "\",\"objectName\":\""+indiv.getName()+"\"},";
                 }
               }
               if(!outgoing.isEmpty()) {
                 outgoing = outgoing.substring(0, outgoing.length() - 1);
               }
 
+              Thing indiv = new Thing(individualUri, container);
               result =
                   "{\n" +
                   "\"uri\": \"" + individualUri + "\",\n" +
-                  "\"name\": \"name\",\n" +
-                  "\"user\": \"user\",\n" +
-                  "\"version\": \"version\",\n" +
-                  "\"modifier\": \"modifier\",\n" +
-                  "\"modificationDate\": \"modificationDate\",\n" +
+                  "\"name\": \""+indiv.getName()+"\",\n" +
+                  "\"user\": \""+indiv.getUser()+"\",\n" +
+                  "\"version\": \""+indiv.getVersion()+"\",\n" +
+                  "\"modifier\": \""+indiv.getModifier()+"\",\n" +
+                  "\"modificationDate\": \""+indiv.getModificationDate()+"\",\n" +
                   "\"types\" : ["+types+"],\n" +                         //{uri, label, comment}
                   "\"properties\": ["+properties+"],\n" +                //{key, datatype, value}
                   "\"incomingRelations\": ["+incoming+"],\n" +           //{relation, subjectUri, subjectName}
