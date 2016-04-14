@@ -30,12 +30,12 @@ public class B11_SimpleProperties {
 
     Assembly a = new Assembly(model);
 
-    a.setDescription("baaa");
+    a.setDescription("F15");
 
 
     StringProperty stringProperty = new StringProperty(model);
     a.addHasProperties(stringProperty);
-    stringProperty.setSimpleProperty("Im hungry");
+    stringProperty.setSimpleProperty("Delayed delivery.");
 
     IntegerProperty intProperty = new IntegerProperty(model);
     a.addHasProperties(intProperty);
@@ -46,6 +46,15 @@ public class B11_SimpleProperties {
 
     DatasetAsserts.logTriples(model.getJenaModel());
     assertEquals(21, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    intProperty.removeSimpleProperty(112);
+    assertEquals(21, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    intProperty.removeSimpleProperty(111);
+    assertEquals(20, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    a.removeAllHasProperties();
+    assertEquals(18, DatasetAsserts.countTriples(model.getJenaModel()));
   }
 
 

@@ -294,6 +294,18 @@ public interface ExpertCoinsModel extends CoinsModel {
 
 
   /**
+   * Remove the relation containing the value.
+   *
+   * @param instanceUri  the uri of the instance
+   * @param predicate  uri used between instance and object
+   * @param object  the new value
+   *
+   * @return  iterator with the values as String, Integer, etc.
+   */
+  public <T> void removeLiteralValue(String instanceUri, String predicate, T object);
+
+
+  /**
    * Get the object of a relation of the specified type. A predicate needs to be supplied
    * that is used to relate the instance to the object.
    *
@@ -365,6 +377,26 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param objectUri  uri of the object
    */
   public void addObject(String instanceUri, String predicate, String objectUri);
+
+
+  /**
+   * Remove the relationship between the instance and the object.
+   *
+   * @param instanceUri  the uri of the instance
+   * @param predicate  uri used between instance and object
+   * @param object  CoinsObject representation of the object
+   */
+  public void removeObject(String instanceUri, String predicate, CoinsObject object);
+
+
+  /**
+   * Remove the relationship between the instance and the object.
+   *
+   * @param instanceUri  the uri of the instance
+   * @param predicate  uri used between instance and object
+   * @param objectUri  uri of the object
+   */
+  public void removeObject(String instanceUri, String predicate, String objectUri);
 
 
   /**
@@ -462,6 +494,16 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  RDFNode, for example containing a literal
    */
   public void removeStatement(String subject, String predicate, RDFNode object);
+
+
+  /**
+   * Low level access to remove statements from the instance Model. Removes all triples that start with
+   * the specified subject and predicate.
+   *
+   * @param subject  uri
+   * @param predicate  uri
+   */
+  public void removeAllStatements(String subject, String predicate);
 
 
   /**

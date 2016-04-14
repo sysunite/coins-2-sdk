@@ -22,4 +22,11 @@
     model.addObject(getUri(), "${property.relationUri}", objectUri);
   }
 </#if>
+
+  public void remove${property.relationName}(${property.simpleReturnType} object) {
+    model.removeObject(getUri(), "${property.relationUri}", object);
+  }
+  public void removeAll${property.relationName}() {
+    model.removeAllStatements(getUri(), "${property.relationUri}");
+  }
 </#list>
