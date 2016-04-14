@@ -215,7 +215,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   private void initInjectors() {
     this.injectors = new ArrayList<>();
     this.injectors.add(new AttachmentInjector());
-    this.injectors.add(new WOAInjector(woaModel));
+    this.injectors.add(new WOAInjector(woaModel, asOntModel(instanceModel)));
   }
 
 
