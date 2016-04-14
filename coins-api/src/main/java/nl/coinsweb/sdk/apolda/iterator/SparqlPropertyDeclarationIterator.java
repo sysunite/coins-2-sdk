@@ -118,21 +118,6 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
         "    FILTER( ?other_range   != ?range ) .                             " +
         "    ?other_range           rdfs:subClassOf+    ?range .              " +
         "   }                                                                 " +
-
-//        "   MINUS                                                             " +
-//        "   {                                                                 " +
-//        "    <"+clazz+">           rdfs:subClassOf*     ?other_prop_owner .   " +
-//        "    ?collection           owl:unionOf          ?union .              " +
-//        "    ?union                rdf:rest*            ?subUnion .           " +
-//        "    ?subUnion             rdf:first            ?other_prop_owner .   " +
-//        "    ?property             rdfs:domain          ?collection .         " +
-//        "    ?property             rdfs:range           ?other_range .        " +
-//        "    FILTER( ?other_range   != ?range ) .                             " +
-//        "    FILTER( ?other_prop_owner   != ?property_owner ) .               " +
-//        "    ?other_range           rdfs:subClassOf+    ?range .              " +
-//        "   }                                                                 " +
-
-
         "  }                                                                  " +
         "  UNION                                                              " +
         "  {                                                                  " +
