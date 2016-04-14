@@ -52,6 +52,7 @@ public class A1_CreateNewCcrWithAttachments {
     emptyZipContent.add("bim/repository/cbim-2.0.rdf");
     emptyZipContent.add("bim/repository/units-2.0.rdf");
     emptyZipContent.add("bim/repository/COINSWOA.rdf");
+    emptyZipContent.add("bim/repository/BranchVersioning.rdf");
     emptyZipContent.add("doc/");
     emptyZipContent.add("woa/");
 
@@ -60,6 +61,7 @@ public class A1_CreateNewCcrWithAttachments {
     attachmentsZipContent.add("bim/repository/cbim-2.0.rdf");
     attachmentsZipContent.add("bim/repository/units-2.0.rdf");
     attachmentsZipContent.add("bim/repository/COINSWOA.rdf");
+    attachmentsZipContent.add("bim/repository/BranchVersioning.rdf");
     attachmentsZipContent.add("doc/koekiemonster.jpeg");
     attachmentsZipContent.add("doc/plan-d117e182-6308-4826-98bd-378163d8814b (2).svg");
     attachmentsZipContent.add("woa/");
@@ -70,6 +72,7 @@ public class A1_CreateNewCcrWithAttachments {
     rdfZipContent.add("bim/repository/cbim-2.0.rdf");
     rdfZipContent.add("bim/repository/units-2.0.rdf");
     rdfZipContent.add("bim/repository/COINSWOA.rdf");
+    rdfZipContent.add("bim/repository/BranchVersioning.rdf");
 
     nodesPlant = new HashSet();
     nodesPlant.add(new ResourceImpl("http://example.com/tree"));
@@ -79,7 +82,7 @@ public class A1_CreateNewCcrWithAttachments {
 
   @AfterClass
   public static void cleanup() {
-    FileManager.destroyAll();
+//    FileManager.destroyAll();
   }
 
 
@@ -90,14 +93,19 @@ public class A1_CreateNewCcrWithAttachments {
 
   @Test
   public void createEmptyCcrTDB() {
+
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
     createEmptyCcr(new TDBCoinsContainer(defaultPerson, "http://www.example.com/"));
+
   }
 
   @Test
   public void createEmptyCcrInMem() {
+
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
     createEmptyCcr(new InMemCoinsContainer(defaultPerson, "http://www.example.com/"));
+
+
   }
 
 

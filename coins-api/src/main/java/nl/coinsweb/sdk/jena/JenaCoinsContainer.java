@@ -180,6 +180,11 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Namespace woaNamespace = FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
     addImport(null, woaNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
+    // Add core model
+    fileStream = getClass().getResourceAsStream("/BranchVersioning.rdf");
+    Namespace versioningNamespace = FileManager.copyAndRegisterLibrary(fileStream, "BranchVersioning.rdf", availableLibraryFiles);
+    addImport(null, versioningNamespace.toString(), loadCoreModels, loadCoreModels, false);
+
 
     initInjectors();
   }
@@ -301,6 +306,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf", availableLibraryFiles);
       fileStream = getClass().getResourceAsStream("/COINSWOA.rdf");
       FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
+      fileStream = getClass().getResourceAsStream("/BranchVersioning.rdf");
+      FileManager.copyAndRegisterLibrary(fileStream, "BranchVersioning.rdf", availableLibraryFiles);
 
 
       log.info("Create CoinsContainer from rdf file: " + file.getName());

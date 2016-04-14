@@ -78,7 +78,7 @@ public class B10_SettingUnits {
 
 
     DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(16, DatasetAsserts.countTriples(model.getJenaModel()));
 
 
 

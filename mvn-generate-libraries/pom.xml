@@ -135,6 +135,7 @@
 
                   -i ${basedir}/../coins-api/src/main/resources/cbim-2.0.rdf
                      ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
+                     ${basedir}/../coins-api/src/main/resources/BranchVersioning.rdf
                   -o ${basedir}/../tmp/generated-sources/java
                   -jarto ${basedir}/../dist/library/jar
                   -sources
@@ -188,6 +189,7 @@
                     -a ${basedir}/../dist/sdk/dll/coins-api.dll
                     -i ${basedir}/../coins-api/src/main/resources/cbim-2.0.rdf
                        ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
+                       ${basedir}/../coins-api/src/main/resources/BranchVersioning.rdf
                     -o ${basedir}/../tmp/generated-sources/java
                     -jarto ${basedir}/../dist/library/jar
                     -dllto ${basedir}/../dist/library/dll

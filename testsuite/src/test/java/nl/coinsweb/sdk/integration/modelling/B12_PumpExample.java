@@ -54,6 +54,7 @@ public class B12_PumpExample {
 
 
 
+
     StringProperty stringProperty = new StringProperty(model);
     part1.addHasProperties(stringProperty);
     stringProperty.setSimpleProperty("Code 134");
