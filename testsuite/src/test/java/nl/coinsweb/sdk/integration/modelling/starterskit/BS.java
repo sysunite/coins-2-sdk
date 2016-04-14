@@ -26,9 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -501,7 +499,7 @@ public class BS {
     model.export(Paths.get("/tmp/coinstest/starterskit" + nr + "_inmem.ccr").toFile().toString());
     assertTrue(DatasetAsserts.verifyCompleteContent(model, verifyFiles.iterator()));
     model.close();
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/starterskit"+nr+"_inmem.ccr"), rdfZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/starterskit" + nr + "_inmem.ccr"), rdfZipContent, false));
 
     rdfZipContent.remove("bim/"+nr+".rdf");
     if(withLib) {

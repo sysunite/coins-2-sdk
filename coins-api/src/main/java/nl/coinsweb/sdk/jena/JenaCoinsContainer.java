@@ -1164,7 +1164,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public <T> void setLiteralValue(String subject, String predicate, T object) {
 
-    removeStatement(subject, predicate);
+    removeAllStatements(subject, predicate);
 
     if(object instanceof Date) {
 
@@ -1195,6 +1195,23 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     } else {
       addStatement(subject, predicate, instanceModel.createTypedLiteral(object));
+    }
+  }
+  @Override
+  public <T> void removeLiteralValue(String subject, String predicate, T object) {
+
+    if(object instanceof Date) {
+
+      GregorianCalendar calendar = new GregorianCalendar();
+      calendar.setTime((Date)object);
+      XSDDateTime dateTime = new XSDDateTime(calendar);
+      Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+      OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+      Individual individual = getJenaOntModel().getIndividual(subject);
+      individual.removeProperty(prop, propValue);
+
+    } else {
+      removeStatement(subject, predicate, instanceModel.createTypedLiteral(object));
     }
   }
 
@@ -1257,12 +1274,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public void setObject(String subject, String predicate, CoinsObject object) {
-    removeStatement(subject, predicate);
+    removeAllStatements(subject, predicate);
     addStatement(subject, predicate, object.getUri());
   }
   @Override
   public void setObject(String subject, String predicate, String objectUri) {
-    removeStatement(subject, predicate);
+    removeAllStatements(subject, predicate);
     addStatement(subject, predicate, objectUri);
   }
   @Override
@@ -1272,6 +1289,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public void addObject(String subject, String predicate, String objectUri) {
     addStatement(subject, predicate, objectUri);
+  }
+  @Override
+  public void removeObject(String subject, String predicate, CoinsObject object) {
+    removeStatement(subject, predicate, object.getUri());
+  }
+  @Override
+  public void removeObject(String subject, String predicate, String objectUri) {
+    removeStatement(subject, predicate, objectUri);
   }
 
   @Override
@@ -1301,7 +1326,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       collectOutgoing.add(outgoing.next());
     }
     for(Triple triple : collectOutgoing) {
-      removeStatement(new ResourceImpl(instanceUri).getURI(), triple.getPredicate().getURI());
+      removeAllStatements(new ResourceImpl(instanceUri).getURI(), triple.getPredicate().getURI());
     }
 
   }
@@ -1410,7 +1435,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       instanceModel.remove(statement);
     }
   }
-  public void removeStatement(String subject, String predicate) {
+  public void removeAllStatements(String subject, String predicate) {
     log.info("Removing statement " + subject + " -> "+predicate+" -> any");
 
     boolean permission = true;
