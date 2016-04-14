@@ -491,6 +491,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
 
   @Override
+  public void disableWOA() {
+    // Remove all WOAInjectors from the injectors list
+    for(int i =0; i<injectors.size(); i++) {
+      if(injectors.get(i) instanceof WOAInjector) {
+        injectors.remove(i);
+        i--;
+      }
+    }
+  }
+
+  @Override
   public void setInstanceNamespace(String namespace) {
     this.instanceNamespace = new Namespace(namespace);
   }

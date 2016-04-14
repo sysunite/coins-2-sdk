@@ -50,7 +50,6 @@ public interface CoinsModel {
    */
   public void setLanguagePriority(String[] priority);
 
-
   /**
    * Add an injector to make the CoinsModel to execute additional operations for some triples.
    *
@@ -58,13 +57,19 @@ public interface CoinsModel {
    */
   public void addInjector(Injector injector);
 
-
   /**
    * Return the currently active list of injectors.
    *
    * @return  a list of injectors
    */
   public ArrayList<Injector> getInjectors();
+
+  /**
+   * Disable checking for woa access rights. Needs to be disabled after loading a new model.
+   *
+   * @return  a list of injectors
+   */
+  public void disableWOA();
 
   /**
    * Configuration option to specify which namespace will be used for the instance model.
