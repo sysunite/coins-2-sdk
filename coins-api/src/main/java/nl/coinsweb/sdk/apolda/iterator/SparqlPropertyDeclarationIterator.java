@@ -28,6 +28,8 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.util.iterator.ClosableIterator;
 import nl.coinsweb.sdk.apolda.language.Language;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
@@ -35,7 +37,7 @@ import nl.coinsweb.sdk.apolda.ontology.impl.PropertyDeclarationImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -50,7 +52,7 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
   OntModel ontModel;
 
 
-  HashSet<PropertyDeclaration> resultCollection = new HashSet<>();
+  HashMap<String, PropertyDeclaration> resultCollection = new HashMap<>();
   Iterator<PropertyDeclaration> resultIterator;
 
 
@@ -230,11 +232,31 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
         result.setPropertyOwner(propertyOwner.asResource().getURI());
       }
 
+      if(!resultCollection.containsKey(property.asResource().getURI())) {
+        resultCollection.put(property.asResource().getURI(), result);
+      } else {
+        // Choose which of the two to pick
 
-      resultCollection.add(result);
+        // Prefer the same namespace between domain and range
+        Resource domain = new ResourceImpl(clazz);
+        if(range == null || !resultCollection.get(property.asResource().getURI()).hasRange()) {
+          log.warn("No way to choose from two property definitions for "+property.asResource().getURI()+", skipping one.");
+          continue;
+        }
+        boolean newDeclarationHasEqualNs = domain.getNameSpace().equals(range.asResource().getNameSpace());
+        boolean oldDeclarationHasEqualNs = domain.getNameSpace().equals(new ResourceImpl(resultCollection.get(property.asResource().getURI()).getRangeUri()).getNameSpace());
+
+        if(!oldDeclarationHasEqualNs && newDeclarationHasEqualNs) {
+          resultCollection.put(property.asResource().getURI(), result);
+        } else if(oldDeclarationHasEqualNs && !newDeclarationHasEqualNs) {
+          // keep the old one
+        } else {
+          log.warn("No way to choose from two property definitions for "+property.asResource().getURI()+", skipping one.");
+        }
+      }
     }
     queryExecution.close();
-    resultIterator = resultCollection.iterator();
+    resultIterator = resultCollection.values().iterator();
   }
 
 

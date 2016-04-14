@@ -29,11 +29,11 @@ public class B8_Removing {
 
     JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
-    assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
-    model.addStatement("http://subj","http://subj","http://subj");
     assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
+    model.addStatement("http://subj","http://subj","http://subj");
+    assertEquals(8, DatasetAsserts.countTriples(model.getJenaModel()));
     model.removeStatement("http://subj", "http://subj", "http://subj");
-    assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
 
 
 
@@ -48,19 +48,19 @@ public class B8_Removing {
     JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
 
-    assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
 
     Assembly a = new Assembly(model);
 
 
-    assertEquals(9, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
 
     EntityProperty e = new EntityProperty(model);
     e.setName("something");
     a.addHasProperties(e);
 
 
-    assertEquals(14, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
 
 
 
@@ -68,7 +68,7 @@ public class B8_Removing {
 //    model.removeProperty(a.getUri(), e);
 
 
-    assertEquals(9, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
   }
 
   @Test
@@ -76,21 +76,21 @@ public class B8_Removing {
 
     JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
-    assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
 
     Assembly a = new Assembly(model);
 
-    assertEquals(9, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
 
     EntityProperty e = new EntityProperty(model);
     e.setName("something");
     a.addHasProperties(e);
 
 
-    assertEquals(14, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
     a.removeIndividualAndProperties();
 
-    assertEquals(6, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
 
   }
 

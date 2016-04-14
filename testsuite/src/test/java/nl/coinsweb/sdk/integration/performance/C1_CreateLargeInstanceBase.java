@@ -47,6 +47,7 @@ public class C1_CreateLargeInstanceBase {
     rdfZipContent.add("bim/repository/cbim-2.0.rdf");
     rdfZipContent.add("bim/repository/units-2.0.rdf");
     rdfZipContent.add("bim/repository/COINSWOA.rdf");
+    rdfZipContent.add("bim/repository/BranchVersioning.rdf");
     rdfZipContent.add("doc/");
     rdfZipContent.add("woa/");
   }

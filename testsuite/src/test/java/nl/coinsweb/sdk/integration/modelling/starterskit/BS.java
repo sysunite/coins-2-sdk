@@ -57,6 +57,7 @@ public class BS {
     emptyZipContent.add("bim/repository/cbim-2.0.rdf");
     emptyZipContent.add("bim/repository/units-2.0.rdf");
     emptyZipContent.add("bim/repository/COINSWOA.rdf");
+    emptyZipContent.add("bim/repository/BranchVersioning.rdf");
     emptyZipContent.add("doc/");
     emptyZipContent.add("woa/");
 
@@ -124,7 +125,7 @@ public class BS {
     assertTrue(person.hasAsClass("http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity"));
     assertTrue(person.canAs(CoinsContainerObject.class));
 
-    Person person2 = person.getNextVersion().next();
+    Person person2 = person.getNextVersion();
     assertEquals("http://rws.com/starterkit/2.03#Person_Ik2", person2.getUri());
     assertEquals("MijnVolledigeNaam", person2.getName());
     assertEquals(2, person2.getVersionID());
@@ -361,7 +362,7 @@ public class BS {
       assertTrue(objects.contains(object));
     }
 
-    Connection connection2 = connection.getNextVersion().next();
+    Connection connection2 = connection.getNextVersion();
     assertEquals(2, connection2.getVersionID());
     assertEquals("http://rws.com/starterkit/3.03#Zitbank_staat_naast_Perron_verbinding", connection2.getUri());
     Iterator<Object> iterator2 = connection2.getHasConnectedObjects();
