@@ -149,7 +149,7 @@
                     ikvmc
                   </executable>
                   <commandlineArgs>
-                    -nologo -target:exe ../dist/sdk/jar/coins-cli.jar -out:../dist/sdk/dll/coins-cli.exe
+                    -version:1.0.${buildNumber}.0 -nologo -target:exe ../dist/sdk/jar/coins-cli.jar -out:../dist/sdk/dll/coins-cli.exe
                   </commandlineArgs>
                 </configuration>
               </execution>
