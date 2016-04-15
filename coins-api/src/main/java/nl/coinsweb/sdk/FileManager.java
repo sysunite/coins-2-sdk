@@ -254,7 +254,7 @@ public class FileManager {
 
 
         Path insideStartFolder = startFolder.relativize(filePath);
-        File newFile = new File(destinationPath + File.separator + insideStartFolder);
+        File newFile = new File(destinationPath + "/" + insideStartFolder);
         log.info("Extract "+newFile+".");
 
         // Create all non exists folders
@@ -368,46 +368,46 @@ public class FileManager {
       File[] files;
 
       // Add bim
-      ze = new ZipEntry(RDF_PATH+File.separator);
+      ze = new ZipEntry(RDF_PATH+"/");
       zos.putNextEntry(ze);
       zos.closeEntry();
       files = homePath.resolve(RDF_PATH).toFile().listFiles();
       for (int i = 0; i < files.length; i++) {
         if (!files[i].isDirectory()) {
-          addFileToZip(files[i].toString(), Paths.get(RDF_PATH).resolve(files[i].getName()).toString(), zos);
+          addFileToZip(files[i].toString(), Paths.get(RDF_PATH).resolve(files[i].getName()), zos);
         }
       }
 
       // Add bim/repository
-      ze = new ZipEntry(ONTOLOGIES_PATH+File.separator);
+      ze = new ZipEntry(ONTOLOGIES_PATH+"/");
       zos.putNextEntry(ze);
       zos.closeEntry();
       files = homePath.resolve(ONTOLOGIES_PATH).toFile().listFiles();
       for (int i = 0; i < files.length; i++) {
         if (!files[i].isDirectory()) {
-          addFileToZip(files[i].toString(), Paths.get(ONTOLOGIES_PATH).resolve(files[i].getName()).toString(), zos);
+          addFileToZip(files[i].toString(), Paths.get(ONTOLOGIES_PATH).resolve(files[i].getName()), zos);
         }
       }
 
       // Add doc
-      ze = new ZipEntry(ATTACHMENT_PATH+File.separator);
+      ze = new ZipEntry(ATTACHMENT_PATH+"/");
       zos.putNextEntry(ze);
       zos.closeEntry();
       files = homePath.resolve(ATTACHMENT_PATH).toFile().listFiles();
       for (int i = 0; i < files.length; i++) {
         if (!files[i].isDirectory()) {
-          addFileToZip(files[i].toString(), Paths.get(ATTACHMENT_PATH).resolve(files[i].getName()).toString(), zos);
+          addFileToZip(files[i].toString(), Paths.get(ATTACHMENT_PATH).resolve(files[i].getName()), zos);
         }
       }
 
       // Add woa
-      ze = new ZipEntry(WOA_PATH+File.separator);
+      ze = new ZipEntry(WOA_PATH+"/");
       zos.putNextEntry(ze);
       zos.closeEntry();
       files = homePath.resolve(WOA_PATH).toFile().listFiles();
       for (int i = 0; i < files.length; i++) {
         if (!files[i].isDirectory()) {
-          addFileToZip(files[i].toString(), Paths.get(WOA_PATH).resolve(files[i].getName()).toString(), zos);
+          addFileToZip(files[i].toString(), Paths.get(WOA_PATH).resolve(files[i].getName()), zos);
         }
       }
 
@@ -421,12 +421,16 @@ public class FileManager {
     }
   }
 
-  private static void addFileToZip(String fromPath, String zipPath, ZipOutputStream zos) {
+  private static void addFileToZip(String fromPath, Path zipPath, ZipOutputStream zos) {
+
+    // Do dark magic, needed to correct ikvm consequences
+    String pathInZip = zipPath.toFile().getPath().replace("\\","/");
+
     try {
       final byte[] buffer = new byte[1024];
-      ZipEntry ze = new ZipEntry(zipPath);
+      ZipEntry ze = new ZipEntry(pathInZip);
       zos.putNextEntry(ze);
-      log.trace("Adding to zip: "+zipPath);
+      log.trace("Adding to zip: "+pathInZip);
 
       // Write file content
       FileInputStream in = new FileInputStream(fromPath);
