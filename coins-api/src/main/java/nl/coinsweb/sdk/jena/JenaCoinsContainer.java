@@ -932,6 +932,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public Iterator<CoinsObject> listProperties(String instanceUri) {
 
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, instanceUri);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
+
     ArrayList<CoinsObject> buffer = new ArrayList<>();
 
     StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties();
@@ -968,6 +976,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, Class<T> propertyTypeClass) {
 
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, instanceUri);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
+
     ArrayList<T> buffer = new ArrayList<>();
     try {
       String propertyTypeClassUri =  (String) propertyTypeClass.getField("classUri").get(String.class);
@@ -991,6 +1007,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String propertyClassUri) {
 
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, instanceUri);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
+
     ArrayList<RuntimeCoinsObject> buffer = new ArrayList<>();
     StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties();
     while(iterator.hasNext()) {
@@ -1006,6 +1030,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, String predicate, Class<T> propertyTypeClass) {
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, instanceUri);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
 
     ArrayList<T> buffer = new ArrayList<>();
     try {
@@ -1029,6 +1061,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String predicate, String propertyClassUri) {
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, instanceUri);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
 
     ArrayList<RuntimeCoinsObject> buffer = new ArrayList<>();
     StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
@@ -1094,6 +1134,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public <T> T getLiteralValue(String subject, String predicate, Class<T> clazz) {
 
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, subject);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
+
     RDFDatatype datatype = TypeMapper.getInstance().getTypeByClass(clazz);
 
     NodeIterator result = listObjectsOfProperty(subject, predicate);
@@ -1149,6 +1197,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   @Override
   public <T> Iterator<T> getLiteralValues(String subject, String predicate, Class<T> clazz) {
 
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, subject);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
+
     ArrayList<T> buffer = new ArrayList<>();
 
     RDFDatatype datatype = TypeMapper.getInstance().getTypeByClass(clazz);
@@ -1191,9 +1247,18 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
       Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
-      OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-      Individual individual = getJenaOntModel().getIndividual(subject);
-      individual.setPropertyValue(prop, propValue);
+
+      boolean permission = true;
+      for(Injector injector : injectors) {
+        permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
+      }
+      if(permission) {
+        OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+        Individual individual = getJenaOntModel().getIndividual(subject);
+        individual.setPropertyValue(prop, propValue);
+      } else {
+        throw new UnspecifiedInjectorRejectionException();
+      }
 
     } else {
       addStatement(subject, predicate, instanceModel.createTypedLiteral(object));
@@ -1208,9 +1273,19 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
       Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
-      OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-      Individual individual = getJenaOntModel().getIndividual(subject);
-      individual.setPropertyValue(prop, propValue);
+
+      boolean permission = true;
+      for(Injector injector : injectors) {
+        permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
+      }
+      if(permission) {
+        OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+        Individual individual = getJenaOntModel().getIndividual(subject);
+        individual.setPropertyValue(prop, propValue);
+      } else {
+        throw new UnspecifiedInjectorRejectionException();
+      }
+
 
     } else {
       addStatement(subject, predicate, instanceModel.createTypedLiteral(object));
@@ -1225,9 +1300,20 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
       Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
-      OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-      Individual individual = getJenaOntModel().getIndividual(subject);
-      individual.removeProperty(prop, propValue);
+
+
+      boolean permission = true;
+      for(Injector injector : injectors) {
+        permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
+      }
+      if(permission) {
+        OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+        Individual individual = getJenaOntModel().getIndividual(subject);
+        individual.removeProperty(prop, propValue);
+      } else {
+        throw new UnspecifiedInjectorRejectionException();
+      }
+
 
     } else {
       removeStatement(subject, predicate, instanceModel.createTypedLiteral(object));
@@ -1237,6 +1323,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public <T extends CoinsObject> T getObject(String subject, String predicate, Class<T> clazz) {
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, subject);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
 
     NodeIterator result = listObjectsOfProperty(subject, predicate);
 
@@ -1263,6 +1357,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T extends CoinsObject> Iterator<T> getObjects(String subject, String predicate, Class<T> clazz) {
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, subject);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
 
     ArrayList<T> buffer = new ArrayList<>();
 
@@ -1412,6 +1514,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
     if(permission) {
       instanceModel.add(statement);
+    } else {
+      throw new UnspecifiedInjectorRejectionException();
     }
   }
   @Override
@@ -1425,6 +1529,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
     if(permission) {
       instanceModel.add(statement);
+    } else {
+      throw new UnspecifiedInjectorRejectionException();
     }
   }
 
@@ -1439,6 +1545,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
     if(permission) {
       instanceModel.remove(statement);
+    } else {
+      throw new UnspecifiedInjectorRejectionException();
     }
   }
   @Override
@@ -1452,6 +1560,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
     if(permission) {
       instanceModel.remove(statement);
+    } else {
+      throw new UnspecifiedInjectorRejectionException();
     }
   }
   public void removeAllStatements(String subject, String predicate) {
@@ -1463,6 +1573,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
     if(permission) {
       instanceModel.getGraph().remove(new ResourceImpl(subject).asNode(), new PropertyImpl(predicate).asNode(), Node.ANY);
+    } else {
+      throw new UnspecifiedInjectorRejectionException();
     }
   }
 
@@ -1604,6 +1716,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
   private NodeIterator listObjectsOfProperty(String subject, String predicate) {
+
+    boolean permission = true;
+    for(Injector injector : injectors) {
+      permission &= injector.proposeRead(this, subject, predicate);
+    }
+    if(!permission) {
+      throw new UnspecifiedInjectorRejectionException();
+    }
 
     Resource subj = new ResourceImpl(subject);
     Property pred = new PropertyImpl(predicate);
