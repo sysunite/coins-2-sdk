@@ -465,8 +465,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     // Add an rdf element
     RuntimeCoinsObject documentReference = new RuntimeCoinsObject(this, "http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference");
-    RuntimeCoinsObject createdProperty = documentReference.createProperty("http://www.coinsweb.nl/cbim-2.0.rdf#filePath", "http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty");
+    RuntimeCoinsObject createdProperty = new RuntimeCoinsObject(this, "http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty");
     createdProperty.setLiteralValue("http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue", absoluteTempPath.getFileName().toString());
+    documentReference.setObject("http://www.coinsweb.nl/cbim-2.0.rdf#filePath", createdProperty);
   }
 
 

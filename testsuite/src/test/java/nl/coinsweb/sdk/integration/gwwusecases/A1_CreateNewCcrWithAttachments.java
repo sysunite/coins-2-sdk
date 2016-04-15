@@ -3,7 +3,11 @@ package nl.coinsweb.sdk.integration.gwwusecases;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.vocabulary.RDFS;
+import nl.coinsweb.cbim.InternalDocumentReference;
+import nl.coinsweb.cbim.StringProperty;
 import nl.coinsweb.sdk.*;
+import nl.coinsweb.sdk.exceptions.AttachmentNotFoundException;
+import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
@@ -12,7 +16,9 @@ import nl.coinsweb.sdk.jena.TDBCoinsContainer;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +49,9 @@ public class A1_CreateNewCcrWithAttachments {
   private Set<String> attachmentsZipContent;
   private Set<String> rdfZipContent;
   private Set<RDFNode> nodesPlant;
+
+  @Rule
+  public ExpectedException expectedEx = ExpectedException.none();
 
   @Before
   public void initAssertLists() {
@@ -115,10 +124,10 @@ public class A1_CreateNewCcrWithAttachments {
 
     // Create the container content
     JenaCoinsContainer ccr = new InMemCoinsContainer(defaultPerson, "http://www.example.com/");
-    ccr.export(Paths.get("/tmp/coinstest/empty.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/empty.zip").toFile().toString());
     ccr.close();
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/empty.ccr"), emptyZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/empty.zip"), emptyZipContent, false));
 
     workspace.asExpertCoinsModel().close();
   }
@@ -163,13 +172,13 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container file
-    ccr.export(Paths.get("/tmp/coinstest/withattachment.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/withattachment.zip").toFile().toString());
     ccr.close();
 
 
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/withattachment.ccr"), attachmentsZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/withattachment.zip"), attachmentsZipContent, false));
 
 
 
@@ -211,19 +220,19 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container file
-    ccr.export(Paths.get("/tmp/coinstest/onelineofrdf.ccr").toFile().toString());
+    ccr.export(Paths.get("/tmp/coinstest/onelineofrdf.zip").toFile().toString());
     ccr.close();
 
 
 
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/onelineofrdf.ccr"), rdfZipContent, false));
+    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/onelineofrdf.zip"), rdfZipContent, false));
 
 
     FileManager.destroy(ccr.getInternalRef());
 
 
     // Reopen the ccr
-    JenaCoinsContainer ccr2 = new InMemCoinsContainer(defaultPerson, "/tmp/coinstest/onelineofrdf.ccr", "http://www.example.com/");
+    JenaCoinsContainer ccr2 = new InMemCoinsContainer(defaultPerson, "/tmp/coinstest/onelineofrdf.zip", "http://www.example.com/");
     ccr2.close();
   }
 
@@ -249,12 +258,64 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     emptyCcr.exportOwlModel();
-    emptyCcr.export("/tmp/coinstest/testLinkToCore.ccr");
+    emptyCcr.export("/tmp/coinstest/testLinkToCore.zip");
 
     log.info("#will reload now");
 
 
-    JenaCoinsContainer reloaded = new InMemCoinsContainer("/tmp/coinstest/testLinkToCore.ccr", "http://www.example.com/");
+    JenaCoinsContainer reloaded = new InMemCoinsContainer("/tmp/coinstest/testLinkToCore.zip", "http://www.example.com/");
+  }
+
+
+
+  @Test
+  public void createDocumentInStoreButNoFilePresentAsAttachment() {
+
+    JenaCoinsContainer model = new InMemCoinsContainer("http://example.com");
+
+    InternalDocumentReference doc = new InternalDocumentReference(model);
+    StringProperty fileNameProperty = new StringProperty(model);
+    fileNameProperty.setSimpleProperty("nonExisting.pdf");
+
+    assertEquals(14, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    try {
+
+      expectedEx.expect(AttachmentNotFoundException.class);
+      expectedEx.expectMessage("Adding file nonExisting.pdf not found as Attachment, not connecting (instance Model now contains an orphaned String property).");
+
+      doc.setFilepath(fileNameProperty);
+
+    } finally {
+
+      DatasetAsserts.logTriples(model.getJenaModel());
+      assertEquals(14, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    }
+  }
+
+
+
+  @Test
+  public void createDocumentInStoreAndFilePresentAsAttachment() {
+
+    JenaCoinsContainer model = new InMemCoinsContainer("http://example.com");
+
+    model.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
+
+    DatasetAsserts.logTriples(model.getJenaModel());
+    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    InternalDocumentReference doc = new InternalDocumentReference(model);
+    StringProperty fileNameProperty = new StringProperty(model);
+    fileNameProperty.setSimpleProperty("koekiemonster.jpeg");
+
+    assertEquals(22, DatasetAsserts.countTriples(model.getJenaModel()));
+
+    doc.setFilepath(fileNameProperty);
+
+    DatasetAsserts.logTriples(model.getJenaModel());
+    assertEquals(23, DatasetAsserts.countTriples(model.getJenaModel()));
   }
 
 }

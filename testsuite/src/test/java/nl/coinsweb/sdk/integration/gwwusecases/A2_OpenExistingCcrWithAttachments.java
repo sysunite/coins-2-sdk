@@ -66,7 +66,10 @@ public class A2_OpenExistingCcrWithAttachments {
 
   @Test
   public void bOpenNonexistingCcr() {
+
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
+
+
 
     expectedEx.expect(RuntimeException.class);
     expectedEx.expectMessage("Supplied file does not exist.");

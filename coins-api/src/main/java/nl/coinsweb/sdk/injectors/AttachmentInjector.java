@@ -24,7 +24,14 @@
  **/
 package nl.coinsweb.sdk.injectors;
 
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.impl.PropertyImpl;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.CoinsModel;
+import nl.coinsweb.sdk.exceptions.AttachmentNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,10 +55,42 @@ public class AttachmentInjector implements Injector {
   @Override
   public boolean proposeWrite(CoinsModel model, String subject, String predicate, String object) {
 
-    if("http://www.coinsweb.nl/cbim-2.0.rdf#filePath".equals(predicate)) {
-      // the object is a file that needs to be present in the ccr archive
-      log.warn("implement adding this file to the container "+object);
+    // When proposing a remove, always allow
+    if(object == null) {
+      return true;
     }
-    return true;
+
+    // Allow anything other than filePath relationship
+    if(!"http://www.coinsweb.nl/cbim-2.0.rdf#filePath".equals(predicate)) {
+      return true;
+    } else {
+
+      ExtendedIterator<Triple> iterator = ((OntModel) model.getJenaOntModel()).getGraph().find(
+          new ResourceImpl(object).asNode(),
+          new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue").asNode(),
+          Node.ANY);
+
+      if(iterator.hasNext()) {
+
+        Triple triple = iterator.next();
+        Node filePath = triple.getObject();
+        if (filePath.isLiteral()) {
+
+          String filePathString = filePath.getLiteral().getLexicalForm();
+
+
+          if(!model.getCoinsContainer().getAttachments().contains(filePathString)) {
+            throw new AttachmentNotFoundException("Adding file " + filePathString + " not found as Attachment, not connecting (instance Model now contains an orphaned String property).");
+          }
+
+
+          log.info("Request adding file "+filePathString + ", found!");
+          return true;
+
+        }
+      }
+
+      throw new AttachmentNotFoundException("Not clear which filename is being added.");
+    }
   }
 }
