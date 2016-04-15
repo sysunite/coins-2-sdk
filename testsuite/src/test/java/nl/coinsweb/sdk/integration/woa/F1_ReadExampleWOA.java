@@ -33,27 +33,32 @@ public class F1_ReadExampleWOA {
 
     JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
+    try {
 
-    Part landhoofd = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
-    log.debug(landhoofd.getDescription());
+      model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 
-    expectedEx.expect(WOAAccessDeniedException.class);
-    expectedEx.expectMessage("WOA restriction blocked operation.");
+      Part landhoofd = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
+      log.debug(landhoofd.getDescription());
 
-    Part fundering = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB846node1a1hg7ekvx13");
-    log.debug(fundering.getDescription());
+      expectedEx.expect(WOAAccessDeniedException.class);
+      expectedEx.expectMessage("WOA restriction blocked operation.");
 
-    Assembly viaduct = new Assembly(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB649node1a1hg7ekvx5");
-    log.debug(viaduct.getDescription());
+      Part fundering = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB846node1a1hg7ekvx13");
+      log.debug(fundering.getDescription());
 
-    log.info("instance model");
-    DatasetAsserts.logTriples(model.getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
+    } finally {
 
-    log.info("woa model");
-    DatasetAsserts.logTriples(model.getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
+      Assembly viaduct = new Assembly(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB649node1a1hg7ekvx5");
+      log.debug(viaduct.getDescription());
 
-    model.close();
+      log.info("instance model");
+      DatasetAsserts.logTriples(model.getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
+
+      log.info("woa model");
+      DatasetAsserts.logTriples(model.getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
+
+      model.close();
+    }
   }
 
 
