@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Usecase D4:
@@ -19,6 +21,8 @@ import org.junit.rules.ExpectedException;
  * @author Bastiaan Bijl, Sysunite 2016
  */
 public class D4_ElephantExample {
+
+  protected static final Logger log = LoggerFactory.getLogger(D4_ElephantExample.class);
 
 
 
@@ -62,15 +66,20 @@ public class D4_ElephantExample {
     Dier olifantDierReloaded = new Olifant(model, olifantUri).as(Dier.class);
     Olifant olifantReloaded = olifantDierReloaded.as(Olifant.class); // Casting down is allowed if the instance has a type definition in the model
 
-    expectedEx.expect(CoinsObjectCastNotAllowedException.class);
-    expectedEx.expectMessage("Could not cast to com.playground.elephant.Olifant.");
+    try {
 
-    // Cast down
-    Olifant olifantDier = dier.as(Olifant.class);           // Casting down is not allowed if there is not such a type definition
+      expectedEx.expect(CoinsObjectCastNotAllowedException.class);
+      expectedEx.expectMessage("Could not cast to com.playground.elephant.Olifant.");
 
-    // Cast down again after adding type definition
-    olifantDier.addType(Olifant.class);
-    Olifant olifantDier2 = dier.as(Olifant.class);           // Casting down is allowed now
+      // Cast down
+      Olifant olifantDier = dier.as(Olifant.class);           // Casting down is not allowed if there is not such a type definition
+
+    } finally {
+
+      // Cast down again after adding type definition
+      dier.addType(Olifant.class);
+      Olifant olifantDier2 = dier.as(Olifant.class);           // Casting down is allowed now
+    }
   }
 
   @Test
@@ -137,34 +146,47 @@ public class D4_ElephantExample {
 
     Tafel tafel = new Tafel(model);
 
-    expectedEx.expect(CoinsObjectCastNotAllowedException.class);
-    expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
-    tafel.addHeeftOnderdeel(tand1.as(Tafelpoot.class));                        // Currently not allowed cast
+    try {
 
-    expectedEx.expect(CoinsObjectCastNotAllowedException.class);
-    expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
-    tafel.addHeeftOnderdeel(tand2.as(Tafelpoot.class));                        // Currently not allowed cast
+      expectedEx.expect(CoinsObjectCastNotAllowedException.class);
+      expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
+      tafel.addHeeftOnderdeel(tand1.as(Tafelpoot.class));                        // Currently not allowed cast
 
+    } finally {
 
+      try {
 
-    tand1.addType(Tafelpoot.class);
-    tand2.addType("http://playground.com/elephant#Tafelpoot");
+        expectedEx.expect(CoinsObjectCastNotAllowedException.class);
+        expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
+        tafel.addHeeftOnderdeel(tand2.as(Tafelpoot.class));                        // Currently not allowed cast
 
-
-    tafel.addHeeftOnderdeel(tand1.as(Tafelpoot.class));                        // Now allowed
-    tafel.addHeeftOnderdeel(tand2.as(Tafelpoot.class));                        // Now allowed
-
-    tand1.removeType("http://playground.com/elephant#Tafelpoot");
-    tand2.removeType(Tafelpoot.class);
+      } finally {
 
 
+        tand1.addType(Tafelpoot.class);
+        tand2.addType("http://playground.com/elephant#Tafelpoot");
 
-    expectedEx.expect(CoinsObjectCastNotAllowedException.class);
-    expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
-    tafel.addHeeftOnderdeel(tand1.as(Tafelpoot.class));                        // Not anymore allowed
 
-    expectedEx.expect(CoinsObjectCastNotAllowedException.class);
-    expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
-    tafel.addHeeftOnderdeel(tand2.as(Tafelpoot.class));                        // Not anymore allowed
+        tafel.addHeeftOnderdeel(tand1.as(Tafelpoot.class));                        // Now allowed
+        tafel.addHeeftOnderdeel(tand2.as(Tafelpoot.class));                        // Now allowed
+
+        tand1.removeType("http://playground.com/elephant#Tafelpoot");
+        tand2.removeType(Tafelpoot.class);
+
+        try {
+
+          expectedEx.expect(CoinsObjectCastNotAllowedException.class);
+          expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
+          tafel.addHeeftOnderdeel(tand1.as(Tafelpoot.class));                        // Not anymore allowed
+
+        } finally {
+
+          expectedEx.expect(CoinsObjectCastNotAllowedException.class);
+          expectedEx.expectMessage("Could not cast to com.playground.elephant.Tafelpoot.");
+          tafel.addHeeftOnderdeel(tand2.as(Tafelpoot.class));                        // Not anymore allowed
+
+        }
+      }
+    }
   }
 }
