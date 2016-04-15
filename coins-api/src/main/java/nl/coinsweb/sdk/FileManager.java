@@ -206,7 +206,7 @@ public class FileManager {
   public static void unzipTo(File sourceFile, Path destinationPath) {
 
     byte[] buffer = new byte[1024];
-    Path startFolder = null;
+    String startFolder = null;
 
     try {
 
@@ -223,6 +223,8 @@ public class FileManager {
 
         String fileName = ze.getName();
 
+        log.info("Dealing with file "+fileName);
+
         // If the first folder is a somename/bim/file.ref skip it
         Path filePath = Paths.get(fileName);
         Path pathPath = filePath.getParent();
@@ -235,17 +237,17 @@ public class FileManager {
 
           Path pathRoot = pathPath.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
 
-          Path newStartFolder = Paths.get("");
+          String prefix = "";
           if (pathRoot != null) {
-            newStartFolder = pathRoot;
+            prefix = pathRoot.toString();
           }
 
           if(startFolder == null) {
-            startFolder = newStartFolder;
+            startFolder = prefix;
             log.debug("File root set to: "+startFolder);
 
-          } else if(startFolder != null && !newStartFolder.equals(startFolder)) {
-            throw new InvalidContainerFileException("The container file has an inconsistent file root, was "+startFolder+", now dealing with "+newStartFolder+".");
+          } else if(startFolder != null && !prefix.equals(startFolder)) {
+            throw new InvalidContainerFileException("The container file has an inconsistent file root, was "+startFolder+", now dealing with "+prefix+".");
           }
         } else {
           log.debug("Skipping file: "+filePath.toString());
@@ -253,9 +255,9 @@ public class FileManager {
         }
 
 
-        Path insideStartFolder = startFolder.relativize(filePath);
+        String insideStartFolder = filePath.toString().substring(startFolder.length());
         File newFile = new File(destinationPath + "/" + insideStartFolder);
-        log.info("Extract "+newFile+".");
+        log.info("Extract "+newFile);
 
         // Create all non exists folders
         // else you will hit FileNotFoundException for compressed folder
@@ -293,6 +295,7 @@ public class FileManager {
     File[] listOfFiles;
 
     folder = new File(homePath.resolve(RDF_PATH).toString());
+    log.info("Will index "+folder+" for rdf files.");
     listOfFiles = folder.listFiles();
 
     for (int i = 0; i < listOfFiles.length; i++) {
@@ -303,6 +306,7 @@ public class FileManager {
     }
 
     folder = new File(homePath.resolve(WOA_PATH).toString());
+    log.info("Will index "+folder+" for woa files.");
     listOfFiles = folder.listFiles();
 
     for (int i = 0; i < listOfFiles.length; i++) {
@@ -314,6 +318,7 @@ public class FileManager {
 
 
     folder = new File(homePath.resolve(ONTOLOGIES_PATH).toString());
+    log.info("Will index "+folder+" for ontology files.");
     listOfFiles = folder.listFiles();
 
     for (int i = 0; i < listOfFiles.length; i++) {
@@ -335,11 +340,12 @@ public class FileManager {
     }
 
     folder = new File(homePath.resolve(ATTACHMENT_PATH).toString());
+    log.info("Will index "+folder+" for attachment files.");
     listOfFiles = folder.listFiles();
 
     for (int i = 0; i < listOfFiles.length; i++) {
       if (listOfFiles[i].isFile()) {
-        log.info("index file as attachment");
+        log.info("Index file as attachment: "+listOfFiles[i].getName());
         attachments.put(listOfFiles[i].getName(), listOfFiles[i]);
 
       }
