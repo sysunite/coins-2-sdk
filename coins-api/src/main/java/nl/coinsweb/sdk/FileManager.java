@@ -44,9 +44,14 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.*;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -69,10 +74,10 @@ public class FileManager {
   private static final String LIB_FOLDER = "coinsgloballibraries/";
 
 
-  private static String RDF_PATH = "bim/";
-  private static String ONTOLOGIES_PATH = "bim/repository/";
-  private static String ATTACHMENT_PATH = "doc/";
-  private static String WOA_PATH = "woa/";
+  private static String RDF_PATH = "bim";
+  private static String ONTOLOGIES_PATH = "bim/repository";
+  private static String ATTACHMENT_PATH = "doc";
+  private static String WOA_PATH = "woa";
 
 
 
@@ -358,64 +363,81 @@ public class FileManager {
 
       FileOutputStream fos = new FileOutputStream(target);
       final ZipOutputStream zos = new ZipOutputStream(fos);
-      final byte[] buffer = new byte[1024];
 
-      Files.walkFileTree(homePath, EnumSet.noneOf(FileVisitOption.class), 3, new SimpleFileVisitor<Path>() {
+      ZipEntry ze;
+      File[] files;
 
-
-        @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-
-          // Don't add the root itself
-          if (dir.equals(homePath)) {
-            return FileVisitResult.CONTINUE;
-          }
-
-          // Register entry
-          ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString() + "/");
-          zos.putNextEntry(ze);
-          log.trace("adding to zip: "+ze);
-
-          return FileVisitResult.CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult visitFile(Path dir, BasicFileAttributes attrs) throws IOException {
-
-          // Register entry
-
-
-          if(dir.toFile().isFile()) {
-
-            ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString());
-            zos.putNextEntry(ze);
-            log.trace("adding to zip: "+ze);
-
-            // Write file content
-            FileInputStream in = new FileInputStream(dir.toFile());
-
-            int len;
-            while ((len = in.read(buffer)) > 0) {
-              zos.write(buffer, 0, len);
-            }
-
-            in.close();
-
-          } else if(dir.toFile().isDirectory()) {
-
-            ZipEntry ze = new ZipEntry(homePath.relativize(dir).toString() + "/");
-            zos.putNextEntry(ze);
-            log.trace("adding to zip: "+ze);
-
-          }
-
-          return FileVisitResult.CONTINUE;
-        }
-      });
-
+      // Add bim
+      ze = new ZipEntry(RDF_PATH+File.separator);
+      zos.putNextEntry(ze);
       zos.closeEntry();
+      files = homePath.resolve(RDF_PATH).toFile().listFiles();
+      for (int i = 0; i < files.length; i++) {
+        if (!files[i].isDirectory()) {
+          addFileToZip(files[i].toString(), Paths.get(RDF_PATH).resolve(files[i].getName()).toString(), zos);
+        }
+      }
+
+      // Add bim/repository
+      ze = new ZipEntry(ONTOLOGIES_PATH+File.separator);
+      zos.putNextEntry(ze);
+      zos.closeEntry();
+      files = homePath.resolve(ONTOLOGIES_PATH).toFile().listFiles();
+      for (int i = 0; i < files.length; i++) {
+        if (!files[i].isDirectory()) {
+          addFileToZip(files[i].toString(), Paths.get(ONTOLOGIES_PATH).resolve(files[i].getName()).toString(), zos);
+        }
+      }
+
+      // Add doc
+      ze = new ZipEntry(ATTACHMENT_PATH+File.separator);
+      zos.putNextEntry(ze);
+      zos.closeEntry();
+      files = homePath.resolve(ATTACHMENT_PATH).toFile().listFiles();
+      for (int i = 0; i < files.length; i++) {
+        if (!files[i].isDirectory()) {
+          addFileToZip(files[i].toString(), Paths.get(ATTACHMENT_PATH).resolve(files[i].getName()).toString(), zos);
+        }
+      }
+
+      // Add woa
+      ze = new ZipEntry(WOA_PATH+File.separator);
+      zos.putNextEntry(ze);
+      zos.closeEntry();
+      files = homePath.resolve(WOA_PATH).toFile().listFiles();
+      for (int i = 0; i < files.length; i++) {
+        if (!files[i].isDirectory()) {
+          addFileToZip(files[i].toString(), Paths.get(WOA_PATH).resolve(files[i].getName()).toString(), zos);
+        }
+      }
+
+
+
+
       zos.close();
 
+    } catch(IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  private static void addFileToZip(String fromPath, String zipPath, ZipOutputStream zos) {
+    try {
+      final byte[] buffer = new byte[1024];
+      ZipEntry ze = new ZipEntry(zipPath);
+      zos.putNextEntry(ze);
+      log.trace("Adding to zip: "+zipPath);
+
+      // Write file content
+      FileInputStream in = new FileInputStream(fromPath);
+
+      int len;
+      while ((len = in.read(buffer)) != -1) {
+        zos.write(buffer, 0, len);
+      }
+
+      zos.closeEntry();
+      in.close();
     } catch(IOException ex) {
       ex.printStackTrace();
     }
