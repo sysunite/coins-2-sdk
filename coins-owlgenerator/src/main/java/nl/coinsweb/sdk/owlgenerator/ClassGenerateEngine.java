@@ -470,7 +470,6 @@ public class ClassGenerateEngine {
       if (out.isDirectory()) {
         String fileName = outputFolder + File.separator + className + classNamePostFix + ".java";
         out = new File( fileName );
-        log.warn("write to file "+fileName);
       }
 
       // File output
