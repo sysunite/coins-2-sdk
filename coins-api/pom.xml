@@ -108,7 +108,7 @@
                     ikvmc
                   </executable>
                   <commandlineArgs>
-                    -nologo -target:library ../dist/sdk/jar/coins-api.jar -out:../dist/sdk/dll/coins-api.dll
+                    -version:1.0.${buildNumber}.0 -nologo -target:library ../dist/sdk/jar/coins-api.jar -out:../dist/sdk/dll/coins-api.dll
                   </commandlineArgs>
                 </configuration>
               </execution>
