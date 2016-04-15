@@ -7,7 +7,6 @@ import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +83,7 @@ public class A5_MBITestP8 {
   }
 
 
-  @Test
+
   public void listInstancesInCcr() {
 
     // 2) Loading an existing container
