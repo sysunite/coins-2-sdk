@@ -1,20 +1,23 @@
 package nl.coinsweb.sdk.integration.modelling;
 
-import nl.coinsweb.cbim.Assembly;
-import nl.coinsweb.cbim.FloatProperty;
+import nl.coinsweb.cbim.*;
 import nl.coinsweb.sdk.CoinsObject;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.junit.Test;
 import org.qudt.schema.qudt.LengthUnit;
+import org.qudt.schema.qudt.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -31,6 +34,10 @@ public class B10_SettingUnits {
     JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
+
+
+
+
 
     Iterator<String> individuals = model.listIndividualUris(LengthUnit.classUri).iterator();
     while(individuals.hasNext()) {
@@ -67,18 +74,46 @@ public class B10_SettingUnits {
 //      http://qudt.org/vocab/unit#Rod
     }
 
+    // create
     FloatProperty property = new FloatProperty(model);
     a.addHasProperties(property);
 
     property.setSimpleProperty(11.3f);
-    property.setUnit("a");
     property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
+
+    // read
+    FloatProperty fp = a.getHasProperties().next().as(FloatProperty.class);
+
+    assertEquals(11.3f, fp.getSimpleProperty(), 0);
+
+    Unit u = fp.getUnit();
+    assertTrue(u.canAs(LengthUnit.class));
+
+    try {
+
+      // create
+      UriProperty uriProperty = new UriProperty(model);
+      a.addHasProperties(uriProperty);
+      uriProperty.setSimpleProperty(new URI("http://www.nu.nl"));
+
+      // read
+      UriProperty up = model.listProperties(a.getUri(), UriProperty.class).next();
+      assertEquals(new URI("http://www.nu.nl"), up.getSimpleProperty());
+
+    } catch (URISyntaxException e) {}
+
+
+    LocatorProperty locatorProperty = new LocatorProperty(model);
+    locatorProperty.addObjectValue(new Locator(model));
+
+
+
 
 
 
 
     DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(16, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(28, DatasetAsserts.countTriples(model.getJenaModel()));
 
 
 

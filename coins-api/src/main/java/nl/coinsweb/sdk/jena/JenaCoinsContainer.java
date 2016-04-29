@@ -1176,6 +1176,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
           return (T) new Date(date.asCalendar().getTimeInMillis());
 
 
+        } else if(clazz.equals(URI.class)) {
+
+          try {
+            return (T) new URI(single.asLiteral().getLexicalForm());
+          } catch(URISyntaxException e) {
+            throw new CoinsPropertyNotFoundException("The found uri could not be parsed: "+single.asLiteral().getLexicalForm());
+          }
+
         } else if(single.asLiteral().getDatatypeURI().equals(XSD.integer.getURI()) ||
             single.asLiteral().getDatatypeURI().equals(XSD.xint.getURI())) {
 
@@ -1261,7 +1269,8 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       }
 
     } else {
-      addStatement(subject, predicate, instanceModel.createTypedLiteral(object));
+      Literal literal = instanceModel.createTypedLiteral(object);
+      addStatement(subject, predicate, literal);
     }
   }
   @Override
