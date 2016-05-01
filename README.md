@@ -11,8 +11,8 @@ Download the latest build, for .NET:
 * [pre-generated libraries (dll)](/dist/library/dll)
 
 For Java:
-* dist/sdk/jar/[coins-api.jar](/dist/sdk/jar/coins-api.jar?raw=true)
-* dist/sdk/jar/[coins-cli.jar](/dist/sdk/jar/coins-cli.jar?raw=true)
+* [coins-api.jar](/dist/sdk/jar/coins-api.jar?raw=true)
+* [coins-cli.jar](/dist/sdk/jar/coins-cli.jar?raw=true)
 * [pre-generated libraries (jar)](/dist/library/jar)
 
 ###Main components
