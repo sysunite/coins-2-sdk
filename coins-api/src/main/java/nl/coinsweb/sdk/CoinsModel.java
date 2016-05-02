@@ -24,6 +24,7 @@
  **/
 package nl.coinsweb.sdk;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import nl.coinsweb.sdk.injectors.Injector;
 
 import java.util.ArrayList;
@@ -94,6 +95,7 @@ public interface CoinsModel {
    *
    */
   public boolean hasImport(String namespace);
+  public boolean hasImport(Model model, String namespace);
 
   /**
    * Add an import statement to the ontology header. If the model should actually try to load it, set
@@ -112,6 +114,7 @@ public interface CoinsModel {
    * @param addToDoc  add to the doc folder
    */
   public void addImport(String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc);
+  public void addImport(Model model, String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc);
 
 
   /**
@@ -156,6 +159,7 @@ public interface CoinsModel {
    * @return  a list of uri's
    */
   public Iterator<String> listIndividuals();
+  public Iterator<String> listIndividuals(Model model);
 
   /**
    * List all instances of the owl:Class subclass represented by the specified CoinsObject class.
@@ -164,6 +168,7 @@ public interface CoinsModel {
    * @return  a list of Java instances of the specified CoinsObject class
    */
   public <T extends CoinsObject> Iterator<T> listIndividuals(Class<T> objectClass);
+  public <T extends CoinsObject> Iterator<T> listIndividuals(Model model, Class<T> objectClass);
 
   /**
    * List all instances of the owl:Class subclass represented by the specified uri.
@@ -172,6 +177,7 @@ public interface CoinsModel {
    * @return  a list of Java instances of the specified CoinsObject class
    */
   public Iterator<String> listIndividuals(String classUri);
+  public Iterator<String> listIndividuals(Model model, String classUri);
 
   /**
    * List all the individuals the specified uri is a class of. Reverse of listClassUris().
@@ -196,6 +202,7 @@ public interface CoinsModel {
    * @return  a RuntimeCoinsObject based on the supplied uri
    */
   public RuntimeCoinsObject getIndividual(String individualUri);
+  public RuntimeCoinsObject getIndividual(Model model, String individualUri);
 
   /**
    * Perform a sparql query on the union model. Graph names can be used to specify to look in any
@@ -214,6 +221,7 @@ public interface CoinsModel {
    * @param party the party object carrying the uri of the creator
    */
   public void addCreator(String instanceUri, CoinsParty party);
+  public void addCreator(Model model, String instanceUri, CoinsParty party);
 
   /**
    * Set the creator on all individuals in the instance model that do not have a creator yet
@@ -229,6 +237,7 @@ public interface CoinsModel {
    * @param instanceUri the uri to supply with the extra type definition
    */
   public void addCreatedNow(String instanceUri);
+  public void addCreatedNow(Model model, String instanceUri);
 
   /**
    * Set the creation date to now on all individuals in the instance model that do not have a date yet

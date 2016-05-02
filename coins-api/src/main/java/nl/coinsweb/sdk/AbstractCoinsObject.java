@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
 import nl.coinsweb.sdk.injectors.Injector;
 import org.slf4j.Logger;
@@ -46,7 +47,8 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
   protected static final Logger log = LoggerFactory.getLogger(AbstractCoinsObject.class);
 
-  public ExpertCoinsModel model;
+  public ExpertCoinsModel coinsModel;
+  public Model model;
 
 
 
@@ -64,7 +66,11 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   /**
    * Constructor for new Individual.
    */
-  public AbstractCoinsObject(ExpertCoinsModel model) {
+  public AbstractCoinsObject(ExpertCoinsModel coinsModel) {
+    this(coinsModel, (Model)coinsModel.getJenaModel());
+  }
+  public AbstractCoinsObject(ExpertCoinsModel coinsModel, Model model) {
+    this.coinsModel = coinsModel;
     this.model = model;
 
 
@@ -74,10 +80,10 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
 
     // Create fields for this new instance
-    this.uri = model.generateUri();
-    model.addType(getUri(), getClassUri());
-    model.addCreator(getUri(), model.getActiveParty());
-    model.addCreatedNow(getUri());
+    this.uri = coinsModel.generateUri();
+    coinsModel.addType(getUri(), getClassUri());
+    coinsModel.addCreator(getUri(), coinsModel.getActiveParty());
+    coinsModel.addCreatedNow(getUri());
   }
 
   /**
@@ -86,7 +92,14 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   public AbstractCoinsObject(ExpertCoinsModel model, String uri) {
     this(model, uri, false);
   }
-  public AbstractCoinsObject(ExpertCoinsModel model, String uri, boolean dontCheck) {
+  public AbstractCoinsObject(ExpertCoinsModel coinsModel, Model model, String uri) {
+    this(coinsModel, model, uri, false);
+  }
+  public AbstractCoinsObject(ExpertCoinsModel coinsModel, String uri, boolean dontCheck) {
+    this(coinsModel, (Model)coinsModel.getJenaModel(), uri, dontCheck);
+  }
+  public AbstractCoinsObject(ExpertCoinsModel coinsModel, Model model, String uri, boolean dontCheck) {
+    this.coinsModel = coinsModel;
     this.model = model;
 
     // Verify if the rdf files that where the origin for this class have been presented to the current CoinsModel
@@ -97,24 +110,24 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     log.info("set uri to "+this.uri);
 
     // Create fields for this new instance
-    if(((OntModel)model.getUnionJenaOntModel()).getIndividual(uri) == null) {
+    if(((OntModel)coinsModel.getUnionJenaOntModel()).getIndividual(uri) == null) {
       log.info("Uri "+uri+" not found, creating new individual with this uri.");
 
       // Save this new instance to model
-      model.addType(getUri(), getClassUri());
-      model.addCreator(getUri(), model.getActiveParty());
-      model.addCreatedNow(getUri());
+      coinsModel.addType(model, getUri(), getClassUri());
+      coinsModel.addCreator(model, getUri(), coinsModel.getActiveParty());
+      coinsModel.addCreatedNow(model, getUri());
     }
 
-    // Creating an instance based on an existing uri can be concidered a read
-    for(Injector injector : model.getInjectors()) {
-      injector.proposeRead(model, uri);
+    // Creating an instance based on an existing uri can be considered a read
+    for(Injector injector : coinsModel.getInjectors()) {
+      injector.proposeRead(coinsModel, uri);
     }
 
     // Check if the object with the specified uri may be cast to this type
     if(!dontCheck) {
       boolean foundClassDef = false;
-      Iterator<String> classes = model.listClassUris(uri).iterator();
+      Iterator<String> classes = coinsModel.listClassUris(uri).iterator();
       while (classes.hasNext()) {
         String candidateClassUri = classes.next();
         log.trace("Try if " + candidateClassUri + " as candidate equals where we want to cast to " + getClassUri());
@@ -177,11 +190,11 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
   @Override
   public Set<String> listClassUris() {
-    return model.listClassUris(getUri());
+    return coinsModel.listClassUris(getUri());
   }
   @Override
   public boolean hasAsClass(String classUri) {
-    return model.hasAsClass(getUri(), classUri);
+    return coinsModel.hasAsClass(getUri(), classUri);
   }
   @Override
   public <T extends CoinsObject> void addType(Class<T> clazz) {
@@ -196,7 +209,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   }
   @Override
   public void addType(String classUri) {
-    model.addType(getUri(), classUri);
+    coinsModel.addType(getUri(), classUri);
   }
   @Override
   public <T extends CoinsObject> void removeType(Class<T> clazz) {
@@ -211,108 +224,108 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   }
   @Override
   public void removeType(String classUri) {
-    model.removeType(getUri(), classUri);
+    coinsModel.removeType(getUri(), classUri);
   }
   @Override
   public void addCoinsContainerObjectType() {
-    model.addCoinsContainerObjectType(getUri());
+    coinsModel.addCoinsContainerObjectType(getUri());
   }
   @Override
   public Iterator<String> findSubClasses(String key) {
-    return model.findSubClasses(getClassUri(), key);
+    return coinsModel.findSubClasses(getClassUri(), key);
   }
   @Override
   public <T extends CoinsObject> boolean canAs(Class<T> clazz) {
-    return model.canAs(getUri(), clazz);
+    return coinsModel.canAs(getUri(), clazz);
   }
   @Override
   public <T extends CoinsObject> T as(Class<T> clazz) {
-    return model.as(getUri(), clazz);
+    return coinsModel.as(getUri(), clazz);
   }
 
 
 
   @Override
   public Iterator<String> listPropertyDefinitions(Class<CoinsObject> propertyTypeClass) {
-    return model.listPropertyDefinitions(getClassUri(), propertyTypeClass);
+    return coinsModel.listPropertyDefinitions(getClassUri(), propertyTypeClass);
   }
   @Override
   public Iterator<String> listPropertyDefinitions(String propertyTypeClassUri) {
-    return model.listPropertyDefinitions(getClassUri(), propertyTypeClassUri);
+    return coinsModel.listPropertyDefinitions(getClassUri(), propertyTypeClassUri);
   }
 
   @Override
   public Iterator<CoinsObject> listProperties() {
-    return model.listProperties(getUri());
+    return coinsModel.listProperties(getUri());
   }
 
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(Class<T> propertyTypeClass) {
-    return model.listProperties(getUri(), propertyTypeClass);
+    return coinsModel.listProperties(getUri(), propertyTypeClass);
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String propertyTypeClassUri) {
-    return model.listProperties(getUri(), propertyTypeClassUri);
+    return coinsModel.listProperties(getUri(), propertyTypeClassUri);
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String predicate, Class<T> propertyTypeClass) {
-    return model.listProperties(getUri(), predicate, propertyTypeClass);
+    return coinsModel.listProperties(getUri(), predicate, propertyTypeClass);
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String predicate, String propertyTypeClassUri) {
-    return model.listProperties(getUri(), predicate, propertyTypeClassUri);
+    return coinsModel.listProperties(getUri(), predicate, propertyTypeClassUri);
   }
 
   @Override
   public RuntimeCoinsObject createProperty(String predicateUri, String propertyTypeClassUri) {
-    return model.createProperty(getUri(), predicateUri, propertyTypeClassUri);
+    return coinsModel.createProperty(getUri(), predicateUri, propertyTypeClassUri);
   }
   @Override
   public <T extends AbstractCoinsObject> T createProperty(String predicateUri, Class<T> propertyTypeClass) {
-    return model.createProperty(getUri(), predicateUri, propertyTypeClass);
+    return coinsModel.createProperty(getUri(), predicateUri, propertyTypeClass);
   }
   @Override
   public void removeProperty(CoinsObject property) {
-    model.removeProperty(getUri(), property);
+    coinsModel.removeProperty(getUri(), property);
   }
 
   @Override
   public <T> T getLiteralValue(String predicate, Class<T> clazz) {
-    return model.getLiteralValue(getUri(), predicate, clazz);
+    return coinsModel.getLiteralValue(getUri(), predicate, clazz);
   }
   @Override
   public <T> Iterator<T> getLiteralValues(String predicate, Class<T> clazz) {
-    return model.getLiteralValues(getUri(), predicate, clazz);
+    return coinsModel.getLiteralValues(getUri(), predicate, clazz);
   }
   @Override
   public <T> void setLiteralValue(String predicate, T object) {
-    model.setLiteralValue(getUri(), predicate, object);
+    coinsModel.setLiteralValue(getUri(), predicate, object);
   }
   @Override
   public <T> void addLiteralValue(String predicate, T object) {
-    model.addLiteralValue(getUri(), predicate, object);
+    coinsModel.addLiteralValue(getUri(), predicate, object);
   }
 
   @Override
   public <T extends CoinsObject> T getObject(String predicate, Class<T> clazz) {
-    return model.getObject(getUri(), predicate, clazz);
+    return coinsModel.getObject(getUri(), predicate, clazz);
   }
   @Override
   public <T extends CoinsObject> Iterator<T> getObjects(String predicate, Class<T> clazz) {
-    return model.getObjects(getUri(), predicate, clazz);
+    return coinsModel.getObjects(getUri(), predicate, clazz);
   }
   @Override
   public void setObject(String predicate, AbstractCoinsObject object) {
-    model.setObject(getUri(), predicate, object);
+    coinsModel.setObject(getUri(), predicate, object);
   }
   @Override
   public void addObject(String predicate, AbstractCoinsObject object) {
-    model.addObject(getUri(), predicate, object);
+    coinsModel.addObject(getUri(), predicate, object);
   }
 
   @Override
   public void removeIndividualAndProperties() {
-    model.removeIndividualAndProperties(getUri());
+    coinsModel.removeIndividualAndProperties(getUri());
   }
 
 
@@ -352,8 +365,8 @@ public abstract class AbstractCoinsObject implements CoinsObject {
         log.trace("register "+fileName+" from jar");
 
         InputStream fileStream = getClass().getResourceAsStream("/"+fileName);
-        Namespace ns = FileManager.copyAndRegisterLibrary(fileStream, fileName, model.getAvailableLibraryFiles());
-        model.addImport(null, ns.toString(), true, true, false);
+        Namespace ns = FileManager.copyAndRegisterLibrary(fileStream, fileName, coinsModel.getAvailableLibraryFiles());
+        coinsModel.addImport(null, ns.toString(), true, true, false);
 
       }
 
@@ -394,7 +407,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
   @Override
   public ExpertCoinsModel getCoinsModel() {
-    return model;
+    return coinsModel;
   }
 
 

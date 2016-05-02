@@ -24,6 +24,8 @@
  **/
 package nl.coinsweb.sdk;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 import java.io.File;
 import java.util.List;
 import java.util.Set;
@@ -72,7 +74,8 @@ public interface CoinsContainer {
    *
    * @param target  a file path ('/tmp/instance_model.rdf' or 'C:\tmp\content.ttl')
    */
-  public void exportOwlModel(String target);
+  public void exportModel(String target);
+  public void exportModel(Model model, String target);
 
   /**
    * Return a list of library uri's of the available libraries.

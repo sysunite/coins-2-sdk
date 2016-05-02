@@ -1,8 +1,9 @@
 package nl.coinsweb.sdk.cli.viewer;
 
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.cli.CliOptions;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,8 @@ public class RunViewer {
     if(server.getUrl() != null) {
 
 
-      JenaCoinsContainer container = new InMemCoinsContainer(options.getInputOptions().get(0).toString(),  "http://www.example.com/");
+      ModelFactory factory = new JenaModelFactory();
+      JenaCoinsContainer container = new JenaCoinsContainer(factory, options.getInputOptions().get(0).toString(), "http://www.example.com/");
 
       if(container != null) {
 

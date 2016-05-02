@@ -3,9 +3,10 @@ package nl.coinsweb.sdk.integration.gwwusecases;
 import nl.coinsweb.cbim.Concept;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,8 @@ public class A5_MBITestP8 {
 
 
     // Constructing this container will copy the external libraries to a temp folder
-    JenaCoinsContainer ccr = new InMemCoinsContainer(instanceFile.toString(), "http://www.example.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, instanceFile.toString(), "http://www.example.com/");
 
 
 
@@ -90,7 +92,8 @@ public class A5_MBITestP8 {
 
     log.info("#will reload now");
 
-    JenaCoinsContainer reloaded = new InMemCoinsContainer("/tmp/coinstest/MBITestP8.ccr", "http://www.example.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer reloaded = new JenaCoinsContainer(factory, "/tmp/coinstest/MBITestP8.ccr", "http://www.example.com/");
 
     reloaded.listIndividuals();
     reloaded.listClasses();

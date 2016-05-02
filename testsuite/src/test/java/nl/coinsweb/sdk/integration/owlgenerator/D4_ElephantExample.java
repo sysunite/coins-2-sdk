@@ -3,8 +3,10 @@ package nl.coinsweb.sdk.integration.owlgenerator;
 import com.playground.elephant.*;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.ExpertCoinsModel;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +39,8 @@ public class D4_ElephantExample {
   public void init() {
 
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    model = new InMemCoinsContainer(defaultPerson, "http://playground.com/elephant#");
+    ModelFactory factory = new JenaModelFactory();
+    model = new JenaCoinsContainer(factory, defaultPerson, "http://playground.com/elephant#");
     olifant = new Olifant(model);
     dier = new Dier(model);
   }

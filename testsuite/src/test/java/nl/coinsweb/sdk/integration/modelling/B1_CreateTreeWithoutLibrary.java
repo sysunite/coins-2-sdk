@@ -4,9 +4,10 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import nl.coinsweb.cbim.FloatProperty;
 import nl.coinsweb.sdk.AbstractCoinsObject;
 import nl.coinsweb.sdk.CoinsParty;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -45,7 +46,8 @@ public class B1_CreateTreeWithoutLibrary {
      * Create a model with two instances
      */
 
-    JenaCoinsContainer container = new InMemCoinsContainer(defaultPerson, "http://gardening.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer container = new JenaCoinsContainer(factory, defaultPerson, "http://gardening.com/");
     AbstractCoinsObject gardenPiece_1 = new RuntimeCoinsObject(container, "http://gardening.com/Tree");
     AbstractCoinsObject gardenPiece_2 = new RuntimeCoinsObject(container, "http://gardening.com/Oak");
 
@@ -58,7 +60,7 @@ public class B1_CreateTreeWithoutLibrary {
     /**
      * Print the content of the file
      */
-    File file = container.exportOwlModel("/tmp/coinstest/content.nq", RDFFormat.NQUADS);
+    File file = container.exportModel("/tmp/coinstest/content.nq", RDFFormat.NQUADS);
     try {
       BufferedReader br = new BufferedReader(new FileReader(file));
       String line = null;
@@ -99,7 +101,8 @@ public class B1_CreateTreeWithoutLibrary {
      * Create a model with two instances
      */
 
-    JenaCoinsContainer container = new InMemCoinsContainer(defaultPerson, "http://gardening.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer container = new JenaCoinsContainer(factory, defaultPerson, "http://gardening.com/");
     AbstractCoinsObject gardenPiece_1 = new RuntimeCoinsObject(container, "http://gardening.com/Tree");
     AbstractCoinsObject gardenPiece_2 = new RuntimeCoinsObject(container, "http://gardening.com/Oak");
 
@@ -117,7 +120,7 @@ public class B1_CreateTreeWithoutLibrary {
     /**
      * Print the content of the file
      */
-    File file = container.exportOwlModel("/tmp/coinstest/content.nq", RDFFormat.NQUADS);
+    File file = container.exportModel("/tmp/coinstest/content.nq", RDFFormat.NQUADS);
     try {
       BufferedReader br = new BufferedReader(new FileReader(file));
       String line = null;

@@ -2,7 +2,8 @@ package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,8 @@ public class JenaModelTest {
 
   @Test
   public void testOntologyHeader() {
-    InMemCoinsContainer container = new InMemCoinsContainer("http://sandbox.coinsweb.nl/");
+    nl.coinsweb.sdk.ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer container = new JenaCoinsContainer(factory, "http://sandbox.coinsweb.nl/");
     log.debug(container.exportAsString());
   }
 
