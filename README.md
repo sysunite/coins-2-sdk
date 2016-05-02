@@ -29,40 +29,40 @@ Visit the [documentation](https://github.com/sysunite/coins-2-sdk/wiki) page for
 
 ###Examples
 ```java
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+ModelFactory factory = new JenaModelFactory();
+JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
 
-    Assembly a = new Assembly(model);
+Assembly a = new Assembly(model);
 
-    Iterator<String> individuals = model.listIndividualUris(LengthUnit.classUri).iterator();
-    while(individuals.hasNext()) {
-      System.out.println(individuals.next());
+Iterator<String> individuals = model.listIndividualUris(LengthUnit.classUri).iterator();
+while(individuals.hasNext()) {
 
-        // Result:
-        // ...
-        // http://qudt.org/vocab/unit#Kilometer
-        // http://qudt.org/vocab/unit#Point
-        // http://qudt.org/vocab/unit#Decimeter
-        // http://qudt.org/vocab/unit#Millimeter
-        // http://qudt.org/vocab/unit#NauticalMile
-        // ...
-    }
+    System.out.println(individuals.next());
 
-    FloatProperty property = new FloatProperty(model);
-    a.addHasProperties(property);
+    // Result:
+    // ...
+    // http://qudt.org/vocab/unit#Kilometer
+    // http://qudt.org/vocab/unit#Point
+    // http://qudt.org/vocab/unit#Decimeter
+    // http://qudt.org/vocab/unit#Millimeter
+    // http://qudt.org/vocab/unit#NauticalMile
+    // ...
+}
 
-    property.setSimpleProperty(11.3f);
-    property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
+FloatProperty property = new FloatProperty(model);
+a.addHasProperties(property);
 
+property.setSimpleProperty(11.3f);
+property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    DatasetAsserts.logTriples(model.getWoaModel());
+DatasetAsserts.logTriples(model.getJenaModel());
+DatasetAsserts.logTriples(model.getWoaModel());
 
-    Iterator<Map<String, String>> result =  model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
-    while(result.hasNext()) {
-      Map<String, String> row = result.next();
-      log.debug(row.toString());
-    }
+Iterator<Map<String, String>> result =  model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
+while(result.hasNext()) {
+  Map<String, String> row = result.next();
+  log.debug(row.toString());
+}
 
 model.export("/tmp/container.ccr");
 ```
