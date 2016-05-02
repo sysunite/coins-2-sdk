@@ -1,7 +1,8 @@
 package nl.coinsweb.sdk;
 
 import nl.coinsweb.sdk.cli.Run;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 
 import java.io.File;
@@ -26,7 +27,8 @@ public class RunTest {
     Path path = Paths.get(getClass().getClassLoader().getResource("Cbim-2.0-RC17.rdf").getPath());
 
 
-    InMemCoinsContainer model = new InMemCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
 
 
     ArrayList<String> sourceFileNames = new ArrayList<>();

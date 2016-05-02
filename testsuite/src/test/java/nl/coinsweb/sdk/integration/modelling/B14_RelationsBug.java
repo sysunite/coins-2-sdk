@@ -1,8 +1,9 @@
 package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.Connection;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -24,7 +25,8 @@ public class B14_RelationsBug {
   @Test
   public void aCreateContainer() {
 
-    JenaCoinsContainer cc = new InMemCoinsContainer("http://sandbox.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer cc = new JenaCoinsContainer(factory, "http://sandbox.com/");
 
 
 

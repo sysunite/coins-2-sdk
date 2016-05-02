@@ -4,7 +4,9 @@ import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.ExpertCoinsModel;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.ModelFactory;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.qudt.schema.qudt.LengthUnit;
 import org.qudt.schema.qudt.Unit;
@@ -34,7 +36,8 @@ public class B6_DatasetUse {
   @Test
   public void listClasses() {
 
-    InMemCoinsContainer model = new InMemCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
 
 
 
@@ -71,7 +74,8 @@ public class B6_DatasetUse {
   @Test
   public void createFloat() {
 
-    InMemCoinsContainer model = new InMemCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
 
 
     Object bovenbouwweg = new Object(model);

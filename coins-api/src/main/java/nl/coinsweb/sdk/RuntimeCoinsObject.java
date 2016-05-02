@@ -24,6 +24,7 @@
  **/
 package nl.coinsweb.sdk;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,8 +52,12 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
   /**
    * Constructor for new ...
    */
-  public RuntimeCoinsObject(ExpertCoinsModel model, String classUri) {
+  public RuntimeCoinsObject(ExpertCoinsModel coinsModel, String classUri) {
+    this(coinsModel, (Model)coinsModel.getJenaModel(), classUri);
+  }
+  public RuntimeCoinsObject(ExpertCoinsModel coinsModel, Model model, String classUri) {
 
+    this.coinsModel = coinsModel;
     this.model = model;
     this.classUri = classUri;
 
@@ -62,19 +67,23 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
 
 
     // Create fields for this new instance
-    this.uri = model.generateUri();
+    this.uri = coinsModel.generateUri();
 
 
     // Save this new instance to model
-    model.addType(getUri(), getClassUri());
-    model.addCreator(getUri(), model.getActiveParty());
-    model.addCreatedNow(getUri());
+    coinsModel.addType(getUri(), getClassUri());
+    coinsModel.addCreator(getUri(), coinsModel.getActiveParty());
+    coinsModel.addCreatedNow(getUri());
   }
 
   /**
    * Constructor for existing ...
    */
-  public RuntimeCoinsObject(ExpertCoinsModel model, String classUri, String uri) {
+  public RuntimeCoinsObject(ExpertCoinsModel coinsModel, String classUri, String uri) {
+    this(coinsModel, (Model)coinsModel.getJenaModel(), classUri, uri);
+  }
+  public RuntimeCoinsObject(ExpertCoinsModel coinsModel, Model model, String classUri, String uri) {
+    this.coinsModel = coinsModel;
     this.model = model;
     this.classUri = classUri;
     this.uri = uri;

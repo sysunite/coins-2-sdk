@@ -2,9 +2,10 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.sdk.CoinsObject;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.qudt.schema.qudt.LengthUnit;
 import org.qudt.schema.qudt.Unit;
@@ -31,7 +32,8 @@ public class B10_SettingUnits {
   @Test
   public void listUnits() {
 
-    JenaCoinsContainer model = new InMemCoinsContainer("http://playground.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
 
     Assembly a = new Assembly(model);
 
@@ -134,6 +136,48 @@ public class B10_SettingUnits {
       CoinsObject obj = iterator.next();
       log.debug(obj.getUri() + " with class " +obj.getClassUri());
     }
+
+  }
+
+  @Test
+  public void listUnitsForExample() {
+
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+
+    Assembly a = new Assembly(model);
+
+    Iterator<String> individuals = model.listIndividualUris(LengthUnit.classUri).iterator();
+    while(individuals.hasNext()) {
+      System.out.println(individuals.next());
+
+        // Result:
+        // ...
+        // http://qudt.org/vocab/unit#Kilometer
+        // http://qudt.org/vocab/unit#Point
+        // http://qudt.org/vocab/unit#Decimeter
+        // http://qudt.org/vocab/unit#Millimeter
+        // http://qudt.org/vocab/unit#NauticalMile
+        // ...
+    }
+
+    FloatProperty property = new FloatProperty(model);
+    a.addHasProperties(property);
+
+    property.setSimpleProperty(11.3f);
+    property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
+
+
+    DatasetAsserts.logTriples(model.getJenaModel());
+    DatasetAsserts.logTriples(model.getWoaModel());
+
+    Iterator<Map<String, String>> result =  model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
+    while(result.hasNext()) {
+      Map<String, String> row = result.next();
+      log.debug(row.toString());
+    }
+
+
 
   }
 }

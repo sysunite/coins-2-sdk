@@ -4,12 +4,13 @@ import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -473,7 +474,8 @@ public class BS {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", nr + ".rdf").getCanonicalFile();
-      model = new InMemCoinsContainer(defaultPerson, testFile.toString(), "http://www.example.com/");
+      ModelFactory factory = new JenaModelFactory();
+      model = new JenaCoinsContainer(factory, defaultPerson, testFile.toString(), "http://www.example.com/");
       if(withLib) {
 
         File libFile = IntegrationHelper.getResourceFile("BS", nr + "-lib.rdf").getCanonicalFile();
@@ -509,7 +511,8 @@ public class BS {
 
 
     // Reopen the ccr
-    JenaCoinsContainer reopenend = new InMemCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
+    ModelFactory factory = new JenaModelFactory();
+    JenaCoinsContainer reopenend = new JenaCoinsContainer(factory, defaultPerson, "/tmp/coinstest/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
 
     assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
     return reopenend;

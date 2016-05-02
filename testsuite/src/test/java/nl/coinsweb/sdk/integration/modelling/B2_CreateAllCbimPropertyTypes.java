@@ -3,10 +3,12 @@ package nl.coinsweb.sdk.integration.modelling;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
-import nl.coinsweb.sdk.jena.InMemCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,9 +70,10 @@ public class B2_CreateAllCbimPropertyTypes {
 
     boolean contains = false;
 
-    InMemCoinsContainer model = new InMemCoinsContainer("http://empty.com/", false);
+    ModelFactory factory = new JenaModelFactory();
+    factory.setReasoner(reasoner);
+    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://empty.com/", false);
 
-    model.setReasoner(reasoner);
     model.addImport(Paths.get(IntegrationHelper.getResourceFile("BS", "Cbim-2.0.rdf").getAbsolutePath()).toFile().toString(), null, true, true, true);
 
     ExtendedIterator<OntClass> classes =  model.listOntClasses();

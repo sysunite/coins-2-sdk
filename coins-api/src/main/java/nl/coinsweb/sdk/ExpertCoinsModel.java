@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
@@ -75,6 +76,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param classUri  the uri of the class
    */
   public void addType(String instanceUri, String classUri);
+  public void addType(Model model, String instanceUri, String classUri);
 
 
   /**
@@ -84,6 +86,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param classUri  the uri of the class
    */
   public void removeType(String instanceUri, String classUri);
+  public void removeType(Model model, String instanceUri, String classUri);
 
 
   /**
@@ -107,6 +110,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  true if the cast can be done
    */
   public <T extends CoinsObject> boolean canAs(String instanceUri, Class<T> clazz);
+  public <T extends CoinsObject> boolean canAs(Model model, String instanceUri, Class<T> clazz);
 
 
   /**
@@ -117,6 +121,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  a cast of the specified instance to the specified CoinsObject type
    */
   public <T extends CoinsObject> T as(String instanceUri, Class<T> clazz);
+  public <T extends CoinsObject> T as(Model model, String instanceUri, Class<T> clazz);
 
 
   /**
@@ -152,6 +157,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with RuntimeCoinsObject's
    */
   public Iterator<CoinsObject> listProperties(String instanceUri);
+  public Iterator<CoinsObject> listProperties(Model model, String instanceUri);
 
 
   /**
@@ -164,6 +170,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, Class<T> propertyTypeClass);
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, String instanceUri, Class<T> propertyTypeClass);
 
 
   /**
@@ -177,6 +184,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String propertyClassUri);
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String instanceUri, String propertyClassUri);
 
 
   /**
@@ -190,6 +198,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, String predicate, Class<T> propertyTypeClass);
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, String instanceUri, String predicate, Class<T> propertyTypeClass);
 
 
   /**
@@ -204,6 +213,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String predicate, String propertyClassUri);
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String instanceUri, String predicate, String propertyClassUri);
 
 
   /**
@@ -228,6 +238,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  the constructed property object as RuntimeCoinsObject
    */
   public RuntimeCoinsObject createProperty(String instanceUri, String predicateUri, String propertyClassUri);
+  public RuntimeCoinsObject createProperty(Model model, String instanceUri, String predicateUri, String propertyClassUri);
 
 
   /**
@@ -237,6 +248,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param property  CoinsObject representation of the property instance
    */
   public void removeProperty(String instanceUri, CoinsObject property);
+  public void removeProperty(Model model, String instanceUri, CoinsObject property);
 
 
   /**
@@ -250,6 +262,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  the value as String, Integer, etc.
    */
   public <T> T getLiteralValue(String instanceUri, String predicate, Class<T> clazz);
+  public <T> T getLiteralValue(Model model, String instanceUri, String predicate, Class<T> clazz);
 
 
   /**
@@ -263,6 +276,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> Iterator<T> getLiteralValues(String instanceUri, String predicate, Class<T> clazz);
+  public <T> Iterator<T> getLiteralValues(Model model, String instanceUri, String predicate, Class<T> clazz);
 
 
   /**
@@ -278,6 +292,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void setLiteralValue(String instanceUri, String predicate, T object);
+  public <T> void setLiteralValue(Model model, String instanceUri, String predicate, T object);
 
 
   /**
@@ -291,6 +306,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void addLiteralValue(String instanceUri, String predicate, T object);
+  public <T> void addLiteralValue(Model model, String instanceUri, String predicate, T object);
 
 
   /**
@@ -303,6 +319,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void removeLiteralValue(String instanceUri, String predicate, T object);
+  public <T> void removeLiteralValue(Model model, String instanceUri, String predicate, T object);
 
 
   /**
@@ -316,6 +333,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  the object of the relation from the instance as specified CoinsObject extension
    */
   public <T extends CoinsObject> T getObject(String instanceUri, String predicate, Class<T> clazz);
+  public <T extends CoinsObject> T getObject(Model model, String instanceUri, String predicate, Class<T> clazz);
 
 
   /**
@@ -329,6 +347,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T extends CoinsObject> Iterator<T> getObjects(String instanceUri, String predicate, Class<T> clazz);
+  public <T extends CoinsObject> Iterator<T> getObjects(Model model, String instanceUri, String predicate, Class<T> clazz);
 
 
   /**
@@ -342,6 +361,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  CoinsObject representation of the object
    */
   public void setObject(String instanceUri, String predicate, CoinsObject object);
+  public void setObject(Model model, String instanceUri, String predicate, CoinsObject object);
 
 
   /**
@@ -355,6 +375,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param objectUri  uri of the object
    */
   public void setObject(String instanceUri, String predicate, String objectUri);
+  public void setObject(Model model, String instanceUri, String predicate, String objectUri);
 
 
   /**
@@ -366,6 +387,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  CoinsObject representation of the object
    */
   public void addObject(String instanceUri, String predicate, CoinsObject object);
+  public void addObject(Model model, String instanceUri, String predicate, CoinsObject object);
 
 
   /**
@@ -377,6 +399,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param objectUri  uri of the object
    */
   public void addObject(String instanceUri, String predicate, String objectUri);
+  public void addObject(Model model, String instanceUri, String predicate, String objectUri);
 
 
   /**
@@ -387,6 +410,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  CoinsObject representation of the object
    */
   public void removeObject(String instanceUri, String predicate, CoinsObject object);
+  public void removeObject(Model model, String instanceUri, String predicate, CoinsObject object);
 
 
   /**
@@ -397,6 +421,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param objectUri  uri of the object
    */
   public void removeObject(String instanceUri, String predicate, String objectUri);
+  public void removeObject(Model model, String instanceUri, String predicate, String objectUri);
 
 
   /**
@@ -406,6 +431,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param instanceUri  the uri of the instance
    */
   public void removeIndividualAndProperties(String instanceUri);
+  public void removeIndividualAndProperties(Model model, String instanceUri);
 
   /**
    * Return the archive of ontology files available to load to the container.
@@ -422,6 +448,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  true if the owl:Ontology is present
    */
   public boolean hasOntologyHeader();
+  public boolean hasOntologyHeader(Model model);
 
 
   /**
@@ -464,6 +491,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  uri (!) to add literals use the method with RDFNode
    */
   public void addStatement(String subject, String predicate, String object);
+  public void addStatement(Model model, String subject, String predicate, String object);
 
 
   /**
@@ -474,6 +502,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  RDFNode, for example containing a literal
    */
   public void addStatement(String subject, String predicate, RDFNode object);
+  public void addStatement(Model model, String subject, String predicate, RDFNode object);
 
 
   /**
@@ -484,6 +513,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  uri (!) to add literals use the method with RDFNode
    */
   public void removeStatement(String subject, String predicate, String object);
+  public void removeStatement(Model model, String subject, String predicate, String object);
 
 
   /**
@@ -494,6 +524,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param object  RDFNode, for example containing a literal
    */
   public void removeStatement(String subject, String predicate, RDFNode object);
+  public void removeStatement(Model model, String subject, String predicate, RDFNode object);
 
 
   /**
@@ -504,6 +535,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @param predicate  uri
    */
   public void removeAllStatements(String subject, String predicate);
+  public void removeAllStatements(Model model, String subject, String predicate);
 
 
   /**
@@ -512,6 +544,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  string consisting rdf/xml format export of the instance model
    */
   public String exportAsString();
+  public String exportAsString(Model model);
 
   /**
    * Export the instance model as a string.
@@ -520,6 +553,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  string consisting export of the instance model in specified format
    */
   public String exportAsString(RDFFormat format);
+  public String exportAsString(Model model, RDFFormat format);
 
 
   /**

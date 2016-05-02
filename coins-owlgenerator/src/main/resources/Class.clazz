@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 import nl.coinsweb.sdk.*;
 <#list imports as import>
 import ${import};
@@ -36,16 +38,28 @@ public class ${className} extends AbstractCoinsObject implements ${parents?join(
    * Constructors
    */
 
-  public ${className}(ExpertCoinsModel model) {
-    super(model);
+  public ${className}(ExpertCoinsModel coinsModel) {
+    super(coinsModel);
   }
 
-  public ${className}(ExpertCoinsModel model, String uri) {
-    super(model, uri);
+  public ${className}(ExpertCoinsModel coinsModel, Model model) {
+    super(coinsModel, model);
   }
 
-  public ${className}(ExpertCoinsModel model, String uri, boolean dontCheck) {
-    super(model, uri, dontCheck);
+  public ${className}(ExpertCoinsModel coinsModel, String uri) {
+    super(coinsModel, uri);
+  }
+
+  public ${className}(ExpertCoinsModel coinsModel, Model model, String uri) {
+    super(coinsModel, model, uri);
+  }
+
+  public ${className}(ExpertCoinsModel coinsModel, String uri, boolean dontCheck) {
+    super(coinsModel, uri, dontCheck);
+  }
+
+  public ${className}(ExpertCoinsModel coinsModel, Model model, String uri, boolean dontCheck) {
+    super(coinsModel, model, uri, dontCheck);
   }
 
 

@@ -42,6 +42,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import com.hp.hpl.jena.vocabulary.XSD;
 import nl.coinsweb.sdk.*;
+import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.apolda.impl.XSDAnySimpleTypeLiteral;
 import nl.coinsweb.sdk.apolda.iterator.SparqlPropertyDeclarationIterator;
 import nl.coinsweb.sdk.apolda.language.Language;
@@ -68,7 +69,7 @@ import java.util.*;
 /**
  * @author Bastian Bijl
  */
-public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoinsModel {
+public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoinsModel {
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
 
@@ -78,16 +79,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   private HashMap<String, File> attachments = new HashMap<>();
   private HashMap<Namespace, File> availableLibraryFiles = new HashMap<>();
 
-  // Use the file name as key for all models
-  protected HashMap<String, ExpertCoinsModel> coinsModels = new HashMap<>();
-
   // stuff from model
 
-//  private OntModelSpec reasoner = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
-  private OntModelSpec reasoner = OntModelSpec.OWL_MEM_RDFS_INF;
-//  private OntModelSpec reasoner = OntModelSpec.OWL_MEM;
-
-  protected Dataset dataset;
+  protected ModelFactory factory;
 
   private CoinsParty party;
   private File originalContainerFile;
@@ -119,16 +113,18 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
    * create an empty clean container
    * @param namespace
    */
-  public JenaCoinsContainer(String namespace) {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, true);
+  public JenaCoinsContainer(ModelFactory factory, String namespace) {
+    this(factory, new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, true);
   }
-  public JenaCoinsContainer(CoinsParty party, String namespace) {
-    this(party, namespace, true);
+  public JenaCoinsContainer(ModelFactory factory, CoinsParty party, String namespace) {
+    this(factory, party, namespace, true);
   }
-  public JenaCoinsContainer(String namespace, boolean loadCoreModels) {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, loadCoreModels);
+  public JenaCoinsContainer(ModelFactory factory, String namespace, boolean loadCoreModels) {
+    this(factory, new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, loadCoreModels);
   }
-  public JenaCoinsContainer(CoinsParty party, String namespace, boolean loadCoreModels) {
+  public JenaCoinsContainer(ModelFactory factory, CoinsParty party, String namespace, boolean loadCoreModels) {
+
+    this.factory = factory;
 
     this.party = party;
     this.party.setModel(this);
@@ -138,8 +134,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     this.internalRef = FileManager.newCoinsContainer();
     this.containerId = UUID.randomUUID().toString();
 
-    doModelPreparation();
-    this.dataset = createDataset();
     this.libraryModels = new HashMap<>();
 
     // Prepare an empty dataset
@@ -153,16 +147,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
 
     // Create empty model
-    instanceModel = ModelFactory.createDefaultModel();
+    instanceModel = factory.getEmptyModel();
     instanceModel.setNsPrefix("", instanceNamespace.toString());
     instanceModel.setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
     addOntologyHeader();
-
-    dataset.addNamedModel(instanceNamespace.toString(), instanceModel);
     log.info("Added instance model with name "+ instanceNamespace);
 
 
-    woaModel = ModelFactory.createDefaultModel();
+    woaModel = factory.getEmptyModel();
 
 
     // Add core model
@@ -193,17 +185,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
    * create a container from existing files
    * @param filePath       a container (ccr-file) or an rdf-file
    */
-  public JenaCoinsContainer(String filePath, String namespace) {
-    this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath, namespace);
+  public JenaCoinsContainer(ModelFactory factory, String filePath, String namespace) {
+    this(factory, new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath, namespace);
   }
-  public JenaCoinsContainer(CoinsParty party, String filePath, String namespace) {
+  public JenaCoinsContainer(ModelFactory factory, CoinsParty party, String filePath, String namespace) {
+
+    this.factory = factory;
 
     this.party = party;
     this.party.setModel(this);
 
     this.instanceNamespace = new Namespace(namespace);
-
-    doModelPreparation();
 
     // Load an existing
     this.load(filePath);
@@ -214,13 +206,13 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
 
 
-  protected abstract void doModelPreparation();
-  protected abstract Dataset createDataset();
+
+
 
   private void initInjectors() {
     this.injectors = new ArrayList<>();
     this.injectors.add(new AttachmentInjector());
-    this.injectors.add(new WOAInjector(woaModel, asOntModel(instanceModel)));
+    this.injectors.add(new WOAInjector(woaModel, factory.asOntModel(instanceModel)));
   }
 
 
@@ -237,7 +229,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   public void load(String sourceFile) {
 
     // Start with a clean sheet
-    this.dataset = createDataset();
     this.libraryModels = new HashMap<>();
 
     File file = new File(sourceFile);
@@ -321,14 +312,13 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
     // Create model and read the instance base model
-    instanceModel = ModelFactory.createDefaultModel();
+    instanceModel = factory.getEmptyModel();
     if(rdfFile != null) {
       instanceModel.read(this.rdfFile.toURI().toString());
       instanceNamespace = FileManager.getLeadingNamespace(this.rdfFile, instanceModel);
     }
     instanceModel.setNsPrefix("", instanceNamespace.toString());
     instanceModel.setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
-    dataset.addNamedModel(instanceNamespace.toString(), instanceModel);
     log.info("Added instance model with name "+ instanceNamespace);
 
     Statement searchResult = instanceModel.getProperty(new ResourceImpl(this.instanceNamespace.withoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
@@ -347,13 +337,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     addNamedModelForImports(instanceModel);
 
     // Create woa model and read the woa base model
-    woaModel = ModelFactory.createDefaultModel();
+    woaModel = factory.getEmptyModel();
     if(woaFile != null) {
       woaModel.read(this.woaFile.toURI().toString());
       woaNamespace = FileManager.getLeadingNamespace(this.woaFile, woaModel);
     }
     woaModel.setNsPrefix("", woaNamespace.toString());
-    dataset.addNamedModel(woaNamespace.toString(), woaModel);
     log.info("Added woa model with name "+ woaNamespace);
 
     initInjectors();
@@ -362,7 +351,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public void export() {
-    exportOwlModel();
+    exportModel();
     if(originalContainerFile != null) {
       FileManager.zip(internalRef, originalContainerFile);
     } else {
@@ -372,21 +361,28 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public void export(String target) {
-    exportOwlModel();
+    exportModel();
     File targetFile = new File(target);
     FileManager.zip(internalRef, targetFile);
   }
 
 
-  public void exportOwlModel() {
+  public void exportModel() {
     File file = FileManager.createRdfFile(internalRef, rdfFileName);
-    exportOwlModel(file.getPath(), RDFFormat.RDFXML);
+    exportModel(file.getPath(), RDFFormat.RDFXML);
   }
   @Override
-  public void exportOwlModel(String target) {
-    exportOwlModel(target, RDFFormat.RDFXML);
+  public void exportModel(String target) {
+    exportModel(target, RDFFormat.RDFXML);
   }
-  public File exportOwlModel(String toFileName, RDFFormat format) {
+  @Override
+  public void exportModel(Model model, String target) {
+    exportModel(model, target, RDFFormat.RDFXML);
+  }
+  public File exportModel(String toFileName, RDFFormat format) {
+    return exportModel(instanceModel, toFileName, format);
+  }
+  public File exportModel(Model model, String toFileName, RDFFormat format) {
 
     try {
 
@@ -396,7 +392,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
       OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-      writeInstanceModelToFile(out, format);
+      writeModelToFile(model, out, format);
       log.info("exported to " + file.getAbsolutePath());
       return file;
 
@@ -405,11 +401,21 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       throw new CoinsFileNotFoundException("Problem exporting to: "+toFileName, e);
     }
   }
+  @Override
   public String exportAsString() {
-    return exportAsString(RDFFormat.RDFXML);
+    return exportAsString(instanceModel);
   }
+  @Override
+  public String exportAsString(Model model) {
+    return exportAsString(model, RDFFormat.RDFXML);
+  }
+  @Override
   public String exportAsString(RDFFormat format) {
-    return writeInstanceModelToString(format);
+    return exportAsString(instanceModel, format);
+  }
+  @Override
+  public String exportAsString(Model model, RDFFormat format) {
+    return writeModelToString(instanceModel, format);
   }
 
   @Override
@@ -521,15 +527,22 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public boolean hasImport(String namespace) {
-    if(!hasOntologyHeader()) {
+    return hasImport(instanceModel, namespace);
+  }
+  @Override
+  public boolean hasImport(Model model, String namespace) {
+    if(!hasOntologyHeader(model)) {
       return false;
     }
-    return instanceModel.contains(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespace));
+    return model.contains(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespace));              // todo remove instanceNamespace
   }
 
 
   @Override
   public void addImport(String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc) {
+    addImport(instanceModel, filePath, namespace, addAsImport, tryToLoad, addToDoc);
+  }
+  public void addImport(Model model, String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc) {
 
     // Check the file
     boolean validFile = false;
@@ -573,7 +586,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
         addOntologyHeader();
       }
       Statement statement = new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespaceImpl.toString()));
-      instanceModel.add(statement);
+      model.add(statement);
     }
 
     // Load the content of the library
@@ -617,7 +630,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Namespace key = new Namespace(namespace);
     if(libraryModels.containsKey(key)) {
 
-      ExtendedIterator<OntClass> iterator = asOntModel(libraryModels.get(key)).listClasses();
+      ExtendedIterator<OntClass> iterator = factory.asOntModel(libraryModels.get(key)).listClasses();
       while(iterator.hasNext()) {
         OntClass ontClass = iterator.next();
         if(!ontClass.isAnon()) {
@@ -630,8 +643,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public Iterator<String> listIndividuals() {
+    return listIndividuals(instanceModel);
+  }
+  @Override
+  public Iterator<String> listIndividuals(Model model) {
     ArrayList<String> buffer = new ArrayList<>();
-    ResIterator iterator = instanceModel.listSubjectsWithProperty(RDF.type);
+    ResIterator iterator = model.listSubjectsWithProperty(RDF.type);
     while(iterator.hasNext()) {
       String instanceUri = iterator.next().getURI();
       buffer.add(instanceUri);
@@ -641,13 +658,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public <T extends CoinsObject> Iterator<T> listIndividuals(Class<T> objectClass) {
+    return listIndividuals(instanceModel, objectClass);
+  }
+  @Override
+  public <T extends CoinsObject> Iterator<T> listIndividuals(Model model, Class<T> objectClass) {
 
     ArrayList<T> buffer = new ArrayList<>();
     try {
 
       String classUri = (String) objectClass.getField("classUri").get(String.class);
 
-      for(Triple triple : listInstances(classUri).toList()) {
+      for(Triple triple : listInstances(model, classUri).toList()) {
 
         String individualUri = triple.getSubject().getURI();
 
@@ -671,8 +692,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public Iterator<String> listIndividuals(String classUri) {
+    return listIndividuals(instanceModel, classUri);
+  }
+  @Override
+  public Iterator<String> listIndividuals(Model model, String classUri) {
     ArrayList<String> buffer = new ArrayList<>();
-    for(Triple triple : listInstances(classUri).toList()) {
+    for(Triple triple : listInstances(model, classUri).toList()) {
 
       String individualUri = triple.getSubject().getURI();
       buffer.add(individualUri);
@@ -725,7 +750,12 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public RuntimeCoinsObject getIndividual(String individualUri) {
-    Individual individual = getJenaOntModel().getIndividual(individualUri);
+    return getIndividual(instanceModel, individualUri);
+  }
+
+  @Override
+  public RuntimeCoinsObject getIndividual(Model model, String individualUri) {
+    Individual individual = factory.asOntModel(model).getIndividual(individualUri);
     if(individual!=null) {
       ExtendedIterator<OntClass> classIterator = individual.listOntClasses(true);
       while(classIterator.hasNext()) {
@@ -746,6 +776,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Query query = QueryFactory.create(sparqlQuery);
 
     // Execute the query and obtain results
+    Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
     QueryExecution qe = QueryExecutionFactory.create(query, dataset);
     ResultSet results = qe.execSelect();
 
@@ -819,8 +850,16 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     addStatement(instanceUri, RDF.type.getURI(), classUri);
   }
   @Override
+  public void addType(Model model, String instanceUri, String classUri) {
+    addStatement(model, instanceUri, RDF.type.getURI(), classUri);
+  }
+  @Override
   public void removeType(String instanceUri, String classUri) {
     removeStatement(instanceUri, RDF.type.getURI(), classUri);
+  }
+  @Override
+  public void removeType(Model model, String instanceUri, String classUri) {
+    removeStatement(model, instanceUri, RDF.type.getURI(), classUri);
   }
 
   @Override
@@ -828,8 +867,16 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     addStatement(instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creator", party.getUri());
   }
   @Override
+  public void addCreator(Model model, String instanceUri, CoinsParty party) {
+    addStatement(model, instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creator", party.getUri());
+  }
+  @Override
   public void addCreatedNow(String instanceUri) {
     setLiteralValue(instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creationDate", new Date());
+  }
+  @Override
+  public void addCreatedNow(Model model, String instanceUri) {
+    setLiteralValue(model, instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creationDate", new Date());
   }
   @Override
   public void addCoinsContainerObjectType(String instanceUri) {
@@ -888,11 +935,36 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     return false;
   }
   @Override
+  public <T extends CoinsObject> boolean canAs(Model model, String instanceUri, Class<T> clazz) {
+    try {
+      T constructed = (T) as(model, instanceUri, clazz);
+      return true;
+    } catch (RuntimeException e) {
+    }
+    return false;
+  }
+  @Override
   public <T extends CoinsObject> T as(String instanceUri, Class<T> clazz) {
     log.info("try to cast to "+clazz.getCanonicalName() + " with uri "+instanceUri);
     try {
       Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, String.class);
       T constructed = (T) constructor.newInstance(getCoinsModel(), instanceUri);
+      return constructed;
+    } catch (NoSuchMethodException e) {
+    } catch (InvocationTargetException e) {
+    } catch (InstantiationException e) {
+    } catch (IllegalAccessException e) {
+    } catch (RuntimeException e) {
+    }
+
+    throw new CoinsObjectCastNotAllowedException("Could not cast to "+clazz.getCanonicalName()+".");
+  }
+  @Override
+  public <T extends CoinsObject> T as(Model model, String instanceUri, Class<T> clazz) {
+    log.info("try to cast to "+clazz.getCanonicalName() + " with uri "+instanceUri);
+    try {
+      Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, Model.class, String.class);
+      T constructed = (T) constructor.newInstance(getCoinsModel(), model, instanceUri);
       return constructed;
     } catch (NoSuchMethodException e) {
     } catch (InvocationTargetException e) {
@@ -923,7 +995,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   public Iterator<String> listPropertyDefinitions(String classUri, String propertyTypeClassUri) {
     ArrayList<String> buffer = new ArrayList<>();
 //    Iterator<ApoPropertyDeclaration> iterator =  new JenaPropertyDeclarationIterator(classUri, asOntModel(getUnionModel()), propertyTypeClassUri);
-    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, asOntModel(getUnionModel()), propertyTypeClassUri);
+    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, factory.asOntModel(getUnionModel()), propertyTypeClassUri);
     while(iterator.hasNext()) {
       buffer.add(iterator.next().getPropertyUri());
     }
@@ -931,6 +1003,10 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public Iterator<CoinsObject> listProperties(String instanceUri) {
+    return listProperties(instanceModel, instanceUri);
+  }
+  @Override
+  public Iterator<CoinsObject> listProperties(Model model, String instanceUri) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -942,7 +1018,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     ArrayList<CoinsObject> buffer = new ArrayList<>();
 
-    StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties();
+    StmtIterator iterator = factory.asOntModel(model).getIndividual(instanceUri).listProperties();
     while(iterator.hasNext()) {
 
       Statement statement = iterator.nextStatement();
@@ -951,7 +1027,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
       if(object.isResource() && !object.isAnon()) {
 
-        Individual property = asOntModel(instanceModel).getIndividual(object.asResource().getURI());
+        Individual property = factory.asOntModel(model).getIndividual(object.asResource().getURI());
         if(property != null) {
 
           ExtendedIterator<OntClass> classes = property.listOntClasses(true);
@@ -975,6 +1051,10 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, Class<T> propertyTypeClass) {
+    return listProperties(instanceModel, instanceUri, propertyTypeClass);
+  }
+  @Override
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, String instanceUri, Class<T> propertyTypeClass) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -987,7 +1067,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     ArrayList<T> buffer = new ArrayList<>();
     try {
       String propertyTypeClassUri =  (String) propertyTypeClass.getField("classUri").get(String.class);
-      StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties();
+      StmtIterator iterator = factory.asOntModel(model).getIndividual(instanceUri).listProperties();
       while(iterator.hasNext()) {
         Statement statement = iterator.nextStatement();
         RDFNode object = statement.getObject();
@@ -1006,6 +1086,10 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String propertyClassUri) {
+    return listProperties(instanceModel, instanceUri, propertyClassUri);
+  }
+  @Override
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String instanceUri, String propertyClassUri) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1016,7 +1100,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
 
     ArrayList<RuntimeCoinsObject> buffer = new ArrayList<>();
-    StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties();
+    StmtIterator iterator = factory.asOntModel(model).getIndividual(instanceUri).listProperties();
     while(iterator.hasNext()) {
       Statement statement = iterator.nextStatement();
       RDFNode object = statement.getObject();
@@ -1030,6 +1114,10 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, String predicate, Class<T> propertyTypeClass) {
+    return listProperties(instanceModel, instanceUri, predicate, propertyTypeClass);
+  }
+  @Override
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, String instanceUri, String predicate, Class<T> propertyTypeClass) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1042,7 +1130,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     ArrayList<T> buffer = new ArrayList<>();
     try {
       String propertyTypeClassUri =  (String) propertyTypeClass.getField("classUri").get(String.class);
-      StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
+      StmtIterator iterator = factory.asOntModel(model).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
       while(iterator.hasNext()) {
         Statement statement = iterator.nextStatement();
         RDFNode object = statement.getObject();
@@ -1061,6 +1149,10 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String predicate, String propertyClassUri) {
+    return listProperties(instanceModel, instanceUri, predicate, propertyClassUri);
+  }
+  @Override
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String instanceUri, String predicate, String propertyClassUri) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1071,7 +1163,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     }
 
     ArrayList<RuntimeCoinsObject> buffer = new ArrayList<>();
-    StmtIterator iterator = asOntModel(instanceModel).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
+    StmtIterator iterator = factory.asOntModel(model).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
     while(iterator.hasNext()) {
       Statement statement = iterator.nextStatement();
       RDFNode object = statement.getObject();
@@ -1085,9 +1177,13 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public RuntimeCoinsObject createProperty(String instanceUri, String predicateUri, String propertyClassUri) {
+    return createProperty(instanceModel, instanceUri, predicateUri, propertyClassUri);
+  }
+  @Override
+  public RuntimeCoinsObject createProperty(Model model, String instanceUri, String predicateUri, String propertyClassUri) {
 
     RuntimeCoinsObject object = new RuntimeCoinsObject(this, propertyClassUri);
-    addStatement(instanceUri, predicateUri, object.getUri());
+    addStatement(model, instanceUri, predicateUri, object.getUri());
 
     return object;
   }
@@ -1110,12 +1206,16 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public void removeProperty(String instanceUri, CoinsObject property) {
+    removeProperty(instanceModel, instanceUri, property);
+  }
+  @Override
+  public void removeProperty(Model model, String instanceUri, CoinsObject property) {
 
     Resource subject = new ResourceImpl(instanceUri);
     Resource object = new ResourceImpl(property.getUri());
 
     // Find the predicate
-    ExtendedIterator<Triple> predicateIterator = instanceModel.getGraph().find(subject.asNode(), Node.ANY, object.asNode());
+    ExtendedIterator<Triple> predicateIterator = model.getGraph().find(subject.asNode(), Node.ANY, object.asNode());
     if(!predicateIterator.hasNext()) {
       throw new CoinsPropertyNotFoundException("Property not found, so not able to remove it.");
     }
@@ -1124,15 +1224,18 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     // Remove the link to this property
     Statement statement = new StatementImpl(subject, predicate, object);
     log.info("Removing link to property " + statement);
-    removeStatement(subject.getURI(), predicate.getURI(), object.getURI());
+    removeStatement(model, subject.getURI(), predicate.getURI(), object.getURI());
 
 
 
     // Remove the property object and all its content
-    removeIndividualAndProperties(property.getUri());
+    removeIndividualAndProperties(model, property.getUri());
   }
   @Override
   public <T> T getLiteralValue(String subject, String predicate, Class<T> clazz) {
+    return getLiteralValue(instanceModel, subject, predicate, clazz);
+  }
+  public <T> T getLiteralValue(Model model, String subject, String predicate, Class<T> clazz) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1144,7 +1247,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     RDFDatatype datatype = TypeMapper.getInstance().getTypeByClass(clazz);
 
-    NodeIterator result = listObjectsOfProperty(subject, predicate);
+    NodeIterator result = listObjectsOfProperty(model, subject, predicate);
     while(result!=null && result.hasNext()) {
 
       RDFNode single = result.next();
@@ -1204,6 +1307,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T> Iterator<T> getLiteralValues(String subject, String predicate, Class<T> clazz) {
+    return getLiteralValues(instanceModel, subject, predicate, clazz);
+  }
+  public <T> Iterator<T> getLiteralValues(Model model, String subject, String predicate, Class<T> clazz) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1217,7 +1323,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     RDFDatatype datatype = TypeMapper.getInstance().getTypeByClass(clazz);
 
-    NodeIterator result = listObjectsOfProperty(subject, predicate);
+    NodeIterator result = listObjectsOfProperty(model, subject, predicate);
     while(result!=null && result.hasNext()) {
 
       RDFNode single = result.next();
@@ -1246,15 +1352,19 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T> void setLiteralValue(String subject, String predicate, T object) {
+    setLiteralValue(instanceModel, subject, predicate, object);
+  }
+  @Override
+  public <T> void setLiteralValue(Model model, String subject, String predicate, T object) {
 
-    removeAllStatements(subject, predicate);
+    removeAllStatements(model, subject, predicate);
 
     if(object instanceof Date) {
 
       GregorianCalendar calendar = new GregorianCalendar();
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
-      Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+      Literal propValue = factory.asOntModel(model).createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
 
       boolean permission = true;
       for(Injector injector : injectors) {
@@ -1262,19 +1372,23 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       }
       if(permission) {
         OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-        Individual individual = getJenaOntModel().getIndividual(subject);
+        Individual individual = factory.asOntModel(model).getIndividual(subject);
         individual.setPropertyValue(prop, propValue);
       } else {
         throw new UnspecifiedInjectorRejectionException();
       }
 
     } else {
-      Literal literal = instanceModel.createTypedLiteral(object);
-      addStatement(subject, predicate, literal);
+      Literal literal = model.createTypedLiteral(object);
+      addStatement(model, subject, predicate, literal);
     }
   }
   @Override
   public <T> void addLiteralValue(String subject, String predicate, T object) {
+    addLiteralValue(instanceModel, subject, predicate, object);
+  }
+  @Override
+  public <T> void addLiteralValue(Model model, String subject, String predicate, T object) {
 
     if(object instanceof Date) {
 
@@ -1289,7 +1403,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       }
       if(permission) {
         OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-        Individual individual = getJenaOntModel().getIndividual(subject);
+        Individual individual = factory.asOntModel(model).getIndividual(subject);
         individual.setPropertyValue(prop, propValue);
       } else {
         throw new UnspecifiedInjectorRejectionException();
@@ -1297,11 +1411,15 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
     } else {
-      addStatement(subject, predicate, instanceModel.createTypedLiteral(object));
+      addStatement(model, subject, predicate, instanceModel.createTypedLiteral(object));
     }
   }
   @Override
   public <T> void removeLiteralValue(String subject, String predicate, T object) {
+    removeLiteralValue(instanceModel, subject, predicate, object);
+  }
+  @Override
+  public <T> void removeLiteralValue(Model model, String subject, String predicate, T object) {
 
     if(object instanceof Date) {
 
@@ -1317,7 +1435,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       }
       if(permission) {
         OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-        Individual individual = getJenaOntModel().getIndividual(subject);
+        Individual individual = factory.asOntModel(model).getIndividual(subject);
         individual.removeProperty(prop, propValue);
       } else {
         throw new UnspecifiedInjectorRejectionException();
@@ -1325,13 +1443,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
     } else {
-      removeStatement(subject, predicate, instanceModel.createTypedLiteral(object));
+      removeStatement(model, subject, predicate, instanceModel.createTypedLiteral(object));
     }
   }
 
 
   @Override
   public <T extends CoinsObject> T getObject(String subject, String predicate, Class<T> clazz) {
+    return getObject(instanceModel, subject, predicate, clazz);
+  }
+  @Override
+  public <T extends CoinsObject> T getObject(Model model, String subject, String predicate, Class<T> clazz) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1341,15 +1463,15 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       throw new UnspecifiedInjectorRejectionException();
     }
 
-    NodeIterator result = listObjectsOfProperty(subject, predicate);
+    NodeIterator result = listObjectsOfProperty(model, subject, predicate);
 
     while(result!=null && result.hasNext()) {
       RDFNode single = result.next();
 
       if(single.isResource()) {
         try {
-          Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, String.class);
-          return (T) constructor.newInstance(this, single.asResource().getURI());
+          Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, Model.class, String.class);
+          return (T) constructor.newInstance(this, model, single.asResource().getURI());
         } catch (NoSuchMethodException e) {
           e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -1366,6 +1488,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public <T extends CoinsObject> Iterator<T> getObjects(String subject, String predicate, Class<T> clazz) {
+    return getObjects(instanceModel, subject, predicate, clazz);
+  }
+  public <T extends CoinsObject> Iterator<T> getObjects(Model model, String subject, String predicate, Class<T> clazz) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1377,14 +1502,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
     ArrayList<T> buffer = new ArrayList<>();
 
-    NodeIterator result = listObjectsOfProperty(subject, predicate);
+    NodeIterator result = listObjectsOfProperty(model, subject, predicate);
     if(result!=null && result.hasNext()) {
       for(RDFNode node : result.toList()) {
         if(node.isResource()) {
 
           try {
-            Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, String.class);
-            buffer.add((T) constructor.newInstance(this, node.asResource().getURI()));
+            Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, Model.class, String.class);
+            buffer.add((T) constructor.newInstance(this, model, node.asResource().getURI()));
           } catch (NoSuchMethodException e) {
             log.error("",e);
           } catch (InvocationTargetException e) {
@@ -1404,59 +1529,87 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
   @Override
   public void setObject(String subject, String predicate, CoinsObject object) {
-    removeAllStatements(subject, predicate);
-    addStatement(subject, predicate, object.getUri());
+    setObject(instanceModel, subject, predicate, object);
+  }
+  @Override
+  public void setObject(Model model, String subject, String predicate, CoinsObject object) {
+    removeAllStatements(model, subject, predicate);
+    addStatement(model, subject, predicate, object.getUri());
   }
   @Override
   public void setObject(String subject, String predicate, String objectUri) {
-    removeAllStatements(subject, predicate);
-    addStatement(subject, predicate, objectUri);
+    setObject(instanceModel, subject, predicate, objectUri);
+  }
+  @Override
+  public void setObject(Model model, String subject, String predicate, String objectUri) {
+    removeAllStatements(model, subject, predicate);
+    addStatement(model, subject, predicate, objectUri);
   }
   @Override
   public void addObject(String subject, String predicate, CoinsObject object) {
-    addStatement(subject, predicate, object.getUri());
+    addStatement(instanceModel, subject, predicate, object.getUri());
+  }
+  @Override
+  public void addObject(Model model, String subject, String predicate, CoinsObject object) {
+    addStatement(model, subject, predicate, object.getUri());
   }
   @Override
   public void addObject(String subject, String predicate, String objectUri) {
-    addStatement(subject, predicate, objectUri);
+    addStatement(instanceModel, subject, predicate, objectUri);
+  }
+  @Override
+  public void addObject(Model model, String subject, String predicate, String objectUri) {
+    addStatement(model, subject, predicate, objectUri);
   }
   @Override
   public void removeObject(String subject, String predicate, CoinsObject object) {
-    removeStatement(subject, predicate, object.getUri());
+    removeObject(instanceModel, subject, predicate, object);
+  }
+  @Override
+  public void removeObject(Model model, String subject, String predicate, CoinsObject object) {
+    removeStatement(model, subject, predicate, object.getUri());
   }
   @Override
   public void removeObject(String subject, String predicate, String objectUri) {
-    removeStatement(subject, predicate, objectUri);
+    removeObject(instanceModel, subject, predicate, objectUri);
+  }
+  @Override
+  public void removeObject(Model model, String subject, String predicate, String objectUri) {
+    removeStatement(model, subject, predicate, objectUri);
   }
 
   @Override
   public void removeIndividualAndProperties(String instanceUri) {
+    removeIndividualAndProperties(instanceModel, instanceUri);
+  }
+  @Override
+  public void removeIndividualAndProperties(Model model, String instanceUri) {
 
     log.info("Removing individual and all it's properties for uri: "+instanceUri+".");
 
     // Iterate over all properties an delete them
-    Iterator<RuntimeCoinsObject> properties = listProperties(instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty");
+    Iterator<RuntimeCoinsObject> properties = listProperties(model, instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty");
     while(properties.hasNext()) {
-      removeProperty(instanceUri, properties.next());
+      removeProperty(model, instanceUri, properties.next());
     }
 
     // Remove all remaining statements mentioning the instanceUri directly (including type definition)
-    ExtendedIterator<Triple> incoming = instanceModel.getGraph().find(Node.ANY, Node.ANY, new ResourceImpl(instanceUri).asNode());
+    ExtendedIterator<Triple> incoming = model.getGraph().find(Node.ANY, Node.ANY, new ResourceImpl(instanceUri).asNode());
     Set<Triple> collectIncoming = new HashSet<>();
     while(incoming.hasNext()) {
       collectIncoming.add(incoming.next());
     }
     for(Triple triple : collectIncoming) {
-      removeStatement(triple.getSubject().getURI(), triple.getPredicate().getURI(), new ResourceImpl(instanceUri));
+      removeStatement(model, triple.getSubject().getURI(), triple.getPredicate().getURI(), new ResourceImpl(instanceUri));
     }
 
-    ExtendedIterator<Triple> outgoing = instanceModel.getGraph().find(new ResourceImpl(instanceUri).asNode(), Node.ANY, Node.ANY);
+    ExtendedIterator<Triple> outgoing = model.getGraph().find(new ResourceImpl(instanceUri).asNode(), Node.ANY, Node.ANY);
     Set<Triple> collectOutgoing = new HashSet<>();
     while(outgoing.hasNext()) {
       collectOutgoing.add(outgoing.next());
     }
     for(Triple triple : collectOutgoing) {
-      removeAllStatements(new ResourceImpl(instanceUri).getURI(), triple.getPredicate().getURI());
+      removeAllStatements(model, new ResourceImpl(instanceUri).getURI(), triple.getPredicate().getURI());
     }
 
   }
@@ -1474,18 +1627,22 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public ExtendedIterator<OntClass> listOntClasses() {
-    return asOntModel(getUnionModel()).listClasses();
+    return factory.asOntModel(getUnionModel()).listClasses();
   }
 
   @Override
   public Iterator<PropertyDeclaration> listPropertyDeclarations(String classUri) {
-    return new SparqlPropertyDeclarationIterator(classUri, asOntModel(getUnionModel()));
+    return new SparqlPropertyDeclarationIterator(classUri, factory.asOntModel(getUnionModel()));
 //    return new JenaPropertyDeclarationIterator(clazz, asOntModel(getUnionModel()));
   }
 
   @Override
   public boolean hasOntologyHeader() {
-    return instanceModel.contains(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), RDF.type, OWL.Ontology));
+    return hasOntologyHeader(instanceModel);
+  }
+  @Override
+  public boolean hasOntologyHeader(Model model) {
+    return model.contains(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), RDF.type, OWL.Ontology));  // todo remove instanceNamespace
   }
 
   @Override
@@ -1514,6 +1671,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public void addStatement(String subject, String predicate, String object) {
+    addStatement(instanceModel, subject, predicate, object);
+  }
+  public void addStatement(Model model, String subject, String predicate, String object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), new ResourceImpl(object));
     log.info("Adding statement " + statement);
 
@@ -1522,13 +1682,16 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       permission &= injector.proposeWrite(this, subject, predicate, object);
     }
     if(permission) {
-      instanceModel.add(statement);
+      model.add(statement);
     } else {
       throw new UnspecifiedInjectorRejectionException();
     }
   }
   @Override
   public void addStatement(String subject, String predicate, RDFNode object) {
+    addStatement(instanceModel, subject, predicate, object);
+  }
+  public void addStatement(Model model, String subject, String predicate, RDFNode object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), object);
     log.info("Adding statement "+statement);
 
@@ -1537,7 +1700,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       permission &= injector.proposeWrite(this, subject, predicate, object.toString());
     }
     if(permission) {
-      instanceModel.add(statement);
+      model.add(statement);
     } else {
       throw new UnspecifiedInjectorRejectionException();
     }
@@ -1545,6 +1708,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public void removeStatement(String subject, String predicate, String object) {
+    removeStatement(instanceModel, subject, predicate, object);
+  }
+  public void removeStatement(Model model, String subject, String predicate, String object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), new ResourceImpl(object));
     log.info("Removing statement " + statement);
 
@@ -1553,13 +1719,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       permission &= injector.proposeWrite(this, subject, predicate, object);
     }
     if(permission) {
-      instanceModel.remove(statement);
+      model.remove(statement);
     } else {
       throw new UnspecifiedInjectorRejectionException();
     }
   }
   @Override
   public void removeStatement(String subject, String predicate, RDFNode object) {
+    removeStatement(instanceModel, subject, predicate, object);
+  }
+  @Override
+  public void removeStatement(Model model, String subject, String predicate, RDFNode object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), object);
     log.info("Removing statement " + statement);
 
@@ -1568,12 +1738,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       permission &= injector.proposeWrite(this, subject, predicate, object.toString());
     }
     if(permission) {
-      instanceModel.remove(statement);
+      model.remove(statement);
     } else {
       throw new UnspecifiedInjectorRejectionException();
     }
   }
+  @Override
   public void removeAllStatements(String subject, String predicate) {
+    removeAllStatements(instanceModel, subject, predicate);
+  }
+  @Override
+  public void removeAllStatements(Model model, String subject, String predicate) {
     log.info("Removing statement " + subject + " -> "+predicate+" -> any");
 
     boolean permission = true;
@@ -1581,7 +1756,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       permission &= injector.proposeWrite(this, subject, predicate, null);
     }
     if(permission) {
-      instanceModel.getGraph().remove(new ResourceImpl(subject).asNode(), new PropertyImpl(predicate).asNode(), Node.ANY);
+      model.getGraph().remove(new ResourceImpl(subject).asNode(), new PropertyImpl(predicate).asNode(), Node.ANY);
     } else {
       throw new UnspecifiedInjectorRejectionException();
     }
@@ -1624,11 +1799,6 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
    * Close all loaded models
    */
   public void close() {
-    log.info("distribute close");
-    for (ExpertCoinsModel model : coinsModels.values()) {
-      log.info("send close to " + model.getInstanceNamespace());
-      model.close();
-    }
     FileManager.destroy(this.internalRef);
   }
 
@@ -1640,25 +1810,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
 
-  public void setReasoner(OntModelSpec modelSpec) {
-    reasoner = modelSpec;
-  }
-
-  private OntModel asOntModel(Model model) {
-
-    // Set document manager policy file
-    OntDocumentManager dm = new OntDocumentManager();
-    OntModelSpec modelSpec = reasoner;
-    modelSpec.setDocumentManager(dm);
-    dm.setProcessImports(false);
-    OntModel result = ModelFactory.createOntologyModel(modelSpec, model);
-
-    return result;
-  }
-
   public void addNamedModelForImports(Model model) {
 
-    OntModel enrichedModel = asOntModel(model);
+    OntModel enrichedModel = factory.asOntModel(model);
 
     for(String imp : enrichedModel.listImportedOntologyURIs()) {
       log.trace("need to load "+imp);
@@ -1684,10 +1838,9 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
       }
 
       // Load the model
-      Model libraryModel = ModelFactory.createDefaultModel();
+      Model libraryModel = factory.getEmptyModel();
       libraryModel.read(importUri.toString());
       libraryModels.put(namespace, libraryModel);
-      dataset.addNamedModel(namespace.toString(), libraryModel);
       log.info("✅ Adding model with name " + namespace.toString());
 
 
@@ -1706,7 +1859,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   private Model getUnionModel() {
 
-    Model unionModel = ModelFactory.createDefaultModel();
+    Model unionModel = factory.getEmptyModel();
     unionModel.add(instanceModel);
     for(Namespace key : libraryModels.keySet()) {
       unionModel.add(libraryModels.get(key));
@@ -1724,7 +1877,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
 
-  private NodeIterator listObjectsOfProperty(String subject, String predicate) {
+  private NodeIterator listObjectsOfProperty(Model model, String subject, String predicate) {
 
     boolean permission = true;
     for(Injector injector : injectors) {
@@ -1737,13 +1890,16 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
     Resource subj = new ResourceImpl(subject);
     Property pred = new PropertyImpl(predicate);
 
-    if(instanceModel.contains(subj, pred)) {
-      return instanceModel.listObjectsOfProperty(subj, pred);
+    if(model.contains(subj, pred)) {
+      return model.listObjectsOfProperty(subj, pred);
     }
     return null;
   }
   private ExtendedIterator<Triple> listInstances(String classUri) {
-    return instanceModel.getGraph().find(Node.ANY, RDF.type.asNode(), new ResourceImpl(classUri).asNode());
+    return listInstances(instanceModel, classUri);
+  }
+  private ExtendedIterator<Triple> listInstances(Model model, String classUri) {
+    return model.getGraph().find(Node.ANY, RDF.type.asNode(), new ResourceImpl(classUri).asNode());
   }
 
 
@@ -1756,27 +1912,28 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
 
 
-  public void writeInstanceModelToFile(OutputStream output, RDFFormat format) {
+  public void writeModelToFile(Model model, OutputStream output, RDFFormat format) {
 
     if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
         format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
 
       RDFWriter writer;
       if(format == RDFFormat.RDFXML_ABBREV) {
-        writer = instanceModel.getWriter( "RDF/XML-ABBREV" );
+        writer = model.getWriter( "RDF/XML-ABBREV" );
       } else {
-        writer = instanceModel.getWriter( "RDF/XML" );
+        writer = model.getWriter( "RDF/XML" );
       }
       writer.setProperty("xmlbase", getInstanceNamespace() );
-      writer.write(instanceModel, output, null);
+      writer.write(model, output, null);
 
     } else {
+      Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
       dataset.getNamedModel(instanceNamespace.toString());
-      RDFDataMgr.write(output, instanceModel, format);
+      RDFDataMgr.write(output, model, format);
     }
   }
 
-  public String writeInstanceModelToString(RDFFormat format) {
+  public String writeModelToString(Model model, RDFFormat format) {
 
     log.trace("starting to export");
 
@@ -1789,16 +1946,17 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
       RDFWriter writer;
       if(format == RDFFormat.RDFXML_ABBREV) {
-        writer = instanceModel.getWriter( "RDF/XML-ABBREV" );
+        writer = model.getWriter( "RDF/XML-ABBREV" );
       } else {
-        writer = instanceModel.getWriter( "RDF/XML" );
+        writer = model.getWriter( "RDF/XML" );
       }
       writer.setProperty("xmlbase", getInstanceNamespace() );
-      writer.write(instanceModel, boas, null);
+      writer.write(model, boas, null);
 
     } else {
+      Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
       dataset.getNamedModel(instanceNamespace.toString());
-      RDFDataMgr.write(boas, instanceModel, format);
+      RDFDataMgr.write(boas, model, format);
     }
 
 
@@ -1819,6 +1977,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
   }
 
   public void writeFullToFile(OutputStream output, RDFFormat format) {
+    Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
     RDFDataMgr.write(output, dataset, format);
   }
 
@@ -1890,14 +2049,14 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public OntModel getJenaOntModel() {
-    return asOntModel(this.instanceModel);
+    return factory.asOntModel(this.instanceModel);
   }
 
   @Override
   public OntModel getJenaOntModel(String namespace) {
     Model model = getJenaModel(namespace);
     if(model != null) {
-      return asOntModel(model);
+      return factory.asOntModel(model);
     }
     return null;
   }
@@ -1909,7 +2068,7 @@ public abstract class JenaCoinsContainer implements CoinsContainer, CoinsModel, 
 
   @Override
   public OntModel getUnionJenaOntModel() {
-    return asOntModel(getUnionModel());
+    return factory.asOntModel(getUnionModel());
   }
 
 

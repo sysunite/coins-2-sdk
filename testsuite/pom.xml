@@ -40,6 +40,14 @@
 
     <dependency>
       <groupId>libs</groupId>
+      <artifactId>lib-woa</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../dist/library/jar/coinswoa.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>libs</groupId>
       <artifactId>lib-branchversioning</artifactId>
       <version>1.0</version>
       <scope>system</scope>
