@@ -67,7 +67,7 @@ while(result.hasNext()) {
 model.export("/tmp/container.ccr");
 ```
 
-This results in a container.cr with in it a content.rdf file with these triples:
+This results in a container.ccr with in it a content.rdf file with these triples:
 
 ```ttl
 [http://playground.com/ab5856a0-3cfe-45f6-90b9-6b8ad8e20afd, http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties, http://playground.com/43ab5cdb-d575-4ea7-9d68-597b3510a020]
@@ -88,6 +88,7 @@ This results in a container.cr with in it a content.rdf file with these triples:
 [http://playground.com/43ab5cdb-d575-4ea7-9d68-597b3510a020, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty]
 ```
 
+The query result will return these results:
 ```
 {p=http://www.coinsweb.nl/cbim-2.0.rdf#creator, s=http://playground.com/, o=http://sandbox.coinsweb.nl/defaultUser}
 {p=http://www.w3.org/1999/02/22-rdf-syntax-ns#type, s=http://playground.com/, o=http://www.w3.org/2002/07/owl#Ontology}
