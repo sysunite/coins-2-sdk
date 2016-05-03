@@ -63,7 +63,7 @@ public class A1_CreateNewCcrWithAttachments {
     emptyZipContent.add("bim/repository/COINSWOA.rdf");
     emptyZipContent.add("bim/repository/BranchVersioning.rdf");
     emptyZipContent.add("doc/");
-    emptyZipContent.add("woa/");
+    emptyZipContent.add("woa/woa.rdf");
 
     attachmentsZipContent = new HashSet<>();
     attachmentsZipContent.add("bim/content.rdf");
@@ -73,7 +73,7 @@ public class A1_CreateNewCcrWithAttachments {
     attachmentsZipContent.add("bim/repository/BranchVersioning.rdf");
     attachmentsZipContent.add("doc/koekiemonster.jpeg");
     attachmentsZipContent.add("doc/plan-d117e182-6308-4826-98bd-378163d8814b (2).svg");
-    attachmentsZipContent.add("woa/");
+    attachmentsZipContent.add("woa/woa.rdf");
 
     rdfZipContent = new HashSet<>();
     rdfZipContent.add("bim/content.rdf");
@@ -82,6 +82,7 @@ public class A1_CreateNewCcrWithAttachments {
     rdfZipContent.add("bim/repository/units-2.0.rdf");
     rdfZipContent.add("bim/repository/COINSWOA.rdf");
     rdfZipContent.add("bim/repository/BranchVersioning.rdf");
+    rdfZipContent.add("woa/woa.rdf");
 
     nodesPlant = new HashSet();
     nodesPlant.add(new ResourceImpl("http://example.com/tree"));
@@ -226,9 +227,9 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Export all the rdf data to the container
-    ccr.exportModel("/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
-    ccr.exportModel("/tmp/coinstest/content.ttl", RDFFormat.TTL);
-    ccr.exportModel("/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
+    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
 
 
 

@@ -198,6 +198,21 @@ public class FileManager {
     return candidate;
   }
 
+  public static File createWoaFile(String internalRef, String fileName) {
+    if(internalRef == null) {
+      throw new CoinsFileNotFoundException("Creating rdf file in non existing coins container.");
+    }
+    Path homePath = getTempZipPath().resolve(internalRef);
+    Path rdfPath = homePath.resolve(WOA_PATH);
+    File candidate = rdfPath.resolve(fileName).toFile();
+    if(candidate.exists()) {
+      log.debug("File in container already exists, will be overriding.");
+    } else {
+      candidate.getParentFile().mkdirs();
+    }
+    return candidate;
+  }
+
 
   /**
    * Extracts all the content of the .ccr-file specified in the constructor to [TEMP_ZIP_PATH] / [internalRef].

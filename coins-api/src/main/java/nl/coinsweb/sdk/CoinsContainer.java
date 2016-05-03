@@ -74,7 +74,6 @@ public interface CoinsContainer {
    *
    * @param target  a file path ('/tmp/instance_model.rdf' or 'C:\tmp\content.ttl')
    */
-  public void exportModel(String target);
   public void exportModel(Model model, String target);
 
   /**

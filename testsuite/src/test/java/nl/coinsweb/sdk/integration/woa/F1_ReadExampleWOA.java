@@ -131,7 +131,34 @@ public class F1_ReadExampleWOA {
       log.info("woa model");
       DatasetAsserts.logTriples(container.getWoaModel());
 
+      container.export("/tmp/newWoaContent.ccr");
+
       container.close();
+
+
+
+
+      JenaCoinsContainer reopened = new JenaCoinsContainer(factory, "/tmp/newWoaContent.ccr", "http://playground.com/");
+
+      try {
+
+        expectedEx.expect(WOAAccessDeniedException.class);
+        expectedEx.expectMessage("WOA restriction blocked operation.");
+
+        Part landhoofdReopened = new Part(reopened, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
+
+      } finally {
+
+        log.info("instance model");
+        DatasetAsserts.logTriples(reopened.getJenaModel());
+
+        log.info("woa model");
+        DatasetAsserts.logTriples(reopened.getWoaModel());
+
+
+        container.close();
+      }
+
     }
 
   }

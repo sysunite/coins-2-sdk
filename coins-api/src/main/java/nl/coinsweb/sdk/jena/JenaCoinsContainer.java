@@ -368,19 +368,14 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
   public void exportModel() {
-    File file = FileManager.createRdfFile(internalRef, rdfFileName);
-    exportModel(file.getPath(), RDFFormat.RDFXML);
-  }
-  @Override
-  public void exportModel(String target) {
-    exportModel(target, RDFFormat.RDFXML);
+    File contentFile = FileManager.createRdfFile(internalRef, rdfFileName);
+    exportModel(instanceModel, contentFile.getPath(), RDFFormat.RDFXML);
+    File woaFile = FileManager.createWoaFile(internalRef, woaFileName);
+    exportModel(woaModel, woaFile.getPath(), RDFFormat.RDFXML);
   }
   @Override
   public void exportModel(Model model, String target) {
     exportModel(model, target, RDFFormat.RDFXML);
-  }
-  public File exportModel(String toFileName, RDFFormat format) {
-    return exportModel(instanceModel, toFileName, format);
   }
   public File exportModel(Model model, String toFileName, RDFFormat format) {
 

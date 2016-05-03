@@ -190,6 +190,7 @@ public class A2_OpenExistingCcrWithAttachments {
     groverAttachmentsWithoutFolders.add("bim/repository/Cbim-2.0-WOA-RC2.rdf");
     groverAttachmentsWithoutFolders.add("doc/Voorbeelden COINS2.0 v0_9.pdf");
     groverAttachmentsWithoutFolders.add("doc/grover.jpeg");
+    groverAttachmentsWithoutFolders.add("woa/woa.rdf");
 
 
     koekiemonsterAttachmentsWithFolders = new HashSet<>();
@@ -202,7 +203,7 @@ public class A2_OpenExistingCcrWithAttachments {
     koekiemonsterAttachmentsWithFolders.add("bim/repository/Cbim-2.0-WOA-RC2.rdf");
     koekiemonsterAttachmentsWithFolders.add("doc/Voorbeelden COINS2.0 v0_9.pdf");
     koekiemonsterAttachmentsWithFolders.add("doc/koekiemonster.jpeg");
-    koekiemonsterAttachmentsWithFolders.add("woa/");
+    koekiemonsterAttachmentsWithFolders.add("woa/woa.rdf");
 
 
     sampleNodeRenzo = new HashSet<>();
