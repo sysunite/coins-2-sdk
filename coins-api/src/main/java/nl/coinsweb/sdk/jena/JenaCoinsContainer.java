@@ -1189,12 +1189,16 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T extends CoinsObject> T createProperty(String instanceUri, String predicateUri, Class<T> propertyClass) {
+    return createProperty(instanceModel, instanceUri, predicateUri, propertyClass);
+  }
+  @Override
+  public <T extends CoinsObject> T createProperty(Model model, String instanceUri, String predicateUri, Class<T> propertyClass) {
 
     try {
       Constructor constructor = propertyClass.getConstructor(ExpertCoinsModel.class);
       T constructed = (T) constructor.newInstance(this);
 
-      addStatement(instanceUri, predicateUri, constructed.getUri());
+      addStatement(model, instanceUri, predicateUri, constructed.getUri());
       return constructed;
     } catch (NoSuchMethodException e) {
     } catch (InvocationTargetException e) {
@@ -1861,6 +1865,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     Model unionModel = factory.getEmptyModel();
     unionModel.add(instanceModel);
+    unionModel.add(woaModel);
     for(Namespace key : libraryModels.keySet()) {
       unionModel.add(libraryModels.get(key));
     }

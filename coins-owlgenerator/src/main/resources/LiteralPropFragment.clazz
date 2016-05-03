@@ -2,25 +2,25 @@
 <#if property.single>
 
   public ${property.simpleReturnType} get${property.relationName}() {
-    return coinsModel.getLiteralValue(getUri(), "${property.relationUri}", ${property.returnType}.class);
+    return coinsModel.getLiteralValue(model, getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
   public void set${property.relationName}(${property.simpleReturnType} object) {
-    coinsModel.setLiteralValue(getUri(), "${property.relationUri}", object);
+    coinsModel.setLiteralValue(model, getUri(), "${property.relationUri}", object);
   }
 <#else>
 
   public Iterator<${property.returnType}> get${property.relationName}() {
-    return coinsModel.getLiteralValues(getUri(), "${property.relationUri}", ${property.returnType}.class);
+    return coinsModel.getLiteralValues(model, getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
   public void add${property.relationName}(${property.simpleReturnType} object) {
-    coinsModel.addLiteralValue(getUri(), "${property.relationUri}", object);
+    coinsModel.addLiteralValue(model, getUri(), "${property.relationUri}", object);
   }
 </#if>
 
   public void remove${property.relationName}(${property.simpleReturnType} object) {
-    coinsModel.removeLiteralValue(getUri(), "${property.relationUri}", object);
+    coinsModel.removeLiteralValue(model, getUri(), "${property.relationUri}", object);
   }
   public void removeAll${property.relationName}() {
-    coinsModel.removeAllStatements(getUri(), "${property.relationUri}");
+    coinsModel.removeAllStatements(model, getUri(), "${property.relationUri}");
   }
 </#list>

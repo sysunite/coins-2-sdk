@@ -5,6 +5,8 @@ import nl.coinsweb.cbim.Part;
 import nl.coinsweb.coinswoa.NoAccess;
 import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.exceptions.WOAAccessDeniedException;
+import nl.coinsweb.sdk.injectors.Injector;
+import nl.coinsweb.sdk.injectors.WOAInjector;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -98,39 +100,39 @@ public class F1_ReadExampleWOA {
   public void cNewContainer() {
 
     ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
-    Part landhoofd = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
+    JenaCoinsContainer container = new JenaCoinsContainer(factory, "http://playground.com/");
+    Part landhoofd = new Part(container, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
 
-    NoAccess noAccess = new NoAccess(model, model.getWoaModel(), "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
+    // Because the uri already exists, first we instantiate it
+    landhoofd.addType(container.getWoaModel(), NoAccess.classUri);
 
+    // The object can now be instantiated as a NoAccess instance to set the layer depth
+    NoAccess noAccess = new NoAccess(container, container.getWoaModel(), "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
+    noAccess.setLayerdepth(1);
+
+    for(Injector injector : container.getInjectors()) {
+      if(injector instanceof WOAInjector) {
+        ((WOAInjector)injector).buildCache();
+      }
+    }
 
     try {
 
+      expectedEx.expect(WOAAccessDeniedException.class);
+      expectedEx.expectMessage("WOA restriction blocked operation.");
 
-//      Part landhoofdAgain = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
-//
-//
-//      expectedEx.expect(WOAAccessDeniedException.class);
-//      expectedEx.expectMessage("WOA restriction blocked operation.");
-
-
+      Part landhoofdAgain = new Part(container, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
 
     } finally {
 
-
-
       log.info("instance model");
-      DatasetAsserts.logTriples(model.getJenaModel());
+      DatasetAsserts.logTriples(container.getJenaModel());
 
       log.info("woa model");
-      DatasetAsserts.logTriples(model.getWoaModel());
+      DatasetAsserts.logTriples(container.getWoaModel());
 
-      model.close();
+      container.close();
     }
-
-
-
-
 
   }
 
