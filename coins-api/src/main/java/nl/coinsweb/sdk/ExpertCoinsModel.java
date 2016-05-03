@@ -226,6 +226,7 @@ public interface ExpertCoinsModel extends CoinsModel {
    * @return  the constructed property object as RuntimeCoinsObject
    */
   public <T extends CoinsObject> T createProperty(String instanceUri, String predicateUri, Class<T> propertyClass);
+  public <T extends CoinsObject> T createProperty(Model model, String instanceUri, String predicateUri, Class<T> propertyClass);
 
 
   /**

@@ -58,7 +58,8 @@ public class WOAInjector implements Injector {
     this.woaModel = woaModel;
     this.instanceModel = instanceModel;
 
-    initCache();
+    // Init the cache
+    buildCache();
   }
 
   /*
@@ -70,7 +71,7 @@ public class WOAInjector implements Injector {
 
    */
 
-  private void initCache() {
+  public void buildCache() {
 
     String queryString =
 

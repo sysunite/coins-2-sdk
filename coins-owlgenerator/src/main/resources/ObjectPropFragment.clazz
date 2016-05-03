@@ -2,31 +2,31 @@
 <#if property.single>
 
   public ${property.returnType} get${property.relationName}() {
-    return coinsModel.getObject(getUri(), "${property.relationUri}", ${property.returnType}.class);
+    return coinsModel.getObject(model, getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
   public void set${property.relationName}(${property.returnType}Class object) {
-    coinsModel.setObject(getUri(), "${property.relationUri}", object);
+    coinsModel.setObject(model, getUri(), "${property.relationUri}", object);
   }
   public void set${property.relationName}(String objectUri) {
-    coinsModel.setObject(getUri(), "${property.relationUri}", objectUri);
+    coinsModel.setObject(model, getUri(), "${property.relationUri}", objectUri);
   }
 <#else>
 
   public Iterator<${property.returnType}> get${property.relationName}() {
-    return coinsModel.getObjects(getUri(), "${property.relationUri}", ${property.returnType}.class);
+    return coinsModel.getObjects(model, getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
   public void add${property.relationName}(${property.returnType}Class object) {
-    coinsModel.addObject(getUri(), "${property.relationUri}", object);
+    coinsModel.addObject(model, getUri(), "${property.relationUri}", object);
   }
   public void add${property.relationName}(String objectUri) {
-    coinsModel.addObject(getUri(), "${property.relationUri}", objectUri);
+    coinsModel.addObject(model, getUri(), "${property.relationUri}", objectUri);
   }
 </#if>
 
   public void remove${property.relationName}(${property.simpleReturnType} object) {
-    coinsModel.removeObject(getUri(), "${property.relationUri}", object);
+    coinsModel.removeObject(model, getUri(), "${property.relationUri}", object);
   }
   public void removeAll${property.relationName}() {
-    coinsModel.removeAllStatements(getUri(), "${property.relationUri}");
+    coinsModel.removeAllStatements(model, getUri(), "${property.relationUri}");
   }
 </#list>

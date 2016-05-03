@@ -24,6 +24,8 @@
  **/
 package nl.coinsweb.sdk;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -102,6 +104,7 @@ public interface CoinsObject {
    * @param clazz  CoinsObject extension representing the class
    */
   public <T extends CoinsObject> void addType(Class<T> clazz);
+  public <T extends CoinsObject> void addType(Model model, Class<T> clazz);
 
 
   /**
@@ -110,6 +113,7 @@ public interface CoinsObject {
    * @param classUri  the uri of the class
    */
   public void addType(String classUri);
+  public void addType(Model model, String classUri);
 
 
   /**
@@ -118,6 +122,7 @@ public interface CoinsObject {
    * @param clazz  CoinsObject extension representing the class
    */
   public <T extends CoinsObject> void removeType(Class<T> clazz);
+  public <T extends CoinsObject> void removeType(Model model, Class<T> clazz);
 
 
   /**
@@ -126,6 +131,7 @@ public interface CoinsObject {
    * @param classUri  the uri of the class
    */
   public void removeType(String classUri);
+  public void removeType(Model model, String classUri);
 
   /**
    * Find among the children of the rdf class this CoinsObject (as Java class) represents a class
@@ -156,6 +162,7 @@ public interface CoinsObject {
    * @return  true if the cast can be done
    */
   public <T extends CoinsObject> boolean canAs(Class<T> clazz);
+  public <T extends CoinsObject> boolean canAs(Model model, Class<T> clazz);
 
 
   /**
@@ -165,6 +172,7 @@ public interface CoinsObject {
    * @return  a cast of the specified instance to the specified CoinsObject type
    */
   public <T extends CoinsObject> T as(Class<T> clazz);
+  public <T extends CoinsObject> T as(Model model, Class<T> clazz);
 
 
 
@@ -205,6 +213,7 @@ public interface CoinsObject {
    * @return  iterator with RuntimeCoinsObject's
    */
   public Iterator<CoinsObject> listProperties();
+  public Iterator<CoinsObject> listProperties(Model model);
 
   /**
    * Iterate over all the properties of the instance of a specific property type. The returned properties are
@@ -215,6 +224,7 @@ public interface CoinsObject {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public <T extends CoinsObject> Iterator<T> listProperties(Class<T> propertyTypeClass);
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, Class<T> propertyTypeClass);
 
 
   /**
@@ -227,6 +237,7 @@ public interface CoinsObject {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public Iterator<RuntimeCoinsObject> listProperties(String propertyClassUri);
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String propertyClassUri);
 
 
   /**
@@ -239,6 +250,7 @@ public interface CoinsObject {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public <T extends CoinsObject> Iterator<T> listProperties(String predicate, Class<T> propertyTypeClass);
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, String predicate, Class<T> propertyTypeClass);
 
 
   /**
@@ -252,6 +264,7 @@ public interface CoinsObject {
    * @return  iterator with CoinsObjects (of the type specified)
    */
   public Iterator<RuntimeCoinsObject> listProperties(String predicate, String propertyClassUri);
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String predicate, String propertyClassUri);
 
 
   /**
@@ -263,6 +276,7 @@ public interface CoinsObject {
    * @return  the constructed property object as RuntimeCoinsObject
    */
   public <T extends AbstractCoinsObject> T createProperty(String predicateUri, Class<T> propertyClass);
+  public <T extends AbstractCoinsObject> T createProperty(Model model, String predicateUri, Class<T> propertyClass);
 
 
   /**
@@ -274,6 +288,7 @@ public interface CoinsObject {
    * @return  the constructed property object as RuntimeCoinsObject
    */
   public RuntimeCoinsObject createProperty(String predicateUri, String propertyClassUri);
+  public RuntimeCoinsObject createProperty(Model model, String predicateUri, String propertyClassUri);
 
 
   /**
@@ -282,6 +297,7 @@ public interface CoinsObject {
    * @param property  CoinsObject representation of the property instance
    */
   public void removeProperty(CoinsObject property);
+  public void removeProperty(Model model, CoinsObject property);
 
   /**
    * Get the value of a property of the specified type (String, Integer, etc.). A predicate needs to be supplied
@@ -293,6 +309,7 @@ public interface CoinsObject {
    * @return  the value as String, Integer, etc.
    */
   public <T> T getLiteralValue(String predicate, Class<T> clazz);
+  public <T> T getLiteralValue(Model model, String predicate, Class<T> clazz);
 
 
   /**
@@ -305,6 +322,7 @@ public interface CoinsObject {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> Iterator<T> getLiteralValues(String predicate, Class<T> clazz);
+  public <T> Iterator<T> getLiteralValues(Model model, String predicate, Class<T> clazz);
 
 
   /**
@@ -317,6 +335,7 @@ public interface CoinsObject {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void setLiteralValue(String predicate, T object);
+  public <T> void setLiteralValue(Model model, String predicate, T object);
 
 
   /**
@@ -329,6 +348,7 @@ public interface CoinsObject {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void addLiteralValue(String predicate, T object);
+  public <T> void addLiteralValue(Model model, String predicate, T object);
 
 
   /**
@@ -341,6 +361,7 @@ public interface CoinsObject {
    * @return  the object of the relation from the instance as specified CoinsObject extension
    */
   public <T extends CoinsObject> T getObject(String predicate, Class<T> clazz);
+  public <T extends CoinsObject> T getObject(Model model, String predicate, Class<T> clazz);
 
 
   /**
@@ -353,6 +374,7 @@ public interface CoinsObject {
    * @return  iterator with the values as String, Integer, etc.
    */
   public <T extends CoinsObject> Iterator<T> getObjects(String predicate, Class<T> clazz);
+  public <T extends CoinsObject> Iterator<T> getObjects(Model model, String predicate, Class<T> clazz);
 
 
   /**
@@ -363,6 +385,7 @@ public interface CoinsObject {
    * @param object  CoinsObject representation of the object
    */
   public void setObject(String predicate, AbstractCoinsObject object);
+  public void setObject(Model model, String predicate, AbstractCoinsObject object);
 
 
   /**
@@ -373,6 +396,7 @@ public interface CoinsObject {
    * @param object  CoinsObject representation of the object
    */
   public void addObject(String predicate, AbstractCoinsObject object);
+  public void addObject(Model model, String predicate, AbstractCoinsObject object);
 
 
   /**
@@ -381,6 +405,7 @@ public interface CoinsObject {
    *
    */
   public void removeIndividualAndProperties();
+  public void removeIndividualAndProperties(Model model);
 
 
   /**

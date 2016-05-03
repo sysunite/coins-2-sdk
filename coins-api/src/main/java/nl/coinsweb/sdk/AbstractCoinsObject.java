@@ -198,6 +198,10 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   }
   @Override
   public <T extends CoinsObject> void addType(Class<T> clazz) {
+    addType((Model)coinsModel.getJenaModel(), clazz);
+  }
+  @Override
+  public <T extends CoinsObject> void addType(Model model, Class<T> clazz) {
     try {
       String classUri = (String) clazz.getField("classUri").get(String.class);
       addType(classUri);
@@ -212,10 +216,18 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     coinsModel.addType(getUri(), classUri);
   }
   @Override
+  public void addType(Model model, String classUri) {
+    coinsModel.addType(model, getUri(), classUri);
+  }
+  @Override
   public <T extends CoinsObject> void removeType(Class<T> clazz) {
+    removeType((Model)coinsModel.getJenaModel(), clazz);
+  }
+  @Override
+  public <T extends CoinsObject> void removeType(Model model, Class<T> clazz) {
     try {
       String classUri = (String) clazz.getField("classUri").get(String.class);
-      removeType(classUri);
+      removeType(model, classUri);
     } catch (IllegalAccessException e) {
       log.error(e.getMessage(), e);
     } catch (NoSuchFieldException e) {
@@ -225,6 +237,10 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   @Override
   public void removeType(String classUri) {
     coinsModel.removeType(getUri(), classUri);
+  }
+  @Override
+  public void removeType(Model model, String classUri) {
+    coinsModel.removeType(model, getUri(), classUri);
   }
   @Override
   public void addCoinsContainerObjectType() {
@@ -239,8 +255,16 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     return coinsModel.canAs(getUri(), clazz);
   }
   @Override
+  public <T extends CoinsObject> boolean canAs(Model model, Class<T> clazz) {
+    return coinsModel.canAs(model, getUri(), clazz);
+  }
+  @Override
   public <T extends CoinsObject> T as(Class<T> clazz) {
     return coinsModel.as(getUri(), clazz);
+  }
+  @Override
+  public <T extends CoinsObject> T as(Model model, Class<T> clazz) {
+    return coinsModel.as(model, getUri(), clazz);
   }
 
 
@@ -258,22 +282,42 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   public Iterator<CoinsObject> listProperties() {
     return coinsModel.listProperties(getUri());
   }
+  @Override
+  public Iterator<CoinsObject> listProperties(Model model) {
+    return coinsModel.listProperties(model, getUri());
+  }
 
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(Class<T> propertyTypeClass) {
-    return coinsModel.listProperties(getUri(), propertyTypeClass);
+    return listProperties(getUri(), propertyTypeClass);
+  }
+  @Override
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, Class<T> propertyTypeClass) {
+    return coinsModel.listProperties(model, getUri(), propertyTypeClass);
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String propertyTypeClassUri) {
-    return coinsModel.listProperties(getUri(), propertyTypeClassUri);
+    return listProperties(getUri(), propertyTypeClassUri);
+  }
+  @Override
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String propertyTypeClassUri) {
+    return coinsModel.listProperties(model, getUri(), propertyTypeClassUri);
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String predicate, Class<T> propertyTypeClass) {
     return coinsModel.listProperties(getUri(), predicate, propertyTypeClass);
   }
   @Override
+  public <T extends CoinsObject> Iterator<T> listProperties(Model model, String predicate, Class<T> propertyTypeClass) {
+    return coinsModel.listProperties(model, getUri(), predicate, propertyTypeClass);
+  }
+  @Override
   public Iterator<RuntimeCoinsObject> listProperties(String predicate, String propertyTypeClassUri) {
     return coinsModel.listProperties(getUri(), predicate, propertyTypeClassUri);
+  }
+  @Override
+  public Iterator<RuntimeCoinsObject> listProperties(Model model, String predicate, String propertyTypeClassUri) {
+    return coinsModel.listProperties(model, getUri(), predicate, propertyTypeClassUri);
   }
 
   @Override
@@ -281,12 +325,24 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     return coinsModel.createProperty(getUri(), predicateUri, propertyTypeClassUri);
   }
   @Override
+  public RuntimeCoinsObject createProperty(Model model, String predicateUri, String propertyTypeClassUri) {
+    return coinsModel.createProperty(model, getUri(), predicateUri, propertyTypeClassUri);
+  }
+  @Override
   public <T extends AbstractCoinsObject> T createProperty(String predicateUri, Class<T> propertyTypeClass) {
     return coinsModel.createProperty(getUri(), predicateUri, propertyTypeClass);
   }
   @Override
+  public <T extends AbstractCoinsObject> T createProperty(Model model, String predicateUri, Class<T> propertyTypeClass) {
+    return coinsModel.createProperty(model, getUri(), predicateUri, propertyTypeClass);
+  }
+  @Override
   public void removeProperty(CoinsObject property) {
     coinsModel.removeProperty(getUri(), property);
+  }
+  @Override
+  public void removeProperty(Model model, CoinsObject property) {
+    coinsModel.removeProperty(model, getUri(), property);
   }
 
   @Override
@@ -294,16 +350,32 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     return coinsModel.getLiteralValue(getUri(), predicate, clazz);
   }
   @Override
+  public <T> T getLiteralValue(Model model, String predicate, Class<T> clazz) {
+    return coinsModel.getLiteralValue(model, getUri(), predicate, clazz);
+  }
+  @Override
   public <T> Iterator<T> getLiteralValues(String predicate, Class<T> clazz) {
     return coinsModel.getLiteralValues(getUri(), predicate, clazz);
+  }
+  @Override
+  public <T> Iterator<T> getLiteralValues(Model model, String predicate, Class<T> clazz) {
+    return coinsModel.getLiteralValues(model, getUri(), predicate, clazz);
   }
   @Override
   public <T> void setLiteralValue(String predicate, T object) {
     coinsModel.setLiteralValue(getUri(), predicate, object);
   }
   @Override
+  public <T> void setLiteralValue(Model model, String predicate, T object) {
+    coinsModel.setLiteralValue(model, getUri(), predicate, object);
+  }
+  @Override
   public <T> void addLiteralValue(String predicate, T object) {
     coinsModel.addLiteralValue(getUri(), predicate, object);
+  }
+  @Override
+  public <T> void addLiteralValue(Model model, String predicate, T object) {
+    coinsModel.addLiteralValue(model, getUri(), predicate, object);
   }
 
   @Override
@@ -311,21 +383,41 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     return coinsModel.getObject(getUri(), predicate, clazz);
   }
   @Override
+  public <T extends CoinsObject> T getObject(Model model, String predicate, Class<T> clazz) {
+    return coinsModel.getObject(model, getUri(), predicate, clazz);
+  }
+  @Override
   public <T extends CoinsObject> Iterator<T> getObjects(String predicate, Class<T> clazz) {
     return coinsModel.getObjects(getUri(), predicate, clazz);
+  }
+  @Override
+  public <T extends CoinsObject> Iterator<T> getObjects(Model model, String predicate, Class<T> clazz) {
+    return coinsModel.getObjects(model, getUri(), predicate, clazz);
   }
   @Override
   public void setObject(String predicate, AbstractCoinsObject object) {
     coinsModel.setObject(getUri(), predicate, object);
   }
   @Override
+  public void setObject(Model model, String predicate, AbstractCoinsObject object) {
+    coinsModel.setObject(model, getUri(), predicate, object);
+  }
+  @Override
   public void addObject(String predicate, AbstractCoinsObject object) {
     coinsModel.addObject(getUri(), predicate, object);
+  }
+  @Override
+  public void addObject(Model model, String predicate, AbstractCoinsObject object) {
+    coinsModel.addObject(model, getUri(), predicate, object);
   }
 
   @Override
   public void removeIndividualAndProperties() {
     coinsModel.removeIndividualAndProperties(getUri());
+  }
+  @Override
+  public void removeIndividualAndProperties(Model model) {
+    coinsModel.removeIndividualAndProperties(model, getUri());
   }
 
 
