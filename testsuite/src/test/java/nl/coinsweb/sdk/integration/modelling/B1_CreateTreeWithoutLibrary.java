@@ -60,7 +60,7 @@ public class B1_CreateTreeWithoutLibrary {
     /**
      * Print the content of the file
      */
-    File file = container.exportModel("/tmp/coinstest/content.nq", RDFFormat.NQUADS);
+    File file = container.exportModel(container.getJenaModel(), "/tmp/coinstest/content.nq", RDFFormat.NQUADS);
     try {
       BufferedReader br = new BufferedReader(new FileReader(file));
       String line = null;
@@ -120,7 +120,7 @@ public class B1_CreateTreeWithoutLibrary {
     /**
      * Print the content of the file
      */
-    File file = container.exportModel("/tmp/coinstest/content.nq", RDFFormat.NQUADS);
+    File file = container.exportModel(container.getJenaModel(), "/tmp/coinstest/content.nq", RDFFormat.NQUADS);
     try {
       BufferedReader br = new BufferedReader(new FileReader(file));
       String line = null;

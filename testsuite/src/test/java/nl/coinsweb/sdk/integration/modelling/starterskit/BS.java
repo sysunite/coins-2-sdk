@@ -60,12 +60,11 @@ public class BS {
     emptyZipContent.add("bim/repository/COINSWOA.rdf");
     emptyZipContent.add("bim/repository/BranchVersioning.rdf");
     emptyZipContent.add("doc/");
-    emptyZipContent.add("woa/");
+    emptyZipContent.add("woa/woa.rdf");
 
     rdfZipContent = new HashSet<>();
     rdfZipContent.add("bim/repository/cbim-2.0.rdf");
-//    rdfZipContent.add("doc/units-2.0.rdf");
-//    rdfZipContent.add("doc/COINSWOA.rdf");
+    rdfZipContent.add("woa/woa.rdf");
   }
 
   @AfterClass

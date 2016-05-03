@@ -50,7 +50,7 @@ public class C1_CreateLargeInstanceBase {
     rdfZipContent.add("bim/repository/COINSWOA.rdf");
     rdfZipContent.add("bim/repository/BranchVersioning.rdf");
     rdfZipContent.add("doc/");
-    rdfZipContent.add("woa/");
+    rdfZipContent.add("woa/woa.rdf");
   }
 
 
@@ -93,13 +93,13 @@ public class C1_CreateLargeInstanceBase {
 
 
     // Export all the rdf data to the container
-    ccr.exportModel("/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
     MemoryAsserts.sample();
     TimeAsserts.sample();
-    ccr.exportModel("/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.ttl", RDFFormat.TTL);
     MemoryAsserts.sample();
     TimeAsserts.sample();
-    ccr.exportModel("/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
+    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
 
 
 
