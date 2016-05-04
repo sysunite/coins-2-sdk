@@ -130,16 +130,6 @@ public class RunGenerate {
 
     ClassGenerateEngine engine = new ClassGenerateEngine();
 
-//    Map<String, String> mapping;
-//    if(options.hasMappingOption()) {
-//      mapping = options.getMapping();
-//
-//      for (String rdfNamspace : mapping.keySet()) {
-//        String javaPackageName = mapping.get(rdfNamspace);
-//        engine.addNamespace(rdfNamspace, javaPackageName);
-//      }
-//    }
-
     // Load the data file
     OntModelSpec reasoner = null;
     if(options.hasReasonerOption()) {
@@ -202,7 +192,7 @@ public class RunGenerate {
 
 
 
-
+    List<String> producedDllFiles = new ArrayList<>();
     for(String namespace : mapping.keySet()) {
 
       String packageFolder = mapping.get(namespace).replace(".", "//");
@@ -264,9 +254,20 @@ public class RunGenerate {
 
       if(doDll) {
 
+        String dllFile = dllFolder.resolve(libraryName + ".dll").toString();
+
+        String references = "-reference:"+coinsApiDllPath+" " ;
+        for(String reference : producedDllFiles) {
+          references += "-reference:"+reference+" " ;
+        }
+
         // Create dlls
-        log.info("ikvmc -nologo -reference:"+coinsApiDllPath+" -target:library " + jarFolder.resolve(libraryName + ".jar") + " -out:" + dllFolder.resolve(libraryName + ".dll"));
-        runCli("ikvmc -nologo -reference:"+coinsApiDllPath+" -target:library " + jarFolder.resolve(libraryName + ".jar") + " -out:" + dllFolder.resolve(libraryName + ".dll"));
+        String command = "ikvmc -nologo "+references+" -target:library " + jarFolder.resolve(libraryName + ".jar") + " -out:" + dllFile;
+
+        log.info(command);
+        runCli(command);
+
+        producedDllFiles.add(dllFile);
       }
 
       log.info("done with "+libraryName);

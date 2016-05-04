@@ -129,7 +129,7 @@ public class CliOptions {
     options.addOption(new Option("dll", false, "create dlls"));
     options.addOption(new Option("dllto", true, "create dlls and place them in the specified folder"));
 
-    Option input = new Option("i", true, "input file");
+    Option input = new Option("i", true, "input file (for generating dlls, the order is important, no backward dependency is allowed)");
     input.setArgs(Option.UNLIMITED_VALUES);
     options.addOption(input);
 
