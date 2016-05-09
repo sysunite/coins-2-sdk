@@ -94,6 +94,9 @@ public class CliOptions {
       return null;
     }
   }
+  private List<String> breakSemicolonSeparated(String path) {
+    return Arrays.asList(path.split(";"));
+  }
 
   private List<Path> resolvePaths(List<String> paths) {
     List<Path> result = new ArrayList<>();
@@ -129,16 +132,12 @@ public class CliOptions {
     options.addOption(new Option("dll", false, "create dlls"));
     options.addOption(new Option("dllto", true, "create dlls and place them in the specified folder"));
 
-    Option input = new Option("i", true, "input file (for generating dlls, the order is important, no backward dependency is allowed)");
+    Option input = new Option("i", true, "input file");
     input.setArgs(Option.UNLIMITED_VALUES);
     options.addOption(input);
-
-//    Option mappingOption = new Option("m", "mapping", true, "mapping of namespaces to package names\nhttp://example.com/set# = com.example.set http://...");
-//    mappingOption.setArgs(Option.UNLIMITED_VALUES);
-//    options.addOption(mappingOption);
-
     options.addOption("a", true, "pointer to coins-api.dll, needed for the code generator");
     options.addOption("o", true, "output file");
+    options.addOption("order", true, "namespaces to set order of generation (for generating dlls, the order is important, no backward dependency is allowed)");
     options.addOption("r", true, "use jena reasoner (e.g. OWL_MEM, OWL_MEM_RDFS_INF, ...)");
     options.addOption("q", false, "quiet, no output to the console");
     options.addOption("v", false, "verbose logging");
@@ -166,6 +165,8 @@ public class CliOptions {
   public boolean hasDllOption() { return cmd.hasOption("dll"); }
   public boolean hasDllPathOption() { return cmd.hasOption("dllto"); }
   public Path getDllPathOption() { return resolvePath(cmd.getOptionValue("dllto")); }
+  public boolean hasOrderOption() { return cmd.hasOption("order") && !getOrderOptions().isEmpty(); }
+  public List<String> getOrderOptions() { return breakSemicolonSeparated(cmd.getOptionValue("order")); }
   public boolean hasInputOption() { return cmd.hasOption("i") && !getInputOptions().isEmpty(); }
   public List<Path> getInputOptions() { return resolvePaths(Arrays.asList(cmd.getOptionValues("i"))); }
   public boolean hasReasonerOption() { return cmd.hasOption("r"); }
@@ -175,49 +176,4 @@ public class CliOptions {
   public Path getApiPathOption() { return resolvePath(cmd.getOptionValue("a")); }
   public boolean hasOutputOption() { return cmd.hasOption("o"); }
   public Path getOutputOption() { return resolvePath(cmd.getOptionValue("o")); }
-//  public boolean hasMappingOption() { return cmd.hasOption("mapping"); }
-//  public Map<String, String> getMapping() {
-//
-//    Map<String, String> values = new HashMap<>();
-//
-//    String namespace = null;
-//    boolean listening = false;
-//    boolean expectEqualsChar = false;
-//
-//
-//    // Look in the command line arguments
-//    for (Iterator<String> i = Arrays.asList(cmd.getOptionValues("mapping")).iterator(); i.hasNext();) {
-//
-//      String argument = i.next();
-//
-//      // Check for escaped char
-//      if(argument.startsWith("\\")) {
-//        continue;
-//      }
-//
-//      // Check for "="
-//      if(expectEqualsChar) {
-//        if(!argument.equals("=")) {
-//          return null;
-//        }
-//        expectEqualsChar = false;
-//        continue;
-//      }
-//
-//      // Set first element
-//      if(namespace == null) {
-//        namespace = argument;
-//        expectEqualsChar = true;
-//        continue;
-//      }
-//
-//      // Set second element
-//      if(namespace != null && !expectEqualsChar) {
-//        values.put(namespace, argument);
-//        namespace = null;
-//      }
-//    }
-//
-//    return values;
-//  }
 }

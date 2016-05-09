@@ -68,6 +68,7 @@ public class ClassGenerateEngine {
   }
 
   public void addNamespace(String rdfNamespace, String javaPackageName) {
+    log.info("adding to namespaceToPackage map "+rdfNamespace+" / "+javaPackageName);
     if(!subjectIgnoreList.contains(rdfNamespace)) {
       namespaceToPackage.put(rdfNamespace, javaPackageName);
     }

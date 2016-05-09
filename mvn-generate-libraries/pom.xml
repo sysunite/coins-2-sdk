@@ -138,6 +138,7 @@
                      ${basedir}/../coins-api/src/main/resources/BranchVersioning.rdf
                      ${basedir}/../coins-api/src/main/resources/COINSWOA.rdf
                   -o ${basedir}/../tmp/generated-sources/java
+                  -order http://qudt.org/schema/qudt#;http://www.coinsweb.nl/cbim-2.0.rdf#;http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#;http://www.coinsweb.nl/COINSWOA.rdf#
                   -jarto ${basedir}/../dist/library/jar
                   -sources
 
@@ -193,6 +194,7 @@
                        ${basedir}/../coins-api/src/main/resources/BranchVersioning.rdf
                        ${basedir}/../coins-api/src/main/resources/COINSWOA.rdf
                     -o ${basedir}/../tmp/generated-sources/java
+                    -order http://qudt.org/schema/qudt#;http://www.coinsweb.nl/cbim-2.0.rdf#;http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#;http://www.coinsweb.nl/COINSWOA.rdf#
                     -jarto ${basedir}/../dist/library/jar
                     -dllto ${basedir}/../dist/library/dll
                     -sources
