@@ -193,7 +193,18 @@ public class RunGenerate {
 
 
     List<String> producedDllFiles = new ArrayList<>();
-    for(String namespace : mapping.keySet()) {
+    List<String> pickList = new ArrayList(mapping.keySet());
+    if(options.hasOrderOption()) {
+      log.info("use specified order");
+      pickList = options.getOrderOptions();
+    }
+    for(String namespace : pickList) {
+
+      log.info("dealb with "+namespace);
+      if(!mapping.containsKey(namespace)) {
+        log.error("could not match namespace "+namespace+" derived from input files to the namespaces that where found iterating the union model");
+        continue;
+      }
 
       String packageFolder = mapping.get(namespace).replace(".", "//");
       Path packageFolderPath = Paths.get(packageFolder);
