@@ -1,0 +1,26 @@
+#name			:subclassing allvaluesfrom restrictions part 1
+#description		:Entailment of restriction subclasses via the allvaluesfrom construct part 1
+#reference		:scm-avf1 (49)
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+insert {Graph <schemaGraph>{
+?c1 rdfs:subClassOf ?c2
+}}
+
+ WHERE {Graph <schemaGraph>{
+  ?c1 owl:allValuesFrom ?y1 . 
+  ?y1 rdfs:subClassOf ?y2.  ?c2 owl:allValuesFrom ?y2 . 
+   ?c1 owl:onProperty ?p . 
+  ?c2 owl:onProperty ?p      
+}
+
+}
+
+
+
+

@@ -1,0 +1,19 @@
+#name			:scm-svf2 (67)
+#description		:Restriction subclassing based upon someValuesFrom
+#reference		:scm-svf2 (67)
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+insert {Graph <schemaGraph>{
+?c1 rdfs:subClassOf ?c2
+}}
+
+ WHERE {Graph <schemaGraph>{
+  ?c1 owl:someValuesFrom ?y .    ?c1 owl:onProperty ?p1 .    ?c2 owl:someValuesFrom ?y .    ?c2 owl:onProperty ?p2 .    ?p1 rdfs:subPropertyOf ?p2
+}
+
+}

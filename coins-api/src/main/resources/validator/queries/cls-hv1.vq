@@ -1,0 +1,22 @@
+#name			:Default values via owl:hasValue
+#description		:Default values entailment via the hasValue constraint
+#reference		:cls-hv1 (20)
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+insert {Graph <instanceGraph>{
+?u ?p ?y
+}}
+
+ WHERE {Graph <schemaGraph>{
+  ?x owl:hasValue ?y .    ?x owl:onProperty ?p .
+}
+Graph <instanceGraph>{
+   ?u a ?x  .
+}
+
+}
