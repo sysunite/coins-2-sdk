@@ -50,7 +50,7 @@ public class CliOptions {
   /** Print usage message and abort */
   protected void usage() {
     HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "coins-cli [ unzip | viewer | map | generate ]", options );
+    formatter.printHelp( "coins-cli [ unzip | viewer | map | generate | validate ]", options );
 
   }
 
@@ -81,6 +81,12 @@ public class CliOptions {
       return false;
     }
     return "generate".equals(cmd.getArgList().get(0));
+  }
+  public boolean validateMode() {
+    if(cmd.getArgList().isEmpty()) {
+      return false;
+    }
+    return "validate".equals(cmd.getArgList().get(0));
   }
 
 

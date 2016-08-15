@@ -1,0 +1,19 @@
+#name			:Scm-rng2 (63)
+#description		:entailment of ranges for subproperties
+#reference		:Scm-rng2 (63)
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+insert {Graph <schemaGraph>{
+?p1 rdfs:range ?c
+}}
+
+ WHERE {Graph <schemaGraph>{
+    ?p2 rdfs:range ?c .	    ?p1 rdfs:subPropertyOf ?p2 
+}
+
+}

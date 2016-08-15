@@ -3,6 +3,7 @@ package nl.coinsweb.sdk.cli;
 import nl.coinsweb.sdk.cli.generate.RunGenerate;
 import nl.coinsweb.sdk.cli.map.RunMap;
 import nl.coinsweb.sdk.cli.unzip.RunUnzip;
+import nl.coinsweb.sdk.cli.validate.RunValidate;
 import nl.coinsweb.sdk.cli.viewer.RunViewer;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -86,6 +87,12 @@ public class Run {
     } else if(options.generateMode()) {
 
       new RunGenerate().go(options);
+
+
+
+    } else if(options.validateMode()) {
+
+      new RunValidate().go(options);
 
 
 

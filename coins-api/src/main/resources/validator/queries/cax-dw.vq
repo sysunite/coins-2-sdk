@@ -1,0 +1,20 @@
+#name			:valideren van disjoint individuals via Disjoint verklaringen op basis van owl:disjointWith 
+#description		:Disjoint via owl:disjointWith 
+#reference		:cax-dw
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+ select distinct ?x ?c1 ?c2
+
+ WHERE {Graph <schemaGraph>{
+ ?c1 owl:disjointWith ?c2 
+}
+Graph <instanceGraph>{
+   ?x a ?c1 .   ?x a ?c2 .
+}
+
+}

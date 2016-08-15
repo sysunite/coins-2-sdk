@@ -1,0 +1,25 @@
+#name			:domain als een restrictie validatie 
+#description		:Domain als een restrictie
+#reference		:COINS-dom
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+ select distinct * 
+
+ WHERE {Graph <schemaGraph>{
+     ?prop a owl:ObjectProperty. ?prop rdfs:domain  ?domain.
+}
+Graph <instanceGraph>{
+    ?a ?prop ?b
+}
+filter not exists {{Graph <instanceGraph>{
+    ?a a ?domain
+}}  union { Graph <schemaGraph>{
+ ?a a ?domain}
+}}
+
+}
