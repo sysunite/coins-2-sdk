@@ -25,10 +25,19 @@
 package nl.coinsweb.sdk.validator;
 
 
+import com.hp.hpl.jena.query.QueryParseException;
+import nl.coinsweb.sdk.CoinsModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -45,6 +54,10 @@ public class ValidationQuery {
   String description;
   String reference;
   Profile profile;
+
+  private Iterator<Map<String,String>> resultSet;
+  private boolean passed;
+  private String errorMessage;
 
   public ValidationQuery(InputStream in) {
 
@@ -86,6 +99,27 @@ public class ValidationQuery {
     }
   }
 
+
+
+  public boolean executeOn(CoinsModel model) {
+    try {
+      resultSet = model.query(getQuery());
+      passed = true; // todo: interpret result as good or bad
+    } catch (QueryParseException e) {
+
+      errorMessage = "problem executing query with reference "+getReference();
+      log.error(errorMessage, e);
+      log.error(getQuery());
+
+      errorMessage += escapeHtml4("\n" + getQuery() + "\n" + e.getMessage());
+
+      passed = false;
+    }
+    return getPassed();
+  }
+
+
+
   public String getName() {
     return name;
   }
@@ -94,7 +128,7 @@ public class ValidationQuery {
     return description;
   }
 
-  public String getProfile() {
+  public Profile getProfile() {
     return profile;
   }
 
@@ -104,6 +138,13 @@ public class ValidationQuery {
 
   public String getQuery() {
     return query;
+  }
+
+  public boolean getPassed() {
+    return passed;
+  }
+  public String getErrorMessage() {
+    return errorMessage;
   }
 
   public String toString() {
