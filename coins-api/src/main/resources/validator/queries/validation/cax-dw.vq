@@ -8,13 +8,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
- select distinct ?x ?c1 ?c2
+select distinct ?x ?c1 ?c2
 
- WHERE {Graph <schemaGraph>{
- ?c1 owl:disjointWith ?c2 
-}
-Graph <instanceGraph>{
-   ?x a ?c1 .   ?x a ?c2 .
-}
-
+WHERE {
+  Graph <schemaGraph> {
+   ?c1 owl:disjointWith ?c2
+  }
+  Graph <instanceGraph> {
+    ?x a ?c1 .
+    ?x a ?c2 .
+  }
 }
