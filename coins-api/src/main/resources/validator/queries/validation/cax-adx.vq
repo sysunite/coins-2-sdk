@@ -19,6 +19,7 @@ WHERE {
    FILTER (?c1 != ?c2) .
  }
  Graph <instanceGraph> {
-  ?x a ?c1 . 	 ?x a ?c2
+  ?x a ?c1 .
+  ?x a ?c2
  }
 }
