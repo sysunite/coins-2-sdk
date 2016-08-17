@@ -30,7 +30,7 @@ public class D1_ClassListing {
     ClassGenerateEngine engine = new ClassGenerateEngine();
 
     ModelFactory factory = new JenaModelFactory();
-    factory.setReasoner(OntModelSpec.OWL_MEM_RDFS_INF);
+    factory.setOntModelSpec(OntModelSpec.OWL_MEM_RDFS_INF);
     JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), "http://empty.com/", false);
 
 

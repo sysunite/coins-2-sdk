@@ -71,7 +71,7 @@ public class B2_CreateAllCbimPropertyTypes {
     boolean contains = false;
 
     ModelFactory factory = new JenaModelFactory();
-    factory.setReasoner(reasoner);
+    factory.setOntModelSpec(reasoner);
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://empty.com/", false);
 
     model.addImport(Paths.get(IntegrationHelper.getResourceFile("BS", "Cbim-2.0.rdf").getAbsolutePath()).toFile().toString(), null, true, true, true);
