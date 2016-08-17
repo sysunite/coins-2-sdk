@@ -144,7 +144,7 @@ public class RunGenerate {
 
 
     ModelFactory factory = new JenaModelFactory();
-    factory.setReasoner(reasoner);
+    factory.setOntModelSpec(reasoner);
     JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), "http://empty.com/", false);
 
 
