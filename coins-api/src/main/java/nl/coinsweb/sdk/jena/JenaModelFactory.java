@@ -5,6 +5,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.Namespace;
@@ -47,9 +48,27 @@ public class JenaModelFactory implements ModelFactory {
 
     // Set document manager policy file
     OntDocumentManager dm = new OntDocumentManager();
+    dm.setProcessImports(false);
+
     OntModelSpec modelSpec = ontModelSpec;
     modelSpec.setDocumentManager(dm);
+
+    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+
+    return result;
+  }
+
+  @Override
+  public OntModel asOntModel(Model model, Reasoner reasoner) {
+
+    // Set document manager policy file
+    OntDocumentManager dm = new OntDocumentManager();
     dm.setProcessImports(false);
+
+    OntModelSpec modelSpec = ontModelSpec;
+    modelSpec.setDocumentManager(dm);
+    modelSpec.setReasoner(reasoner);
+
     OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;

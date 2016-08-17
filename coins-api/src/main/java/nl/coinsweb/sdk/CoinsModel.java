@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.reasoner.Reasoner;
 import nl.coinsweb.sdk.injectors.Injector;
 
 import java.util.ArrayList;
@@ -305,6 +306,7 @@ public interface CoinsModel {
    *          null if not implemented
    */
   public Object getJenaOntModel();
+  public Object getJenaOntModel(Reasoner reasoner);
 
   /**
    * If implemented as Jena model, return a Jena OntModel of the model represented by the namespaces.
@@ -317,6 +319,7 @@ public interface CoinsModel {
    *          null if not implemented
    */
   public Object getJenaOntModel(String namespace);
+  public Object getJenaOntModel(String namespace, Reasoner reasoner);
 
   /**
    * If implemented as Jena model, return a Jena Model object containing all data (instance an library).
@@ -337,6 +340,7 @@ public interface CoinsModel {
    *          null if not implemented
    */
   public Object getUnionJenaOntModel();
+  public Object getUnionJenaOntModel(Reasoner reasoner);
 
 
   /**
