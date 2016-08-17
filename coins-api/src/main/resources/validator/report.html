@@ -25,7 +25,25 @@
   <tr><th>validation</th><td><#if validation>PASSED<#else>FAILED</#if></td><tr>
 </table>
 
-<h3>Summary</h3>
+<h3>Reasoning results</h3>
+
+<h4>Summary</h4>
+
+<table>
+  <tr><th></th><th>isError</th><th>type</th><th>description</th><th>extension</th><tr>
+<#list jenaReports as report>
+  <tr><td><#if report.isError()>ERROR<#else>WARNING</#if></td><td>${report.type}</td><td>${report.description}</td><td>${report.extension}</td><tr>
+</#list>
+</table>
+
+<h4>Details</h4>
+
+<table>
+</table>
+
+<h3>Querying results</h3>
+
+<h4>Summary</h4>
 
 <table>
   <tr><th></th><th>name</th><th>error</th><tr>
@@ -34,7 +52,10 @@
 </#list>
 </table>
 
-<h3>Validation details</h3>
+<h4>Details</h4>
+
+<table>
+</table>
 
 </body>
 
