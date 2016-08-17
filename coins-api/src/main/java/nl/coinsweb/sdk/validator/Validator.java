@@ -34,6 +34,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +46,8 @@ public class Validator {
 
   private static final Logger log = LoggerFactory.getLogger(Validator.class);
 
-  CoinsModel model;
-  HashMap<String, ValidationQuery> validationQueries;
+  private CoinsModel model;
+  private HashMap<String, ValidationQuery> validationQueries;
 
   public Validator(CoinsModel model) {
     this.model = model;
@@ -56,7 +58,7 @@ public class Validator {
    */
   public void init() {
     ResourceScanner scanner = new ResourceScanner();
-    this.validationQueries = scanner.getResourceFiles("validator/queries/");
+    this.validationQueries = scanner.getResourceFiles("validator/queries/validation/");
   }
 
   /**
@@ -67,13 +69,34 @@ public class Validator {
    */
   public boolean validate(Path reportLocation) {
 
+    boolean allPassed = true;
+
+    Map<String, Object> data = new HashMap<>();
+
+    // Execute all queries
+    Collection<ValidationQuery> allQueries = getValidationQueries().values();
+    for(ValidationQuery query : allQueries) {
+      allPassed &= query.executeOn(model);
+    }
+
+    // Prepare input for report
+    data.put("filename", model.getCoinsContainer().getContainerId());
+    data.put("date", new Date().toString());
+    data.put("validation", allPassed);
+    data.put("queries", allQueries);
+
+    writeReport(reportLocation, data);
+    return allPassed;
+  }
+
+
+  private void writeReport(Path reportLocation, Map<String, Object> data) {
+
     try {
 
       Configuration cfg = new Configuration();
       cfg.setClassForTemplateLoading(Validator.class, "/validator/");
       Template template = cfg.getTemplate("report.html");
-
-      Map<String, Object> data = new HashMap<>();
 
       File out = reportLocation.resolve("report.html").toFile();
       PrintStream printStream = new PrintStream( new FileOutputStream( out ) );
@@ -90,8 +113,10 @@ public class Validator {
       log.error(e.getMessage(), e);
     }
 
-    return true;
+  }
 
+  public HashMap<String, ValidationQuery> getValidationQueries() {
+    return validationQueries;
   }
 
   private class ResourceScanner {
@@ -105,7 +130,7 @@ public class Validator {
       try {
         while( (resource = br.readLine()) != null ) {
           if(resource.endsWith(".vq")) {
-            files.put(resource, new ValidationQuery(getResourceAsStream("validator/queries/"+resource)));
+            files.put(resource, new ValidationQuery(getResourceAsStream("validator/queries/validation/"+resource)));
           }
         }
       } catch (IOException e) {
