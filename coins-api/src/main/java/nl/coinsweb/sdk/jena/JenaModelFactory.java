@@ -24,17 +24,17 @@ public class JenaModelFactory implements ModelFactory {
 
 
 
-  //  private OntModelSpec reasoner = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
-  private OntModelSpec reasoner = OntModelSpec.OWL_MEM_RDFS_INF;
-  //  private OntModelSpec reasoner = OntModelSpec.OWL_MEM;
+  //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
+  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
+  //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM;
 
   public JenaModelFactory() {
     dataset = TDBFactory.createDataset();
   }
 
   @Override
-  public void setReasoner(OntModelSpec modelSpec) {
-    reasoner = modelSpec;
+  public void setOntModelSpec(OntModelSpec modelSpec) {
+    ontModelSpec = modelSpec;
   }
 
   @Override
@@ -47,7 +47,7 @@ public class JenaModelFactory implements ModelFactory {
 
     // Set document manager policy file
     OntDocumentManager dm = new OntDocumentManager();
-    OntModelSpec modelSpec = reasoner;
+    OntModelSpec modelSpec = ontModelSpec;
     modelSpec.setDocumentManager(dm);
     dm.setProcessImports(false);
     OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface ModelFactory {
 
-  public void setReasoner(OntModelSpec modelSpec);
+  public void setOntModelSpec(OntModelSpec modelSpec);
   public Model getEmptyModel();
   public OntModel asOntModel(Model model);
   public Dataset getDataset(Namespace instanceNamespace, Model instanceModel,
