@@ -20,7 +20,7 @@ public class JenaModelFactory implements ModelFactory {
 
   private static final Logger log = LoggerFactory.getLogger(JenaModelFactory.class);
 
-  private Dataset dataset;
+  Dataset dataset;
 
 
 
@@ -68,7 +68,7 @@ public class JenaModelFactory implements ModelFactory {
     return dataset;
   }
 
-  private void refreshModel(Namespace ns, Model model) {
+  void refreshModel(Namespace ns, Model model) {
     if(dataset.containsNamedModel(ns.toString())) {
       dataset.replaceNamedModel(ns.toString(), model);
     } else {
