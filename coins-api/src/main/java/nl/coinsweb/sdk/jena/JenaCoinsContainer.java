@@ -36,6 +36,7 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.PropertyImpl;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.rdf.model.impl.StatementImpl;
+import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -2051,12 +2052,22 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public OntModel getJenaOntModel() {
     return factory.asOntModel(this.instanceModel);
   }
+  public OntModel getJenaOntModel(Reasoner reasoner) {
+    return factory.asOntModel(this.instanceModel, reasoner);
+  }
 
   @Override
   public OntModel getJenaOntModel(String namespace) {
     Model model = getJenaModel(namespace);
     if(model != null) {
       return factory.asOntModel(model);
+    }
+    return null;
+  }
+  public OntModel getJenaOntModel(String namespace, Reasoner reasoner) {
+    Model model = getJenaModel(namespace);
+    if(model != null) {
+      return factory.asOntModel(model, reasoner);
     }
     return null;
   }
@@ -2069,6 +2080,9 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   @Override
   public OntModel getUnionJenaOntModel() {
     return factory.asOntModel(getUnionModel());
+  }
+  public OntModel getUnionJenaOntModel(Reasoner reasoner) {
+    return factory.asOntModel(getUnionModel(), reasoner);
   }
 
 
