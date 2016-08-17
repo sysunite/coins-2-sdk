@@ -30,7 +30,7 @@ public class B7_NextTrunkVersionOverloading {
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
 
 
-//    model.setReasoner(OntModelSpec.OWL_MEM);
+//    model.setOntModelSpec(OntModelSpec.OWL_MEM);
 
     Iterator<PropertyDeclaration> iterator = model.listPropertyDeclarations("http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty");
     while(iterator.hasNext()) {
