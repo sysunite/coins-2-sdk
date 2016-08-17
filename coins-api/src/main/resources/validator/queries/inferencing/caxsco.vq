@@ -8,15 +8,17 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-insert {Graph <instanceGraph>{
-?x a ?c2
-}}
-
- WHERE {Graph <instanceGraph>{
- ?x a ?c1
-}
-Graph <schemaGraph>{
- ?c1 rdfs:subClassOf ?c2
+insert {
+  Graph <instanceGraph> {
+    ?x a ?c2
+  }
 }
 
+WHERE {
+  Graph <instanceGraph> {
+    ?x a ?c1
+  }
+  Graph <schemaGraph> {
+    ?c1 rdfs:subClassOf ?c2
+  }
 }

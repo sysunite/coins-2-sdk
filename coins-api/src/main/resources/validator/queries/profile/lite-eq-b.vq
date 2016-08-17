@@ -1,0 +1,19 @@
+#name			:check all objects for compliance with the lite eq profile
+#description		:check all objects for compliance with the lite eq profile
+#reference		:lite-eq-c
+#profile			:COINS 2.0 Lite+EQ
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select distinct ?a ?b ?c
+
+WHERE {
+  Graph <referentiekader of OTL> {
+    ?a ?b ?c .
+    filter (STRSTARTS(STR(?b),"http://www.w3.org/2002/07/owl#")) .
+    filter (?b not in (owl:allValuesFrom,owl:cardinality,owl:disjointWith,owl:distinctMembers,owl:hasValue,owl:imports,owl:intersectionOf,owl:inverseOf,owl:maxCardinality,owl:maxQualifiedCardinality,owl:members,owl:minCardinality,owl:minQualifiedCardinality,owl:onClass,owl:oneOf,owl:onProperty,owl:qualifiedCardinality,owl:someValuesFrom,owl:unionOf,owl:equivalentClass,owl:annotatedProperty,owl:annotatedSource,owl:annotatedTarget,owl:backwardCompatibleWith,owl:deprecated,owl:incompatibleWith,owl:priorVersion,owl:versionInfo,owl:versionIRI))
+  }
+}

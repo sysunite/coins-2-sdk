@@ -1,0 +1,19 @@
+#name			:check all objects for compliance with the lite profile
+#description		:check all objects for compliance with the lite profile
+#reference		:lite-c
+#profile			:COINS 2.0 Lite
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select distinct ?a ?b ?c
+
+WHERE {
+  Graph <referentiekader of OTL> {
+    ?a ?b ?c .
+    filter (STRSTARTS(STR(?c),"http://www.w3.org/2002/07/owl#")) .
+    filter (?c not in (owl:AllDisjointClasses,owl:Annotation,owl:AnnotationProperty,owl:Class,owl:DatatypeProperty,owl:FunctionalProperty,owl:NamedIndividual,owl:ObjectProperty,owl:Ontology,owl:Restriction,owl:TransitiveProperty,owl:Thing))
+  }
+}
