@@ -4,12 +4,10 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.MemoryAsserts;
 import nl.coinsweb.sdk.integration.TimeAsserts;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -68,8 +66,7 @@ public class C1_CreateLargeInstanceBase {
   @Test
   public void createCcrWithManyTriplesRdfInMem() {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new JenaModelFactory();
-    createCcrWithManyTriplesRdf(new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+    createCcrWithManyTriplesRdf(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
   }
 
 
@@ -82,8 +79,7 @@ public class C1_CreateLargeInstanceBase {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
 
     // Create the container
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "http://www.example.com/");
 
 
 

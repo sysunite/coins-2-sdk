@@ -2,12 +2,10 @@ package nl.coinsweb.sdk.integration.validation;
 
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.AfterClass;
@@ -75,8 +73,7 @@ public class G2_StarterKitValidation {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", "4.01" + ".rdf").getCanonicalFile();
-      ModelFactory factory = new JenaModelFactory();
-      model = new JenaCoinsContainer(factory, defaultPerson, testFile.toString(), "http://www.example.com/");
+      model = new JenaCoinsContainer(defaultPerson, testFile.toString(), "http://www.example.com/");
 
       File libFile = IntegrationHelper.getResourceFile("BS", "4.01" + "-lib.rdf").getCanonicalFile();
       model.addImport(libFile.getCanonicalPath(), null, true, true, true);
@@ -104,8 +101,7 @@ public class G2_StarterKitValidation {
     rdfZipContent.remove("bim/repository/"+"4.01"+"-lib.rdf");
 
     // Reopen the ccr
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer reopenend = new JenaCoinsContainer(factory, defaultPerson, "/tmp/coinstest/starterskit"+"4.01"+"_inmem.ccr", "http://www.example.com/");
+    JenaCoinsContainer reopenend = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+"4.01"+"_inmem.ccr", "http://www.example.com/");
 
     assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
 

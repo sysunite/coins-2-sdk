@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.reasoner.Reasoner;
@@ -38,6 +39,14 @@ import java.util.Map;
  * @author Bastiaan Bijl, Sysunite 2016
  */
 public interface CoinsGraphSet {
+
+  public void setOntModelSpec(OntModelSpec modelSpec);
+  public Model getEmptyModel();
+  public Dataset getDataset(Namespace instanceNamespace, Model instanceModel,
+                            Namespace woaNamespace, Model woaModel,
+                            Map<Namespace, Model> libraryModels);
+  public Dataset getDatasetWithUnionGraphs(CoinsModel model);
+  public void close();
 
 
 
@@ -98,8 +107,8 @@ public interface CoinsGraphSet {
    * @return  a Jena OntModel containing all instances, no libraries
    *          null if not implemented
    */
-  public OntModel getJenaOntModel();
-  public OntModel getJenaOntModel(Reasoner reasoner);
+  public OntModel getInstanceOntModel();
+  public OntModel getInstanceOntModel(Reasoner reasoner);
 
   /**
    * If implemented as Jena model, return a Jena OntModel of the model represented by the namespaces.
@@ -135,6 +144,8 @@ public interface CoinsGraphSet {
   public OntModel getUnionJenaOntModel();
   public OntModel getUnionJenaOntModel(Reasoner reasoner);
 
+  public Model getUnionModel();
+
 
 
 
@@ -153,4 +164,8 @@ public interface CoinsGraphSet {
 
 
   public Dataset getDataset();
+  public OntModel asOntModel(Model model);
+  public OntModel asOntModel(Model model, Reasoner reasoner);
+
+  public void reset();
 }

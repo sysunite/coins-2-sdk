@@ -1,9 +1,7 @@
 package nl.coinsweb.sdk.cli.validate;
 
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
 import org.slf4j.Logger;
@@ -43,8 +41,7 @@ public class RunValidate {
       return;
     }
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer container = new JenaCoinsContainer(factory, options.getInputOptions().get(0).toString(), "http://www.example.com/");
+    JenaCoinsContainer container = new JenaCoinsContainer(options.getInputOptions().get(0).toString(), "http://www.example.com/");
     JenaValidationExecutor executor = new JenaValidationExecutor();
 
     Validator validator = new Validator(container, executor, "COINS-2.0-Lite");

@@ -2,7 +2,7 @@ package nl.coinsweb.sdk.jena;
 
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
-import nl.coinsweb.sdk.ModelFactory;
+import nl.coinsweb.sdk.CoinsGraphSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
@@ -15,9 +15,9 @@ import java.nio.file.Paths;
 /**
  * @author Bastiaan Bijl
  */
-public class TDBModelFactory extends JenaModelFactory implements ModelFactory {
+public class TDBCoinsGraphSet extends JenaCoinsGraphSet implements CoinsGraphSet {
 
-  private static final Logger log = LoggerFactory.getLogger(TDBModelFactory.class);
+  private static final Logger log = LoggerFactory.getLogger(TDBCoinsGraphSet.class);
 
   private static final String DEFAULT_TEMP_FOLDER = "/tmp/";
   private static final String TDB_FOLDER = "coinstdb/";
@@ -30,7 +30,8 @@ public class TDBModelFactory extends JenaModelFactory implements ModelFactory {
 
 
 
-  public TDBModelFactory() {
+  public TDBCoinsGraphSet(String namespace) {
+    super(namespace);
     log.info("start new tdb for namespace given file");
     Path tempPath = Paths.get(DEFAULT_TEMP_FOLDER);
     Path path = tempPath.resolve(TDB_FOLDER + RandomStringUtils.random(8, true, true) + "/");

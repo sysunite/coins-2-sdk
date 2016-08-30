@@ -3,11 +3,9 @@ package nl.coinsweb.sdk.integration.modelling;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -29,14 +27,13 @@ public class B13_OTL {
   @Test
   public void aCreateContainer() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://sandbox.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://sandbox.com/");
 
 
     String fileToImport =  IntegrationHelper.getResourceFile("B13", "otl-coins-subset-2016-02-09.ttl").toPath().toString();
     model.addImport(fileToImport, "http://otl.rws.nl/otl#", true, true, true);
 
-    OntModel ontModel = model.getCoinsGraphSet().getJenaOntModel();
+    OntModel ontModel = model.getCoinsGraphSet().getInstanceOntModel();
 
 
     log.info("available classes:");
@@ -63,10 +60,9 @@ public class B13_OTL {
   @Test
   public void bReloadContainer() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "/tmp/coinstest/otl.ccr", "http://sandbox.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/otl.ccr", "http://sandbox.com/");
 
-    DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaOntModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceOntModel());
   }
 
 

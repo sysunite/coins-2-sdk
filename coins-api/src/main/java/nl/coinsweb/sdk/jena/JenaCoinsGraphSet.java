@@ -24,13 +24,16 @@
  **/
 package nl.coinsweb.sdk.jena;
 
+import com.hp.hpl.jena.ontology.OntDocumentManager;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
-import nl.coinsweb.sdk.ModelFactory;
+import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -47,25 +50,32 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsGraphSet.class);
 
-  ModelFactory factory;
+  Dataset dataset;
+
+  //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
+  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
+  //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM;
 
   private Namespace instanceNamespace;
   private Model instanceModel;
 
-
   public Namespace woaNamespace = new Namespace("http://woa.coinsweb.nl/");
   private Model woaModel;
-
 
   private Map<Namespace, Model> libraryModels;
 
 
-  public JenaCoinsGraphSet(Namespace instanceNamespace, ModelFactory factory) {
-    this.factory = factory;
-    this.instanceNamespace = instanceNamespace;
+  public JenaCoinsGraphSet(String namespace) {
+    this.instanceNamespace = new Namespace(namespace);
     this.libraryModels = new HashMap<>();
-    this.instanceModel = factory.getEmptyModel();
-    this.woaModel = factory.getEmptyModel();
+    this.instanceModel = getEmptyModel();
+    this.woaModel = getEmptyModel();
+    this.dataset = TDBFactory.createDataset();
+  }
+
+  @Override
+  public void setOntModelSpec(OntModelSpec modelSpec) {
+    ontModelSpec = modelSpec;
   }
 
   public void reset() {
@@ -122,8 +132,12 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     return libraryModels;
   }
 
-  public Model getJenaModel() {
-    return this.instanceModel;
+  @Override
+  public OntModel getInstanceOntModel() {
+    return asOntModel(this.instanceModel);
+  }
+  public OntModel getInstanceOntModel(Reasoner reasoner) {
+    return asOntModel(this.instanceModel, reasoner);
   }
 
   @Override
@@ -153,25 +167,17 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public OntModel getJenaOntModel() {
-    return factory.asOntModel(this.instanceModel);
-  }
-  public OntModel getJenaOntModel(Reasoner reasoner) {
-    return factory.asOntModel(this.instanceModel, reasoner);
-  }
-
-  @Override
   public OntModel getJenaOntModel(String namespace) {
     Model model = getJenaModel(namespace);
     if(model != null) {
-      return factory.asOntModel(model);
+      return asOntModel(model);
     }
     return null;
   }
   public OntModel getJenaOntModel(String namespace, Reasoner reasoner) {
     Model model = getJenaModel(namespace);
     if(model != null) {
-      return factory.asOntModel(model, reasoner);
+      return asOntModel(model, reasoner);
     }
     return null;
   }
@@ -185,16 +191,16 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
 
   @Override
   public OntModel getUnionJenaOntModel() {
-    return factory.asOntModel(getUnionModel());
+    return asOntModel(getUnionModel());
   }
   public OntModel getUnionJenaOntModel(Reasoner reasoner) {
-    return factory.asOntModel(getUnionModel(), reasoner);
+    return asOntModel(getUnionModel(), reasoner);
   }
 
 
   public Model getUnionModel() {
 
-    Model unionModel = factory.getEmptyModel();
+    Model unionModel = getEmptyModel();
     unionModel.add(instanceModel);
     unionModel.add(woaModel);
     for(Namespace key : libraryModels.keySet()) {
@@ -227,7 +233,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
       writer.write(model, output, null);
 
     } else {
-      Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
+      Dataset dataset = getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
       dataset.getNamedModel(instanceNamespace.toString());
       RDFDataMgr.write(output, model, format);
     }
@@ -255,7 +261,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
       writer.write(model, boas, null);
 
     } else {
-      Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
+      Dataset dataset = getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
       dataset.getNamedModel(instanceNamespace.toString());
       RDFDataMgr.write(boas, model, format);
     }
@@ -279,14 +285,105 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
 
   @Override
   public void writeFullToFile(OutputStream output, RDFFormat format) {
-    Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
+    Dataset dataset = getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
     RDFDataMgr.write(output, dataset, format);
   }
 
 
   @Override
   public Dataset getDataset() {
-    return factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
+    return getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
+  }
+
+
+
+
+  @Override
+  public OntModel asOntModel(Model model) {
+
+    // Set document manager policy file
+    OntDocumentManager dm = new OntDocumentManager();
+    dm.setProcessImports(false);
+
+    OntModelSpec modelSpec = ontModelSpec;
+    modelSpec.setDocumentManager(dm);
+
+    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+
+    return result;
+  }
+
+  @Override
+  public OntModel asOntModel(Model model, Reasoner reasoner) {
+
+    // Set document manager policy file
+    OntDocumentManager dm = new OntDocumentManager();
+    dm.setProcessImports(false);
+
+    OntModelSpec modelSpec = ontModelSpec;
+    modelSpec.setDocumentManager(dm);
+    modelSpec.setReasoner(reasoner);
+
+    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+
+    return result;
+  }
+
+  @Override
+  public Model getEmptyModel() {
+    return com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+  }
+
+  @Override
+  public Dataset getDataset(Namespace instanceNamespace, Model instanceModel,
+                            Namespace woaNamespace, Model woaModel,
+                            Map<Namespace, Model> libraryModels) {
+
+    refreshModel(instanceNamespace.toString(), instanceModel);
+    refreshModel(woaNamespace.toString(), woaModel);
+    for(Namespace ns : libraryModels.keySet()) {
+      refreshModel(ns.toString(), libraryModels.get(ns));
+    }
+    return dataset;
+  }
+
+  public Dataset getDatasetWithUnionGraphs(CoinsModel model) {
+
+    Model instanceModel = (Model) model.getCoinsGraphSet().getInstanceModel();
+    Model woaModel = (Model) model.getCoinsGraphSet().getWoaModel();
+    Model schemaModel = (Model) model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/cbim-2.0.rdf");
+
+    Model schemaUnionModel = getEmptyModel();
+    schemaUnionModel.add(schemaModel);
+    for(Namespace key : model.getCoinsGraphSet().getLibraryModels().keySet()) {
+      schemaUnionModel.add(model.getCoinsGraphSet().getLibraryModels().get(key));
+    }
+
+    Model fullUnionModel = getEmptyModel();
+    fullUnionModel.add(instanceModel);
+    fullUnionModel.add(woaModel);
+    fullUnionModel.add(schemaUnionModel);
+
+    refreshModel("INSTANCE_GRAPH", instanceModel);
+    refreshModel("WOA_GRAPH", woaModel);
+    refreshModel("SCHEMA_GRAPH", schemaModel);
+    refreshModel("SCHEMA_UNION_GRAPH", schemaUnionModel);
+    refreshModel("FULL_UNION_GRAPH", fullUnionModel);
+
+    return dataset;
+  }
+
+  void refreshModel(String ns, Model model) {
+    if(dataset.containsNamedModel(ns)) {
+      dataset.replaceNamedModel(ns, model);
+    } else {
+      dataset.addNamedModel(ns, model);
+    }
+  }
+
+  @Override
+  public void close() {
+    dataset.close();
   }
 
 }

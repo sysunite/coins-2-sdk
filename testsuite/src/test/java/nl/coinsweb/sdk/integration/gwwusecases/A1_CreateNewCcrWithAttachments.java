@@ -11,8 +11,7 @@ import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
-import nl.coinsweb.sdk.jena.TDBModelFactory;
+import nl.coinsweb.sdk.jena.TDBCoinsGraphSet;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -105,8 +104,7 @@ public class A1_CreateNewCcrWithAttachments {
   public void createEmptyCcrTDB() {
 
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new TDBModelFactory();
-    createEmptyCcr(new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+    createEmptyCcr(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
 
   }
 
@@ -114,8 +112,7 @@ public class A1_CreateNewCcrWithAttachments {
   public void createEmptyCcrExistingTDB() {
 
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new TDBModelFactory();
-    createEmptyCcr(new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+    createEmptyCcr(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
 
   }
 
@@ -123,8 +120,7 @@ public class A1_CreateNewCcrWithAttachments {
   public void createEmptyCcrInMem() {
 
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new JenaModelFactory();
-    createEmptyCcr(new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+    createEmptyCcr(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
 
 
   }
@@ -135,8 +131,7 @@ public class A1_CreateNewCcrWithAttachments {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
 
     // Create the container content
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "http://www.example.com/");
     ccr.export(Paths.get("/tmp/coinstest/empty.zip").toFile().toString());
     ccr.close();
 
@@ -154,15 +149,14 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createCcrWithAttachmentTDB() {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new TDBModelFactory();
-    createCcrWithAttachment(new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+    CoinsGraphSet graphSet = new TDBCoinsGraphSet("http://www.example.com/");
+    createCcrWithAttachment(new JenaCoinsContainer(defaultPerson, graphSet, true));
   }
 
   @Test
   public void createCcrWithAttachmentInMem() {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new JenaModelFactory();
-    createCcrWithAttachment(new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+    createCcrWithAttachment(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
   }
 
 
@@ -172,8 +166,7 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container content
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer("http://www.example.com/");
 
     // Add an attachment
     ccr.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
@@ -217,8 +210,7 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "http://www.example.com/");
 
     // Add the one line rdf
     ExpertCoinsModel instanceModel = ccr;
@@ -249,7 +241,7 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Reopen the ccr
-    JenaCoinsContainer ccr2 = new JenaCoinsContainer(factory, defaultPerson, "/tmp/coinstest/onelineofrdf.zip", "http://www.example.com/");
+    JenaCoinsContainer ccr2 = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/onelineofrdf.zip", "http://www.example.com/");
     ccr2.close();
   }
 
@@ -267,8 +259,7 @@ public class A1_CreateNewCcrWithAttachments {
   public void createEmptyCcrWithLibraries() {
 
     // 1) An empty container
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer emptyCcr = new JenaCoinsContainer(factory, "http://example.com");
+    JenaCoinsContainer emptyCcr = new JenaCoinsContainer("http://example.com");
 
 
     File otlFile = IntegrationHelper.getResourceFile("A5", "otl-coins-2016-02-09.ttl");
@@ -281,7 +272,7 @@ public class A1_CreateNewCcrWithAttachments {
     log.info("#will reload now");
 
 
-    JenaCoinsContainer reloaded = new JenaCoinsContainer(factory, "/tmp/coinstest/testLinkToCore.zip", "http://www.example.com/");
+    JenaCoinsContainer reloaded = new JenaCoinsContainer("/tmp/coinstest/testLinkToCore.zip", "http://www.example.com/");
   }
 
 
@@ -289,8 +280,8 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createDocumentInStoreButNoFilePresentAsAttachment() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://example.com");
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://example.com");
 
     InternalDocumentReference doc = new InternalDocumentReference(model);
     StringProperty fileNameProperty = new StringProperty(model);
@@ -318,8 +309,7 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createDocumentInStoreAndFilePresentAsAttachment() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://example.com");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://example.com");
 
     model.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
 

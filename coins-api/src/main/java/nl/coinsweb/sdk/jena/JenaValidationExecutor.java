@@ -59,10 +59,9 @@ public class JenaValidationExecutor implements ValidationExecutor {
   @Override
   public void execute(CoinsModel model, Profile profile) {
 
-    JenaModelFactory factory = new JenaModelFactory();
-    factory.setOntModelSpec(OntModelSpec.OWL_MEM);
     this.model = model;
-    this.dataset = factory.getDatasetWithUnionGraphs(model);
+    model.getCoinsGraphSet().setOntModelSpec(OntModelSpec.OWL_MEM);
+    this.dataset = model.getCoinsGraphSet().getDatasetWithUnionGraphs(model);
     this.profile = profile;
 
     // See if the model applies to the profile
