@@ -56,7 +56,7 @@ public class DatasetAsserts {
 
       // Iterate over statements
       ByteArrayOutputStream boas = new ByteArrayOutputStream();
-      model.writeFullToFile(boas, RDFFormat.NQUADS);
+      model.getCoinsGraphSet().writeFullToFile(boas, RDFFormat.NQUADS);
       BufferedReader reader = new BufferedReader(new StringReader(boas.toString()));
 
 

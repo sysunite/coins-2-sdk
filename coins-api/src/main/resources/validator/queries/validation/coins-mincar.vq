@@ -8,19 +8,31 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
- select distinct ?this  ?min ?aantal ?property 
+select distinct ?this ?min ?aantal ?property
 
- WHERE {{
+WHERE {{
  select distinct ?this ?class ?min (count(distinct ?value) as ?aantal) ?property 
 
- WHERE {Graph <schemaGraph>{
-   ?class a owl:Restriction .     ?class owl:minCardinality ?min .    ?class owl:onProperty ?property  
-}
-Graph <instanceGraph>{
- {?this a ?class . ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } union {?this a ?class . filter not exists {?this ?property ?value} }	
-}
+ WHERE {
+ Graph <schemaGraph> {
+   ?class a owl:Restriction .
+   ?class owl:minCardinality ?min .
+   ?class owl:onProperty ?property
+  }
+  Graph <instanceGraph> {
+    {
+      ?this a ?class .
+      ?this ?property ?value.
+      filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}
+    }
+      union {
+      ?this a ?class .
+      filter not exists {?this ?property ?value}
+    }
+  }
 
-}group by ?this ?class ?min ?property
+}
+group by ?this ?class ?min ?property
 }
 filter(?aantal<?min)
 

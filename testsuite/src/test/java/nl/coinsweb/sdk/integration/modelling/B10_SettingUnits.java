@@ -114,8 +114,8 @@ public class B10_SettingUnits {
 
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(28, DatasetAsserts.countTriples(model.getJenaModel()));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    assertEquals(28, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -168,8 +168,8 @@ public class B10_SettingUnits {
     property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    DatasetAsserts.logTriples(model.getWoaModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getWoaModel());
 
     Iterator<Map<String, String>> result =  model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
     while(result.hasNext()) {

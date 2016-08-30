@@ -73,7 +73,7 @@ public class A5_MBITestP8 {
     FileManager.registerLibrary(otlFile.toURI(), null, ccr.getAvailableLibraryFiles());
 
     // Try again to load all libraries now the otl is registered
-    ccr.addNamedModelForImports(ccr.getJenaModel());
+    ccr.addNamedModelForImports(ccr.getCoinsGraphSet().getInstanceModel());
 
 
     ccr.export(container.toString());

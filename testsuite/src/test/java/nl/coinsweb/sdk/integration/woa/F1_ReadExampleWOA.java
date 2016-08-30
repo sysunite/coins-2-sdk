@@ -57,10 +57,10 @@ public class F1_ReadExampleWOA {
       log.debug(viaduct.getDescription());
 
       log.info("instance model");
-      DatasetAsserts.logTriples(model.getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
+      DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
 
       log.info("woa model");
-      DatasetAsserts.logTriples(model.getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
+      DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
 
       model.close();
     }
@@ -87,10 +87,10 @@ public class F1_ReadExampleWOA {
     log.debug(viaduct.getDescription());
 
     log.info("instance model");
-    DatasetAsserts.logTriples(model.getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
 
     log.info("woa model");
-    DatasetAsserts.logTriples(model.getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
 
     model.close();
   }
@@ -104,10 +104,10 @@ public class F1_ReadExampleWOA {
     Part landhoofd = new Part(container, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
 
     // Because the uri already exists, first we instantiate it
-    landhoofd.addType(container.getWoaModel(), NoAccess.classUri);
+    landhoofd.addType(container.getCoinsGraphSet().getWoaModel(), NoAccess.classUri);
 
     // The object can now be instantiated as a NoAccess instance to set the layer depth
-    NoAccess noAccess = new NoAccess(container, container.getWoaModel(), "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
+    NoAccess noAccess = new NoAccess(container, container.getCoinsGraphSet().getWoaModel(), "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
     noAccess.setLayerdepth(1);
 
     for(Injector injector : container.getInjectors()) {
@@ -126,10 +126,10 @@ public class F1_ReadExampleWOA {
     } finally {
 
       log.info("instance model");
-      DatasetAsserts.logTriples(container.getJenaModel());
+      DatasetAsserts.logTriples(container.getCoinsGraphSet().getInstanceModel());
 
       log.info("woa model");
-      DatasetAsserts.logTriples(container.getWoaModel());
+      DatasetAsserts.logTriples(container.getCoinsGraphSet().getWoaModel());
 
       container.export("/tmp/newWoaContent.ccr");
 
@@ -150,10 +150,10 @@ public class F1_ReadExampleWOA {
       } finally {
 
         log.info("instance model");
-        DatasetAsserts.logTriples(reopened.getJenaModel());
+        DatasetAsserts.logTriples(reopened.getCoinsGraphSet().getInstanceModel());
 
         log.info("woa model");
-        DatasetAsserts.logTriples(reopened.getWoaModel());
+        DatasetAsserts.logTriples(reopened.getCoinsGraphSet().getWoaModel());
 
 
         container.close();

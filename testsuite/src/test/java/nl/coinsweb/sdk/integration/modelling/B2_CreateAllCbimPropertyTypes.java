@@ -88,7 +88,7 @@ public class B2_CreateAllCbimPropertyTypes {
       }
     }
 
-    log.info(Integer.toString(DatasetAsserts.countTriples(model.getUnionJenaOntModel())));
+    log.info(Integer.toString(DatasetAsserts.countTriples(model.getCoinsGraphSet().getUnionJenaOntModel())));
 
     return contains;
   }

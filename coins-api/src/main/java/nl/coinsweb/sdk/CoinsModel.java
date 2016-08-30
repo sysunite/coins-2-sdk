@@ -25,7 +25,6 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.reasoner.Reasoner;
 import nl.coinsweb.sdk.injectors.Injector;
 
 import java.util.ArrayList;
@@ -72,20 +71,6 @@ public interface CoinsModel {
    * @return  a list of injectors
    */
   public void disableWOA();
-
-  /**
-   * Configuration option to specify which namespace will be used for the instance model.
-   *
-   * @param namespace  set default to "http://sandbox.coinsweb.nl/default"
-   */
-  public void setInstanceNamespace(String namespace);
-
-  /**
-   * Returns the namespace used for the instance model.
-   *
-   * @return  the namespace ("http://sandbox.coinsweb.nl/default")
-   */
-  public String getInstanceNamespace();
 
   /**
    * Check if the current model imports the library represented by the specified namespace.
@@ -275,79 +260,14 @@ public interface CoinsModel {
   public CoinsContainer getCoinsContainer();
 
   /**
-   * List the names of the models, namespaces of the instance model (the first one) and the libraries.
-   *
-   * @return  iterator of String namespaces
-   */
-  public Iterator<String> listModelNames();
-
-  /**
-   * If implemented as Jena model, return a Jena Model object containing the instances.
-   *
-   * @return  a Jena Model containing all instances, no libraries
-   *          null if not implemented
-   */
-  public Object getJenaModel();
-
-  /**
-   * If implemented as Jena model, return a Jena OntModel of the model represented by the namespaces.
-   *
-   * @param namespace  an uri used to represent a model (e.g. 'http://www.coinsweb.nl/cbim-2.0.rdf#')
-   * @return  a Jena Model containing all instances, no libraries
-   *          null if no model by this name
-   *          null if not implemented
-   */
-  public Object getJenaModel(String namespace);
-
-  /**
-   * If implemented as Jena model, return a Jena OntModel object containing the instances.
-   *
-   * @return  a Jena OntModel containing all instances, no libraries
-   *          null if not implemented
-   */
-  public Object getJenaOntModel();
-  public Object getJenaOntModel(Reasoner reasoner);
-
-  /**
-   * If implemented as Jena model, return a Jena OntModel of the model represented by the namespaces.
-   *
-   * (!) No libraries are included, see unionJenaOntModel().
-   *
-   * @param namespace  an uri used to represent a model (e.g. 'http://www.coinsweb.nl/cbim-2.0.rdf#')
-   * @return  a Jena OntModel containing all instances, no libraries
-   *          null if no model by this name
-   *          null if not implemented
-   */
-  public Object getJenaOntModel(String namespace);
-  public Object getJenaOntModel(String namespace, Reasoner reasoner);
-
-  /**
-   * If implemented as Jena model, return a Jena Model object containing all data (instance an library).
-   *
-   * For only the instance data, use asJenaOntModel().
-   *
-   * @return  a Jena OntModel containing the union over the instance model and all library models
-   *          null if not implemented
-   */
-  public Object getUnionJenaModel();
-
-  /**
-   * If implemented as Jena model, return a Jena OntModel object containing all data (instance an library).
-   *
-   * For only the instance data, use asJenaOntModel().
-   *
-   * @return  a Jena OntModel containing the union over the instance model and all library models
-   *          null if not implemented
-   */
-  public Object getUnionJenaOntModel();
-  public Object getUnionJenaOntModel(Reasoner reasoner);
-
-
-  /**
    * Transform the CoinsModel into an object with advanced options.
    *
    * @return  a version of the CoinsModel with advances options
    */
   public ExpertCoinsModel asExpertCoinsModel();
+
+
+
+  public CoinsGraphSet getCoinsGraphSet();
 
 }

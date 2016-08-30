@@ -8,9 +8,12 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
- select distinct ?x ?type
+select distinct ?x ?type
 
- WHERE {Graph <instanceGraph>{
-  ?x a ?type. Filter not exists {?x a <http://www.coinsweb.nl/cbim-2.0.rdf#Concept>}.  filter not exists{ ?x a owl:Ontology}
-}
+WHERE {
+  Graph <instanceGraph> {
+    ?x a ?type .
+    filter not exists {?x a <http://www.coinsweb.nl/cbim-2.0.rdf#Concept>}.
+    filter not exists{ ?x a owl:Ontology}
+  }
 }

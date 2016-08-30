@@ -4,6 +4,7 @@ import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.ExpertCoinsModel;
@@ -65,7 +66,7 @@ public class JettyServer {
       this.uri = uri;
 
 
-      this.clazz = ((OntModel)model.getUnionJenaOntModel()).getOntClass(uri);
+      this.clazz = ((OntModel)model.getCoinsGraphSet().getUnionJenaOntModel()).getOntClass(uri);
       if (clazz != null) {
 
         if (Language.getLabel(clazz) != null) {
@@ -385,7 +386,7 @@ public class JettyServer {
               }
 
               String properties = "";
-              ExtendedIterator<Triple> propertyIterator = container.getJenaModel().getGraph().find(new ResourceImpl(individualUri).asNode(), Node.ANY, Node.ANY);
+              ExtendedIterator<Triple> propertyIterator = ((Model)container.getCoinsGraphSet().getInstanceModel()).getGraph().find(new ResourceImpl(individualUri).asNode(), Node.ANY, Node.ANY);
               while(propertyIterator.hasNext()) {
                 Triple triple = propertyIterator.next();
                 if(triple.getObject().isLiteral()) {
@@ -399,7 +400,7 @@ public class JettyServer {
 
 
               String incoming = "";
-              ExtendedIterator<Triple> incomingIterator = container.getJenaModel().getGraph().find(Node.ANY, Node.ANY, new ResourceImpl(individualUri).asNode());
+              ExtendedIterator<Triple> incomingIterator = ((Model)container.getCoinsGraphSet().getInstanceModel()).getGraph().find(Node.ANY, Node.ANY, new ResourceImpl(individualUri).asNode());
               while(incomingIterator.hasNext()) {
                 Triple triple = incomingIterator.next();
                 Thing indiv = new Thing(triple.getSubject().getURI(), container);
@@ -410,7 +411,7 @@ public class JettyServer {
               }
 
               String outgoing = "";
-              ExtendedIterator<Triple> outgoingIterator = container.getJenaModel().getGraph().find(new ResourceImpl(individualUri).asNode(), Node.ANY, Node.ANY);
+              ExtendedIterator<Triple> outgoingIterator = ((Model)container.getCoinsGraphSet().getInstanceModel()).getGraph().find(new ResourceImpl(individualUri).asNode(), Node.ANY, Node.ANY);
               while(outgoingIterator.hasNext()) {
                 Triple triple = outgoingIterator.next();
                 if(triple.getObject().isURI()) {

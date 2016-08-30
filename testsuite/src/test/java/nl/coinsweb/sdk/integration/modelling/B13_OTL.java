@@ -36,7 +36,7 @@ public class B13_OTL {
     String fileToImport =  IntegrationHelper.getResourceFile("B13", "otl-coins-subset-2016-02-09.ttl").toPath().toString();
     model.addImport(fileToImport, "http://otl.rws.nl/otl#", true, true, true);
 
-    OntModel ontModel = model.getJenaOntModel();
+    OntModel ontModel = model.getCoinsGraphSet().getJenaOntModel();
 
 
     log.info("available classes:");
@@ -46,7 +46,7 @@ public class B13_OTL {
       System.out.println(name);
     }
 
-    OntClass clazz = model.getJenaOntModel("http://otl.rws.nl/otl#").getOntClass("http://otl.rws.nl/otl#OB00043");
+    OntClass clazz = model.getCoinsGraphSet().getJenaOntModel("http://otl.rws.nl/otl#").getOntClass("http://otl.rws.nl/otl#OB00043");
     StmtIterator classIterator = clazz.listProperties();
     while(classIterator.hasNext()) {
       log.info(classIterator.next().toString());
@@ -66,7 +66,7 @@ public class B13_OTL {
     ModelFactory factory = new JenaModelFactory();
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "/tmp/coinstest/otl.ccr", "http://sandbox.com/");
 
-    DatasetAsserts.logTriples(model.getJenaOntModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaOntModel());
   }
 
 

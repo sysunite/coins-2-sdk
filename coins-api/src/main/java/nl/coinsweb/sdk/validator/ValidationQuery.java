@@ -25,19 +25,17 @@
 package nl.coinsweb.sdk.validator;
 
 
-import com.hp.hpl.jena.query.QueryParseException;
-import nl.coinsweb.sdk.CoinsModel;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.Map;
-
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.*;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -46,99 +44,125 @@ public class ValidationQuery {
 
   private static final Logger log = LoggerFactory.getLogger(ValidationQuery.class);
 
-  public static enum Profile { PROFILE_LITE, PROFILE_LITE_EQ };
+  private StringTemplateLoader templateLoader;
+  private Configuration cfg;
 
-  String query = "";
-
-  String name;
-  String description;
-  String reference;
-  Profile profile;
+  private String reference = null;
+  private String description = null;
+  private String resultFormat = null;
+  private String sparqlQuery = null;
+//  private String jenaRule = null;
 
   private Iterator<Map<String,String>> resultSet;
   private boolean passed;
   private String errorMessage;
+  private long executionTime;
 
-  public ValidationQuery(InputStream in) {
+  public ValidationQuery(String reference, String description, String resultFormat, String sparqlQuery, String jenaRule) {
 
-    BufferedReader br = new BufferedReader( new InputStreamReader( in ) );
-    String line;
+    // Init template
+    templateLoader = new StringTemplateLoader();
+    cfg = new Configuration();
+    cfg.setTemplateLoader(templateLoader);
 
-    try {
-      while( (line = br.readLine()) != null ) {
+    // Set passed attributes
+    this.reference = reference;
+    this.description = description;
+    this.resultFormat = resultFormat;
+    this.sparqlQuery = sparqlQuery;
+//    this.jenaRule = jenaRule;
 
-        if(line.trim().startsWith("#name")) {
-          name = line.substring(line.indexOf(":")+1).trim();
-        }
 
-        else if(line.trim().startsWith("#description")) {
-          description = line.substring(line.indexOf(":")+1).trim();
-        }
 
-        else if(line.trim().startsWith("#reference")) {
-          reference = line.substring(line.indexOf(":")+1).trim();
-        }
-
-        else if(line.trim().startsWith("#profile")) {
-          String profileString = line.substring(line.indexOf(":")+1).trim();
-          if("COINS 2.0 Lite".equals(profileString)) {
-            profile = Profile.PROFILE_LITE;
-          } else if("COINS 2.0 Lite+eq".equals(profileString)) {
-            profile = Profile.PROFILE_LITE_EQ;
-          } else {
-            throw new RuntimeException("The profile for a Validation Query file could not be interpreted: "+profileString);
-          }
-        }
-
-        else if(!line.trim().isEmpty()) {
-          query += line + "\n";
-        }
-      }
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
+    if(sparqlQuery != null) {
+      templateLoader.putTemplate("sparqlQuery", sparqlQuery);
     }
-  }
 
+//    if(jenaRule != null) {
+//      templateLoader.putTemplate("jenaRule", jenaRule);
+//    }
 
-
-  public boolean executeOn(CoinsModel model) {
-    try {
-      resultSet = model.query(getQuery());
-      passed = true; // todo: interpret result as good or bad
-    } catch (QueryParseException e) {
-
-      errorMessage = "problem executing query with reference "+getReference();
-      log.error(errorMessage, e);
-      log.error(getQuery());
-
-      errorMessage += escapeHtml4("\n" + getQuery() + "\n" + e.getMessage());
-
-      passed = false;
+    if(resultFormat != null) {
+      templateLoader.putTemplate("resultFormat", resultFormat);
     }
-    return getPassed();
+
+    // Check completeness
+    System.out.println(toString());
+  }
+
+
+  public void setResults(Iterator<Map<String,String>> resultSet) {
+    this.resultSet = resultSet;
+  }
+  public void setPassed(boolean passed) {
+    this.passed = passed;
+  }
+  public void setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+  }
+  public void setExecutionTime(long executionTime) {
+    this.executionTime = executionTime;
   }
 
 
 
-  public String getName() {
-    return name;
+
+
+
+
+
+  public boolean hasSparqlQuery() {
+    return sparqlQuery != null;
   }
+//  public boolean hasJenaRule() {
+//    return jenaRule != null;
+//  }
+
+
+
+
 
   public String getDescription() {
     return description;
-  }
-
-  public Profile getProfile() {
-    return profile;
   }
 
   public String getReference() {
     return reference;
   }
 
-  public String getQuery() {
-    return query;
+  public String getSparqlQuery() {
+
+    if(resultFormat == null) {
+      throw new RuntimeException("Please set a <SparqlQuery>...</SparqlQuery> before the query can be returned.");
+    }
+
+    try {
+      Template template = cfg.getTemplate("sparqlQuery");
+
+      Map<String, String> data = new HashMap<>();
+      data.put("INSTANCE_GRAPH", "instance...");
+      data.put("WOA_GRAPH", "woa...");
+      data.put("CORE_GRAPH", "core...");
+      data.put("SCHEMA_UNION_GRAPH", "schema...");
+      data.put("FULL_UNION_GRAPH", "full...");
+
+      Writer writer = new StringWriter();
+      template.process(data, writer);
+      return writer.toString();
+
+
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    } catch (TemplateException e) {
+      log.error(e.getMessage(), e);
+    }
+
+    throw new RuntimeException("Something went wrong building query.");
   }
+
+//  public String getJenaRule() {
+//    return jenaRule;
+//  }
 
   public boolean getPassed() {
     return passed;
@@ -146,9 +170,42 @@ public class ValidationQuery {
   public String getErrorMessage() {
     return errorMessage;
   }
+  public long getExecutionTime() {
+    return executionTime;
+  }
 
   public String toString() {
-    return getName() + " " + getDescription() + " " + getReference() + " " + getProfile() + " " + getQuery();
+    return getReference();
+  }
+
+  public List<String> getFormattedResults() {
+
+    if(resultFormat == null) {
+      throw new RuntimeException("Please set a ResultFormat before the results can be returned in a formatted form.");
+    }
+
+    if(resultSet == null) {
+      throw new RuntimeException("Please first execute this ValidationQuery");
+    }
+
+    ArrayList<String> results = new ArrayList<>();
+    try {
+
+      Template template = cfg.getTemplate("resultFormat");
+
+      while(resultSet.hasNext()) {
+        Map<String,String> data = resultSet.next();
+        Writer writer = new StringWriter();
+        template.process(data, writer);
+        results.add(writer.toString());
+      }
+
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    } catch (TemplateException e) {
+      log.error(e.getMessage(), e);
+    }
+    return results;
   }
 
 }

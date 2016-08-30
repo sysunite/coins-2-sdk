@@ -43,7 +43,7 @@ public class B16_GroupExample {
       log.info("found one");
     }
 
-    DatasetAsserts.logTriples(model.getJenaModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
 
 
   }
