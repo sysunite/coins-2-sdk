@@ -1,5 +1,6 @@
 package nl.coinsweb.sdk.integration.modelling;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
 import nl.coinsweb.sdk.ModelFactory;
@@ -70,7 +71,7 @@ public class B12_PumpExample {
 
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
+    DatasetAsserts.logTriples((Model)model.getCoinsGraphSet().getInstanceModel());
   }
 
 
@@ -79,7 +80,7 @@ public class B12_PumpExample {
 
     ModelFactory factory = new JenaModelFactory();
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "/tmp/coinstest/zhejiangdayuan.ccr","http://zhejiangdayuan.com/");
-    DatasetAsserts.logTriples(model.getJenaModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
   }
 
 

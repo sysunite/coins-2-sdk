@@ -7,6 +7,7 @@ import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.tdb.TDBFactory;
+import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.Namespace;
 import org.slf4j.Logger;
@@ -79,19 +80,45 @@ public class JenaModelFactory implements ModelFactory {
                                      Namespace woaNamespace, Model woaModel,
                                      Map<Namespace, Model> libraryModels) {
 
-    refreshModel(instanceNamespace, instanceModel);
-    refreshModel(woaNamespace, woaModel);
+    refreshModel(instanceNamespace.toString(), instanceModel);
+    refreshModel(woaNamespace.toString(), woaModel);
     for(Namespace ns : libraryModels.keySet()) {
-      refreshModel(ns, libraryModels.get(ns));
+      refreshModel(ns.toString(), libraryModels.get(ns));
     }
     return dataset;
   }
 
-  void refreshModel(Namespace ns, Model model) {
-    if(dataset.containsNamedModel(ns.toString())) {
-      dataset.replaceNamedModel(ns.toString(), model);
+  public Dataset getDatasetWithUnionGraphs(CoinsModel model) {
+
+    Model instanceModel = (Model) model.getCoinsGraphSet().getInstanceModel();
+    Model woaModel = (Model) model.getCoinsGraphSet().getWoaModel();
+    Model schemaModel = (Model) model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/cbim-2.0.rdf");
+
+    Model schemaUnionModel = getEmptyModel();
+    schemaUnionModel.add(schemaModel);
+    for(Namespace key : model.getCoinsGraphSet().getLibraryModels().keySet()) {
+      schemaUnionModel.add(model.getCoinsGraphSet().getLibraryModels().get(key));
+    }
+
+    Model fullUnionModel = getEmptyModel();
+    fullUnionModel.add(instanceModel);
+    fullUnionModel.add(woaModel);
+    fullUnionModel.add(schemaUnionModel);
+
+    refreshModel("INSTANCE_GRAPH", instanceModel);
+    refreshModel("WOA_GRAPH", woaModel);
+    refreshModel("SCHEMA_GRAPH", schemaModel);
+    refreshModel("SCHEMA_UNION_GRAPH", schemaUnionModel);
+    refreshModel("FULL_UNION_GRAPH", fullUnionModel);
+
+    return dataset;
+  }
+
+  void refreshModel(String ns, Model model) {
+    if(dataset.containsNamedModel(ns)) {
+      dataset.replaceNamedModel(ns, model);
     } else {
-      dataset.addNamedModel(ns.toString(), model);
+      dataset.addNamedModel(ns, model);
     }
   }
 

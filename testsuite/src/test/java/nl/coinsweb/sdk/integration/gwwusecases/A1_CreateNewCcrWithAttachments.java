@@ -227,9 +227,9 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Export all the rdf data to the container
-    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
-    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.ttl", RDFFormat.TTL);
-    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
+    ccr.exportModel(ccr.getCoinsGraphSet().getInstanceModel(), "/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    ccr.exportModel(ccr.getCoinsGraphSet().getInstanceModel(), "/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    ccr.exportModel(ccr.getCoinsGraphSet().getInstanceModel(), "/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
 
 
 
@@ -296,7 +296,7 @@ public class A1_CreateNewCcrWithAttachments {
     StringProperty fileNameProperty = new StringProperty(model);
     fileNameProperty.setSimpleProperty("nonExisting.pdf");
 
-    assertEquals(14, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(14, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     try {
 
@@ -307,8 +307,8 @@ public class A1_CreateNewCcrWithAttachments {
 
     } finally {
 
-      DatasetAsserts.logTriples(model.getJenaModel());
-      assertEquals(14, DatasetAsserts.countTriples(model.getJenaModel()));
+      DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+      assertEquals(14, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     }
   }
@@ -323,19 +323,19 @@ public class A1_CreateNewCcrWithAttachments {
 
     model.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    assertEquals(15, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     InternalDocumentReference doc = new InternalDocumentReference(model);
     StringProperty fileNameProperty = new StringProperty(model);
     fileNameProperty.setSimpleProperty("koekiemonster.jpeg");
 
-    assertEquals(22, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(22, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     doc.setFilepath(fileNameProperty);
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(23, DatasetAsserts.countTriples(model.getJenaModel()));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    assertEquals(23, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
   }
 
 }

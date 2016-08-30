@@ -12,7 +12,7 @@ import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaModelFactory;
-import nl.coinsweb.sdk.validator.ValidationQuery;
+import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -25,10 +25,10 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -40,25 +40,19 @@ public class G1_InitValidator {
   protected static final Logger log = LoggerFactory.getLogger(G1_InitValidator.class);
 
   @Test
-  public void loadQueries() {
+  public void init() {
 
     ModelFactory factory = new JenaModelFactory();
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
-
-
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 
-    Validator validator = new Validator(model);
-    validator.init();
+    JenaValidationExecutor executor = new JenaValidationExecutor();
 
-    Collection<ValidationQuery> queries = validator.getValidationQueries().values();
+    Validator validator = new Validator(model, executor, "COINS-2.0-Lite");
+    Set<String> profiles = validator.listProfiles();
 
-    assertEquals(20, queries.size());
-
-    for(ValidationQuery query : queries) {
-//      System.out.println(query.getQuery());
-    }
-
+    assertTrue("Profiles should find one profile", profiles.size() == 1);
+    assertTrue("Profiles should find this profile", profiles.contains("COINS-2.0-Lite"));
     validator.validate(Paths.get("/tmp/"));
 
 
@@ -87,7 +81,7 @@ public class G1_InitValidator {
     reasoner.setDerivationLogging(true);
 
 
-    OntModel instanceModel = model.getJenaOntModel(model.getInstanceNamespace(), reasoner);
+    OntModel instanceModel = model.getCoinsGraphSet().getJenaOntModel(model.getCoinsGraphSet().getInstanceNamespace(), reasoner);
     ValidityReport report = instanceModel.validate();
     System.out.println(report.isValid());
     System.out.println(report.isClean());

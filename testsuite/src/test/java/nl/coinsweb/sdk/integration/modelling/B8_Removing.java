@@ -31,11 +31,11 @@ public class B8_Removing {
     ModelFactory factory = new JenaModelFactory();
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     model.addStatement("http://subj","http://subj","http://subj");
-    assertEquals(8, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(8, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     model.removeStatement("http://subj", "http://subj", "http://subj");
-    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -51,19 +51,19 @@ public class B8_Removing {
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
 
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     Assembly a = new Assembly(model);
 
 
-    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     EntityProperty e = new EntityProperty(model);
     e.setName("something");
     a.addHasProperties(e);
 
 
-    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(15, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -71,7 +71,7 @@ public class B8_Removing {
 //    model.removeProperty(a.getUri(), e);
 
 
-    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
   }
 
   @Test
@@ -80,21 +80,21 @@ public class B8_Removing {
     ModelFactory factory = new JenaModelFactory();
     JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     Assembly a = new Assembly(model);
 
-    assertEquals(10, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(10, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     EntityProperty e = new EntityProperty(model);
     e.setName("something");
     a.addHasProperties(e);
 
 
-    assertEquals(15, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(15, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     a.removeIndividualAndProperties();
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
   }
 

@@ -4,6 +4,7 @@ import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaModelFactory;
+import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,6 @@ public class RunValidate {
 
 
   public static void go( CliOptions options ) {
-
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
       System.out.println("no input file specified");
@@ -45,9 +45,9 @@ public class RunValidate {
 
     ModelFactory factory = new JenaModelFactory();
     JenaCoinsContainer container = new JenaCoinsContainer(factory, options.getInputOptions().get(0).toString(), "http://www.example.com/");
+    JenaValidationExecutor executor = new JenaValidationExecutor();
 
-    Validator validator = new Validator(container);
-    validator.init();
+    Validator validator = new Validator(container, executor, "COINS-2.0-Lite");
     validator.validate(path);
   }
 }

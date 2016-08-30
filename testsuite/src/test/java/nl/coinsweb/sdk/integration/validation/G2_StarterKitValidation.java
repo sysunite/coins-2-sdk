@@ -8,6 +8,7 @@ import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaModelFactory;
+import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -111,8 +112,9 @@ public class G2_StarterKitValidation {
     // Do asserts on objects
     assertEquals("4.01", model.getContainerId());
 
-    Validator validator = new Validator(model);
-    validator.init();
+    JenaValidationExecutor executor = new JenaValidationExecutor();
+
+    Validator validator = new Validator(model, executor, "COINS-2.0-Lite");
 
     validator.validate(Paths.get("/tmp/"));
 

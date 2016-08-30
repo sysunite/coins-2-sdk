@@ -34,8 +34,8 @@ public class B9_SettingDates {
     Assembly a = new Assembly(model);
     a.setModificationDate(new Date());
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(11, DatasetAsserts.countTriples(model.getJenaModel()));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    assertEquals(11, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
   }
 
 

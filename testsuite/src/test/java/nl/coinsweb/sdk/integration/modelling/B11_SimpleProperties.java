@@ -48,17 +48,17 @@ public class B11_SimpleProperties {
 
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(22, DatasetAsserts.countTriples(model.getJenaModel()));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    assertEquals(22, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     intProperty.removeSimpleProperty(112);
-    assertEquals(22, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(22, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     intProperty.removeSimpleProperty(111);
-    assertEquals(21, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(21, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     a.removeAllHasProperties();
-    assertEquals(19, DatasetAsserts.countTriples(model.getJenaModel()));
+    assertEquals(19, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
   }
 
 

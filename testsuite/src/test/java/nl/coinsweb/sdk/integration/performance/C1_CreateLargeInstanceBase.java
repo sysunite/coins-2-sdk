@@ -93,13 +93,13 @@ public class C1_CreateLargeInstanceBase {
 
 
     // Export all the rdf data to the container
-    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
+    ccr.exportModel(ccr.getCoinsGraphSet().getInstanceModel(), "/tmp/coinstest/content.rdf", RDFFormat.RDFXML);
     MemoryAsserts.sample();
     TimeAsserts.sample();
-    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.ttl", RDFFormat.TTL);
+    ccr.exportModel(ccr.getCoinsGraphSet().getInstanceModel(), "/tmp/coinstest/content.ttl", RDFFormat.TTL);
     MemoryAsserts.sample();
     TimeAsserts.sample();
-    ccr.exportModel(ccr.getJenaModel(), "/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
+    ccr.exportModel(ccr.getCoinsGraphSet().getInstanceModel(), "/tmp/coinstest/content.jsonld", RDFFormat.JSONLD);
 
 
 

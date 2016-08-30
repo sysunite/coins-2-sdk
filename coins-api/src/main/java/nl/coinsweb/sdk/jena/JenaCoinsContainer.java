@@ -30,13 +30,15 @@ import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.ontology.*;
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntProperty;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.impl.PropertyImpl;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.rdf.model.impl.StatementImpl;
-import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -52,7 +54,6 @@ import nl.coinsweb.sdk.exceptions.*;
 import nl.coinsweb.sdk.injectors.AttachmentInjector;
 import nl.coinsweb.sdk.injectors.Injector;
 import nl.coinsweb.sdk.injectors.WOAInjector;
-import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,21 +91,18 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   private File rdfFile;
   private String rdfFileName = "content.rdf";
-  private Namespace instanceNamespace;
-  private Model instanceModel;
 
   private File woaFile;
   private String woaFileName = "woa.rdf";
-  public Namespace woaNamespace = new Namespace("http://woa.coinsweb.nl/");
-  private Model woaModel;
-
-
-  private Map<Namespace, Model> libraryModels;
 
 
   private ArrayList<Injector> injectors;
 
   private String containerId;
+
+
+
+  private JenaCoinsGraphSet graphSet;
 
 
 
@@ -130,32 +128,34 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.party = party;
     this.party.setModel(this);
 
-    this.instanceNamespace = new Namespace(namespace);
+    Namespace instanceNamespace = new Namespace(namespace);
+    this.graphSet = new JenaCoinsGraphSet(instanceNamespace, factory);
+
+
 
     this.internalRef = FileManager.newCoinsContainer();
     this.containerId = UUID.randomUUID().toString();
 
-    this.libraryModels = new HashMap<>();
+
 
     // Prepare an empty dataset
-    if(this.instanceNamespace == null) {
+    if(instanceNamespace == null) {
       throw new InvalidNamespaceException("Please provide a namespace if an empty CoinsModel is constructed.");
     }
     try {
-      new URI(this.instanceNamespace.toString());
+      new URI(instanceNamespace.toString());
     } catch (URISyntaxException e) {
-      throw new InvalidNamespaceException("Please provide a valid namespace, problems with "+this.instanceNamespace +".", e);
+      throw new InvalidNamespaceException("Please provide a valid namespace, problems with "+instanceNamespace +".", e);
     }
 
     // Create empty model
-    instanceModel = factory.getEmptyModel();
-    instanceModel.setNsPrefix("", instanceNamespace.toString());
-    instanceModel.setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
+    graphSet.getInstanceModel().setNsPrefix("", instanceNamespace.toString());
+    graphSet.getInstanceModel().setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
     addOntologyHeader();
     log.info("Added instance model with name "+ instanceNamespace);
 
 
-    woaModel = factory.getEmptyModel();
+
 
 
     // Add core model
@@ -196,7 +196,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.party = party;
     this.party.setModel(this);
 
-    this.instanceNamespace = new Namespace(namespace);
+    Namespace instanceNamespace = new Namespace(namespace);
+    this.graphSet = new JenaCoinsGraphSet(instanceNamespace, factory);
 
     // Load an existing
     this.load(filePath);
@@ -213,7 +214,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   private void initInjectors() {
     this.injectors = new ArrayList<>();
     this.injectors.add(new AttachmentInjector());
-    this.injectors.add(new WOAInjector(woaModel, factory.asOntModel(instanceModel)));
+    this.injectors.add(new WOAInjector(graphSet.getWoaModel(), factory.asOntModel(graphSet.getInstanceModel())));
   }
 
 
@@ -230,7 +231,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public void load(String sourceFile) {
 
     // Start with a clean sheet
-    this.libraryModels = new HashMap<>();
+    this.graphSet.reset();
 
     File file = new File(sourceFile);
 
@@ -260,7 +261,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       this.internalRef = FileManager.existingCoinsContainer(file, rdfFiles, woaFiles, attachments, availableLibraryFiles);
 
       if(rdfFiles.isEmpty()) {
-        if(this.instanceNamespace == null) {
+        if(this.graphSet.getInstanceNamespace() == null) {
           throw new InvalidNamespaceException("No rdf file contained in coins container, please specify preferred namespace.");
         }
         this.rdfFile = null;
@@ -313,38 +314,36 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
     // Create model and read the instance base model
-    instanceModel = factory.getEmptyModel();
     if(rdfFile != null) {
-      instanceModel.read(this.rdfFile.toURI().toString());
-      instanceNamespace = FileManager.getLeadingNamespace(this.rdfFile, instanceModel);
+      graphSet.getInstanceModel().read(this.rdfFile.toURI().toString());
+      graphSet.setInstanceNamespace(FileManager.getLeadingNamespace(this.rdfFile, graphSet.getInstanceModel()).toString());
     }
-    instanceModel.setNsPrefix("", instanceNamespace.toString());
-    instanceModel.setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
-    log.info("Added instance model with name "+ instanceNamespace);
+    graphSet.getInstanceModel().setNsPrefix("", graphSet.getInstanceNamespace());
+    graphSet.getInstanceModel().setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
+    log.info("Added instance model with name "+ graphSet.getInstanceNamespace());
 
-    Statement searchResult = instanceModel.getProperty(new ResourceImpl(this.instanceNamespace.withoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
+    Statement searchResult = graphSet.getInstanceModel().getProperty(new ResourceImpl(graphSet.getInstanceNamespaceWithoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
     if(searchResult!=null && searchResult.getObject() != null) {
       this.containerId = searchResult.getObject().asLiteral().getLexicalForm();
     } else {
       this.containerId = UUID.randomUUID().toString();
       log.warn("No containerId found, setting it to: "+containerId+".");
-      instanceModel.add(new StatementImpl(
-          new ResourceImpl(this.instanceNamespace.withoutHash()),
+      graphSet.getInstanceModel().add(new StatementImpl(
+          new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
           new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
-          instanceModel.createTypedLiteral(containerId)));
+          graphSet.getInstanceModel().createTypedLiteral(containerId)));
     }
 
     log.info("Found containerId "+this.containerId);
-    addNamedModelForImports(instanceModel);
+    addNamedModelForImports(graphSet.getInstanceModel());
 
     // Create woa model and read the woa base model
-    woaModel = factory.getEmptyModel();
     if(woaFile != null) {
-      woaModel.read(this.woaFile.toURI().toString());
-      woaNamespace = FileManager.getLeadingNamespace(this.woaFile, woaModel);
+      graphSet.getWoaModel().read(this.woaFile.toURI().toString());
+      graphSet.setWoaNamespace(FileManager.getLeadingNamespace(this.woaFile, graphSet.getWoaModel()).toString());
     }
-    woaModel.setNsPrefix("", woaNamespace.toString());
-    log.info("Added woa model with name "+ woaNamespace);
+    graphSet.getWoaModel().setNsPrefix("", graphSet.getWoaNamespace());
+    log.info("Added woa model with name "+ graphSet.getWoaNamespace());
 
     initInjectors();
   }
@@ -370,9 +369,9 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   public void exportModel() {
     File contentFile = FileManager.createRdfFile(internalRef, rdfFileName);
-    exportModel(instanceModel, contentFile.getPath(), RDFFormat.RDFXML);
+    exportModel(graphSet.getInstanceModel(), contentFile.getPath(), RDFFormat.RDFXML);
     File woaFile = FileManager.createWoaFile(internalRef, woaFileName);
-    exportModel(woaModel, woaFile.getPath(), RDFFormat.RDFXML);
+    exportModel(graphSet.getWoaModel(), woaFile.getPath(), RDFFormat.RDFXML);
   }
   @Override
   public void exportModel(Model model, String target) {
@@ -388,7 +387,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
       OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-      writeModelToFile(model, out, format);
+      getCoinsGraphSet().writeModelToFile(model, out, format);
       log.info("exported to " + file.getAbsolutePath());
       return file;
 
@@ -399,7 +398,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public String exportAsString() {
-    return exportAsString(instanceModel);
+    return exportAsString(graphSet.getInstanceModel());
   }
   @Override
   public String exportAsString(Model model) {
@@ -407,11 +406,11 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public String exportAsString(RDFFormat format) {
-    return exportAsString(instanceModel, format);
+    return exportAsString(graphSet.getInstanceModel(), format);
   }
   @Override
   public String exportAsString(Model model, RDFFormat format) {
-    return writeModelToString(instanceModel, format);
+    return getCoinsGraphSet().writeModelToString(graphSet.getInstanceModel(), format);
   }
 
   @Override
@@ -511,32 +510,23 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     }
   }
 
-  @Override
-  public void setInstanceNamespace(String namespace) {
-    this.instanceNamespace = new Namespace(namespace);
-  }
-
-  @Override
-  public String getInstanceNamespace() {
-    return this.instanceNamespace.toString();
-  }
 
   @Override
   public boolean hasImport(String namespace) {
-    return hasImport(instanceModel, namespace);
+    return hasImport(graphSet.getInstanceModel(), namespace);
   }
   @Override
   public boolean hasImport(Model model, String namespace) {
     if(!hasOntologyHeader(model)) {
       return false;
     }
-    return model.contains(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespace));              // todo remove instanceNamespace
+    return model.contains(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(namespace));              // todo remove instanceNamespace
   }
 
 
   @Override
   public void addImport(String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc) {
-    addImport(instanceModel, filePath, namespace, addAsImport, tryToLoad, addToDoc);
+    addImport(graphSet.getInstanceModel(), filePath, namespace, addAsImport, tryToLoad, addToDoc);
   }
   public void addImport(Model model, String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc) {
 
@@ -581,7 +571,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       if (!hasOntologyHeader()) {
         addOntologyHeader();
       }
-      Statement statement = new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(namespaceImpl.toString()));
+      Statement statement = new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(namespaceImpl.toString()));
       model.add(statement);
     }
 
@@ -597,12 +587,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   @Override
   public void setActiveParty(CoinsParty party) {
     this.party = party;
-    instanceModel.getGraph().remove(
-        new ResourceImpl(this.instanceNamespace.withoutHash()).asNode(),
+    graphSet.getInstanceModel().getGraph().remove(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()).asNode(),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator").asNode(),
         Node.ANY);
-    instanceModel.add(new StatementImpl(
-        new ResourceImpl(this.instanceNamespace.withoutHash()),
+    graphSet.getInstanceModel().add(new StatementImpl(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
         new ResourceImpl(party.getUri())));
   }
@@ -610,7 +600,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   @Override
   public Iterator<String> listClasses() {
     ArrayList<String> buffer = new ArrayList<>();
-    ExtendedIterator<OntClass> iterator = getUnionJenaOntModel().listClasses();
+    ExtendedIterator<OntClass> iterator = graphSet.getUnionJenaOntModel().listClasses();
     while(iterator.hasNext()) {
       OntClass ontClass = iterator.next();
       if(!ontClass.isAnon()) {
@@ -624,9 +614,9 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public Iterator<String> listClassesInLibrary(String namespace) {
     ArrayList<String> buffer = new ArrayList<>();
     Namespace key = new Namespace(namespace);
-    if(libraryModels.containsKey(key)) {
+    if(graphSet.getLibraryModels().containsKey(key)) {
 
-      ExtendedIterator<OntClass> iterator = factory.asOntModel(libraryModels.get(key)).listClasses();
+      ExtendedIterator<OntClass> iterator = factory.asOntModel(graphSet.getLibraryModels().get(key)).listClasses();
       while(iterator.hasNext()) {
         OntClass ontClass = iterator.next();
         if(!ontClass.isAnon()) {
@@ -639,7 +629,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public Iterator<String> listIndividuals() {
-    return listIndividuals(instanceModel);
+    return listIndividuals(graphSet.getInstanceModel());
   }
   @Override
   public Iterator<String> listIndividuals(Model model) {
@@ -654,7 +644,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public <T extends CoinsObject> Iterator<T> listIndividuals(Class<T> objectClass) {
-    return listIndividuals(instanceModel, objectClass);
+    return listIndividuals(graphSet.getInstanceModel(), objectClass);
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listIndividuals(Model model, Class<T> objectClass) {
@@ -688,7 +678,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public Iterator<String> listIndividuals(String classUri) {
-    return listIndividuals(instanceModel, classUri);
+    return listIndividuals(graphSet.getInstanceModel(), classUri);
   }
   @Override
   public Iterator<String> listIndividuals(Model model, String classUri) {
@@ -713,7 +703,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       log.info("Try to find individuals for uri "+classUri);
 
-      ExtendedIterator<Individual> individuals = getUnionJenaOntModel().listIndividuals(new ResourceImpl(classUri));
+      ExtendedIterator<Individual> individuals = graphSet.getUnionJenaOntModel().listIndividuals(new ResourceImpl(classUri));
       while(individuals.hasNext()) {
         Individual individual = individuals.next();
         buffer.add(individual.getURI());
@@ -735,7 +725,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     HashSet<String> buffer = new HashSet<>();
     log.info("Try to find individuals for uri "+classUri);
 
-    ExtendedIterator<Individual> individuals = getUnionJenaOntModel().listIndividuals(new ResourceImpl(classUri));
+    ExtendedIterator<Individual> individuals = graphSet.getUnionJenaOntModel().listIndividuals(new ResourceImpl(classUri));
     while(individuals.hasNext()) {
       Individual individual = individuals.next();
       buffer.add(individual.getURI());
@@ -746,7 +736,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public RuntimeCoinsObject getIndividual(String individualUri) {
-    return getIndividual(instanceModel, individualUri);
+    return getIndividual(graphSet.getInstanceModel(), individualUri);
   }
 
   @Override
@@ -772,7 +762,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     Query query = QueryFactory.create(sparqlQuery);
 
     // Execute the query and obtain results
-    Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
+    Dataset dataset = graphSet.getDataset();
     QueryExecution qe = QueryExecutionFactory.create(query, dataset);
     ResultSet results = qe.execSelect();
 
@@ -824,7 +814,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     HashSet<String> buffer = new HashSet<>();
     log.info("Try to find classes for uri "+instanceUri);
 
-    ExtendedIterator<OntClass> classes = getUnionJenaOntModel().getIndividual(instanceUri).listOntClasses(false);
+    ExtendedIterator<OntClass> classes = graphSet.getUnionJenaOntModel().getIndividual(instanceUri).listOntClasses(false);
     while(classes.hasNext()) {
       OntClass clazz = classes.next();
       if(!clazz.isAnon()) {
@@ -905,7 +895,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
     // Execute the query and obtain results
-    QueryExecution queryExecution = QueryExecutionFactory.create(queryString, Syntax.syntaxSPARQL_11, getUnionModel());
+    QueryExecution queryExecution = QueryExecutionFactory.create(queryString, Syntax.syntaxSPARQL_11, graphSet.getUnionModel());
     ResultSet resultSet = queryExecution.execSelect();
 
     while (resultSet.hasNext()) {
@@ -991,7 +981,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public Iterator<String> listPropertyDefinitions(String classUri, String propertyTypeClassUri) {
     ArrayList<String> buffer = new ArrayList<>();
 //    Iterator<ApoPropertyDeclaration> iterator =  new JenaPropertyDeclarationIterator(classUri, asOntModel(getUnionModel()), propertyTypeClassUri);
-    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, factory.asOntModel(getUnionModel()), propertyTypeClassUri);
+    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, factory.asOntModel(graphSet.getUnionModel()), propertyTypeClassUri);
     while(iterator.hasNext()) {
       buffer.add(iterator.next().getPropertyUri());
     }
@@ -999,7 +989,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public Iterator<CoinsObject> listProperties(String instanceUri) {
-    return listProperties(instanceModel, instanceUri);
+    return listProperties(graphSet.getInstanceModel(), instanceUri);
   }
   @Override
   public Iterator<CoinsObject> listProperties(Model model, String instanceUri) {
@@ -1047,7 +1037,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, Class<T> propertyTypeClass) {
-    return listProperties(instanceModel, instanceUri, propertyTypeClass);
+    return listProperties(graphSet.getInstanceModel(), instanceUri, propertyTypeClass);
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(Model model, String instanceUri, Class<T> propertyTypeClass) {
@@ -1082,7 +1072,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String propertyClassUri) {
-    return listProperties(instanceModel, instanceUri, propertyClassUri);
+    return listProperties(graphSet.getInstanceModel(), instanceUri, propertyClassUri);
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(Model model, String instanceUri, String propertyClassUri) {
@@ -1110,7 +1100,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(String instanceUri, String predicate, Class<T> propertyTypeClass) {
-    return listProperties(instanceModel, instanceUri, predicate, propertyTypeClass);
+    return listProperties(graphSet.getInstanceModel(), instanceUri, predicate, propertyTypeClass);
   }
   @Override
   public <T extends CoinsObject> Iterator<T> listProperties(Model model, String instanceUri, String predicate, Class<T> propertyTypeClass) {
@@ -1145,7 +1135,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(String instanceUri, String predicate, String propertyClassUri) {
-    return listProperties(instanceModel, instanceUri, predicate, propertyClassUri);
+    return listProperties(graphSet.getInstanceModel(), instanceUri, predicate, propertyClassUri);
   }
   @Override
   public Iterator<RuntimeCoinsObject> listProperties(Model model, String instanceUri, String predicate, String propertyClassUri) {
@@ -1173,7 +1163,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public RuntimeCoinsObject createProperty(String instanceUri, String predicateUri, String propertyClassUri) {
-    return createProperty(instanceModel, instanceUri, predicateUri, propertyClassUri);
+    return createProperty(graphSet.getInstanceModel(), instanceUri, predicateUri, propertyClassUri);
   }
   @Override
   public RuntimeCoinsObject createProperty(Model model, String instanceUri, String predicateUri, String propertyClassUri) {
@@ -1185,7 +1175,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T extends CoinsObject> T createProperty(String instanceUri, String predicateUri, Class<T> propertyClass) {
-    return createProperty(instanceModel, instanceUri, predicateUri, propertyClass);
+    return createProperty(graphSet.getInstanceModel(), instanceUri, predicateUri, propertyClass);
   }
   @Override
   public <T extends CoinsObject> T createProperty(Model model, String instanceUri, String predicateUri, Class<T> propertyClass) {
@@ -1206,7 +1196,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void removeProperty(String instanceUri, CoinsObject property) {
-    removeProperty(instanceModel, instanceUri, property);
+    removeProperty(graphSet.getInstanceModel(), instanceUri, property);
   }
   @Override
   public void removeProperty(Model model, String instanceUri, CoinsObject property) {
@@ -1233,7 +1223,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T> T getLiteralValue(String subject, String predicate, Class<T> clazz) {
-    return getLiteralValue(instanceModel, subject, predicate, clazz);
+    return getLiteralValue(graphSet.getInstanceModel(), subject, predicate, clazz);
   }
   public <T> T getLiteralValue(Model model, String subject, String predicate, Class<T> clazz) {
 
@@ -1270,8 +1260,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
         } else if(clazz.equals(Date.class)) {
 
-          OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
-          Individual instance = getJenaOntModel().getIndividual(subject);
+          OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
+          Individual instance = graphSet.getJenaOntModel().getIndividual(subject);
           if(prop == null || instance == null) {
             throw new CoinsPropertyNotFoundException("The predicate "+predicate+" could not be found as Property when requesting literal value.");
           }
@@ -1307,7 +1297,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T> Iterator<T> getLiteralValues(String subject, String predicate, Class<T> clazz) {
-    return getLiteralValues(instanceModel, subject, predicate, clazz);
+    return getLiteralValues(graphSet.getInstanceModel(), subject, predicate, clazz);
   }
   public <T> Iterator<T> getLiteralValues(Model model, String subject, String predicate, Class<T> clazz) {
 
@@ -1335,8 +1325,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
         } else if(clazz.equals(Date.class)) {
 
-          OntProperty prop = getJenaOntModel().getOntProperty(predicate);
-          Individual instance = getJenaOntModel().getIndividual(subject);
+          OntProperty prop = graphSet.getJenaOntModel().getOntProperty(predicate);
+          Individual instance = graphSet.getJenaOntModel().getIndividual(subject);
           XSDDateTime date = (XSDDateTime) instance.getProperty(prop).getLiteral().getValue();
           buffer.add((T) new Date(date.asCalendar().getTimeInMillis()));
 
@@ -1352,7 +1342,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T> void setLiteralValue(String subject, String predicate, T object) {
-    setLiteralValue(instanceModel, subject, predicate, object);
+    setLiteralValue(graphSet.getInstanceModel(), subject, predicate, object);
   }
   @Override
   public <T> void setLiteralValue(Model model, String subject, String predicate, T object) {
@@ -1371,7 +1361,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
         permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
       }
       if(permission) {
-        OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+        OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
         Individual individual = factory.asOntModel(model).getIndividual(subject);
         individual.setPropertyValue(prop, propValue);
       } else {
@@ -1385,7 +1375,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T> void addLiteralValue(String subject, String predicate, T object) {
-    addLiteralValue(instanceModel, subject, predicate, object);
+    addLiteralValue(graphSet.getInstanceModel(), subject, predicate, object);
   }
   @Override
   public <T> void addLiteralValue(Model model, String subject, String predicate, T object) {
@@ -1395,14 +1385,14 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       GregorianCalendar calendar = new GregorianCalendar();
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
-      Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+      Literal propValue = graphSet.getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
 
       boolean permission = true;
       for(Injector injector : injectors) {
         permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
       }
       if(permission) {
-        OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+        OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
         Individual individual = factory.asOntModel(model).getIndividual(subject);
         individual.setPropertyValue(prop, propValue);
       } else {
@@ -1411,12 +1401,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
     } else {
-      addStatement(model, subject, predicate, instanceModel.createTypedLiteral(object));
+      addStatement(model, subject, predicate, graphSet.getInstanceModel().createTypedLiteral(object));
     }
   }
   @Override
   public <T> void removeLiteralValue(String subject, String predicate, T object) {
-    removeLiteralValue(instanceModel, subject, predicate, object);
+    removeLiteralValue(graphSet.getInstanceModel(), subject, predicate, object);
   }
   @Override
   public <T> void removeLiteralValue(Model model, String subject, String predicate, T object) {
@@ -1426,7 +1416,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       GregorianCalendar calendar = new GregorianCalendar();
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
-      Literal propValue = getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+      Literal propValue = graphSet.getJenaOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
 
 
       boolean permission = true;
@@ -1434,7 +1424,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
         permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
       }
       if(permission) {
-        OntProperty prop = getUnionJenaOntModel().getOntProperty(predicate);
+        OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
         Individual individual = factory.asOntModel(model).getIndividual(subject);
         individual.removeProperty(prop, propValue);
       } else {
@@ -1443,14 +1433,14 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
     } else {
-      removeStatement(model, subject, predicate, instanceModel.createTypedLiteral(object));
+      removeStatement(model, subject, predicate, graphSet.getInstanceModel().createTypedLiteral(object));
     }
   }
 
 
   @Override
   public <T extends CoinsObject> T getObject(String subject, String predicate, Class<T> clazz) {
-    return getObject(instanceModel, subject, predicate, clazz);
+    return getObject(graphSet.getInstanceModel(), subject, predicate, clazz);
   }
   @Override
   public <T extends CoinsObject> T getObject(Model model, String subject, String predicate, Class<T> clazz) {
@@ -1488,7 +1478,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public <T extends CoinsObject> Iterator<T> getObjects(String subject, String predicate, Class<T> clazz) {
-    return getObjects(instanceModel, subject, predicate, clazz);
+    return getObjects(graphSet.getInstanceModel(), subject, predicate, clazz);
   }
   public <T extends CoinsObject> Iterator<T> getObjects(Model model, String subject, String predicate, Class<T> clazz) {
 
@@ -1529,7 +1519,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void setObject(String subject, String predicate, CoinsObject object) {
-    setObject(instanceModel, subject, predicate, object);
+    setObject(graphSet.getInstanceModel(), subject, predicate, object);
   }
   @Override
   public void setObject(Model model, String subject, String predicate, CoinsObject object) {
@@ -1538,7 +1528,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void setObject(String subject, String predicate, String objectUri) {
-    setObject(instanceModel, subject, predicate, objectUri);
+    setObject(graphSet.getInstanceModel(), subject, predicate, objectUri);
   }
   @Override
   public void setObject(Model model, String subject, String predicate, String objectUri) {
@@ -1547,7 +1537,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void addObject(String subject, String predicate, CoinsObject object) {
-    addStatement(instanceModel, subject, predicate, object.getUri());
+    addStatement(graphSet.getInstanceModel(), subject, predicate, object.getUri());
   }
   @Override
   public void addObject(Model model, String subject, String predicate, CoinsObject object) {
@@ -1555,7 +1545,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void addObject(String subject, String predicate, String objectUri) {
-    addStatement(instanceModel, subject, predicate, objectUri);
+    addStatement(graphSet.getInstanceModel(), subject, predicate, objectUri);
   }
   @Override
   public void addObject(Model model, String subject, String predicate, String objectUri) {
@@ -1563,7 +1553,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void removeObject(String subject, String predicate, CoinsObject object) {
-    removeObject(instanceModel, subject, predicate, object);
+    removeObject(graphSet.getInstanceModel(), subject, predicate, object);
   }
   @Override
   public void removeObject(Model model, String subject, String predicate, CoinsObject object) {
@@ -1571,7 +1561,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void removeObject(String subject, String predicate, String objectUri) {
-    removeObject(instanceModel, subject, predicate, objectUri);
+    removeObject(graphSet.getInstanceModel(), subject, predicate, objectUri);
   }
   @Override
   public void removeObject(Model model, String subject, String predicate, String objectUri) {
@@ -1580,7 +1570,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public void removeIndividualAndProperties(String instanceUri) {
-    removeIndividualAndProperties(instanceModel, instanceUri);
+    removeIndividualAndProperties(graphSet.getInstanceModel(), instanceUri);
   }
   @Override
   public void removeIndividualAndProperties(Model model, String instanceUri) {
@@ -1627,51 +1617,51 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public ExtendedIterator<OntClass> listOntClasses() {
-    return factory.asOntModel(getUnionModel()).listClasses();
+    return factory.asOntModel(graphSet.getUnionModel()).listClasses();
   }
 
   @Override
   public Iterator<PropertyDeclaration> listPropertyDeclarations(String classUri) {
-    return new SparqlPropertyDeclarationIterator(classUri, factory.asOntModel(getUnionModel()));
+    return new SparqlPropertyDeclarationIterator(classUri, factory.asOntModel(graphSet.getUnionModel()));
 //    return new JenaPropertyDeclarationIterator(clazz, asOntModel(getUnionModel()));
   }
 
   @Override
   public boolean hasOntologyHeader() {
-    return hasOntologyHeader(instanceModel);
+    return hasOntologyHeader(graphSet.getInstanceModel());
   }
   @Override
   public boolean hasOntologyHeader(Model model) {
-    return model.contains(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), RDF.type, OWL.Ontology));  // todo remove instanceNamespace
+    return model.contains(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), RDF.type, OWL.Ontology));  // todo remove instanceNamespace
   }
 
   @Override
   public void addOntologyHeader() {
 
     // Add header itself
-    log.info("use this as subject for ontology header "+this.instanceNamespace);
-    instanceModel.add(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), RDF.type, OWL.Ontology));
+    log.info("use this as subject for ontology header "+graphSet.getInstanceNamespace());
+    graphSet.getInstanceModel().add(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), RDF.type, OWL.Ontology));
 
     // Add creator and containerId
-    instanceModel.add(new StatementImpl(
-        new ResourceImpl(this.instanceNamespace.withoutHash()),
+    graphSet.getInstanceModel().add(new StatementImpl(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
         new ResourceImpl(getActiveParty().getUri())));
-    instanceModel.add(new StatementImpl(
-        new ResourceImpl(this.instanceNamespace.withoutHash()),
+    graphSet.getInstanceModel().add(new StatementImpl(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
-        instanceModel.createTypedLiteral(containerId)));
+        graphSet.getInstanceModel().createTypedLiteral(containerId)));
 
     // Add import statements
-    for(Namespace key : libraryModels.keySet()) {
+    for(Namespace key : graphSet.getLibraryModels().keySet()) {
       log.info("add an imports statement to "+key.toString());
-      instanceModel.add(new StatementImpl(new ResourceImpl(this.instanceNamespace.withoutHash()), OWL.imports, new ResourceImpl(key.toString())));
+      graphSet.getInstanceModel().add(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(key.toString())));
     }
   }
 
   @Override
   public void addStatement(String subject, String predicate, String object) {
-    addStatement(instanceModel, subject, predicate, object);
+    addStatement(graphSet.getInstanceModel(), subject, predicate, object);
   }
   public void addStatement(Model model, String subject, String predicate, String object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), new ResourceImpl(object));
@@ -1689,7 +1679,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void addStatement(String subject, String predicate, RDFNode object) {
-    addStatement(instanceModel, subject, predicate, object);
+    addStatement(graphSet.getInstanceModel(), subject, predicate, object);
   }
   public void addStatement(Model model, String subject, String predicate, RDFNode object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), object);
@@ -1708,7 +1698,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public void removeStatement(String subject, String predicate, String object) {
-    removeStatement(instanceModel, subject, predicate, object);
+    removeStatement(graphSet.getInstanceModel(), subject, predicate, object);
   }
   public void removeStatement(Model model, String subject, String predicate, String object) {
     Statement statement = new StatementImpl(new ResourceImpl(subject), new PropertyImpl(predicate), new ResourceImpl(object));
@@ -1726,7 +1716,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void removeStatement(String subject, String predicate, RDFNode object) {
-    removeStatement(instanceModel, subject, predicate, object);
+    removeStatement(graphSet.getInstanceModel(), subject, predicate, object);
   }
   @Override
   public void removeStatement(Model model, String subject, String predicate, RDFNode object) {
@@ -1745,7 +1735,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public void removeAllStatements(String subject, String predicate) {
-    removeAllStatements(instanceModel, subject, predicate);
+    removeAllStatements(graphSet.getInstanceModel(), subject, predicate);
   }
   @Override
   public void removeAllStatements(Model model, String subject, String predicate) {
@@ -1764,7 +1754,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public String generateUri() {
-    return instanceNamespace + UUID.randomUUID().toString();
+    return graphSet.getInstanceNamespace() + UUID.randomUUID().toString();
   }
 
 
@@ -1826,7 +1816,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     try {
 
       // Check if the model was already loaded
-      if(libraryModels.containsKey(namespace)) {
+      if(graphSet.getLibraryModels().containsKey(namespace)) {
         return;
       }
 
@@ -1840,7 +1830,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       // Load the model
       Model libraryModel = factory.getEmptyModel();
       libraryModel.read(importUri.toString());
-      libraryModels.put(namespace, libraryModel);
+      graphSet.getLibraryModels().put(namespace, libraryModel);
       log.info("✅ Adding model with name " + namespace.toString());
 
 
@@ -1857,18 +1847,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
-  private Model getUnionModel() {
 
-    Model unionModel = factory.getEmptyModel();
-    unionModel.add(instanceModel);
-    unionModel.add(woaModel);
-    for(Namespace key : libraryModels.keySet()) {
-      unionModel.add(libraryModels.get(key));
-    }
-
-
-    return unionModel;
-  }
 
 
 
@@ -1897,7 +1876,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     return null;
   }
   private ExtendedIterator<Triple> listInstances(String classUri) {
-    return listInstances(instanceModel, classUri);
+    return listInstances(graphSet.getInstanceModel(), classUri);
   }
   private ExtendedIterator<Triple> listInstances(Model model, String classUri) {
     return model.getGraph().find(Node.ANY, RDF.type.asNode(), new ResourceImpl(classUri).asNode());
@@ -1913,179 +1892,10 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
-  public void writeModelToFile(Model model, OutputStream output, RDFFormat format) {
 
-    if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
-        format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
-
-      RDFWriter writer;
-      if(format == RDFFormat.RDFXML_ABBREV) {
-        writer = model.getWriter( "RDF/XML-ABBREV" );
-      } else {
-        writer = model.getWriter( "RDF/XML" );
-      }
-      writer.setProperty("xmlbase", getInstanceNamespace() );
-      writer.write(model, output, null);
-
-    } else {
-      Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-      dataset.getNamedModel(instanceNamespace.toString());
-      RDFDataMgr.write(output, model, format);
-    }
+  public CoinsGraphSet getCoinsGraphSet() {
+    return this.graphSet;
   }
-
-  public String writeModelToString(Model model, RDFFormat format) {
-
-    log.trace("starting to export");
-
-
-    ByteArrayOutputStream boas = new ByteArrayOutputStream();
-
-
-    if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
-        format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
-
-      RDFWriter writer;
-      if(format == RDFFormat.RDFXML_ABBREV) {
-        writer = model.getWriter( "RDF/XML-ABBREV" );
-      } else {
-        writer = model.getWriter( "RDF/XML" );
-      }
-      writer.setProperty("xmlbase", getInstanceNamespace() );
-      writer.write(model, boas, null);
-
-    } else {
-      Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-      dataset.getNamedModel(instanceNamespace.toString());
-      RDFDataMgr.write(boas, model, format);
-    }
-
-
-    String result = "";
-
-    try {
-      BufferedReader reader = new BufferedReader(new StringReader(boas.toString()));
-
-      String line = null;
-      while ((line = reader.readLine()) != null) {
-        result += line+"\n";
-      }
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
-
-    return result;
-  }
-
-  public void writeFullToFile(OutputStream output, RDFFormat format) {
-    Dataset dataset = factory.getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-    RDFDataMgr.write(output, dataset, format);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-  public Model getWoaModel() {
-    return woaModel;
-  }
-
-
-
-
-
-
-
-
-
-  @Override
-  public Iterator<String> listModelNames() {
-    List<String> buffer = new ArrayList<>();
-    buffer.add(instanceNamespace.toString());
-    buffer.add(woaNamespace.toString());
-    Set<Namespace> namespaces = libraryModels.keySet();
-    for(Namespace namespace : namespaces) {
-      buffer.add(namespace.toString());
-    }
-    return buffer.iterator();
-  }
-
-  @Override
-  public Model getJenaModel() {
-    return this.instanceModel;
-  }
-
-  @Override
-  public Model getJenaModel(String namespace) {
-    Namespace ns = new Namespace(namespace);
-
-    if(this.instanceNamespace.equals(ns)) {
-      log.info("InstanceModel requested.");
-      return instanceModel;
-    }
-    if(this.woaNamespace.equals(ns)) {
-      log.info("WoaModel requested.");
-      return woaModel;
-    }
-    if(libraryModels.containsKey(ns)) {
-      log.info("Some library model requested.");
-      return libraryModels.get(ns);
-    }
-
-    log.warn("Requested model could not be found: "+ns.toString()+", pick from:");
-    log.warn("InstanceModel: "+instanceNamespace.toString());
-    log.warn("WoaModel: "+woaNamespace.toString());
-    for(Namespace candidate : libraryModels.keySet()) {
-      log.warn("libraries: "+candidate.toString());
-    }
-    return null;
-  }
-
-  @Override
-  public OntModel getJenaOntModel() {
-    return factory.asOntModel(this.instanceModel);
-  }
-  public OntModel getJenaOntModel(Reasoner reasoner) {
-    return factory.asOntModel(this.instanceModel, reasoner);
-  }
-
-  @Override
-  public OntModel getJenaOntModel(String namespace) {
-    Model model = getJenaModel(namespace);
-    if(model != null) {
-      return factory.asOntModel(model);
-    }
-    return null;
-  }
-  public OntModel getJenaOntModel(String namespace, Reasoner reasoner) {
-    Model model = getJenaModel(namespace);
-    if(model != null) {
-      return factory.asOntModel(model, reasoner);
-    }
-    return null;
-  }
-
-  @Override
-  public Model getUnionJenaModel() {
-    return getUnionModel();
-  }
-
-  @Override
-  public OntModel getUnionJenaOntModel() {
-    return factory.asOntModel(getUnionModel());
-  }
-  public OntModel getUnionJenaOntModel(Reasoner reasoner) {
-    return factory.asOntModel(getUnionModel(), reasoner);
-  }
-
-
 
 
 
@@ -2094,8 +1904,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public CoinsContainer getCoinsContainer() {
     return (CoinsContainer) this;
   }
-
-
 
   @Override
   public CoinsModel asCoinsModel() {
