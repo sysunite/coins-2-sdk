@@ -8,10 +8,8 @@ import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.reasoner.ValidityReport;
 import com.hp.hpl.jena.reasoner.rulesys.GenericRuleReasoner;
 import com.hp.hpl.jena.reasoner.rulesys.Rule;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.FixMethodOrder;
@@ -42,8 +40,7 @@ public class G1_InitValidator {
   @Test
   public void init() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 
     JenaValidationExecutor executor = new JenaValidationExecutor();
@@ -71,8 +68,7 @@ public class G1_InitValidator {
   @Test
   public void jenaValidator() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 

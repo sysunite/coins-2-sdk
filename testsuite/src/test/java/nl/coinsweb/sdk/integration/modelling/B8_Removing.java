@@ -2,10 +2,8 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.EntityProperty;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +25,7 @@ public class B8_Removing {
   public void removeStatement() {
 
 
-
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     model.addStatement("http://subj","http://subj","http://subj");
@@ -47,8 +43,7 @@ public class B8_Removing {
 
 
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
 
     assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
@@ -77,8 +72,7 @@ public class B8_Removing {
   @Test
   public void removeIndividualWithProperties() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 

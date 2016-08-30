@@ -2,10 +2,8 @@ package nl.coinsweb.sdk.integration.modelling.starterskit;
 
 import nl.coinsweb.cbim.ContainsRelation;
 import nl.coinsweb.cbim.ContainsRelationGroup;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +22,7 @@ public class B16_GroupExample {
   @Test
   public void listUnitsForExample() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     ContainsRelationGroup group = new ContainsRelationGroup(model);
 

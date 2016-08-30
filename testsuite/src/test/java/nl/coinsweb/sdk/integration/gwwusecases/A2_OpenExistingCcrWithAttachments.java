@@ -5,11 +5,9 @@ import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
@@ -56,8 +54,7 @@ public class A2_OpenExistingCcrWithAttachments {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
 
     File file = IntegrationHelper.getResourceFile("A2", "MBICOINS2.ccr");
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, defaultPerson, file.toString(), "http://example.com");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, file.toString(), "http://example.com");
 
 
   }
@@ -78,8 +75,7 @@ public class A2_OpenExistingCcrWithAttachments {
 
 
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, defaultPerson, "/tmp/coinstest/not-existing.ccr", "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/not-existing.ccr", "http://www.example.com/");
     ccr.close();
 
   }
@@ -102,8 +98,7 @@ public class A2_OpenExistingCcrWithAttachments {
     File file = IntegrationHelper.getResourceFile("A2", "sample2.ccr");
 
     // Read the container content
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer ccr = new JenaCoinsContainer(factory, defaultPerson, file.toString(), "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, file.toString(), "http://www.example.com/");
 
 
     // Zip the result
@@ -124,26 +119,25 @@ public class A2_OpenExistingCcrWithAttachments {
   @Test
   public void dCreateTwoCcrsAtTheSameTimeInMem() {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new JenaModelFactory();
     dCreateTwoCcrsAtTheSameTime(
-        new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"),
-        new JenaCoinsContainer(factory, defaultPerson, "http://www.example.com/"));
+        new JenaCoinsContainer(defaultPerson, "http://www.example.com/"),
+        new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
   }
 
   public void dCreateTwoCcrsAtTheSameTime(CoinsModel workspace1, CoinsModel workspace2) {
 
     // Init the coins api
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new JenaModelFactory();
+
 
     // The one
     File file1 = IntegrationHelper.getResourceFile("A2","sample.ccr");
-    JenaCoinsContainer ccr1 = new JenaCoinsContainer(factory, defaultPerson, file1.toString(), "http://www.example.com/");
+    JenaCoinsContainer ccr1 = new JenaCoinsContainer(defaultPerson, file1.toString(), "http://www.example.com/");
 
 
     // The other
     File file2 = IntegrationHelper.getResourceFile("A2","sample2.ccr");
-    JenaCoinsContainer ccr2 = new JenaCoinsContainer(factory, defaultPerson, file2.toString(), "http://www.example.com/");
+    JenaCoinsContainer ccr2 = new JenaCoinsContainer(defaultPerson, file2.toString(), "http://www.example.com/");
 
 
 

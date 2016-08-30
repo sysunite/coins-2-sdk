@@ -4,10 +4,8 @@ package nl.coinsweb.sdk.integration.modelling;
 import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.IntegerProperty;
 import nl.coinsweb.cbim.StringProperty;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.qudt.schema.qudt.Unit;
 import org.slf4j.Logger;
@@ -27,8 +25,7 @@ public class B11_SimpleProperties {
   @Test
   public void createProperties() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 

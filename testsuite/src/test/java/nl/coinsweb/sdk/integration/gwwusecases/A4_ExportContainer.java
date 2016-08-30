@@ -1,9 +1,7 @@
 package nl.coinsweb.sdk.integration.gwwusecases;
 
 import nl.coinsweb.sdk.CoinsParty;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,8 +30,7 @@ public class A4_ExportContainer {
   @Before
   public void initData() {
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    ModelFactory factory = new JenaModelFactory();
-    container = new JenaCoinsContainer(factory, defaultPerson, testNameSpace);
+    container = new JenaCoinsContainer(defaultPerson, testNameSpace);
   }
 
   @After

@@ -2,10 +2,9 @@ package nl.coinsweb.sdk.cli.generate;
 
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import nl.coinsweb.sdk.CoinsParty;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
+import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
@@ -143,9 +142,9 @@ public class RunGenerate {
     }
 
 
-    ModelFactory factory = new JenaModelFactory();
-    factory.setOntModelSpec(reasoner);
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), "http://empty.com/", false);
+    JenaCoinsGraphSet graphSet = new JenaCoinsGraphSet("http://empty.com/");
+    graphSet.setOntModelSpec(reasoner);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
 
 
 

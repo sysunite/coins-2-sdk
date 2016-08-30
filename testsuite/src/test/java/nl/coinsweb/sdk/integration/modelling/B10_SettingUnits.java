@@ -2,10 +2,8 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.sdk.CoinsObject;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.qudt.schema.qudt.LengthUnit;
 import org.qudt.schema.qudt.Unit;
@@ -32,8 +30,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnits() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 
@@ -142,8 +139,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnitsForExample() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 

@@ -3,14 +3,12 @@ package nl.coinsweb.sdk.integration.woa;
 import nl.coinsweb.cbim.Assembly;
 import nl.coinsweb.cbim.Part;
 import nl.coinsweb.coinswoa.NoAccess;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.exceptions.WOAAccessDeniedException;
 import nl.coinsweb.sdk.injectors.Injector;
 import nl.coinsweb.sdk.injectors.WOAInjector;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,8 +33,7 @@ public class F1_ReadExampleWOA {
   @Test
   public void aOpenContainer() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     try {
 
@@ -70,8 +67,7 @@ public class F1_ReadExampleWOA {
   @Test
   public void bDisabledWOA() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 
@@ -99,8 +95,7 @@ public class F1_ReadExampleWOA {
   @Test
   public void cNewContainer() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer container = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer container = new JenaCoinsContainer("http://playground.com/");
     Part landhoofd = new Part(container, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
 
     // Because the uri already exists, first we instantiate it
@@ -138,7 +133,7 @@ public class F1_ReadExampleWOA {
 
 
 
-      JenaCoinsContainer reopened = new JenaCoinsContainer(factory, "/tmp/newWoaContent.ccr", "http://playground.com/");
+      JenaCoinsContainer reopened = new JenaCoinsContainer("/tmp/newWoaContent.ccr", "http://playground.com/");
 
       try {
 

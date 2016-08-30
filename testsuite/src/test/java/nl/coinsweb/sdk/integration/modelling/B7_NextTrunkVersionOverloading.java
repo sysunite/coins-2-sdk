@@ -1,9 +1,7 @@
 package nl.coinsweb.sdk.integration.modelling;
 
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +24,8 @@ public class B7_NextTrunkVersionOverloading {
 
 
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
 
 //    model.setOntModelSpec(OntModelSpec.OWL_MEM);
