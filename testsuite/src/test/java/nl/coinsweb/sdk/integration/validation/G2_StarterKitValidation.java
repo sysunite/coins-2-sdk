@@ -110,7 +110,7 @@ public class G2_StarterKitValidation {
 
     JenaValidationExecutor executor = new JenaValidationExecutor();
 
-    Validator validator = new Validator(model, executor, "COINS-2.0-Lite");
+    Validator validator = new Validator(model, executor, "COINS 2.0 Lite");
 
     validator.validate(Paths.get("/tmp/"));
 

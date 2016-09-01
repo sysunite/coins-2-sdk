@@ -1,5 +1,5 @@
-ProfileName COINS-2.0-Lite
-ProfileAuthor Hans Schevers
+ProfileName COINS 2.0 Lite EQ
+ProfileAuthor Hans
 
 <ProfileCheck>
 Reference COINS 2.0 Lite
@@ -7,38 +7,31 @@ Description "COINS 2.0 Lite profile check on predicate (subject predicate object
 ResultFormat "The subject ${a} uses an unsupported predicate ${b} to object ${c}"
 
 <SparqlQuery>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
- select distinct ?a ?b ?c 
- WHERE {Graph ${SCHEMA_UNION_GRAPH} {
-    ?a ?b ?c 
-filter (STRSTARTS(STR(?b),"http://www.w3.org/2002/07/owl#")). 
-filter (?b not in (owl:allValuesFrom,owl:cardinality,owl:disjointWith,owl:distinctMembers,owl:hasValue,owl:imports,owl:intersectionOf,owl:inverseOf,owl:maxCardinality,owl:maxQualifiedCardinality,owl:members,owl:minCardinality,owl:minQualifiedCardinality,owl:onClass,owl:oneOf,owl:onProperty,owl:qualifiedCardinality,owl:someValuesFrom,owl:unionOf,owl:equivalentClass,owl:annotatedProperty,owl:annotatedSource,owl:annotatedTarget,owl:backwardCompatibleWith,owl:deprecated,owl:incompatibleWith,owl:priorVersion,owl:versionInfo,owl:versionIRI))}}
+
 </SparqlQuery>
 
 </ProfileCheck>
 <ProfileCheck>
-
-<SparqlQuery>
+Reference COINS 2.0 Lite
 Description "COINS 2.0 Lite profile check on object (subject predicate object) usage"
 ResultFormat "The subject ${a} has a predicate ${b} to an unsupported object ${c}"
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-select distinct ?a ?b ?c 
- WHERE {Graph ${SCHEMA_UNION_GRAPH}{ 
- ?a ?b ?c   filter (STRSTARTS(STR(?c),"http://www.w3.org/2002/07/owl#")).
-filter (?c not in (owl:AllDisjointClasses,owl:Annotation,owl:AnnotationProperty,owl:Class,owl:DatatypeProperty,owl:FunctionalProperty,owl:NamedIndividual,owl:ObjectProperty,owl:Ontology,owl:Restriction,owl:TransitiveProperty,owl:Thing)) }}
+
+<SparqlQuery>
+
 </SparqlQuery>
 
 </ProfileCheck>
 
 <SchemaInference>
+
+Reference scm-avf1 (49)
+Description Entailment of restriction subclasses via the allvaluesfrom construct part 1
 <SparqlQuery>
-(#name			:subclassing allvaluesfrom restrictions part 1 (49)#description		:Entailment of restriction subclasses via the allvaluesfrom construct part 1#reference		:scm-avf1 (49)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -55,14 +48,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-avf2 (50)
+Description Entailment of restriction subclasses via the allvaluesfrom construct part 2
 <SparqlQuery>
-(#name			:subclassing allvaluesfrom restriction part 2#description		:Entailment of restriction subclasses via the allvaluesfrom construct part 2#reference		:scm-avf2 (50)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -76,14 +76,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-dom2 (53)
+Description entailment of domains for subproperties
 <SparqlQuery>
-(#name			:Domain additions for subproperties#description		:entailment of domains for subproperties#reference		:scm-dom2 (53)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -97,14 +104,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-hv (59)
+Description Entailment of restriction subclasses via the hasValue construct
 <SparqlQuery>
-(#name			:Restriction subclassing for hasValue restrictions#description		:Entailment of restriction subclasses via the hasValue construct#reference		:scm-hv (59)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -118,14 +132,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-int (60) (member:list replaced)
+Description Restriction subclassing for hasValue restrictions. dependency on list:member removed 
 <SparqlQuery>
-(#name			:Subclass based upon intersection classes#description		:Restriction subclassing for hasValue restrictions. dependency on list:member removed #reference		:scm-int (60) (member:list replaced)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -139,14 +160,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference Scm-rng1 (62)
+Description entailment of ranges for subclasses
 <SparqlQuery>
-(#name			:Scm-rng1 (62)#description		:entailment of ranges for subclasses#reference		:Scm-rng1 (62)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -160,14 +188,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference Scm-rng2 (63)
+Description entailment of ranges for subproperties
 <SparqlQuery>
-(#name			:Scm-rng2 (63)#description		:entailment of ranges for subproperties#reference		:Scm-rng2 (63)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -181,14 +216,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference Scm-sco (64)
+Description entailment of the subclass hierarchy
 <SparqlQuery>
-(#name			:Scm-sco (64)#description		:entailment of the subclass hierarchy#reference		:Scm-sco (64)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -202,14 +244,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference Scm-spo (65)
+Description entailment of the subproperty hierarchy
 <SparqlQuery>
-(#name			:Scm-spo (65)#description		:entailment of the subproperty hierarchy#reference		:Scm-spo (65)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -223,14 +272,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-svf1 (66)
+Description Restriction subclassing based upon someValuesFrom
 <SparqlQuery>
-(#name			:scm-svf1 (66)#description		:Restriction subclassing based upon someValuesFrom#reference		:scm-svf1 (66)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -244,14 +300,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-svf2 (67)
+Description Restriction subclassing based upon someValuesFrom
 <SparqlQuery>
-(#name			:scm-svf2 (67)#description		:Restriction subclassing based upon someValuesFrom#reference		:scm-svf2 (67)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -265,14 +328,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-eqc1 (55)
+Description subtyping of equivalentclasses
 <SparqlQuery>
-(#name			:equivalent class subtyping#description		:subtyping of equivalentclasses#reference		:scm-eqc1 (55)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -286,14 +356,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-eqc2 (56)
+Description Equivalentclasses deduction from subtype constructs
 <SparqlQuery>
-(#name			:equivalent class deduction#description		:Equivalentclasses deduction from subtype constructs#reference		:scm-eqc2 (56)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -307,14 +384,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-eqp1 (57)
+Description Equivalent property subproperty entailment
 <SparqlQuery>
-(#name			:equivalent property subtyping#description		:Equivalent property subproperty entailment#reference		:scm-eqp1 (57)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -328,14 +412,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference scm-eqp1 (58)
+Description Equivalent property deduction from subproperty constructs
 <SparqlQuery>
-(#name			:Equivalent property deduction#description		:Equivalent property deduction from subproperty constructs#reference		:scm-eqp1 (58)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -349,14 +440,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <SchemaInference>
+
+Reference cls-oo (27)
+Description Entailment owl:oneOf typing (list:member dependency)
 <SparqlQuery>
-(#name			:oneOf typing #description		:Entailment owl:oneOf typing (list:member dependency)#reference		:cls-oo (27)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -370,14 +468,21 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </SchemaInference>
 
+
 <DataInference>
+
+Reference CAXSCO (18)
+Description Entailment of superclass typing
 <SparqlQuery>
-(#name			:Subclass typing#description		:Entailment of superclass typing#reference		:CAXSCO (18)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -394,14 +499,21 @@ Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Prp-spo1 (45)
+Description Entailment of subproperty values
 <SparqlQuery>
-(#name			:Subproperty value entailment#description		:Entailment of subproperty values#reference		:Prp-spo1 (45)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -418,14 +530,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Prp-trp (48)
+Description Entailment of transitive property values
 <SparqlQuery>
-(#name			:Transitive property values#description		:Entailment of transitive property values#reference		:Prp-trp (48)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -442,14 +561,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference cls-hv1 (20)
+Description Default values entailment via the hasValue constraint
 <SparqlQuery>
-(#name			:Default values via owl:hasValue#description		:Default values entailment via the hasValue constraint#reference		:cls-hv1 (20)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -466,14 +592,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Prp-inv (41)
+Description Entailment of inverseOf values part 1
 <SparqlQuery>
-(#name			:InverseOf value entailment part 2#description		:Entailment of inverseOf values part 1#reference		:Prp-inv (41)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -490,14 +623,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Prp-inv2 (42)
+Description Entailment of inverse values part 2
 <SparqlQuery>
-(#name			:InverseOf value entailment part 2#description		:Entailment of inverse values part 2#reference		:Prp-inv2 (42)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -514,14 +654,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Cls-uni (30)
+Description Typing to Union Class entailment
 <SparqlQuery>
-(#name			:UnionOf typing#description		:Typing to Union Class entailment#reference		:Cls-uni (30)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -538,14 +685,21 @@ Graph ${SCHEMA_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Cax-eqc1 (16)
+Description Entailment of equivalent typing
 <SparqlQuery>
-(#name			:EquivalentClass typing part 1#description		:Entailment of equivalent typing#reference		:Cax-eqc1 (16)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -562,14 +716,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference Cax-eqc2 (17)
+Description Entailment of equivalent typing
 <SparqlQuery>
-(#name			:EquivalentClass typing part 2#description		:Entailment of equivalent typing#reference		:Cax-eqc2 (17)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -586,14 +747,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference AllvaluesFrom Typing
+Description Entailment for allValuesFrom Typing
 <SparqlQuery>
-(#name			:allValuesFrom typing#description		:Entailment for allValuesFrom Typing#reference		:AllvaluesFrom Typing#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -613,14 +781,21 @@ union
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference cls-hv2 (21)
+Description Restriction typing via the hasValue constraint
 <SparqlQuery>
-(#name			:hasValue Typing#description		:Restriction typing via the hasValue constraint#reference		:cls-hv2 (21)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -637,14 +812,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference TMG)
+Description Intersection typing entailment
 <SparqlQuery>
-(#name			:Intersection typing entailment#description		:Intersection typing entailment#reference		:TMG)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -669,14 +851,21 @@ Graph ${INSTANCE_GRAPH}{
  filter (?aantal=?totaal)
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference cls-svf1 (28)
+Description Entailment of someValueFrom typing
 <SparqlQuery>
-(#name			:someValuesFrom typing#description		:Entailment of someValueFrom typing#reference		:cls-svf1 (28)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -693,14 +882,21 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <DataInference>
+
+Reference cls-svf2 (29)
+Description Entailment of someValueFrom typing of owl:Thing
 <SparqlQuery>
-(#name			:someValuesFrom typing owl:Thing#description		:Entailment of someValueFrom typing of owl:Thing#reference		:cls-svf2 (29)#profile			:COINS 2.0 Lite+EqPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -717,14 +913,22 @@ Graph ${INSTANCE_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </DataInference>
 
+
 <ValidationRule>
+
+Reference COINS-minCar
+Description minimal cardinality constraint validation
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Minimal Cardinality validatie#description		:minimal cardinality constraint validation#reference		:COINS-minCar#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -746,13 +950,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter(?aantal<?min)
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-CAREX
+Description Exactly cardinality validatie
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Cardinality 'exactly' validatie#description		:Exactly cardinality validatie#reference		:COINS-CAREX#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -774,13 +986,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter((?aantal<?min) || (?aantal>?min) )
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-maxCar
+Description maximum cardinality constraint validation
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Maximum Cardinality validatie#description		:maximum cardinality constraint validation#reference		:COINS-maxCar#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -802,13 +1022,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter(?aantal>?min)
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-QCREx
+Description Exactly Qualitative Cardinality restriction validatie
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Qualitative Cardinality Restriction 'exactly' validatie#description		:Exactly Qualitative Cardinality restriction validatie#reference		:COINS-QCREx#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -830,13 +1058,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter((?aantal<?min) || (?aantal>?min) )
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-QCRMax
+Description Maximum Qualitative Cardinality restriction validatie
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Qualitative Cardinality Restriction maximum validatie#description		:Maximum Qualitative Cardinality restriction validatie#reference		:COINS-QCRMax#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -858,13 +1094,21 @@ Graph ${FULL_UNION_GRAPH}{
  filter((?aantal>?min) )  
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-QCRMin
+Description Minimal Qualitative Cardinality restriction validatie
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Qualitative Cardinality Restriction Minimum validatie #description		:Minimal Qualitative Cardinality restriction validatie#reference		:COINS-QCRMin#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -886,13 +1130,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter((?aantal<?min) )  
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-FUP
+Description functional property as a restriction validation
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:FunctionalProperty aantal validatie#description		:functional property as a restriction validation#reference		:COINS-FUP#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -914,13 +1166,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter(?aantal>1) 
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-DTVC
+Description Datatype check
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Simple datatyping check #description		:Datatype check#reference		:COINS-DTVC#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -936,13 +1196,21 @@ Graph ${FULL_UNION_GRAPH}{
 filter (Datatype(?value) !=?range)
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-DPVL
+Description Datatype waarde check
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Literal check for datatypes#description		:Datatype waarde check#reference		:COINS-DPVL#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -957,13 +1225,21 @@ Graph ${FULL_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-OPVU
+Description ObjectProperty waarde check
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:ObjectProperty value type check #description		:ObjectProperty waarde check#reference		:COINS-OPVU#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -978,13 +1254,21 @@ Graph ${FULL_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-dom
+Description Domain als een restrictie
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:domain als een restrictie validatie #description		:Domain als een restrictie#reference		:COINS-dom#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1004,13 +1288,21 @@ filter not exists {{Graph ${FULL_UNION_GRAPH}{
 }}
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-rng
+Description Range als een restrictie
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Range als restrictie validatie#description		:Range als een restrictie#reference		:COINS-rng#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1030,13 +1322,21 @@ filter not exists {{Graph ${FULL_UNION_GRAPH}{
 }}
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-UO
+Description UnionOf as a restriction validation
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:UnionOf als een restrictie validatie#description		:UnionOf as a restriction validation#reference		:COINS-UO#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1056,13 +1356,21 @@ filter not exists{Graph ${FULL_UNION_GRAPH}{
 }}
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-IS
+Description Intersection as a restriction validation
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:IntersectionOf #description		:Intersection as a restriction validation#reference		:COINS-IS#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1082,13 +1390,21 @@ filter not exists{Graph ${FULL_UNION_GRAPH}{
 }}
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-CCO
+Description Only COINS concept instances check
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:validatie van alle objecten of ze minimaal een COINS Entity zijn#description		:Only COINS concept instances check#reference		:COINS-CCO#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1100,13 +1416,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-NSWO
+Description only instances in a semantic BIM model
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Geen illegale RDF/RDFS/OWL objecten in een COINSContainer#description		:only instances in a semantic BIM model#reference		:COINS-NSWO#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1118,13 +1442,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-NSCO
+Description No rdfs:subclassOf in a semantic BIM model
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:geen Rdfs SubclassOf predicaten in een COINSContainer#description		:No rdfs:subclassOf in a semantic BIM model#reference		:COINS-NSCO#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1136,13 +1468,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference COINS-NSPO
+Description No subPropertyOf in a semantic BIM model
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:Geen rdfs:subPropertyOf predicaten een COINS container#description		:No subPropertyOf in a semantic BIM model#reference		:COINS-NSPO#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1154,13 +1494,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference Cax-adx (listmod)
+Description Disjoint via owl:allDisjointClasses 
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:valideren van disjoint individuals via Disjoint verklaringen op basis van owl:allDisjoint#description		:Disjoint via owl:allDisjointClasses #reference		:Cax-adx (listmod)#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1175,13 +1523,21 @@ Graph ${FULL_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>
+
 <ValidationRule>
+
+Reference cax-dw
+Description Disjoint via owl:disjointWith 
+ResultFormat The subject ${a} has predicate ${b} to object ${c}
 <SparqlQuery>
-(#name			:valideren van disjoint individuals via Disjoint verklaringen op basis van owl:disjointWith #description		:Disjoint via owl:disjointWith #reference		:cax-dw#profile			:COINS 2.0 LitePREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1196,7 +1552,6 @@ Graph ${FULL_UNION_GRAPH}{
 }
 
 }
-
-
 </SparqlQuery>
+
 </ValidationRule>

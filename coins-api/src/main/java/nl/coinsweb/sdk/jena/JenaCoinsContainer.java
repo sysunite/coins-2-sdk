@@ -894,7 +894,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
     // Execute the query and obtain results
-    QueryExecution queryExecution = QueryExecutionFactory.create(queryString, Syntax.syntaxSPARQL_11, graphSet.getUnionModel());
+    QueryExecution queryExecution = QueryExecutionFactory.create(queryString, Syntax.syntaxSPARQL_11, graphSet.getFullUnionModel());
     ResultSet resultSet = queryExecution.execSelect();
 
     while (resultSet.hasNext()) {
@@ -979,8 +979,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   @Override
   public Iterator<String> listPropertyDefinitions(String classUri, String propertyTypeClassUri) {
     ArrayList<String> buffer = new ArrayList<>();
-//    Iterator<ApoPropertyDeclaration> iterator =  new JenaPropertyDeclarationIterator(classUri, asOntModel(getUnionModel()), propertyTypeClassUri);
-    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, graphSet.asOntModel(graphSet.getUnionModel()), propertyTypeClassUri);
+//    Iterator<ApoPropertyDeclaration> iterator =  new JenaPropertyDeclarationIterator(classUri, asOntModel(getFullUnionModel()), propertyTypeClassUri);
+    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, graphSet.asOntModel(graphSet.getFullUnionModel()), propertyTypeClassUri);
     while(iterator.hasNext()) {
       buffer.add(iterator.next().getPropertyUri());
     }
@@ -1616,13 +1616,13 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public ExtendedIterator<OntClass> listOntClasses() {
-    return graphSet.asOntModel(graphSet.getUnionModel()).listClasses();
+    return graphSet.asOntModel(graphSet.getFullUnionModel()).listClasses();
   }
 
   @Override
   public Iterator<PropertyDeclaration> listPropertyDeclarations(String classUri) {
-    return new SparqlPropertyDeclarationIterator(classUri, graphSet.asOntModel(graphSet.getUnionModel()));
-//    return new JenaPropertyDeclarationIterator(clazz, asOntModel(getUnionModel()));
+    return new SparqlPropertyDeclarationIterator(classUri, graphSet.asOntModel(graphSet.getFullUnionModel()));
+//    return new JenaPropertyDeclarationIterator(clazz, asOntModel(getFullUnionModel()));
   }
 
   @Override

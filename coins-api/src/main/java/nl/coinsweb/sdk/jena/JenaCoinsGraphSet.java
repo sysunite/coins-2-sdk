@@ -33,7 +33,6 @@ import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
-import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -44,6 +43,13 @@ import java.io.*;
 import java.util.*;
 
 /**
+ *
+ * The Coins GraphSet is the provider of the rdf storage of all the models that are
+ * contained in the container. Each model is identified by a namespace (uri).
+ *
+ * The Jena GraphSet has a setter for a reasoner. Different situations in the
+ * Coins Api require a different reasoner.
+ *
  * @author Bastian Bijl
  */
 public class JenaCoinsGraphSet implements CoinsGraphSet {
@@ -65,6 +71,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   private Map<Namespace, Model> libraryModels;
 
 
+
   public JenaCoinsGraphSet(String namespace) {
     this.instanceNamespace = new Namespace(namespace);
     this.libraryModels = new HashMap<>();
@@ -73,13 +80,40 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     this.dataset = TDBFactory.createDataset();
   }
 
-  @Override
+
   public void setOntModelSpec(OntModelSpec modelSpec) {
     ontModelSpec = modelSpec;
   }
 
+  @Override
+  public Map<Namespace, Model> getLibraryModels() {
+    return libraryModels;
+  }
+
+  @Override
   public void reset() {
     this.libraryModels = new HashMap<>();
+  }
+
+  @Override
+  public void close() {
+    dataset.close();
+  }
+
+
+
+  // Namespaces
+
+  @Override
+  public Iterator<String> listModelNames() {
+    List<String> buffer = new ArrayList<>();
+    buffer.add(instanceNamespace.toString());
+    buffer.add(woaNamespace.toString());
+    Set<Namespace> namespaces = libraryModels.keySet();
+    for(Namespace namespace : namespaces) {
+      buffer.add(namespace.toString());
+    }
+    return buffer.iterator();
   }
 
   @Override
@@ -98,13 +132,31 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public String getWoaNamespace() {
-    return this.woaNamespace.toString();
-  }
   public void setWoaNamespace(String namespace) {
     this.woaNamespace = new Namespace(namespace);
   }
 
+  @Override
+  public String getWoaNamespace() {
+    return this.woaNamespace.toString();
+  }
+
+
+
+
+
+
+  // Models
+
+  @Override
+  public Model getEmptyModel() {
+    return com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+  }
+
+  @Override
+  public Model getInstanceModel() {
+    return instanceModel;
+  }
 
   @Override
   public Model getWoaModel() {
@@ -112,36 +164,32 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public Model getInstanceModel() {
-    return this.instanceModel;
+  public Model getSchemaModel() {
+    return getModel("http://www.coinsweb.nl/cbim-2.0.rdf");      // todo: move away this uri
   }
 
   @Override
-  public Iterator<String> listModelNames() {
-    List<String> buffer = new ArrayList<>();
-    buffer.add(instanceNamespace.toString());
-    buffer.add(woaNamespace.toString());
-    Set<Namespace> namespaces = libraryModels.keySet();
-    for(Namespace namespace : namespaces) {
-      buffer.add(namespace.toString());
+  public Model getSchemaUnionModel() {
+
+    Model schemaUnionModel = getEmptyModel();
+    for(Namespace key : libraryModels.keySet()) {
+      schemaUnionModel.add(libraryModels.get(key));
     }
-    return buffer.iterator();
-  }
-
-  public Map<Namespace, Model> getLibraryModels() {
-    return libraryModels;
+    return schemaUnionModel;
   }
 
   @Override
-  public OntModel getInstanceOntModel() {
-    return asOntModel(this.instanceModel);
-  }
-  public OntModel getInstanceOntModel(Reasoner reasoner) {
-    return asOntModel(this.instanceModel, reasoner);
+  public Model getFullUnionModel() {
+
+    Model unionModel = getSchemaUnionModel();
+    unionModel.add(instanceModel);
+    unionModel.add(woaModel);
+
+    return unionModel;
   }
 
   @Override
-  public Model getJenaModel(String namespace) {
+  public Model getModel(String namespace) {
     Namespace ns = new Namespace(namespace);
 
     if(this.instanceNamespace.equals(ns)) {
@@ -166,135 +214,8 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     return null;
   }
 
-  @Override
-  public OntModel getJenaOntModel(String namespace) {
-    Model model = getJenaModel(namespace);
-    if(model != null) {
-      return asOntModel(model);
-    }
-    return null;
-  }
-  public OntModel getJenaOntModel(String namespace, Reasoner reasoner) {
-    Model model = getJenaModel(namespace);
-    if(model != null) {
-      return asOntModel(model, reasoner);
-    }
-    return null;
-  }
 
-
-  @Override
-  public Model getUnionJenaModel() {
-    return getUnionModel();
-  }
-
-
-  @Override
-  public OntModel getUnionJenaOntModel() {
-    return asOntModel(getUnionModel());
-  }
-  public OntModel getUnionJenaOntModel(Reasoner reasoner) {
-    return asOntModel(getUnionModel(), reasoner);
-  }
-
-
-  public Model getUnionModel() {
-
-    Model unionModel = getEmptyModel();
-    unionModel.add(instanceModel);
-    unionModel.add(woaModel);
-    for(Namespace key : libraryModels.keySet()) {
-      unionModel.add(libraryModels.get(key));
-    }
-
-
-    return unionModel;
-  }
-
-
-
-
-
-
-
-  @Override
-  public void writeModelToFile(Model model, OutputStream output, RDFFormat format) {
-
-    if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
-        format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
-
-      RDFWriter writer;
-      if(format == RDFFormat.RDFXML_ABBREV) {
-        writer = model.getWriter( "RDF/XML-ABBREV" );
-      } else {
-        writer = model.getWriter( "RDF/XML" );
-      }
-      writer.setProperty("xmlbase", getInstanceNamespace() );
-      writer.write(model, output, null);
-
-    } else {
-      Dataset dataset = getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-      dataset.getNamedModel(instanceNamespace.toString());
-      RDFDataMgr.write(output, model, format);
-    }
-  }
-
-  @Override
-  public String writeModelToString(Model model, RDFFormat format) {
-
-    log.trace("starting to export");
-
-
-    ByteArrayOutputStream boas = new ByteArrayOutputStream();
-
-
-    if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
-        format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
-
-      RDFWriter writer;
-      if(format == RDFFormat.RDFXML_ABBREV) {
-        writer = model.getWriter( "RDF/XML-ABBREV" );
-      } else {
-        writer = model.getWriter( "RDF/XML" );
-      }
-      writer.setProperty("xmlbase", getInstanceNamespace() );
-      writer.write(model, boas, null);
-
-    } else {
-      Dataset dataset = getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-      dataset.getNamedModel(instanceNamespace.toString());
-      RDFDataMgr.write(boas, model, format);
-    }
-
-
-    String result = "";
-
-    try {
-      BufferedReader reader = new BufferedReader(new StringReader(boas.toString()));
-
-      String line = null;
-      while ((line = reader.readLine()) != null) {
-        result += line+"\n";
-      }
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
-
-    return result;
-  }
-
-  @Override
-  public void writeFullToFile(OutputStream output, RDFFormat format) {
-    Dataset dataset = getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-    RDFDataMgr.write(output, dataset, format);
-  }
-
-
-  @Override
-  public Dataset getDataset() {
-    return getDataset(instanceNamespace, instanceModel, woaNamespace, woaModel, libraryModels);
-  }
-
+  // OntModels
 
 
 
@@ -330,14 +251,45 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public Model getEmptyModel() {
-    return com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+  public OntModel getInstanceOntModel() {
+    return asOntModel(this.instanceModel);
+  }
+  public OntModel getInstanceOntModel(Reasoner reasoner) {
+    return asOntModel(this.instanceModel, reasoner);
   }
 
   @Override
-  public Dataset getDataset(Namespace instanceNamespace, Model instanceModel,
-                            Namespace woaNamespace, Model woaModel,
-                            Map<Namespace, Model> libraryModels) {
+  public OntModel getJenaOntModel(String namespace) {
+    Model model = getModel(namespace);
+    if(model != null) {
+      return asOntModel(model);
+    }
+    return null;
+  }
+  public OntModel getJenaOntModel(String namespace, Reasoner reasoner) {
+    Model model = getModel(namespace);
+    if(model != null) {
+      return asOntModel(model, reasoner);
+    }
+    return null;
+  }
+
+
+  @Override
+  public OntModel getUnionJenaOntModel() {
+    return asOntModel(getFullUnionModel());
+  }
+  public OntModel getUnionJenaOntModel(Reasoner reasoner) {
+    return asOntModel(getFullUnionModel(), reasoner);
+  }
+
+
+
+
+  // Datasets
+
+  @Override
+  public Dataset getDataset() {
 
     refreshModel(instanceNamespace.toString(), instanceModel);
     refreshModel(woaNamespace.toString(), woaModel);
@@ -347,28 +299,13 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     return dataset;
   }
 
-  public Dataset getDatasetWithUnionGraphs(CoinsModel model) {
-
-    Model instanceModel = (Model) model.getCoinsGraphSet().getInstanceModel();
-    Model woaModel = (Model) model.getCoinsGraphSet().getWoaModel();
-    Model schemaModel = (Model) model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/cbim-2.0.rdf");
-
-    Model schemaUnionModel = getEmptyModel();
-    schemaUnionModel.add(schemaModel);
-    for(Namespace key : model.getCoinsGraphSet().getLibraryModels().keySet()) {
-      schemaUnionModel.add(model.getCoinsGraphSet().getLibraryModels().get(key));
-    }
-
-    Model fullUnionModel = getEmptyModel();
-    fullUnionModel.add(instanceModel);
-    fullUnionModel.add(woaModel);
-    fullUnionModel.add(schemaUnionModel);
+  public Dataset getDatasetWithUnionGraphs() {
 
     refreshModel("INSTANCE_GRAPH", instanceModel);
     refreshModel("WOA_GRAPH", woaModel);
-    refreshModel("SCHEMA_GRAPH", schemaModel);
-    refreshModel("SCHEMA_UNION_GRAPH", schemaUnionModel);
-    refreshModel("FULL_UNION_GRAPH", fullUnionModel);
+    refreshModel("SCHEMA_GRAPH", getSchemaModel());
+    refreshModel("SCHEMA_UNION_GRAPH", getSchemaUnionModel());
+    refreshModel("FULL_UNION_GRAPH", getFullUnionModel());
 
     return dataset;
   }
@@ -381,9 +318,86 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     }
   }
 
+
+
+  // Exporting to a file
+
+
   @Override
-  public void close() {
-    dataset.close();
+  public void writeModelToFile(Model model, OutputStream output, RDFFormat format) {
+
+    if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
+        format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
+
+      RDFWriter writer;
+      if(format == RDFFormat.RDFXML_ABBREV) {
+        writer = model.getWriter( "RDF/XML-ABBREV" );
+      } else {
+        writer = model.getWriter( "RDF/XML" );
+      }
+      writer.setProperty("xmlbase", getInstanceNamespace() );
+      writer.write(model, output, null);
+
+    } else {
+      Dataset dataset = getDataset();                             // todo: does this make sense?
+      dataset.getNamedModel(instanceNamespace.toString());
+      RDFDataMgr.write(output, model, format);
+    }
+  }
+
+  @Override
+  public String writeModelToString(Model model, RDFFormat format) {
+
+    log.trace("starting to export");
+
+
+    ByteArrayOutputStream boas = new ByteArrayOutputStream();
+
+
+    if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
+        format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
+
+      RDFWriter writer;
+      if(format == RDFFormat.RDFXML_ABBREV) {
+        writer = model.getWriter( "RDF/XML-ABBREV" );
+      } else {
+        writer = model.getWriter( "RDF/XML" );
+      }
+      writer.setProperty("xmlbase", getInstanceNamespace() );
+      writer.write(model, boas, null);
+
+    } else {
+      Dataset dataset = getDataset();                             // todo: does this make sense?
+      dataset.getNamedModel(instanceNamespace.toString());
+      RDFDataMgr.write(boas, model, format);
+    }
+
+
+    String result = "";
+
+    try {
+      BufferedReader reader = new BufferedReader(new StringReader(boas.toString()));
+
+      String line = null;
+      while ((line = reader.readLine()) != null) {
+        result += line+"\n";
+      }
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    }
+
+    return result;
+  }
+
+  @Override
+  public void writeFullToFile(OutputStream output, RDFFormat format) {
+    Dataset dataset = getDataset();
+    RDFDataMgr.write(output, dataset, format);
+  }
+
+  @Override
+  public void writeFullToFile(Dataset dataset, OutputStream output, RDFFormat format) {
+    RDFDataMgr.write(output, dataset, format);
   }
 
 }

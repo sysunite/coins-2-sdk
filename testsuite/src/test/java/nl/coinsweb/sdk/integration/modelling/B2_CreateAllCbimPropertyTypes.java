@@ -3,7 +3,6 @@ package nl.coinsweb.sdk.integration.modelling;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
-import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
@@ -71,7 +70,7 @@ public class B2_CreateAllCbimPropertyTypes {
 
     boolean contains = false;
 
-    CoinsGraphSet graphSet = new JenaCoinsGraphSet("http://empty.com/");
+    JenaCoinsGraphSet graphSet = new JenaCoinsGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
 

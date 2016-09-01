@@ -54,10 +54,10 @@ public class F1_ReadExampleWOA {
       log.debug(viaduct.getDescription());
 
       log.info("instance model");
-      DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
+      DatasetAsserts.logTriples(model.getCoinsGraphSet().getModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
 
       log.info("woa model");
-      DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
+      DatasetAsserts.logTriples(model.getCoinsGraphSet().getModel("http://www.coinsweb.nl/voorbeeld#"));
 
       model.close();
     }
@@ -83,10 +83,10 @@ public class F1_ReadExampleWOA {
     log.debug(viaduct.getDescription());
 
     log.info("instance model");
-    DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getModel("http://www.buildingbits.nl/MBIContainer.rdf#"));
 
     log.info("woa model");
-    DatasetAsserts.logTriples(model.getCoinsGraphSet().getJenaModel("http://www.coinsweb.nl/voorbeeld#"));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getModel("http://www.coinsweb.nl/voorbeeld#"));
 
     model.close();
   }

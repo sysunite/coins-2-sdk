@@ -282,7 +282,7 @@ public class BS {
 
     // Do asserts on objects
     assertEquals("2.12", model.getContainerId());
-    assertNotNull(model.getCoinsGraphSet().getJenaModel("http://custom.library.com#"));
+    assertNotNull(model.getCoinsGraphSet().getModel("http://custom.library.com#"));
 
     RuntimeCoinsObject column = new RuntimeCoinsObject(model, "http://custom.library.com#Column", "http://rws.com/starterkit/2.12#Object_Column_1");
     assertEquals("Column1", column.getLiteralValue("http://www.coinsweb.nl/cbim-2.0.rdf#name", String.class));

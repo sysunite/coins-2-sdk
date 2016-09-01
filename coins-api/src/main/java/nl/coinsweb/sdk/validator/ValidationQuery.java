@@ -132,7 +132,7 @@ public class ValidationQuery {
 
   public String getSparqlQuery() {
 
-    if(resultFormat == null) {
+    if(sparqlQuery == null) {
       throw new RuntimeException("Please set a <SparqlQuery>...</SparqlQuery> before the query can be returned.");
     }
 
@@ -140,11 +140,11 @@ public class ValidationQuery {
       Template template = cfg.getTemplate("sparqlQuery");
 
       Map<String, String> data = new HashMap<>();
-      data.put("INSTANCE_GRAPH", "instance...");
-      data.put("WOA_GRAPH", "woa...");
-      data.put("CORE_GRAPH", "core...");
-      data.put("SCHEMA_UNION_GRAPH", "schema...");
-      data.put("FULL_UNION_GRAPH", "full...");
+      data.put("INSTANCE_GRAPH", "<INSTANCE_GRAPH>");
+      data.put("WOA_GRAPH", "<WOA_GRAPH>");
+      data.put("CORE_GRAPH", "<CORE_GRAPH>");
+      data.put("SCHEMA_UNION_GRAPH", "<SCHEMA_UNION_GRAPH>");
+      data.put("FULL_UNION_GRAPH", "<FULL_UNION_GRAPH>");
 
       Writer writer = new StringWriter();
       template.process(data, writer);
