@@ -45,11 +45,14 @@ public class G1_InitValidator {
 
     JenaValidationExecutor executor = new JenaValidationExecutor();
 
-    Validator validator = new Validator(model, executor, "COINS-2.0-Lite");
+    Validator validator = new Validator(model, executor, "COINS 2.0 Lite");
     Set<String> profiles = validator.listProfiles();
 
-    assertTrue("Profiles should find one profile", profiles.size() == 1);
-    assertTrue("Profiles should find this profile", profiles.contains("COINS-2.0-Lite"));
+
+
+    assertTrue("Profiles should find two profiles", profiles.size() == 2);
+    assertTrue("Profiles should find this profile", profiles.contains("COINS 2.0 Lite"));
+    assertTrue("Profiles should find this profile", profiles.contains("COINS 2.0 Lite EQ"));
     validator.validate(Paths.get("/tmp/"));
 
 

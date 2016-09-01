@@ -27,12 +27,14 @@ package nl.coinsweb.sdk.jena;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.query.QueryException;
+import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.reasoner.ValidityReport;
 import com.hp.hpl.jena.reasoner.rulesys.GenericRuleReasoner;
 import com.hp.hpl.jena.reasoner.rulesys.Rule;
+import com.hp.hpl.jena.update.UpdateAction;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.ValidationExecutor;
@@ -50,6 +52,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 public class JenaValidationExecutor implements ValidationExecutor {
 
   CoinsModel model;
+  JenaCoinsGraphSet graphSet;
   Dataset dataset;
   Profile profile;
 
@@ -60,8 +63,9 @@ public class JenaValidationExecutor implements ValidationExecutor {
   public void execute(CoinsModel model, Profile profile) {
 
     this.model = model;
-    model.getCoinsGraphSet().setOntModelSpec(OntModelSpec.OWL_MEM);
-    this.dataset = model.getCoinsGraphSet().getDatasetWithUnionGraphs(model);
+    this.graphSet = (JenaCoinsGraphSet) model.getCoinsGraphSet();
+    this.graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
+    this.dataset = this.graphSet.getDatasetWithUnionGraphs();
     this.profile = profile;
 
     // See if the model applies to the profile
@@ -128,9 +132,16 @@ public class JenaValidationExecutor implements ValidationExecutor {
 
   public void constructQuery(ValidationQuery validationQuery) {
 
-    Query query = QueryFactory.create(validationQuery.getSparqlQuery());
-    QueryExecution qe = QueryExecutionFactory.create(query, dataset);
-    Model updated = qe.execConstruct();
+    String queryString = validationQuery.getSparqlQuery();
+
+    try {
+      UpdateAction.parseExecute(queryString, dataset) ;
+//      Query query = QueryFactory.create(queryString, Syntax.defaultUpdateSyntax);
+//      QueryExecution qe = QueryExecutionFactory.create(query, dataset);
+//      Model updated = qe.execConstruct();
+    } catch(QueryException e) {
+      throw new RuntimeException("There is a problem with this query: "+queryString, e);
+    }
   }
 
   private ValidityReport jenaReasoning(CoinsModel model) {

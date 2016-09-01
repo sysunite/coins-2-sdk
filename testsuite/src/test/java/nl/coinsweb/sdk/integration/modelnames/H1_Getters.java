@@ -1,15 +1,21 @@
 package nl.coinsweb.sdk.integration.modelnames;
 
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.query.Dataset;
+import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
+import org.apache.jena.riot.RDFFormat;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -28,7 +34,9 @@ public class H1_Getters {
   @Test
   public void modelNames() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsGraphSet graphSet = new JenaCoinsGraphSet("http://playground.com/");
+    graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, true);
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 
 
@@ -62,9 +70,20 @@ public class H1_Getters {
     assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#"));
 
 
+    assertEquals( 199, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(   9, DatasetAsserts.countTriples(model.getCoinsGraphSet().getWoaModel()));
+    assertEquals(1348, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaModel()));
+    assertEquals(7646, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaUnionModel()));
+    assertEquals(7854, DatasetAsserts.countTriples(model.getCoinsGraphSet().getFullUnionModel()));
 
-    DatasetAsserts.logTriples(model.getCoinsGraphSet().getWoaModel());
-    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    Dataset dataset = model.getCoinsGraphSet().getDatasetWithUnionGraphs();
+
+
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    model.getCoinsGraphSet().writeFullToFile(dataset, outputStream, RDFFormat.NQUADS);
+//    System.out.println(outputStream.toString());
+
 
   }
 

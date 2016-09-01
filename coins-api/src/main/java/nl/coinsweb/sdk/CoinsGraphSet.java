@@ -25,7 +25,6 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.reasoner.Reasoner;
@@ -40,15 +39,21 @@ import java.util.Map;
  */
 public interface CoinsGraphSet {
 
-  public void setOntModelSpec(OntModelSpec modelSpec);
-  public Model getEmptyModel();
-  public Dataset getDataset(Namespace instanceNamespace, Model instanceModel,
-                            Namespace woaNamespace, Model woaModel,
-                            Map<Namespace, Model> libraryModels);
-  public Dataset getDatasetWithUnionGraphs(CoinsModel model);
+  Map<Namespace, Model> getLibraryModels();
+  public void reset();
   public void close();
 
 
+
+
+  // Namespaces
+
+  /**
+   * List the names of the models, namespaces of the instance model (the first one) and the libraries.
+   *
+   * @return  iterator of String namespaces
+   */
+  public Iterator<String> listModelNames();
 
   /**
    * Configuration option to specify which namespace will be used for the instance model.
@@ -64,22 +69,16 @@ public interface CoinsGraphSet {
    */
   public String getInstanceNamespace();
   public String getInstanceNamespaceWithoutHash();
-  public String getWoaNamespace();
+
   public void setWoaNamespace(String namespace);
+  public String getWoaNamespace();
 
 
 
 
+  // Models
 
-
-  /**
-   * List the names of the models, namespaces of the instance model (the first one) and the libraries.
-   *
-   * @return  iterator of String namespaces
-   */
-  public Iterator<String> listModelNames();
-
-  Map<Namespace, Model> getLibraryModels();
+  public Model getEmptyModel();
 
   /**
    * If implemented as Jena model, return a Jena Model object containing the instances.
@@ -90,6 +89,18 @@ public interface CoinsGraphSet {
   public Model getInstanceModel();
 
   public Model getWoaModel();
+  public Model getSchemaModel();
+  public Model getSchemaUnionModel();
+
+  /**
+   * If implemented as Jena model, return a Jena Model object containing all data (instance an library).
+   *
+   * For only the instance data, use asJenaOntModel().
+   *
+   * @return  a Jena OntModel containing the union over the instance model and all library models
+   *          null if not implemented
+   */
+  public Model getFullUnionModel();
 
   /**
    * If implemented as Jena model, return a Jena OntModel of the model represented by the namespaces.
@@ -99,7 +110,14 @@ public interface CoinsGraphSet {
    *          null if no model by this name
    *          null if not implemented
    */
-  public Model getJenaModel(String namespace);
+  public Model getModel(String namespace);
+
+
+
+  // OntModels
+
+  public OntModel asOntModel(Model model);
+  public OntModel asOntModel(Model model, Reasoner reasoner);
 
   /**
    * If implemented as Jena model, return a Jena OntModel object containing the instances.
@@ -124,16 +142,6 @@ public interface CoinsGraphSet {
   public OntModel getJenaOntModel(String namespace, Reasoner reasoner);
 
   /**
-   * If implemented as Jena model, return a Jena Model object containing all data (instance an library).
-   *
-   * For only the instance data, use asJenaOntModel().
-   *
-   * @return  a Jena OntModel containing the union over the instance model and all library models
-   *          null if not implemented
-   */
-  public Model getUnionJenaModel();
-
-  /**
    * If implemented as Jena model, return a Jena OntModel object containing all data (instance an library).
    *
    * For only the instance data, use asJenaOntModel().
@@ -144,28 +152,18 @@ public interface CoinsGraphSet {
   public OntModel getUnionJenaOntModel();
   public OntModel getUnionJenaOntModel(Reasoner reasoner);
 
-  public Model getUnionModel();
 
+  // Datasets
 
+  public Dataset getDataset();
 
-
-
-
-
-
-
+  public Dataset getDatasetWithUnionGraphs();
 
   public void writeModelToFile(Model model, OutputStream output, RDFFormat format);
 
   public String writeModelToString(Model model, RDFFormat format);
 
   public void writeFullToFile(OutputStream output, RDFFormat format);
+  public void writeFullToFile(Dataset dataset, OutputStream output, RDFFormat format);
 
-
-
-  public Dataset getDataset();
-  public OntModel asOntModel(Model model);
-  public OntModel asOntModel(Model model, Reasoner reasoner);
-
-  public void reset();
 }
