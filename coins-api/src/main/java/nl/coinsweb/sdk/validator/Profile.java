@@ -93,7 +93,6 @@ public class Profile {
     String description = null;
     String resultFormat = null;
     String sparqlQuery = null;
-    String jenaRule = null;
 
     String line;
 
@@ -132,16 +131,17 @@ public class Profile {
         }
 
         else if(line.startsWith("<JenaRule>")) {
-          jenaRule = "";
-          while( (line = reader.readLine().trim()) != null ) {
-            if(line.endsWith("</JenaRule>")) {
-              break;
-            }
-            if(line.startsWith("#"))  {
-              continue;
-            }
-            jenaRule += line + "\n";
-          }
+          throw new RuntimeException("JenaRule inside profile file not supported");
+//          jenaRule = "";
+//          while( (line = reader.readLine().trim()) != null ) {
+//            if(line.endsWith("</JenaRule>")) {
+//              break;
+//            }
+//            if(line.startsWith("#"))  {
+//              continue;
+//            }
+//            jenaRule += line + "\n";
+//          }
         }
       }
     } catch (IOException e) {
@@ -149,7 +149,7 @@ public class Profile {
       throw new RuntimeException("The profile for a Validation Query file could not be interpreted.");
     }
 
-    return new ValidationQuery(reference, description, resultFormat, sparqlQuery, jenaRule);
+    return new ValidationQuery(reference, description, resultFormat, sparqlQuery);
   }
 
   private String unquote(String in) {

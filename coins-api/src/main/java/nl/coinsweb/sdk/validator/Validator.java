@@ -88,17 +88,17 @@ public class Validator {
       throw new RuntimeException("The profile with name \""+selectedProfile+"\" is not registered.");
     }
     Profile profile = profiles.get(selectedProfile);
-    executor.execute(model, profile);
+    ProfileExecution execution = executor.execute(model, profile);
 
     // Prepare data to transfer to the template
     Map<String, Object> data = new HashMap<>();
-    data.put("filename",         model.getCoinsContainer().getContainerId());
-    data.put("date",             new Date().toString());
-    data.put("validation",       allPassed);
-    data.put("profileChecks",    profile.getProfileChecks());
-    data.put("schemaInferences", profile.getSchemaInferences());
-    data.put("dataInferences",   profile.getDataInferences());
-    data.put("validationRules",  profile.getValidationRules());
+    data.put("filename", model.getCoinsContainer().getContainerId());
+    data.put("date", new Date().toString());
+    data.put("validation", allPassed);
+    data.put("profileChecks", execution.getProfileCheckResults());
+    data.put("schemaInferences", execution.getSchemaInferenceResults());
+    data.put("dataInferences", execution.getDataInferenceResults());
+    data.put("validationRules", execution.getValidationRuleResults());
 
     writeReport(reportLocation, data);
     return allPassed;
