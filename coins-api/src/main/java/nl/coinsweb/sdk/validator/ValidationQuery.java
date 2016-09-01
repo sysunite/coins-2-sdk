@@ -51,14 +51,14 @@ public class ValidationQuery {
   private String description = null;
   private String resultFormat = null;
   private String sparqlQuery = null;
-//  private String jenaRule = null;
+
 
   private Iterator<Map<String,String>> resultSet;
   private boolean passed;
   private String errorMessage;
   private long executionTime;
 
-  public ValidationQuery(String reference, String description, String resultFormat, String sparqlQuery, String jenaRule) {
+  public ValidationQuery(String reference, String description, String resultFormat, String sparqlQuery) {
 
     // Init template
     templateLoader = new StringTemplateLoader();
@@ -70,7 +70,7 @@ public class ValidationQuery {
     this.description = description;
     this.resultFormat = resultFormat;
     this.sparqlQuery = sparqlQuery;
-//    this.jenaRule = jenaRule;
+
 
 
 
@@ -78,31 +78,13 @@ public class ValidationQuery {
       templateLoader.putTemplate("sparqlQuery", sparqlQuery);
     }
 
-//    if(jenaRule != null) {
-//      templateLoader.putTemplate("jenaRule", jenaRule);
-//    }
+
 
     if(resultFormat != null) {
       templateLoader.putTemplate("resultFormat", resultFormat);
     }
-
-    // Check completeness
-    System.out.println(toString());
   }
 
-
-  public void setResults(Iterator<Map<String,String>> resultSet) {
-    this.resultSet = resultSet;
-  }
-  public void setPassed(boolean passed) {
-    this.passed = passed;
-  }
-  public void setErrorMessage(String errorMessage) {
-    this.errorMessage = errorMessage;
-  }
-  public void setExecutionTime(long executionTime) {
-    this.executionTime = executionTime;
-  }
 
 
 
@@ -114,9 +96,6 @@ public class ValidationQuery {
   public boolean hasSparqlQuery() {
     return sparqlQuery != null;
   }
-//  public boolean hasJenaRule() {
-//    return jenaRule != null;
-//  }
 
 
 
@@ -160,23 +139,9 @@ public class ValidationQuery {
     throw new RuntimeException("Something went wrong building query.");
   }
 
-//  public String getJenaRule() {
-//    return jenaRule;
-//  }
 
-  public boolean getPassed() {
-    return passed;
-  }
-  public String getErrorMessage() {
-    return errorMessage;
-  }
-  public long getExecutionTime() {
-    return executionTime;
-  }
 
-  public String toString() {
-    return getReference();
-  }
+
 
   public List<String> getFormattedResults() {
 

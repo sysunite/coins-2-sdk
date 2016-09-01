@@ -32,5 +32,5 @@ import nl.coinsweb.sdk.CoinsModel;
  */
 public interface ValidationExecutor {
 
-  public void execute(CoinsModel model, Profile profile);
+  public ProfileExecution execute(CoinsModel model, Profile profile);
 }
