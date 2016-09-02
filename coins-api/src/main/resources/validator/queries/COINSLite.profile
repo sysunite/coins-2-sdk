@@ -1,7 +1,6 @@
 ProfileName COINS 2.0 Lite
 ProfileAuthor Hans
 
-
 <ProfileCheck>
 Reference COINS 2.0 Lite
 Description "COINS 2.0 Lite profile check on predicate (subject predicate object) usage "
@@ -12,10 +11,10 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
- select distinct ?a ?b ?c 
+ select distinct ?a ?b ?c
  WHERE {Graph ${SCHEMA_UNION_GRAPH} {
-    ?a ?b ?c 
-filter (STRSTARTS(STR(?b),"http://www.w3.org/2002/07/owl#")). 
+    ?a ?b ?c
+filter (STRSTARTS(STR(?b),"http://www.w3.org/2002/07/owl#")).
 filter (?b not in (owl:allValuesFrom,owl:cardinality,owl:disjointWith,owl:distinctMembers,owl:hasValue,owl:imports,owl:intersectionOf,owl:inverseOf,owl:maxCardinality,owl:maxQualifiedCardinality,owl:members,owl:minCardinality,owl:minQualifiedCardinality,owl:onClass,owl:oneOf,owl:onProperty,owl:qualifiedCardinality,owl:someValuesFrom,owl:unionOf,owl:equivalentClass,owl:annotatedProperty,owl:annotatedSource,owl:annotatedTarget,owl:backwardCompatibleWith,owl:deprecated,owl:incompatibleWith,owl:priorVersion,owl:versionInfo,owl:versionIRI))}}
 </SparqlQuery>
 
@@ -1045,6 +1044,28 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 Graph ${FULL_UNION_GRAPH}{
    ?x a ?c1 .   ?x a ?c2 .
+}
+
+}
+</SparqlQuery>
+
+</ValidationRule>
+
+<ValidationRule>
+
+Reference everything
+Description Just everything
+ResultFormat The subject ${a} has predicate ${b} to object ${c} in graph ${g}
+<SparqlQuery>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+ select distinct ?a ?b ?c ?g
+
+ WHERE {Graph ?g{
+ ?a ?b ?c
 }
 
 }

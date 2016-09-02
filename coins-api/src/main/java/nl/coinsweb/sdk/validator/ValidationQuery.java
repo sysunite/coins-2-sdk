@@ -26,6 +26,7 @@ package nl.coinsweb.sdk.validator;
 
 
 import freemarker.cache.StringTemplateLoader;
+import freemarker.core.InvalidReferenceException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -35,7 +36,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -143,34 +146,28 @@ public class ValidationQuery {
 
 
 
-  public List<String> getFormattedResults() {
+  public String formatResult(Map<String, String> data) {
 
     if(resultFormat == null) {
       throw new RuntimeException("Please set a ResultFormat before the results can be returned in a formatted form.");
     }
 
-    if(resultSet == null) {
-      throw new RuntimeException("Please first execute this ValidationQuery");
-    }
-
-    ArrayList<String> results = new ArrayList<>();
     try {
 
       Template template = cfg.getTemplate("resultFormat");
 
-      while(resultSet.hasNext()) {
-        Map<String,String> data = resultSet.next();
-        Writer writer = new StringWriter();
-        template.process(data, writer);
-        results.add(writer.toString());
-      }
+      Writer writer = new StringWriter();
+      template.process(data, writer);
+      return writer.toString();
 
     } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    } catch (InvalidReferenceException e) {
       log.error(e.getMessage(), e);
     } catch (TemplateException e) {
       log.error(e.getMessage(), e);
     }
-    return results;
+    throw new RuntimeException("Something went wrong formatting a result.");
   }
 
 }

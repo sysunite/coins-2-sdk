@@ -219,11 +219,11 @@ public class WOAInjector implements Injector {
 
 
     if(!hasClearance(subject, READ_ACCESS)) {
-      log.trace("Received 🛂 propose read, deny.");
+      log.trace("Received \uD83D\uDEC2 propose read, deny.");
       throw new WOAAccessDeniedException("WOA restriction blocked operation.");
     }
 
-    log.trace("Received 🛂 propose read, grant." );
+    log.trace("Received \uD83D\uDEC2 propose read, grant." );
     return true;
   }
 
@@ -231,11 +231,11 @@ public class WOAInjector implements Injector {
   public boolean proposeRead(CoinsModel model, String subject, String predicate) {
 
     if(!hasClearance(subject, READ_ACCESS)) {
-      log.trace("Received 🛂 propose read, deny.");
+      log.trace("Received \uD83D\uDEC2 propose read, deny.");
       throw new WOAAccessDeniedException("WOA restriction blocked operation.");
     }
 
-    log.trace("Received 🛂 propose read, grant." );
+    log.trace("Received \uD83D\uDEC2 propose read, grant." );
     return true;
   }
 
@@ -243,11 +243,11 @@ public class WOAInjector implements Injector {
   public boolean proposeWrite(CoinsModel model, String subject, String predicate, String object) {
 
     if(!hasClearance(subject, WRITE_ACCESS)) {
-      log.trace("Received 🛂 propose write, deny.");
+      log.trace("Received \uD83D\uDEC2 propose write, deny.");
       throw new WOAAccessDeniedException("WOA restriction blocked operation.");
     }
 
-    log.trace("Received 🛂 propose write, grant." );
+    log.trace("Received \uD83D\uDEC2 propose write, grant." );
     return true;
   }
 

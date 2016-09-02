@@ -38,6 +38,9 @@ public class ProfileExecution {
 
   private static final Logger log = LoggerFactory.getLogger(ProfileExecution.class);
 
+  private boolean profileChecksPassed = false;
+  private boolean validationPassed = false;
+
 
   private List<ValidationQueryResult> profileChecks = new ArrayList<>();
   private List<ValidationQueryResult> schemaInferences = new ArrayList<>();
@@ -48,7 +51,18 @@ public class ProfileExecution {
 
   }
 
-
+  public void setProfileChecksPassed(boolean passed) {
+    profileChecksPassed = passed;
+  }
+  public boolean profileChecksPassed() {
+    return profileChecksPassed;
+  }
+  public void setValidationPassed(boolean passed) {
+    validationPassed = passed;
+  }
+  public boolean validationPassed() {
+    return validationPassed;
+  }
 
   public void addProfileCheckResult(ValidationQueryResult queryResult) {
     profileChecks.add(queryResult);

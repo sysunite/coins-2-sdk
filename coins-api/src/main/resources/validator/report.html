@@ -25,7 +25,8 @@ Variables posted to this report page
 
 String                      : filename
 String                      : date
-boolean                     : validation
+boolean                     : profileChecksPassed
+boolean                     : validationPassed
 List<ValidationQueryResult> : profileChecks
 List<ValidationQueryResult> : schemaInferences
 List<ValidationQueryResult> : dataInferences
@@ -37,7 +38,7 @@ List<ValidationQueryResult> : validationRules
   <tr><th>name</th><td>${filename}</td><tr>
   <tr><th>date</th><td>${date}</td><tr>
   <tr><th>content</th><td>x files</td><tr>
-  <tr><th>validation</th><td><#if validation>PASSED<#else>FAILED</#if></td><tr>
+  <tr><th>validation</th><td><#if profileChecksPassed><#if validationPassed>PASSED<#else>FAILED</#if><#else>NOT MEETING PROFILE REQUIREMENTS</#if></td><tr>
 </table>
 
 <h3>Querying results</h3>
@@ -45,16 +46,31 @@ List<ValidationQueryResult> : validationRules
 <h4>Summary</h4>
 
 <table>
-  <tr><th></th><th>name</th><th>error</th><tr>
+  <tr><th></th><th>name</th><th>description</th><th>error</th><tr>
 <#list validationRules as query>
-  <tr><td><#if query.passed>✅<#else>❗</#if></td><td>${query.reference}</td><td><pre><#if query.errorMessage??>${query.errorMessage}</#if></pre></td><tr>
+  <tr>
+    <td><#if query.passed>✅<#else>❗</#if></td>
+    <td>${query.reference}</td>
+    <td>${query.description}</td>
+    <td><pre><#if query.errorMessage??>${query.errorMessage}</#if></pre></td>
+  <tr>
 </#list>
 </table>
 
 <h4>Details</h4>
 
-<table>
-</table>
+<#list validationRules as query>
+  <h4>${query.reference}</h4>
+  <p>${query.description}</p>
+  <#if query.passed>✅<#else>❗</#if>
+  <table>
+    <#list query.formattedResults as row>
+      <tr>
+        <td>${row}</td>
+      </tr>
+    </#list>
+  </table>
+</#list>
 
 </body>
 

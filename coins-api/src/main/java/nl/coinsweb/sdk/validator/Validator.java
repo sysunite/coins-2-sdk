@@ -82,8 +82,6 @@ public class Validator {
    */
   public boolean validate(Path reportLocation) {
 
-    boolean allPassed = true;
-
     if(!profiles.containsKey(selectedProfile)) {
       throw new RuntimeException("The profile with name \""+selectedProfile+"\" is not registered.");
     }
@@ -94,18 +92,16 @@ public class Validator {
     Map<String, Object> data = new HashMap<>();
     data.put("filename", model.getCoinsContainer().getContainerId());
     data.put("date", new Date().toString());
-    data.put("validation", allPassed);
+    data.put("profileChecksPassed", execution.profileChecksPassed());
+    data.put("validationPassed", execution.validationPassed());
     data.put("profileChecks", execution.getProfileCheckResults());
     data.put("schemaInferences", execution.getSchemaInferenceResults());
     data.put("dataInferences", execution.getDataInferenceResults());
     data.put("validationRules", execution.getValidationRuleResults());
 
     writeReport(reportLocation, data);
-    return allPassed;
+    return execution.profileChecksPassed() && execution.validationPassed();
   }
-
-
-
 
   private void writeReport(Path reportLocation, Map<String, Object> data) {
 
@@ -132,10 +128,7 @@ public class Validator {
 
   }
 
-
-
   private class ResourceScanner {
-
 
     private HashMap<String, Profile> getProfileFiles(String path) {
       HashMap<String, Profile> files = new HashMap<>();

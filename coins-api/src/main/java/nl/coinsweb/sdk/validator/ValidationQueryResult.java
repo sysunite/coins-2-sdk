@@ -63,6 +63,7 @@ public class ValidationQueryResult {
     this.description = description;
     this.sparqlQuery = sparqlQuery;
     this.resultSet = resultSet;
+    this.formattedResults = formattedResults;
     this.passed = passed;
     this.errorMessage = errorMessage;
     this.executionTime = executionTime;
