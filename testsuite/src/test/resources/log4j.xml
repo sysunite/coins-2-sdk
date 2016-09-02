@@ -23,7 +23,7 @@
     <level value="INFO"/>
   </logger>
 
-  <logger name="freemarker.template">
+  <logger name="freemarker">
     <level value="WARN"/>
   </logger>
 

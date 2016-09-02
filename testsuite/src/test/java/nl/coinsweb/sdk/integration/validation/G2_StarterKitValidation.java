@@ -4,7 +4,6 @@ import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
-import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaValidationExecutor;
 import nl.coinsweb.sdk.validator.Validator;
@@ -22,8 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,8 +33,7 @@ public class G2_StarterKitValidation {
 
   protected static final Logger log = LoggerFactory.getLogger(G2_StarterKitValidation.class);
 
-  private Set<String> emptyZipContent;
-  private Set<String> rdfZipContent;
+
 
   CoinsParty defaultPerson;
 
@@ -46,19 +42,7 @@ public class G2_StarterKitValidation {
 
     defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
 
-    emptyZipContent = new HashSet<>();
-    emptyZipContent.add("bim/");
-    emptyZipContent.add("bim/content.rdf");
-    emptyZipContent.add("bim/repository/cbim-2.0.rdf");
-    emptyZipContent.add("bim/repository/units-2.0.rdf");
-    emptyZipContent.add("bim/repository/COINSWOA.rdf");
-    emptyZipContent.add("bim/repository/BranchVersioning.rdf");
-    emptyZipContent.add("doc/");
-    emptyZipContent.add("woa/woa.rdf");
 
-    rdfZipContent = new HashSet<>();
-    rdfZipContent.add("bim/repository/cbim-2.0.rdf");
-    rdfZipContent.add("woa/woa.rdf");
   }
 
   @AfterClass
@@ -68,7 +52,7 @@ public class G2_StarterKitValidation {
 
 
   @Test
-  public void readRdfFile() {
+  public void readRdfFile_4_01() {
 
     JenaCoinsContainer model;
     try {
@@ -86,33 +70,20 @@ public class G2_StarterKitValidation {
     ArrayList<File> verifyFiles = new ArrayList<>();
     verifyFiles.add(IntegrationHelper.getResourceFile("BS", "verification/" + "4.01" + ".nq"));
     verifyFiles.add(IntegrationHelper.getResourceFile("BS", "verification/cbim-2.0.nq"));
-
-    rdfZipContent.add("bim/"+"4.01"+".rdf");
-    rdfZipContent.add("bim/repository/"+"4.01"+"-lib.rdf");
-
-    // Create the container
-    assertEquals(model.getAttachments().size(), 0);
-    model.export(Paths.get("/tmp/coinstest/starterskit" + "4.01" + "_inmem.ccr").toFile().toString());
     assertTrue(DatasetAsserts.verifyCompleteContent(model, verifyFiles.iterator()));
-    model.close();
-    assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/starterskit" + "4.01" + "_inmem.ccr"), rdfZipContent, false));
 
-    rdfZipContent.remove("bim/"+"4.01"+".rdf");
-    rdfZipContent.remove("bim/repository/"+"4.01"+"-lib.rdf");
-
-    // Reopen the ccr
-    JenaCoinsContainer reopenend = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+"4.01"+"_inmem.ccr", "http://www.example.com/");
-
-    assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
-
-    // Do asserts on objects
     assertEquals("4.01", model.getContainerId());
 
+
+
+
+
+
     JenaValidationExecutor executor = new JenaValidationExecutor();
-
     Validator validator = new Validator(model, executor, "COINS 2.0 Lite");
-
     validator.validate(Paths.get("/tmp/"));
+
+
 
 
     String reportHtml;

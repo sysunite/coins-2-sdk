@@ -26,17 +26,15 @@ package nl.coinsweb.sdk.jena;
 
 
 import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.query.QueryException;
-import com.hp.hpl.jena.query.QueryParseException;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.update.UpdateAction;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.validator.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
@@ -44,6 +42,8 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
  * @author Bastiaan Bijl
  */
 public class JenaValidationExecutor implements ValidationExecutor {
+
+  private static final Logger log = LoggerFactory.getLogger(JenaValidationExecutor.class);
 
   CoinsModel model;
   JenaCoinsGraphSet graphSet;
@@ -64,11 +64,19 @@ public class JenaValidationExecutor implements ValidationExecutor {
     this.dataset = this.graphSet.getDatasetWithUnionGraphs();
     this.profile = profile;
 
+
+    log.trace("\uD83D\uDC1A Will perform profile checks." );
     if(!profileCheck(resultCollection)) {
-      throw new RuntimeException("The content of the Coins container does not meet the requirements for this profile: " + profile.getName());
+      return resultCollection;
     }
-    addSchemaInferences(resultCollection);
-    addDataInferences(resultCollection);
+
+//    log.trace("\uD83D\uDC1A Will add schema inferences." );
+//    addSchemaInferences(resultCollection);
+
+//    log.trace("\uD83D\uDC1A Will add data inferences.");
+//    addDataInferences(resultCollection);
+
+    log.trace("\uD83D\uDC1A Will perform validation checks.");
     performValidation(resultCollection);
 
     return resultCollection;
@@ -89,6 +97,7 @@ public class JenaValidationExecutor implements ValidationExecutor {
       }
     }
 
+    resultCollection.setProfileChecksPassed(allChecksPassed);
     return allChecksPassed;
   }
 
@@ -96,7 +105,7 @@ public class JenaValidationExecutor implements ValidationExecutor {
     for(ValidationQuery query : profile.getSchemaInferences()) {
       if(query.hasSparqlQuery()) {
 
-        resultCollection.addProfileCheckResult(constructQuery(query));
+        resultCollection.addSchemaInferenceResult(constructQuery(query));
       }
     }
   }
@@ -105,7 +114,7 @@ public class JenaValidationExecutor implements ValidationExecutor {
     for(ValidationQuery query : profile.getDataInferences()) {
       if(query.hasSparqlQuery()) {
 
-        resultCollection.addProfileCheckResult(constructQuery(query));
+        resultCollection.addDataInferenceResult(constructQuery(query));
       }
     }
 
@@ -119,9 +128,10 @@ public class JenaValidationExecutor implements ValidationExecutor {
         ValidationQueryResult result = selectQuery(query);
         allPassed &= result.getPassed();
 
-        resultCollection.addProfileCheckResult(result);
+        resultCollection.addValidationRuleResult(result);
       }
     }
+    resultCollection.setValidationPassed(allPassed);
     return allPassed;
   }
 
@@ -146,28 +156,89 @@ public class JenaValidationExecutor implements ValidationExecutor {
     long executionTime = new Date().getTime() - start;
     return new ValidationQueryResult(query.getReference(), query.getDescription(), queryString, resultSet, formattedResults, passed, errorMessage, executionTime);
   }
-  public ValidationQueryResult selectQuery(ValidationQuery query) {
+
+
+  public ValidationQueryResult selectQuery(ValidationQuery validationQuery) {
 
     String errorMessage = null;
     boolean passed;
     long start = new Date().getTime();
-    String queryString = query.getSparqlQuery();
+    String queryString = validationQuery.getSparqlQuery();
     Iterator<Map<String, String>> resultSet = null;
     ArrayList<String> formattedResults = new ArrayList<>();
 
     try {
 
-      resultSet = model.query(queryString);
-      passed = !resultSet.hasNext();
+      log.trace("Will execute this query: ");
+      log.trace(queryString);
+
+      List<Map<String, String>> result = new ArrayList<>();
+
+      Query query = QueryFactory.create(queryString);
+
+      // Execute the query and obtain results
+      QueryExecution qe = QueryExecutionFactory.create(query, dataset);
+      ResultSet results = qe.execSelect();
+
+      passed = !results.hasNext();
+
+      // Output query results
+      while (results.hasNext()) {
+
+        HashMap<String, String> resultRow = new HashMap();
+
+        QuerySolution row = results.next();
+
+        Iterator columnNames = row.varNames();
+        while(columnNames.hasNext()) {
+          String columnName = (String) columnNames.next();
+          RDFNode item = row.get(columnName);
+          if(item.isAnon()) {
+            resultRow.put(columnName, "BLANK");
+          }
+          if(item.isResource()) {
+            String value = item.asResource().getURI();
+            if(value == null) {
+              value = "NULL";
+            }
+            resultRow.put(columnName, value);
+          } else if(item.isLiteral()) {
+            String value = item.asLiteral().getLexicalForm();
+            if(value == null) {
+              value = "NULL";
+            }
+            resultRow.put(columnName, value);
+          } else {
+            resultRow.put(columnName, "NOT INTERPRETED");
+            log.warn("Skipping a result from the query.");
+          }
+        }
+
+        formattedResults.add(validationQuery.formatResult(resultRow));
+
+        result.add(resultRow);
+      }
+
+      resultSet = result.iterator();
+
+      // Important - free up resources used running the query
+      qe.close();
+
+      if(passed) {
+        log.trace("query found no results, passed");
+      } else {
+        log.trace("! results where found, not passing");
+
+      }
 
     } catch (QueryParseException e) {
 
       errorMessage = "Problem executing query: ";
-      errorMessage += escapeHtml4("\n" + query + "\n" + e.getMessage());
+      errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
       passed = false;
     }
 
     long executionTime = new Date().getTime() - start;
-    return new ValidationQueryResult(query.getReference(), query.getDescription(), queryString, resultSet, formattedResults, passed, errorMessage, executionTime);
+    return new ValidationQueryResult(validationQuery.getReference(), validationQuery.getDescription(), queryString, resultSet, formattedResults, passed, errorMessage, executionTime);
   }
 }

@@ -1822,7 +1822,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       // Acquire an uri to a local file or online resolvable uri
       URI importUri = FileManager.getLibrary(this, internalRef, namespace.toURI());
       if(importUri == null) {
-        log.info("❎ Unfortunately not found for internalRef " + internalRef + " and " + namespace.toString());
+        log.info("\u274E Unfortunately not found for internalRef " + internalRef + " and " + namespace.toString());
         return;
       }
 
@@ -1830,8 +1830,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       Model libraryModel = graphSet.getEmptyModel();
       libraryModel.read(importUri.toString());
       graphSet.getLibraryModels().put(namespace, libraryModel);
-      log.info("✅ Adding model with name " + namespace.toString());
-
+      log.info("\u2705 Adding model with name " + namespace.toString());
 
       // Recursively add everything this import depended on
       addNamedModelForImports(libraryModel);

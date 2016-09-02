@@ -1,13 +1,5 @@
 package nl.coinsweb.sdk.integration.validation;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.reasoner.Derivation;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.reasoner.ValidityReport;
-import com.hp.hpl.jena.reasoner.rulesys.GenericRuleReasoner;
-import com.hp.hpl.jena.reasoner.rulesys.Rule;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.JenaValidationExecutor;
@@ -19,11 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
@@ -68,35 +58,7 @@ public class G1_InitValidator {
 
   }
 
-  @Test
-  public void jenaValidator() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
-
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
-
-    String rules = "[rule1: (?a eg:p ?b) (?b eg:p ?c) -> (?a eg:p ?c)]";
-    Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
-    reasoner.setDerivationLogging(true);
-
-
-    OntModel instanceModel = model.getCoinsGraphSet().getJenaOntModel(model.getCoinsGraphSet().getInstanceNamespace(), reasoner);
-    ValidityReport report = instanceModel.validate();
-    System.out.println(report.isValid());
-    System.out.println(report.isClean());
-    System.out.println(report);
-
-    PrintWriter out = new PrintWriter(System.out);
-    for (StmtIterator i = instanceModel.listStatements(); i.hasNext(); ) {
-      Statement s = i.nextStatement();
-      System.out.println("Statement is " + s);
-      for (Iterator id = instanceModel.getDerivation(s); id.hasNext(); ) {
-        Derivation deriv = (Derivation) id.next();
-        deriv.printTrace(out, true);
-      }
-    }
-    out.flush();
-  }
 
 
 }
