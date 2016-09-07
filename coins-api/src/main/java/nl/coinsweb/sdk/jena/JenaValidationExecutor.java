@@ -29,6 +29,7 @@ import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.update.UpdateAction;
+import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.validator.*;
 import org.slf4j.Logger;
@@ -70,11 +71,11 @@ public class JenaValidationExecutor implements ValidationExecutor {
       return resultCollection;
     }
 
-//    log.trace("\uD83D\uDC1A Will add schema inferences." );
-//    addSchemaInferences(resultCollection);
+    log.trace("\uD83D\uDC1A Will add schema inferences." );
+    addSchemaInferences(resultCollection);
 
-//    log.trace("\uD83D\uDC1A Will add data inferences.");
-//    addDataInferences(resultCollection);
+    log.trace("\uD83D\uDC1A Will add data inferences.");
+    addDataInferences(resultCollection);
 
     log.trace("\uD83D\uDC1A Will perform validation checks.");
     performValidation(resultCollection);
@@ -102,7 +103,7 @@ public class JenaValidationExecutor implements ValidationExecutor {
   }
 
   private void addSchemaInferences(ProfileExecution resultCollection) {
-    for(ValidationQuery query : profile.getSchemaInferences()) {
+    for(InferenceQuery query : profile.getSchemaInferences()) {
       if(query.hasSparqlQuery()) {
 
         resultCollection.addSchemaInferenceResult(constructQuery(query));
@@ -111,7 +112,7 @@ public class JenaValidationExecutor implements ValidationExecutor {
   }
 
   private void addDataInferences(ProfileExecution resultCollection) {
-    for(ValidationQuery query : profile.getDataInferences()) {
+    for(InferenceQuery query : profile.getDataInferences()) {
       if(query.hasSparqlQuery()) {
 
         resultCollection.addDataInferenceResult(constructQuery(query));
@@ -138,23 +139,27 @@ public class JenaValidationExecutor implements ValidationExecutor {
 
 
 
-  public ValidationQueryResult constructQuery(ValidationQuery query) {
+  public InferenceQueryResult constructQuery(InferenceQuery query) {
 
     String errorMessage = null;
-    boolean passed = true;
     long start = new Date().getTime();
     String queryString = query.getSparqlQuery();
-    Iterator<Map<String, String>> resultSet = null;
-    ArrayList<String> formattedResults = new ArrayList<>();
+    Map<String, Long> numTriplesBefore = graphSet.numTriples(dataset);
+
+//    log.info("will perform insert query:");
+//    log.info(queryString);
 
     try {
-      UpdateAction.parseExecute(queryString, dataset);
+      UpdateRequest request = new UpdateRequest();
+      request.add(queryString);
+      UpdateAction.execute(request, dataset);
     } catch(QueryException e) {
       throw new RuntimeException("There is a problem with this query: "+queryString, e);
     }
 
     long executionTime = new Date().getTime() - start;
-    return new ValidationQueryResult(query.getReference(), query.getDescription(), queryString, resultSet, formattedResults, passed, errorMessage, executionTime);
+    Map<String, Long> numTriplesAfter = graphSet.numTriples(dataset, numTriplesBefore);
+    return new InferenceQueryResult(query.getReference(), query.getDescription(), queryString, numTriplesAfter, errorMessage, executionTime);
   }
 
 

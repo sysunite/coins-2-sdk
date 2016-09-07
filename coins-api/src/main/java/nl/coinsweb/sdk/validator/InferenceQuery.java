@@ -26,7 +26,6 @@ package nl.coinsweb.sdk.validator;
 
 
 import freemarker.cache.StringTemplateLoader;
-import freemarker.core.InvalidReferenceException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -43,21 +42,19 @@ import java.util.Map;
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
-public class ValidationQuery {
+public class InferenceQuery {
 
-  private static final Logger log = LoggerFactory.getLogger(ValidationQuery.class);
+  private static final Logger log = LoggerFactory.getLogger(InferenceQuery.class);
 
   private StringTemplateLoader templateLoader;
   private Configuration cfg;
 
   private String reference = null;
   private String description = null;
-  private String resultFormat = null;
   private String sparqlQuery = null;
 
 
-
-  public ValidationQuery(String reference, String description, String resultFormat, String sparqlQuery) {
+  public InferenceQuery(String reference, String description, String sparqlQuery) {
 
     // Init template
     templateLoader = new StringTemplateLoader();
@@ -67,7 +64,6 @@ public class ValidationQuery {
     // Set passed attributes
     this.reference = reference;
     this.description = description;
-    this.resultFormat = resultFormat;
     this.sparqlQuery = sparqlQuery;
 
 
@@ -79,9 +75,6 @@ public class ValidationQuery {
 
 
 
-    if(resultFormat != null) {
-      templateLoader.putTemplate("resultFormat", resultFormat);
-    }
   }
 
 
@@ -142,29 +135,5 @@ public class ValidationQuery {
 
 
 
-
-  public String formatResult(Map<String, String> data) {
-
-    if(resultFormat == null) {
-      throw new RuntimeException("Please set a ResultFormat before the results can be returned in a formatted form.");
-    }
-
-    try {
-
-      Template template = cfg.getTemplate("resultFormat");
-
-      Writer writer = new StringWriter();
-      template.process(data, writer);
-      return writer.toString();
-
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    } catch (InvalidReferenceException e) {
-      log.error(e.getMessage(), e);
-    } catch (TemplateException e) {
-      log.error(e.getMessage(), e);
-    }
-    throw new RuntimeException("Something went wrong formatting a result.");
-  }
 
 }

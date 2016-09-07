@@ -97,6 +97,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   private ArrayList<Injector> injectors;
 
   private String containerId;
+  private String fileName;
 
 
 
@@ -124,6 +125,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels) {
 
+
+    this.fileName = null;
 
     this.party = party;
     this.party.setModel(this);
@@ -192,6 +195,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public JenaCoinsContainer(CoinsParty party, String filePath, String namespace) {
 
 
+    this.fileName = null;
+
     this.party = party;
     this.party.setModel(this);
 
@@ -227,6 +232,11 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
 
   @Override
+  public String getFileName() {
+    return fileName;
+  }
+
+  @Override
   public void load(String sourceFile) {
 
     // Start with a clean sheet
@@ -240,6 +250,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     // See what file type it is
     if(file.getName().endsWith(".ccr") || file.getName().endsWith(".zip")) {
+
+      this.fileName = file.getName();
 
       log.info("Reset current config");
 

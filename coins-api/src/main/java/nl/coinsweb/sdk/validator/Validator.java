@@ -90,7 +90,7 @@ public class Validator {
 
     // Prepare data to transfer to the template
     Map<String, Object> data = new HashMap<>();
-    data.put("filename", model.getCoinsContainer().getContainerId());
+    data.put("filename", model.getCoinsContainer().getFileName());
     data.put("date", new Date().toString());
     data.put("profileChecksPassed", execution.profileChecksPassed());
     data.put("validationPassed", execution.validationPassed());

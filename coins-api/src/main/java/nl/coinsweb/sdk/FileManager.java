@@ -243,14 +243,14 @@ public class FileManager {
         // If the first folder is a somename/bim/file.ref skip it
         Path filePath = Paths.get(fileName);
         Path pathPath = filePath.getParent();
+        String pathPathString = pathPath.toString().toLowerCase();
 
-        if(pathPath.endsWith("bim") ||
-           pathPath.endsWith("bim/repository") ||
-           pathPath.endsWith("doc") ||
-           pathPath.endsWith("woa")) {
+        if(pathPathString.endsWith("bim") ||
+           pathPathString.endsWith("bim/repository") ||
+           pathPathString.endsWith("doc") ||
+           pathPathString.endsWith("woa")) {
 
-
-          Path pathRoot = pathPath.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
+          Path pathRoot = pathPathString.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
 
           String prefix = "";
           if (pathRoot != null) {
@@ -266,6 +266,7 @@ public class FileManager {
           }
         } else {
           log.debug("Skipping file: "+filePath.toString());
+          ze = zis.getNextEntry();
           continue;
         }
 

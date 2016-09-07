@@ -44,7 +44,7 @@ public class RunValidate {
     JenaCoinsContainer container = new JenaCoinsContainer(options.getInputOptions().get(0).toString(), "http://www.example.com/");
     JenaValidationExecutor executor = new JenaValidationExecutor();
 
-    Validator validator = new Validator(container, executor, "COINS-2.0-Lite");
+    Validator validator = new Validator(container, executor, "COINS 2.0 Lite");
     validator.validate(path);
   }
 }

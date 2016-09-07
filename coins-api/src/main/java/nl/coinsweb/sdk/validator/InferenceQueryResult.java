@@ -28,45 +28,37 @@ package nl.coinsweb.sdk.validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
-public class ValidationQueryResult {
+public class InferenceQueryResult {
 
-  private static final Logger log = LoggerFactory.getLogger(ValidationQueryResult.class);
+  private static final Logger log = LoggerFactory.getLogger(InferenceQueryResult.class);
 
 
   private String id;
   private String reference;
   private String description;
   private String sparqlQuery;
-  private Iterator<Map<String,String>> resultSet;
-  private List<String> formattedResults;
-  private boolean passed;
+  private Map<String, Long> triplesAdded;
   private String errorMessage;
   private long executionTime;
 
-  public ValidationQueryResult(String reference,
-                               String description,
-                               String sparqlQuery,
-                               Iterator<Map<String,String>> resultSet,
-                               List<String> formattedResults,
-                               boolean passed,
-                               String errorMessage,
-                               long executionTime) {
+  public InferenceQueryResult(String reference,
+                              String description,
+                              String sparqlQuery,
+                              Map<String, Long> triplesAdded,
+                              String errorMessage,
+                              long executionTime) {
 
     // Set passed attributes
     this.id = Long.toHexString(Double.doubleToLongBits(Math.random()));
     this.reference = reference;
     this.description = description;
     this.sparqlQuery = sparqlQuery;
-    this.resultSet = resultSet;
-    this.formattedResults = formattedResults;
-    this.passed = passed;
+    this.triplesAdded = triplesAdded;
     this.errorMessage = errorMessage;
     this.executionTime = executionTime;
   }
@@ -84,14 +76,8 @@ public class ValidationQueryResult {
   public String getSparqlQuery() {
     return sparqlQuery;
   }
-  public Iterator<Map<String,String>> getResultSet() {
-    return resultSet;
-  }
-  public List<String> getFormattedResults() {
-    return formattedResults;
-  }
-  public boolean getPassed() {
-    return passed;
+  public Map<String, Long> getTriplesAdded() {
+    return triplesAdded;
   }
   public String getErrorMessage() {
     return errorMessage;

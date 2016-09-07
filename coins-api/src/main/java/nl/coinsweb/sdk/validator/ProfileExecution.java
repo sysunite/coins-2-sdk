@@ -43,8 +43,8 @@ public class ProfileExecution {
 
 
   private List<ValidationQueryResult> profileChecks = new ArrayList<>();
-  private List<ValidationQueryResult> schemaInferences = new ArrayList<>();
-  private List<ValidationQueryResult> dataInferences = new ArrayList<>();
+  private List<InferenceQueryResult> schemaInferences = new ArrayList<>();
+  private List<InferenceQueryResult> dataInferences = new ArrayList<>();
   private List<ValidationQueryResult> validationRules = new ArrayList<>();
 
   public ProfileExecution() {
@@ -71,17 +71,17 @@ public class ProfileExecution {
     return profileChecks;
   }
 
-  public void addSchemaInferenceResult(ValidationQueryResult queryResult) {
+  public void addSchemaInferenceResult(InferenceQueryResult queryResult) {
     schemaInferences.add(queryResult);
   }
-  public List<ValidationQueryResult> getSchemaInferenceResults() {
+  public List<InferenceQueryResult> getSchemaInferenceResults() {
     return schemaInferences;
   }
 
-  public void addDataInferenceResult(ValidationQueryResult queryResult) {
+  public void addDataInferenceResult(InferenceQueryResult queryResult) {
     dataInferences.add(queryResult);
   }
-  public List<ValidationQueryResult> getDataInferenceResults() {
+  public List<InferenceQueryResult> getDataInferenceResults() {
     return dataInferences;
   }
 

@@ -497,7 +497,7 @@ Graph ${SCHEMA_UNION_GRAPH}{
 
 Reference COINS-minCar
 Description minimal cardinality constraint validation
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${min} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -529,7 +529,7 @@ filter(?aantal<?min)
 
 Reference COINS-CAREX
 Description Exactly cardinality validatie
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${min} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -561,7 +561,7 @@ filter((?aantal<?min) || (?aantal>?min) )
 
 Reference COINS-maxCar
 Description maximum cardinality constraint validation
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${class} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -593,7 +593,7 @@ filter(?aantal>?min)
 
 Reference COINS-QCREx
 Description Exactly Qualitative Cardinality restriction validatie
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${min} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -625,7 +625,7 @@ filter((?aantal<?min) || (?aantal>?min) )
 
 Reference COINS-QCRMax
 Description Maximum Qualitative Cardinality restriction validatie
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${class} | ${min} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -657,7 +657,7 @@ Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-QCRMin
 Description Minimal Qualitative Cardinality restriction validatie
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${min} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -689,7 +689,7 @@ filter((?aantal<?min) )
 
 Reference COINS-FUP
 Description functional property as a restriction validation
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${this} | ${aantal} | ${property} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -721,7 +721,7 @@ filter(?aantal>1)
 
 Reference COINS-DTVC
 Description Datatype check
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${prop} | ${range} | ${dat} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -747,7 +747,7 @@ filter (Datatype(?value) !=?range)
 
 Reference COINS-DPVL
 Description Datatype waarde check
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${prop} | ${a} | ${value} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -772,7 +772,7 @@ Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-OPVU
 Description ObjectProperty waarde check
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${prop} | ${value} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -797,7 +797,7 @@ Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-dom
 Description Domain als een restrictie
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${b} | ${prop} | ${domain} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -827,7 +827,7 @@ filter not exists {{Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-rng
 Description Range als een restrictie
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${b} | ${prop} | ${range} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -857,7 +857,7 @@ filter not exists {{Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-UO
 Description UnionOf as a restriction validation
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${restriction} | ${a} | ${first} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -887,7 +887,7 @@ filter not exists{Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-IS
 Description Intersection as a restriction validation
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${restriction} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -917,7 +917,7 @@ filter not exists{Graph ${FULL_UNION_GRAPH}{
 
 Reference COINS-CCO
 Description Only COINS concept instances check
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${x} | ${type} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -939,7 +939,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 Reference COINS-NSWO
 Description only instances in a semantic BIM model
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${b} | ${c} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -961,7 +961,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 Reference COINS-NSCO
 Description No rdfs:subclassOf in a semantic BIM model
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${c} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -983,7 +983,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 Reference COINS-NSPO
 Description No subPropertyOf in a semantic BIM model
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${a} | ${c} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1005,7 +1005,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 Reference Cax-adx (listmod)
 Description Disjoint via owl:allDisjointClasses 
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${x} | ${c1} | ${c2} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1030,7 +1030,7 @@ Graph ${FULL_UNION_GRAPH}{
 
 Reference cax-dw
 Description Disjoint via owl:disjointWith 
-ResultFormat The subject ${a} has predicate ${b} to object ${c}
+ResultFormat  "| ${x} | ${c1} | ${c2} |"
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1051,24 +1051,3 @@ Graph ${FULL_UNION_GRAPH}{
 
 </ValidationRule>
 
-<ValidationRule>
-
-Reference everything
-Description Just everything
-ResultFormat The subject ${a} has predicate ${b} to object ${c} in graph ${g}
-<SparqlQuery>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
- select distinct ?a ?b ?c ?g
-
- WHERE {Graph ?g{
- ?a ?b ?c
-}
-
-}
-</SparqlQuery>
-
-</ValidationRule>

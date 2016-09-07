@@ -41,7 +41,7 @@ public interface CoinsGraphSet {
 
   Map<Namespace, Model> getLibraryModels();
   public void reset();
-  public void close();
+
 
 
 
@@ -154,6 +154,8 @@ public interface CoinsGraphSet {
 
 
   // Datasets
+
+  public Dataset getEmptyDataset();
 
   public Dataset getDataset();
 
