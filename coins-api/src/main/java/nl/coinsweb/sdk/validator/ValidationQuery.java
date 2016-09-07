@@ -30,6 +30,7 @@ import freemarker.core.InvalidReferenceException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +38,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -56,10 +56,6 @@ public class ValidationQuery {
   private String sparqlQuery = null;
 
 
-  private Iterator<Map<String,String>> resultSet;
-  private boolean passed;
-  private String errorMessage;
-  private long executionTime;
 
   public ValidationQuery(String reference, String description, String resultFormat, String sparqlQuery) {
 
@@ -122,11 +118,12 @@ public class ValidationQuery {
       Template template = cfg.getTemplate("sparqlQuery");
 
       Map<String, String> data = new HashMap<>();
-      data.put("INSTANCE_GRAPH", "<INSTANCE_GRAPH>");
-      data.put("WOA_GRAPH", "<WOA_GRAPH>");
-      data.put("CORE_GRAPH", "<CORE_GRAPH>");
-      data.put("SCHEMA_UNION_GRAPH", "<SCHEMA_UNION_GRAPH>");
-      data.put("FULL_UNION_GRAPH", "<FULL_UNION_GRAPH>");
+      data.put("INSTANCE_GRAPH", "<"+ JenaCoinsGraphSet.INSTANCE_GRAPH +">");
+      data.put("WOA_GRAPH", "<"+ JenaCoinsGraphSet.WOA_GRAPH +">");
+      data.put("CORE_GRAPH", "<"+ JenaCoinsGraphSet.SCHEMA_GRAPH +">");
+      data.put("SCHEMA_GRAPH", "<"+ JenaCoinsGraphSet.SCHEMA_GRAPH +">");
+      data.put("SCHEMA_UNION_GRAPH", "<"+ JenaCoinsGraphSet.SCHEMA_UNION_GRAPH +">");
+      data.put("FULL_UNION_GRAPH", "<"+ JenaCoinsGraphSet.FULL_UNION_GRAPH +">");
 
       Writer writer = new StringWriter();
       template.process(data, writer);

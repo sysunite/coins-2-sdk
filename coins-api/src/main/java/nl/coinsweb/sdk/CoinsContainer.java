@@ -45,6 +45,14 @@ public interface CoinsContainer {
 
 
   /**
+   * Get filename.
+   *
+   * @return  a string containing the file name, or null when no saved yet
+   */
+  public String getFileName();
+
+
+  /**
    * Import the model content and all registered attachments from a .ccr file specified by the target file path.
    *
    * This triggers a reinitialisation of the complete CoinsContainer object.
