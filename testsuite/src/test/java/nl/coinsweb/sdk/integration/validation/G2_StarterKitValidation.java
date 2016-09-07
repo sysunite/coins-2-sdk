@@ -96,4 +96,35 @@ public class G2_StarterKitValidation {
 
 
   }
+
+
+  @Test
+  public void readRdfFile_performanceCheck() {
+
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+
+    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+
+
+
+
+    JenaValidationExecutor executor = new JenaValidationExecutor();
+    Validator validator = new Validator(model, executor, "COINS 2.0 Lite");
+    validator.validate(Paths.get("/tmp/"));
+
+
+
+
+    String reportHtml;
+    try {
+      reportHtml = new String(Files.readAllBytes(Paths.get("/tmp/report.html")), StandardCharsets.UTF_8);
+      System.out.println(reportHtml);
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    }
+
+
+  }
+
 }

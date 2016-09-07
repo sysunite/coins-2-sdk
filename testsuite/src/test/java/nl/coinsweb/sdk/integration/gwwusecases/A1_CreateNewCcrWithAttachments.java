@@ -11,7 +11,6 @@ import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBCoinsGraphSet;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -146,12 +145,12 @@ public class A1_CreateNewCcrWithAttachments {
 
 
 
-  @Test
-  public void createCcrWithAttachmentTDB() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    CoinsGraphSet graphSet = new TDBCoinsGraphSet("http://www.example.com/");
-    createCcrWithAttachment(new JenaCoinsContainer(defaultPerson, graphSet, true));
-  }
+//  @Test
+//  public void createCcrWithAttachmentTDB() {
+//    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
+//    CoinsGraphSet graphSet = new TDBCoinsGraphSet("http://www.example.com/");
+//    createCcrWithAttachment(new JenaCoinsContainer(defaultPerson, graphSet, true));
+//  }
 
   @Test
   public void createCcrWithAttachmentInMem() {

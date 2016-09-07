@@ -44,8 +44,8 @@ public class Profile {
   private String author;
 
   private List<ValidationQuery> profileChecks = new ArrayList<>();
-  private List<ValidationQuery> schemaInferences = new ArrayList<>();
-  private List<ValidationQuery> dataInferences = new ArrayList<>();
+  private List<InferenceQuery> schemaInferences = new ArrayList<>();
+  private List<InferenceQuery> dataInferences = new ArrayList<>();
   private List<ValidationQuery> validationRules = new ArrayList<>();
 
   public Profile(BufferedReader reader) {
@@ -70,10 +70,10 @@ public class Profile {
           profileChecks.add(buildValidationQuery(reader, "</ProfileCheck>"));
         }
         if(line.startsWith("<SchemaInference>")) {
-          schemaInferences.add(buildValidationQuery(reader, "</SchemaInference>"));
+          schemaInferences.add(buildInferenceQuery(reader, "</SchemaInference>"));
         }
         if(line.startsWith("<DataInference>")) {
-          dataInferences.add(buildValidationQuery(reader, "</DataInference>"));
+          dataInferences.add(buildInferenceQuery(reader, "</DataInference>"));
         }
         if(line.startsWith("<ValidationRule>")) {
           validationRules.add(buildValidationQuery(reader, "</ValidationRule>"));
@@ -85,6 +85,54 @@ public class Profile {
     } catch (IOException e) {
       log.error("Problem reading profile file.", e);
     }
+  }
+
+  private InferenceQuery buildInferenceQuery(BufferedReader reader, String endTag) {
+
+    String reference = null;
+    String description = null;
+    String sparqlQuery = null;
+
+    String line;
+
+    try {
+      while( (line = reader.readLine()) != null ) {
+        line = line.trim();
+
+        if(line.isEmpty() || line.startsWith("#"))  {
+          continue;
+        }
+
+        if(line.endsWith(endTag)) {
+          break;
+        }
+
+        if(line.startsWith("Reference")) {
+          reference = unquote(line.substring(line.indexOf(" ") + 1));
+        } else if(line.startsWith("Description")) {
+          description = unquote(line.substring(line.indexOf(" ") + 1));
+        }
+
+        else if(line.startsWith("<SparqlQuery>")) {
+          sparqlQuery = "";
+          while( (line = reader.readLine()) != null ) {
+            line = line.trim();
+            if(line.endsWith("</SparqlQuery>")) {
+              break;
+            }
+            if(line.startsWith("#"))  {
+              continue;
+            }
+            sparqlQuery += line + "\n";
+          }
+        }
+      }
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+      throw new RuntimeException("The profile for a Validation Query file could not be interpreted.");
+    }
+
+    return new InferenceQuery(reference, description, sparqlQuery);
   }
 
   private ValidationQuery buildValidationQuery(BufferedReader reader, String endTag) {
@@ -129,20 +177,6 @@ public class Profile {
             sparqlQuery += line + "\n";
           }
         }
-
-        else if(line.startsWith("<JenaRule>")) {
-          throw new RuntimeException("JenaRule inside profile file not supported");
-//          jenaRule = "";
-//          while( (line = reader.readLine().trim()) != null ) {
-//            if(line.endsWith("</JenaRule>")) {
-//              break;
-//            }
-//            if(line.startsWith("#"))  {
-//              continue;
-//            }
-//            jenaRule += line + "\n";
-//          }
-        }
       }
     } catch (IOException e) {
       log.error(e.getMessage(), e);
@@ -175,11 +209,11 @@ public class Profile {
     return profileChecks;
   }
 
-  public List<ValidationQuery> getSchemaInferences() {
+  public List<InferenceQuery> getSchemaInferences() {
     return schemaInferences;
   }
 
-  public List<ValidationQuery> getDataInferences() {
+  public List<InferenceQuery> getDataInferences() {
     return dataInferences;
   }
 

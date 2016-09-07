@@ -56,14 +56,18 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsGraphSet.class);
 
-  Dataset dataset;
-
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
   OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM;
 
   private Namespace instanceNamespace;
   private Model instanceModel;
+
+  public static final String INSTANCE_GRAPH = "http://coinsweb.nl/INSTANCE_GRAPH";
+  public static final String WOA_GRAPH = "http://coinsweb.nl/WOA_GRAPH";
+  public static final String SCHEMA_GRAPH = "http://coinsweb.nl/SCHEMA_GRAPH";
+  public static final String SCHEMA_UNION_GRAPH = "http://coinsweb.nl/SCHEMA_UNION_GRAPH";
+  public static final String FULL_UNION_GRAPH = "http://coinsweb.nl/FULL_UNION_GRAPH";
 
   public Namespace woaNamespace = new Namespace("http://woa.coinsweb.nl/");
   private Model woaModel;
@@ -77,7 +81,6 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     this.libraryModels = new HashMap<>();
     this.instanceModel = getEmptyModel();
     this.woaModel = getEmptyModel();
-    this.dataset = TDBFactory.createDataset();
   }
 
 
@@ -93,11 +96,6 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   @Override
   public void reset() {
     this.libraryModels = new HashMap<>();
-  }
-
-  @Override
-  public void close() {
-    dataset.close();
   }
 
 
@@ -289,33 +287,72 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   // Datasets
 
   @Override
+  public Dataset getEmptyDataset() {
+    return TDBFactory.createDataset();
+  }
+
+  @Override
   public Dataset getDataset() {
 
-    refreshModel(instanceNamespace.toString(), instanceModel);
-    refreshModel(woaNamespace.toString(), woaModel);
+
+    Dataset dataset = getEmptyDataset();
+
+    refreshModel(dataset, instanceNamespace.toString(), instanceModel);
+    refreshModel(dataset, woaNamespace.toString(), woaModel);
     for(Namespace ns : libraryModels.keySet()) {
-      refreshModel(ns.toString(), libraryModels.get(ns));
+      refreshModel(dataset, ns.toString(), libraryModels.get(ns));
     }
     return dataset;
   }
 
   public Dataset getDatasetWithUnionGraphs() {
 
-    refreshModel("INSTANCE_GRAPH", instanceModel);
-    refreshModel("WOA_GRAPH", woaModel);
-    refreshModel("SCHEMA_GRAPH", getSchemaModel());
-    refreshModel("SCHEMA_UNION_GRAPH", getSchemaUnionModel());
-    refreshModel("FULL_UNION_GRAPH", getFullUnionModel());
+
+    Dataset dataset = getEmptyDataset();
+
+    refreshModel(dataset, INSTANCE_GRAPH, instanceModel);
+    refreshModel(dataset, WOA_GRAPH, woaModel);
+    refreshModel(dataset, SCHEMA_GRAPH, getSchemaModel());
+    refreshModel(dataset, SCHEMA_UNION_GRAPH, getSchemaUnionModel());
+    refreshModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     return dataset;
   }
 
-  void refreshModel(String ns, Model model) {
+  void refreshModel(Dataset dataset, String ns, Model model) {
     if(dataset.containsNamedModel(ns)) {
       dataset.replaceNamedModel(ns, model);
     } else {
       dataset.addNamedModel(ns, model);
     }
+  }
+
+  public static Map<String, Long> numTriples(Dataset dataset) {
+    HashMap<String, Long> result = new HashMap<>();
+    Iterator<String> graphNameIterator = dataset.listNames();
+    while(graphNameIterator.hasNext()) {
+      String graphName = graphNameIterator.next();
+      result.put(graphName, dataset.getNamedModel(graphName).size());
+    }
+    return result;
+  }
+
+  public static Map<String, Long> numTriples(Dataset dataset, Map<String, Long> oldValues) {
+    HashMap<String, Long> result = new HashMap<>();
+    Iterator<String> graphNameIterator = dataset.listNames();
+    while(graphNameIterator.hasNext()) {
+      String graphName = graphNameIterator.next();
+
+      Long oldValue;
+      if(oldValues.containsKey(graphName)) {
+        oldValue = oldValues.get(graphName);
+      } else {
+        oldValue = 0l;
+      }
+      Long newValue = dataset.getNamedModel(graphName).size();
+      result.put(graphName, newValue - oldValue);
+    }
+    return result;
   }
 
 

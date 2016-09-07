@@ -40,6 +40,7 @@ public class ValidationQueryResult {
   private static final Logger log = LoggerFactory.getLogger(ValidationQueryResult.class);
 
 
+  private String id;
   private String reference;
   private String description;
   private String sparqlQuery;
@@ -59,6 +60,7 @@ public class ValidationQueryResult {
                                long executionTime) {
 
     // Set passed attributes
+    this.id = Long.toHexString(Double.doubleToLongBits(Math.random()));
     this.reference = reference;
     this.description = description;
     this.sparqlQuery = sparqlQuery;
@@ -70,6 +72,9 @@ public class ValidationQueryResult {
   }
 
 
+  public String getId() {
+    return id;
+  }
   public String getReference() {
     return reference;
   }
