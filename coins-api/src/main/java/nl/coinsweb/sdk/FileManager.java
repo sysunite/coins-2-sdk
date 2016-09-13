@@ -816,9 +816,7 @@ public class FileManager {
               relativePath = relativePath.substring(1);
             }
             if (!relativePath.isEmpty()) {
-
               result.add(relativePath);
-              System.out.println(relativePath);
             }
           }
 
