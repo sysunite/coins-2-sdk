@@ -48,10 +48,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -783,5 +781,82 @@ public class FileManager {
       }
     }
     return false;
+  }
+
+
+  // this should be able to be run from everywhere
+  public static ArrayList<String> listResourceFiles(String path) {
+
+    ArrayList<String> result = new ArrayList<>();
+
+    while(path.startsWith("/")) {
+      path = path.substring(1);
+    }
+
+    try {
+      URI uri = FileManager.class.getResource("/"+path).toURI();
+
+      Path myPath;
+      if (uri.getScheme().equals("jar")) {
+
+        String jarPath = uri.toString().substring(9, uri.toString().indexOf("!"));
+        String insideJar = uri.toString().substring(uri.toString().indexOf("!")+1);
+        while(insideJar.startsWith("/")) {
+          insideJar = insideJar.substring(1);
+        }
+
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(new File(jarPath)));
+        ZipEntry ze = zis.getNextEntry();
+
+        while (ze != null) {
+
+          if (!ze.isDirectory() && ze.getName().startsWith(insideJar)) {
+            String relativePath = ze.getName().substring(insideJar.length());
+            while (relativePath.startsWith("/")) {
+              relativePath = relativePath.substring(1);
+            }
+            if (!relativePath.isEmpty()) {
+
+              result.add(relativePath);
+              System.out.println(relativePath);
+            }
+          }
+
+          ze = zis.getNextEntry();
+        }
+
+        zis.closeEntry();
+        zis.close();
+
+      } else {
+        myPath = Paths.get(uri);
+        Stream<Path> walk = Files.walk(myPath);
+        for (Iterator<Path> it = walk.iterator(); it.hasNext(); ) {
+          Path folder = it.next();
+          if(folder.toFile().isFile()) {
+            String fullPath = folder.toString();
+            String relativePath = fullPath.substring(uri.getRawPath().length());
+            if (!relativePath.isEmpty()) {
+              result.add(relativePath.substring(1));
+            }
+          }
+        }
+      }
+
+
+    } catch (IOException e) {
+    } catch (URISyntaxException e) {
+    }
+
+
+    return result;
+  }
+
+  public static InputStream getResourceFileAsStream(String path) {
+
+    while(path.startsWith("/")) {
+      path = path.substring(1);
+    }
+    return FileManager.class.getResourceAsStream("/"+path);
   }
 }

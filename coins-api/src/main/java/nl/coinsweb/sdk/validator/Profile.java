@@ -25,13 +25,18 @@
 package nl.coinsweb.sdk.validator;
 
 
+import nl.coinsweb.sdk.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -39,6 +44,8 @@ import java.util.List;
 public class Profile {
 
   private static final Logger log = LoggerFactory.getLogger(nl.coinsweb.sdk.validator.Profile.class);
+
+  private static HashMap<String, Profile> profiles = null;
 
   private String name;
   private String author;
@@ -85,6 +92,55 @@ public class Profile {
     } catch (IOException e) {
       log.error("Problem reading profile file.", e);
     }
+  }
+
+  public static Profile loadProfile(String profileName) {
+
+
+
+    if(!getProfiles().containsKey(profileName)) {
+      throw new RuntimeException("The profile with name \""+profileName+"\" is not registered.");
+    }
+    return getProfiles().get(profileName);
+  }
+  private static void initProfiles() {
+
+    Profile.profiles = new HashMap<>();
+
+    ArrayList<String> filePaths = FileManager.listResourceFiles("validator");
+    for(String filePath : filePaths) {
+      if(filePath.endsWith(".profile")) {
+        System.out.println("opening "+filePath);
+        InputStream stream = FileManager.getResourceFileAsStream("validator/"+filePath);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        Profile profile = new Profile(reader);
+        Profile.profiles.put(profile.getName(), profile);
+        log.info("Profile file "+filePath+" registered with this name: "+profile.getName());
+        try {
+          reader.close();
+          stream.close();
+        } catch (IOException e) {
+          log.error(e.getMessage(), e);
+        }
+      }
+    }
+  }
+
+  private static HashMap<String, Profile> getProfiles() {
+    if(profiles == null) {
+      initProfiles();
+    }
+    return profiles;
+  }
+
+  public static Set<String> listProfiles() {
+    return getProfiles().keySet();
+  }
+  public static Profile loadProfile(String profileName, InputStream stream) {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    Profile profile = new Profile(reader);
+    getProfiles().put(profileName, profile);
+    return profile;
   }
 
   private InferenceQuery buildInferenceQuery(BufferedReader reader, String endTag) {
@@ -195,6 +251,14 @@ public class Profile {
     }
     return in;
   }
+
+
+
+
+
+
+
+
 
 
   public String getName() {

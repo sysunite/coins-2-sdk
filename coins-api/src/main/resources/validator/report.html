@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Validation report</title>
+  <link rel="stylesheet" href="http://yegor256.github.io/tacit/tacit.min.css"/>
   <style lang="css">
-    table, td {
-      /*border: 1px solid black;*/
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
-      text-align: left;
-      vertical-align: top;
-    }
-    h2, h3 {
-      margin-top:60px;
-    }
+    input,textarea,select,button,html,body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;font-stretch:normal;font-style:normal;font-weight:300;line-height:29.7px}input,textarea,select,button,html,body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;font-stretch:normal;font-style:normal;font-weight:300;line-height:29.7px}th{font-weight:600}td,th{border-bottom:1.08px solid #ccc;padding:14.85px 18px}thead th{border-bottom-width:2.16px;padding-bottom:6.3px}table{display:block;max-width:100%;overflow-x:auto}input,textarea,select,button,html,body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;font-stretch:normal;font-style:normal;font-weight:300;line-height:29.7px}input,textarea,select,button{display:block;max-width:100%;padding:9.9px}label{display:block;margin-bottom:14.76px}input[type="submit"],input[type="reset"],button{background:#f2f2f2;border-radius:3.6px;color:#8c8c8c;cursor:pointer;display:inline;margin-bottom:18px;margin-right:7.2px;padding:6.525px 23.4px;text-align:center}input[type="submit"]:hover,input[type="reset"]:hover,button:hover{background:#d9d9d9;color:#000}input[type="submit"][disabled],input[type="reset"][disabled],button[disabled]{background:#e6e6e6;color:#b3b3b3;cursor:not-allowed}input[type="submit"],button[type="submit"]{background:#367ac3;color:#fff}input[type="submit"]:hover,button[type="submit"]:hover{background:#255587;color:#bfbfbf}input[type="text"],input[type="password"],input[type="email"],input[type="url"],input[type="phone"],input[type="tel"],input[type="number"],input[type="datetime"],input[type="date"],input[type="month"],input[type="week"],input[type="color"],input[type="time"],input[type="search"],input[type="range"],input[type="file"],input[type="datetime-local"],select,textarea{border:1px solid #ccc;margin-bottom:18px;padding:5.4px 6.3px}input[type="checkbox"],input[type="radio"]{float:left;line-height:36px;margin-right:9px;margin-top:8.1px}input,textarea,select,button,html,body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;font-stretch:normal;font-style:normal;font-weight:300;line-height:29.7px}pre,code,kbd,samp,var,output{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;font-size:16.2px}pre{border-left:1.8px solid #96bbe2;line-height:25.2px;margin-top:29.7px;overflow:auto;padding-left:18px}pre code{background:none;border:0;line-height:29.7px;padding:0}code{background:#ededed;border:1.8px solid #ccc;border-radius:3.6px;display:inline-block;line-height:18px;padding:3px 6px 2px}input,textarea,select,button,html,body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;font-stretch:normal;font-style:normal;font-weight:300;line-height:29.7px}h1,h2,h3,h4,h5,h6{color:#000;margin-bottom:18px}h1{font-size:36px;font-weight:500;margin-top:36px}h2{font-size:25.2px;font-weight:400;margin-top:27px}h3{font-size:21.6px;margin-top:21.6px}h4{font-size:18px;margin-top:18px}h5{font-size:14.4px;font-weight:bold;margin-top:18px;text-transform:uppercase}h6{color:#ccc;font-size:14.4px;font-weight:bold;margin-top:18px;text-transform:uppercase}input,textarea,select,button,html,body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:18px;font-stretch:normal;font-style:normal;font-weight:300;line-height:29.7px}a{color:#367ac3;text-decoration:none}a:hover{text-decoration:underline}hr{border-bottom:1px solid #ccc}small{font-size:15.3px}em,i{font-style:italic}strong,b{font-weight:600}*{border:0;border-collapse:separate;border-spacing:0;box-sizing:border-box;margin:0;outline:0;padding:0;text-align:left;vertical-align:baseline}html,body{height:100%;width:100%}body{background:#f5f5f5;color:#1a1a1a;padding:36px}p,ul,ol,dl,blockquote,hr,pre,table,form,fieldset,figure,address{margin-bottom:29.7px}section{margin-left:auto;margin-right:auto;max-width:100%;width:900px}article{background:#fff;border:1.8px solid #d9d9d9;border-radius:7.2px;padding:43.2px}header{margin-bottom:36px}footer{margin-top:36px}nav{text-align:center}nav ul{list-style:none;margin-left:0;text-align:center}nav ul li{display:inline;margin-left:9px;margin-right:9px}nav ul li:first-child{margin-left:0}nav ul li:last-child{margin-right:0}ol,ul{margin-left:29.7px}li ol,li ul{margin-bottom:0}@media (max-width: 767px){body{padding:18px}article{border-radius:0;margin:-18px;padding:18px}textarea,input,select{max-width:100%}fieldset{min-width:0}section{width:auto}fieldset,x:-moz-any-link{display:table-cell}}
+    /*# sourceMappingURL=tacit-0.6.1.min.css.map */
     .active tr {
       display: table-row !important;
+    }
+    div.active {
+      display: block !important;
+    }
+    .active + div {
+      display: none;
+    }
+    h2 {
+      margin-top: 200px !important;
     }
   </style>
 </head>
@@ -32,7 +32,11 @@ Variables posted to this report page
 #####
 
 String                      : filename
+String                      : libraries
+String                      : graphs
+String                      : attachments
 String                      : date
+String                      : profileName
 boolean                     : profileChecksPassed
 boolean                     : validationPassed
 List<ValidationQueryResult> : profileChecks
@@ -42,37 +46,154 @@ List<ValidationQueryResult> : validationRules
 
 -->
 
-<table border="1">
-  <tr><th>name</th><td><#if filename??>${filename}<#else>not started from .ccr file</#if></td><tr>
-  <tr><th>content</th><td><#if filename??>x files</#if></td><tr>
+
+
+<table>
+  <tr><th>name</th><td><#if filename??>📦 ${filename}<#else>not started from .ccr file</#if></td><tr>
+  <tr><th>libraries</th><td>
+  <#list 0..libraries?size-1 as i>
+    📄 ${libraries[i]} (${graphs[i]})<br/>
+  </#list></td><tr>
+  <tr><th>attachments</th><td>
+  <#if attachments?has_content>
+    <#if attachments?size lt 10>
+      <#list 0..attachments?size-1 as i>
+      📎 ${attachments[i]}
+      </#list>
+    <#else>
+      <#list 0..9 as i>
+        📎 ${attachments[i]} <br/>
+      </#list>
+      <div style="display:none" id="attachment_list">
+
+      <#list 10..attachments?size-1 as i>
+        📎 ${attachments[i]} <br/>
+      </#list>
+      </div>
+      <div onclick="document.getElementById('attachment_list').className+=' active';">show all...</div>
+    </#if>
+  </#if>
+</td><tr>
   <tr><th>date</th><td>${date}</td><tr>
+  <tr><th>profile</th><td>${profileName}</td><tr>
   <tr><th>performed steps</th><td>
-1. <#if profileChecksPassed>✅ meets profile requirements<#else>❗ NOT MEETING PROFILE REQUIREMENTS</#if><br/>
-<#if profileChecksPassed>
-2. ✅ added x data inferences<br/>
-3. ✅ added x schema inferences<br/>
-4. <#if validationPassed>✅ validation PASSED<#else>❗ validation FAILED</#if>
-</#if>
+<#if profileChecksPassed>✅ meets profile requirements<#else>⛔️ not meeting profile requirements</#if><br/>
+✅ added data inferences<br/>
+✅ added schema inferences<br/>
+<#if validationPassed>✅ validation passed<#else>⛔️ validation failed</#if>
   </ol></td><tr>
 </table>
 
+
+
+
+
+
+
+
+
 <h2>Validation summary</h2>
 
-<table border="1">
-  <tr><th></th><th>name</th><th>description</th><th>error</th><tr>
-<#list validationRules as query>
+<table>
+  <tr><th></th><th>name</th><th>description</th><th>duration</th><tr>
+<#list profileChecks as query>
   <tr>
-    <td><#if query.passed>✅<#else>❗</#if></td>
+    <td><#if query.passed>✅<#else>⛔️</#if></td>
     <td><a href="#${query.id}">${query.reference}</a></td>
     <td>${query.description}</td>
-    <td><pre><#if query.errorMessage??>${query.errorMessage}</#if></pre></td>
+    <td><#if query.executionTime??>
+      <#if query.executionTime lt 1000>
+        ${query.executionTime} ms
+        <#else>
+          ${query.executionTime / 1000} s
+      </#if>
+    </#if></td>
+  <tr>
+</#list>
+<#list validationRules as query>
+  <tr>
+    <td><#if query.passed>✅<#else>⛔️</#if></td>
+    <td><a href="#${query.id}">${query.reference}</a></td>
+    <td>${query.description}</td>
+    <td><#if query.executionTime??>
+      <#if query.executionTime lt 1000>
+        ${query.executionTime} ms
+        <#else>
+          ${query.executionTime / 1000} s
+      </#if>
+    </#if></td>
   <tr>
 </#list>
 </table>
 
+
+
+
+
+
+
+
+
+
+
 <h2>1. Details profile requirements</h2>
 
-???
+<#list profileChecks as query>
+  <a name="${query.id}"></a>
+  <h4><#if query.passed>✅<#else>⛔️</#if> ${query.reference}</h4>
+  <p>${query.description}</p>
+
+  <#if query.formattedResults?has_content>
+    <table id="val_${query.id}">
+      <#if query.formattedResults?size lt 7>
+        <#list 0..query.formattedResults?size-1 as i>
+          <tr>
+            <td>${query.formattedResults[i]}</td>
+          </tr>
+        </#list>
+      <#else>
+        <#list 0..6 as i>
+          <tr>
+            <td>${query.formattedResults[i]}</td>
+          </tr>
+        </#list>
+
+        <#if query.formattedResults?size lt 50>
+          <#list 7..query.formattedResults?size-1 as i>
+            <tr style="display:none;">
+              <td>${query.formattedResults[i]}</td>
+            </tr>
+          </#list>
+          <#else>
+            <#list 7..49 as i>
+              <tr style="display:none;">
+                <td>${query.formattedResults[i]}</td>
+              </tr>
+            </#list>
+            <tr style="display:none;"><td>reported the first 50 items, there are more</td></tr>
+        </#if>
+      </#if>
+    </table>
+    <#if query.formattedResults?size gt 6>
+      <div onclick="document.getElementById('val_${query.id}').className+=' active';">more...</div>
+    </#if>
+  </#if>
+
+
+</#list>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <h2>2. Details data inferences</h2>
 
@@ -80,6 +201,7 @@ List<ValidationQueryResult> : validationRules
   <a name="${query.id}"></a>
   <h4>${query.reference}</h4>
   <p>${query.description}</p>
+  <p>${query.executionTime} ms</p>
   <table border="1">
     <#assign keys = query.triplesAdded?keys>
       <#list keys as row>
@@ -91,12 +213,28 @@ List<ValidationQueryResult> : validationRules
   </table>
 </#list>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h2>3. Details schema inferences</h2>
 
 <#list schemaInferences as query>
   <a name="${query.id}"></a>
   <h4>${query.reference}</h4>
   <p>${query.description}</p>
+  <p>${query.executionTime} ms</p>
   <table border="1">
     <#assign keys = query.triplesAdded?keys>
       <#list keys as row>
@@ -108,21 +246,61 @@ List<ValidationQueryResult> : validationRules
   </table>
 </#list>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <h2>4. Details validation</h2>
 
 <#list validationRules as query>
   <a name="${query.id}"></a>
-  <h4><#if query.passed>✅<#else>❗</#if> ${query.reference}</h4>
+  <h4><#if query.passed>✅<#else>⛔️</#if> ${query.reference}</h4>
   <p>${query.description}</p>
 
-  <table border="1" id="val_${query.id}">
-    <#list query.formattedResults as row>
-      <tr style="display:none;">
-        <td>${row}</td>
-      </tr>
-    </#list>
-  </table>
-  <div onclick="document.getElementById('val_${query.id}').className+=' active';">more...</div>
+  <#if query.formattedResults?has_content>
+    <table id="val_${query.id}">
+      <#if query.formattedResults?size lt 7>
+        <#list 0..query.formattedResults?size-1 as i>
+          <tr>
+            <td>${query.formattedResults[i]}</td>
+          </tr>
+        </#list>
+        <#else>
+          <#list 0..6 as i>
+            <tr>
+              <td>${query.formattedResults[i]}</td>
+            </tr>
+          </#list>
+
+          <#if query.formattedResults?size lt 50>
+            <#list 7..query.formattedResults?size-1 as i>
+              <tr style="display:none;">
+                <td>${query.formattedResults[i]}</td>
+              </tr>
+            </#list>
+            <#else>
+              <#list 7..49 as i>
+                <tr style="display:none;">
+                  <td>${query.formattedResults[i]}</td>
+                </tr>
+              </#list>
+              <tr style="display:none;"><td>reported the first 50 items, there are more</td></tr>
+          </#if>
+      </#if>
+    </table>
+    <#if query.formattedResults?size gt 6>
+      <div onclick="document.getElementById('val_${query.id}').className+=' active';">more...</div>
+    </#if>
+  </#if>
 
 </#list>
 
