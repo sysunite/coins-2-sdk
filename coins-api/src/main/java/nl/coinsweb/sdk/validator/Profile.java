@@ -110,7 +110,6 @@ public class Profile {
     ArrayList<String> filePaths = FileManager.listResourceFiles("validator");
     for(String filePath : filePaths) {
       if(filePath.endsWith(".profile")) {
-        System.out.println("opening "+filePath);
         InputStream stream = FileManager.getResourceFileAsStream("validator/"+filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         Profile profile = new Profile(reader);
