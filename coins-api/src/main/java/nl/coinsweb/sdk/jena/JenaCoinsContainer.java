@@ -388,6 +388,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public void export(String target) {
     exportModel();
     File targetFile = new File(target);
+    targetFile.toPath().getParent().toFile().mkdirs();
     FileManager.zip(internalRef, targetFile);
   }
 
