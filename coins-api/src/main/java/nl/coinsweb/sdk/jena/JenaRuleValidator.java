@@ -33,14 +33,14 @@ import com.hp.hpl.jena.reasoner.rulesys.Rule;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.ProfileExecution;
-import nl.coinsweb.sdk.validator.ValidationExecutor;
+import nl.coinsweb.sdk.validator.Validator;
 
 import java.util.Iterator;
 
 /**
  * @author Bastiaan Bijl
  */
-public class JenaValidationRuleExecutor implements ValidationExecutor {
+public class JenaRuleValidator implements Validator {
 
 
 
