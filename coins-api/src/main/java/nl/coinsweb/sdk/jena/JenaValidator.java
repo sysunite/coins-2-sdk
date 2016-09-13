@@ -30,11 +30,17 @@ import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.update.UpdateAction;
 import com.hp.hpl.jena.update.UpdateRequest;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import nl.coinsweb.sdk.CoinsModel;
+import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.validator.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
@@ -42,16 +48,88 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 /**
  * @author Bastiaan Bijl
  */
-public class JenaValidationExecutor implements ValidationExecutor {
+public class JenaValidator implements Validator {
 
-  private static final Logger log = LoggerFactory.getLogger(JenaValidationExecutor.class);
+  private static final Logger log = LoggerFactory.getLogger(JenaValidator.class);
 
-  CoinsModel model;
+
   JenaCoinsGraphSet graphSet;
   Dataset dataset;
   Profile profile;
 
-  public JenaValidationExecutor() {
+
+  private CoinsModel model;
+
+
+  public JenaValidator(CoinsModel model, String profileName) {
+    this.model = model;
+    this.profile = Profile.loadProfile(profileName);
+  }
+
+  /**
+   * Perform the validation process
+   *
+   * @param reportLocation  the location where the report.html file will be placed
+   * @return true if no problems were found, false otherwise (see the generated report for reasons)
+   */
+  public boolean validate(Path reportLocation) {
+
+    ProfileExecution execution = execute(model, profile);
+
+    List<String> libraries = new ArrayList<>();
+    List<String> graphs = new ArrayList<>();
+    for(Namespace ns : ((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().keySet()) {
+      graphs.add(ns.toString());
+      libraries.add(((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().get(ns).getName());
+    }
+
+    // Prepare data to transfer to the template
+    Map<String, Object> data = new HashMap<>();
+    data.put("filename", model.getCoinsContainer().getFileName());
+    data.put("libraries", libraries);
+    data.put("graphs", graphs);
+    data.put("attachments", model.getCoinsContainer().getAttachments());
+    data.put("date", new Date().toString());
+    data.put("profileName", this.profile.getName());
+    data.put("profileChecksPassed", execution.profileChecksPassed());
+    data.put("validationPassed", execution.validationPassed());
+    data.put("profileChecks", execution.getProfileCheckResults());
+    data.put("schemaInferences", execution.getSchemaInferenceResults());
+    data.put("dataInferences", execution.getDataInferenceResults());
+    data.put("validationRules", execution.getValidationRuleResults());
+
+    writeReport(reportLocation, data);
+    return execution.profileChecksPassed() && execution.validationPassed();
+  }
+
+  private void writeReport(Path reportLocation, Map<String, Object> data) {
+
+    try {
+
+      Configuration cfg = new Configuration();
+      cfg.setClassForTemplateLoading(nl.coinsweb.sdk.jena.JenaValidator.class, "/validator/");
+      Template template = cfg.getTemplate("report.html");
+
+      File out;
+      if(reportLocation.toString().endsWith("html")) {
+        out = reportLocation.toFile();
+      } else {
+        out = reportLocation.resolve("report.html").toFile();
+      }
+      PrintStream printStream = new PrintStream( new FileOutputStream( out ) );
+      Writer file = new PrintWriter(new OutputStreamWriter(printStream, "UTF-8"));
+
+      template.process(data, file);
+      file.flush();
+      file.close();
+
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (TemplateException e) {
+      log.error(e.getMessage(), e);
+    }
+
   }
 
   @Override
@@ -67,9 +145,7 @@ public class JenaValidationExecutor implements ValidationExecutor {
 
 
     log.trace("\uD83D\uDC1A Will perform profile checks." );
-    if(!profileCheck(resultCollection)) {
-      return resultCollection;
-    }
+    profileCheck(resultCollection);
 
     log.trace("\uD83D\uDC1A Will add schema inferences." );
     addSchemaInferences(resultCollection);
@@ -173,9 +249,6 @@ public class JenaValidationExecutor implements ValidationExecutor {
     ArrayList<String> formattedResults = new ArrayList<>();
 
     try {
-
-      log.trace("Will execute this query: ");
-      log.trace(queryString);
 
       List<Map<String, String>> result = new ArrayList<>();
 
