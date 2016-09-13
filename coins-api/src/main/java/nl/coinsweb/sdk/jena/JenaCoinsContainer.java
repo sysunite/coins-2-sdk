@@ -452,8 +452,10 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
 
   @Override
-  public Set<String> getAttachments() {
-    return attachments.keySet();
+  public List<String> getAttachments() {
+    ArrayList<String> list = new ArrayList<>();
+    list.addAll(attachments.keySet());
+    return list;
   }
 
   @Override
