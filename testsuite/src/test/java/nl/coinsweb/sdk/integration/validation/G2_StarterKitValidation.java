@@ -5,8 +5,9 @@ import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaValidationExecutor;
-import nl.coinsweb.sdk.validator.Validator;
+import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
+import nl.coinsweb.sdk.jena.JenaValidator;
+import nl.coinsweb.sdk.jena.TDBCoinsGraphSet;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -17,8 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class G2_StarterKitValidation {
 
 
   @Test
-  public void readRdfFile_4_01() {
+  public void readRdfFile_4_01_from_rdf() {
 
     JenaCoinsContainer model;
     try {
@@ -76,54 +76,177 @@ public class G2_StarterKitValidation {
 
 
 
-
-
-
-    JenaValidationExecutor executor = new JenaValidationExecutor();
-    Validator validator = new Validator(model, executor, "COINS 2.0 Lite");
-    validator.validate(Paths.get("/tmp/"));
-
-
-
-
-    String reportHtml;
-    try {
-      reportHtml = new String(Files.readAllBytes(Paths.get("/tmp/report.html")), StandardCharsets.UTF_8);
-      System.out.println(reportHtml);
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
+    validate(model, "report_4.01_from_rdf.html");
 
 
   }
 
 
   @Test
-  public void readRdfFile_performanceCheck() {
-
+  public void readRdfFile_2_01() {
 
     JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.01_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.01.html");
+  }
+  @Test
+  public void readRdfFile_2_02() {
 
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.02_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.02.html");
+  }
+  @Test
+  public void readRdfFile_2_03() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.03_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.03.html");
+  }
+  @Test
+  public void readRdfFile_2_04() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.04_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.04.html");
+  }
+  @Test
+  public void readRdfFile_2_05() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.05_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.05.html");
+  }
+  @Test
+  public void readRdfFile_2_06() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.06_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.06.html");
+  }
+  @Test
+  public void readRdfFile_2_07() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.07_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.07.html");
+  }
+  @Test
+  public void readRdfFile_2_08() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.08_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.08.html");
+  }
+  @Test
+  public void readRdfFile_2_09() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.09_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.09.html");
+  }
+  @Test
+  public void readRdfFile_2_10() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.10_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.10.html");
+  }
+  @Test
+  public void readRdfFile_2_11() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.11_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.11.html");
+  }
+  @Test
+  public void readRdfFile_2_12() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.12_inmem.ccr").getAbsolutePath());
+    validate(model, "report_2.12.html");
+  }
+  @Test
+  public void readRdfFile_3_01() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.01_inmem.ccr").getAbsolutePath());
+    validate(model, "report_3.01.html");
+  }
+  @Test
+  public void readRdfFile_3_02() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.02_inmem.ccr").getAbsolutePath());
+    validate(model, "report_3.02.html");
+  }
+  @Test
+  public void readRdfFile_3_03() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.03_inmem.ccr").getAbsolutePath());
+    validate(model, "report_3.03.html");
+  }
+  @Test
+  public void readRdfFile_3_04() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.04_inmem.ccr").getAbsolutePath());
+    validate(model, "report_3.04.html");
+  }
+  @Test
+  public void readRdfFile_4_01() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
+    validate(model, "report_4.01.html");
+  }
+  @Test
+  public void readRdfFile_tdb_4_01() {
+
+    JenaCoinsGraphSet graphSet = new TDBCoinsGraphSet("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
+    validate(model, "report_tdb_4.01.html");
+  }
+
+
+//  @Test
+  public void readRdfFile_performanceCheck() {
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+    validate(model, "report_PerfContCOINS2.0.html");
+  }
+
+
+//  @Test
+  public void readRdfFile_tdb_performanceCheck() {
+
+    JenaCoinsGraphSet graphSet = new TDBCoinsGraphSet("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
+    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+    validate(model, "report_tdb_PerfContCOINS2.0.html");
+  }
 
 
 
 
-    JenaValidationExecutor executor = new JenaValidationExecutor();
-    Validator validator = new Validator(model, executor, "COINS 2.0 Lite");
-    validator.validate(Paths.get("/tmp/"));
+  public void validate(JenaCoinsContainer model, String reportFileName) {
+
+    Path reportFile = Paths.get("/tmp/"+reportFileName);
 
 
+    JenaValidator validator = new JenaValidator(model, "COINS 2.0 Lite");
+    validator.validate(reportFile);
 
-
-    String reportHtml;
-    try {
-      reportHtml = new String(Files.readAllBytes(Paths.get("/tmp/report.html")), StandardCharsets.UTF_8);
-      System.out.println(reportHtml);
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
-
+//    String reportHtml;
+//    try {
+//      reportHtml = new String(Files.readAllBytes(reportFile), StandardCharsets.UTF_8);
+//      System.out.println(reportHtml);
+//    } catch (IOException e) {
+//      log.error(e.getMessage(), e);
+//    }
 
   }
 
