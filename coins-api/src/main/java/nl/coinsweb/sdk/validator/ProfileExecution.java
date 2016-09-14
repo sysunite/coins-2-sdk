@@ -40,6 +40,7 @@ public class ProfileExecution {
 
   private boolean profileChecksPassed = false;
   private boolean validationPassed = false;
+  private long executionTime;
 
 
   private List<ValidationQueryResult> profileChecks = new ArrayList<>();
@@ -52,16 +53,22 @@ public class ProfileExecution {
   }
 
   public void setProfileChecksPassed(boolean passed) {
-    profileChecksPassed = passed;
+    this.profileChecksPassed = passed;
   }
   public boolean profileChecksPassed() {
-    return profileChecksPassed;
+    return this.profileChecksPassed;
   }
   public void setValidationPassed(boolean passed) {
-    validationPassed = passed;
+    this.validationPassed = passed;
   }
   public boolean validationPassed() {
-    return validationPassed;
+    return this.validationPassed;
+  }
+  public void setExecutionTime(long executionTime) {
+    this.executionTime = executionTime;
+  }
+  public long getExecutionTime() {
+    return executionTime;
   }
 
   public void addProfileCheckResult(ValidationQueryResult queryResult) {
