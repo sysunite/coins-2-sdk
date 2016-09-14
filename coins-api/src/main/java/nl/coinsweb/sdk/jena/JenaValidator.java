@@ -90,6 +90,7 @@ public class JenaValidator implements Validator {
     data.put("graphs", graphs);
     data.put("attachments", model.getCoinsContainer().getAttachments());
     data.put("date", new Date().toString());
+    data.put("executionTime", execution.getExecutionTime());
     data.put("profileName", this.profile.getName());
     data.put("profileChecksPassed", execution.profileChecksPassed());
     data.put("validationPassed", execution.validationPassed());
@@ -138,6 +139,8 @@ public class JenaValidator implements Validator {
 
     ProfileExecution resultCollection = new ProfileExecution();
 
+    long start = new Date().getTime();
+
     this.model = model;
     this.graphSet = (JenaCoinsGraphSet) model.getCoinsGraphSet();
     this.graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
@@ -156,6 +159,8 @@ public class JenaValidator implements Validator {
 
     log.trace("\uD83D\uDC1A Will perform validation checks.");
     performValidation(resultCollection);
+
+    resultCollection.setExecutionTime(new Date().getTime() - start);
 
     return resultCollection;
   }
