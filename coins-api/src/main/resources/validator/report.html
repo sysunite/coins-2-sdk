@@ -52,9 +52,11 @@ List<ValidationQueryResult> : validationRules
 <table>
   <tr><th>name</th><td><#if filename??>📦 ${filename}<#else>not started from .ccr file</#if></td><tr>
   <tr><th>libraries</th><td>
+  <#if libraries?has_content>
   <#list 0..libraries?size-1 as i>
     📄 ${libraries[i]} (${graphs[i]})<br/>
-  </#list></td><tr>
+  </#list>
+  </#if></td><tr>
   <tr><th>attachments</th><td>
   <#if attachments?has_content>
     <#if attachments?size lt 10>
