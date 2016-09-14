@@ -244,7 +244,7 @@ public class FileManager {
         String pathPathString = pathPath.toString().toLowerCase();
 
         if(pathPathString.endsWith("bim") ||
-           pathPathString.endsWith("bim/repository") ||
+           pathPathString.endsWith("bim/repository") || pathPathString.endsWith("bim\\repository") ||
            pathPathString.endsWith("doc") ||
            pathPathString.endsWith("woa")) {
 
