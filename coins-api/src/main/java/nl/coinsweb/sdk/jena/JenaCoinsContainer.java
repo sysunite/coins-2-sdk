@@ -157,35 +157,21 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     addOntologyHeader();
     log.info("Added instance model with name "+ this.graphSet.getInstanceNamespace());
 
-
-    // Do not do this, the order is important
-//    ArrayList<String> list = FileManager.listResourceFiles("libraries");
-//    for(String item : list) {
-//      InputStream fileStream = FileManager.getResourceFileAsStream("libraries/" + item);
-//      Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, item, availableLibraryFiles);
-//      addImport(null, coreModelNamespace.toString(), loadCoreModels, loadCoreModels, false);
-//    }
-
     // Add core model
-    InputStream fileStream = getClass().getResourceAsStream("/libraries/cbim-2.0.rdf");
-    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(fileStream, "cbim-2.0.rdf", availableLibraryFiles);
+    Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/cbim-2.0.rdf"), "cbim-2.0.rdf", availableLibraryFiles);
     addImport(null, coreModelNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
     // Add core model
-    fileStream = getClass().getResourceAsStream("/libraries/units-2.0.rdf");
-    Namespace unitsNamespace = FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf", availableLibraryFiles);
+    Namespace unitsNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/units-2.0.rdf"), "units-2.0.rdf", availableLibraryFiles);
     addImport(null, unitsNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
     // Add core model
-    fileStream = getClass().getResourceAsStream("/libraries/COINSWOA.rdf");
-    Namespace woaNamespace = FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
+    Namespace woaNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/COINSWOA.rdf"), "COINSWOA.rdf", availableLibraryFiles);
     addImport(null, woaNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
     // Add core model
-    fileStream = getClass().getResourceAsStream("/libraries/BranchVersioning.rdf");
-    Namespace versioningNamespace = FileManager.copyAndRegisterLibrary(fileStream, "BranchVersioning.rdf", availableLibraryFiles);
+    Namespace versioningNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/BranchVersioning.rdf"), "BranchVersioning.rdf", availableLibraryFiles);
     addImport(null, versioningNamespace.toString(), loadCoreModels, loadCoreModels, false);
-
 
     initInjectors();
   }
@@ -308,25 +294,11 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     // Try to interpret as rdf-file
     } else {
 
-
-      // Do not do this, the order is important
-//      ArrayList<String> list = FileManager.listResourceFiles("libraries");
-//      for(String item : list) {
-//        InputStream fileStream = FileManager.getResourceFileAsStream("libraries/" + item);
-//        FileManager.copyAndRegisterLibrary(fileStream, item, availableLibraryFiles);
-//      }
-
-
       // Prepare models to be found
-      InputStream fileStream = getClass().getResourceAsStream("/libraries/cbim-2.0.rdf");
-      FileManager.copyAndRegisterLibrary(fileStream, "cbim-2.0.rdf", availableLibraryFiles);
-      fileStream = getClass().getResourceAsStream("/libraries/units-2.0.rdf");
-      FileManager.copyAndRegisterLibrary(fileStream, "units-2.0.rdf", availableLibraryFiles);
-      fileStream = getClass().getResourceAsStream("/libraries/COINSWOA.rdf");
-      FileManager.copyAndRegisterLibrary(fileStream, "COINSWOA.rdf", availableLibraryFiles);
-      fileStream = getClass().getResourceAsStream("/libraries/BranchVersioning.rdf");
-      FileManager.copyAndRegisterLibrary(fileStream, "BranchVersioning.rdf", availableLibraryFiles);
-
+      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/cbim-2.0.rdf"), "cbim-2.0.rdf", availableLibraryFiles);
+      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/units-2.0.rdf"), "units-2.0.rdf", availableLibraryFiles);
+      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/COINSWOA.rdf"), "COINSWOA.rdf", availableLibraryFiles);
+      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/BranchVersioning.rdf"), "BranchVersioning.rdf", availableLibraryFiles);
 
       log.info("Create CoinsContainer from rdf file: " + file.getName());
 
