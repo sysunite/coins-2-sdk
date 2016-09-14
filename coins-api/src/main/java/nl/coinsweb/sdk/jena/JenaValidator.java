@@ -108,6 +108,7 @@ public class JenaValidator implements Validator {
 
       Configuration cfg = new Configuration();
       cfg.setClassForTemplateLoading(nl.coinsweb.sdk.jena.JenaValidator.class, "/validator/");
+      cfg.setDefaultEncoding("UTF-8");
       Template template = cfg.getTemplate("report.html");
 
       File out;
