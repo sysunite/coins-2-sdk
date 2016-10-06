@@ -1,7 +1,7 @@
 package nl.coinsweb.sdk;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.junit.Test;
 import org.slf4j.Logger;

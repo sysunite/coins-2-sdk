@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.modelling;
 
-import com.hp.hpl.jena.vocabulary.RDFS;
+import org.apache.jena.vocabulary.RDFS;
 import nl.coinsweb.cbim.FloatProperty;
 import nl.coinsweb.sdk.AbstractCoinsObject;
 import nl.coinsweb.sdk.CoinsParty;
@@ -131,10 +131,5 @@ public class B1_CreateTreeWithoutLibrary {
     for(String parentClass : classes) {
       log.info(parentClass);
     }
-
-
-
   }
-
-
 }

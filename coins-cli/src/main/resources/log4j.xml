@@ -28,7 +28,7 @@
     <level value="WARN"/>
   </logger>
 
-  <logger name="com.hp.hpl.jena">
+  <logger name="org.apache.jena">
     <level value="WARN"/>
   </logger>
 
