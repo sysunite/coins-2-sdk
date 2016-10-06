@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:cbim-2.0="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://www.coinsweb.nl/SE.rdf#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://www.coinsweb.nl/SE.rdf">
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created with TopBraid Composer</owl:versionInfo>
+  </owl:Ontology>
+  <owl:Class rdf:ID="RequirementProperty">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="RequirementSpecification"/>
+        </owl:allValuesFrom>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#objectValue"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Requirement property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Function">
+    <rdfs:label xml:lang="en">Function</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#Function"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Assembly"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
+  </owl:Class>
+  <owl:Class rdf:ID="AspectProperty">
+    <rdfs:label xml:lang="en">Aspect property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Aspect"/>
+        </owl:allValuesFrom>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#objectValue"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="FunctionFulfilmentProperty">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Function fulfilment property</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#FunctionFulfilmentProperty"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#objectValue"/>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="FunctionFulfilment"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="VAndVActivity">
+    <rdfs:label xml:lang="en">V&amp;V activity</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="compliant"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#VAndVActivity"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Aspect">
+    <rdfs:label xml:lang="en">Aspect</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue"/>
+  </owl:Class>
+  <owl:Class rdf:about="#FunctionFulfilment">
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#toObject"/>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="PhysicalObject"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#FunctionFulfilment"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#fromObject"/>
+        <owl:allValuesFrom rdf:resource="#Function"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en">Function fulfilment</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#RequirementSpecification">
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue"/>
+    <rdfs:label xml:lang="en">Requirement specification</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#RequirementSpecification"/>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Requirement"/>
+        </owl:allValuesFrom>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#toObject"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#PhysicalObject"/>
+              <owl:Class rdf:about="#Function"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:allValuesFrom>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#fromObject"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="VAndVMethod">
+    <rdfs:label xml:lang="en">V&amp;V method</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#VAndVMethod"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="VAndVMethodProperty">
+    <rdfs:label xml:lang="en">V&amp;V method property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#VAndVMethod"/>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#objectValue"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#PhysicalObject">
+    <rdfs:label xml:lang="en">Physical object</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Assembly"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#PhysicalObject"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Requirement">
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Part"/>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Assembly"/>
+    <rdfs:label xml:lang="en">Requirement</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion"/>
+        <owl:allValuesFrom rdf:resource="#Requirement"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ConformanceStatusProperty">
+    <rdfs:label xml:lang="en">Conformance status property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="ConformanceStatus"/>
+        </owl:allValuesFrom>
+        <owl:onProperty rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#objectValue"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#ConformanceStatus">
+    <rdfs:label xml:lang="en">Conformance status</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="hasAspect">
+    <rdfs:range rdf:resource="#AspectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:domain rdf:resource="#Requirement"/>
+    <rdfs:label xml:lang="en">has aspect</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasVAndVMethod">
+    <rdfs:label xml:lang="en">has V&amp;V method</rdfs:label>
+    <rdfs:range rdf:resource="#VAndVMethod"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:domain rdf:resource="#VAndVActivity"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasFunctionFulfilment">
+    <rdfs:domain rdf:resource="#VAndVActivity"/>
+    <rdfs:label xml:lang="en">has function fulfilment</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:range rdf:resource="#FunctionFulfilmentProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasRequirement">
+    <rdfs:range rdf:resource="#RequirementProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:label xml:lang="en">has requirement</rdfs:label>
+    <rdfs:domain rdf:resource="#VAndVActivity"/>
+  </owl:ObjectProperty>
+  <owl:FunctionalProperty rdf:ID="executed">
+    <rdfs:label xml:lang="en">executed</rdfs:label>
+    <rdfs:range rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty"/>
+    <rdfs:domain rdf:resource="#VAndVActivity"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#compliant">
+    <rdfs:label xml:lang="en">has conformance status</rdfs:label>
+    <rdfs:domain rdf:resource="#VAndVActivity"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <VAndVMethod rdf:ID="Simulation">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Simulation</rdfs:label>
+  </VAndVMethod>
+  <VAndVMethod rdf:ID="DocumentReview">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Document review</rdfs:label>
+  </VAndVMethod>
+  <VAndVMethod rdf:ID="Test">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Test</rdfs:label>
+  </VAndVMethod>
+  <ConformanceStatus rdf:ID="NonCompliant">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Non compliant</rdfs:label>
+  </ConformanceStatus>
+  <Aspect rdf:ID="Environment">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Environment</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Security">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Security</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Availability">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Availability</rdfs:label>
+  </Aspect>
+  <ConformanceStatus rdf:ID="Compliant">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Compliant</rdfs:label>
+  </ConformanceStatus>
+  <VAndVMethod rdf:ID="ExpertJudgement">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Expert judgement</rdfs:label>
+  </VAndVMethod>
+  <VAndVMethod rdf:ID="Calculation">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Calculation</rdfs:label>
+  </VAndVMethod>
+  <Aspect rdf:ID="Maintainability">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Maintainability</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Reliability">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Reliability</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Politics">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Politics</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Safety">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Safety</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Economics">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Economics</rdfs:label>
+  </Aspect>
+  <Aspect rdf:ID="Health">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Health</rdfs:label>
+  </Aspect>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->

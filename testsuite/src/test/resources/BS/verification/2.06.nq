@@ -3,4 +3,4 @@
 <http://rws.com/starterkit/2.06#DateTimeProperty_Vandaag> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/2.06#> .
 <http://rws.com/starterkit/2.06#DateTimeProperty_Vandaag> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://rws.com/starterkit/2.06#> .
 <http://rws.com/starterkit/2.06#DateTimeProperty_Vandaag> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "2015-09-03T15:18:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://rws.com/starterkit/2.06#> .
-<http://rws.com/starterkit/2.06> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "2.06"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/2.06#> .
+<http://rws.com/starterkit/2.06> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "2.06" <http://rws.com/starterkit/2.06#> .
