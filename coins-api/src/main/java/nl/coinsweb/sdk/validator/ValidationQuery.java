@@ -109,6 +109,9 @@ public class ValidationQuery {
   }
 
   public String getSparqlQuery() {
+    return getSparqlQuery(true);
+  }
+  public String getSparqlQuery(boolean limit) {
 
     if(sparqlQuery == null) {
       throw new RuntimeException("Please set a <SparqlQuery>...</SparqlQuery> before the query can be returned.");
@@ -127,7 +130,12 @@ public class ValidationQuery {
 
       Writer writer = new StringWriter();
       template.process(data, writer);
-      return writer.toString();
+
+      String query = writer.toString();
+      if(limit) {
+        query += " LIMIT 50";
+      }
+      return query;
 
 
     } catch (IOException e) {

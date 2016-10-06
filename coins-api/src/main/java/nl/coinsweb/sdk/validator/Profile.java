@@ -94,10 +94,7 @@ public class Profile {
     }
   }
 
-  public static Profile loadProfile(String profileName) {
-
-
-
+  public static Profile selectProfile(String profileName) {
     if(!getProfiles().containsKey(profileName)) {
       throw new RuntimeException("The profile with name \""+profileName+"\" is not registered.");
     }
@@ -111,16 +108,7 @@ public class Profile {
     for(String filePath : filePaths) {
       if(filePath.endsWith(".profile")) {
         InputStream stream = FileManager.getResourceFileAsStream("validator/"+filePath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        Profile profile = new Profile(reader);
-        Profile.profiles.put(profile.getName(), profile);
-        log.info("Profile file "+filePath+" registered with this name: "+profile.getName());
-        try {
-          reader.close();
-          stream.close();
-        } catch (IOException e) {
-          log.error(e.getMessage(), e);
-        }
+        loadProfile(stream);
       }
     }
   }
@@ -135,10 +123,17 @@ public class Profile {
   public static Set<String> listProfiles() {
     return getProfiles().keySet();
   }
-  public static Profile loadProfile(String profileName, InputStream stream) {
+  public static Profile loadProfile(InputStream stream) {
     BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
     Profile profile = new Profile(reader);
-    getProfiles().put(profileName, profile);
+    Profile.profiles.put(profile.getName(), profile);
+    log.info("Profile file registered with this name: "+profile.getName());
+    try {
+      reader.close();
+      stream.close();
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    }
     return profile;
   }
 
