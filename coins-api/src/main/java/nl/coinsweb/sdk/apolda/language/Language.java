@@ -24,7 +24,7 @@
  **/
 package nl.coinsweb.sdk.apolda.language;
 
-import com.hp.hpl.jena.ontology.OntResource;
+import org.apache.jena.ontology.OntResource;
 
 import java.util.Arrays;
 import java.util.List;

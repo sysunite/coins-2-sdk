@@ -25,15 +25,15 @@
 package nl.coinsweb.sdk.jena;
 
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.reasoner.ValidityReport;
-import com.hp.hpl.jena.reasoner.rulesys.GenericRuleReasoner;
-import com.hp.hpl.jena.reasoner.rulesys.Rule;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.ProfileExecution;
 import nl.coinsweb.sdk.validator.Validator;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.ValidityReport;
+import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
+import org.apache.jena.reasoner.rulesys.Rule;
 
 import java.util.Iterator;
 

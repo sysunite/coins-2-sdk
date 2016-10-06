@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.owlgenerator;
 
-import com.hp.hpl.jena.ontology.OntModelSpec;
+import org.apache.jena.ontology.OntModelSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

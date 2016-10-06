@@ -24,8 +24,8 @@
  **/
 package nl.coinsweb.sdk;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.Model;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
 import nl.coinsweb.sdk.injectors.Injector;
 import org.slf4j.Logger;

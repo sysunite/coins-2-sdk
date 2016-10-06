@@ -1,7 +1,7 @@
 package nl.coinsweb.sdk.integration.modelnames;
 
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.query.Dataset;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.query.Dataset;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.integration.DatasetAsserts;

@@ -11,7 +11,7 @@
 
 
 
-  <logger name="com.hp.hpl.jena">
+  <logger name="org.apache.jena">
     <level value="INFO"/>
   </logger>
 
@@ -19,12 +19,16 @@
     <level value="INFO"/>
   </logger>
 
-  <logger name="com.hp.hpl.jena.tdb">
+  <logger name="org.apache.jena.tdb">
     <level value="INFO"/>
   </logger>
 
   <logger name="freemarker">
     <level value="WARN"/>
+  </logger>
+
+  <logger name="nl.coinsweb">
+    <level value="TRACE"/>
   </logger>
 
   <logger name="nl.rws">
