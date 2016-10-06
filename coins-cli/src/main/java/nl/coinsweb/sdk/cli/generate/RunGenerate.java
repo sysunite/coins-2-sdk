@@ -1,11 +1,36 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2016 Bouw Informatie Raad
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *
+ **/
 package nl.coinsweb.sdk.cli.generate;
 
-import com.hp.hpl.jena.ontology.OntModelSpec;
 import nl.coinsweb.sdk.CoinsParty;
-import nl.coinsweb.sdk.cli.CliOptions;
+import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
+import nl.coinsweb.sdk.jena.TDBGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
+import org.apache.commons.cli.ParseException;
+import org.apache.jena.ontology.OntModelSpec;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +53,18 @@ public class RunGenerate {
 
 
 
-  public void go(CliOptions options) {
+  public void go(String[] args) {
+
+    GenerateOptions options;
+    try {
+      options = new GenerateOptions(args);
+    } catch (ParseException e) {
+      System.out.println(e.getMessage() + "\n");
+      GenerateOptions.usage();
+      System.exit(1);
+      return;
+    }
+    Run.startLoggingToFile();
 
 
 
@@ -142,7 +178,7 @@ public class RunGenerate {
     }
 
 
-    JenaCoinsGraphSet graphSet = new JenaCoinsGraphSet("http://empty.com/");
+    TDBGraphSet graphSet = new TDBGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
 

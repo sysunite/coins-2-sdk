@@ -1,3 +1,27 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2016 Bouw Informatie Raad
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *
+ **/
 package nl.coinsweb.sdk.cli;
 
 import nl.coinsweb.sdk.cli.generate.RunGenerate;
@@ -10,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -34,12 +59,8 @@ public class Run {
   }
 
   public void go( String[] args ) {
-    go(new CliOptions(args));
-  }
 
-  protected void go( CliOptions options ) {
-
-    this.options = options;
+    this.options = new CliOptions(args);
 
     // Load version from properties file
     Properties props = new Properties();
@@ -56,69 +77,45 @@ public class Run {
 
     // Print header
     System.out.println(CliOptions.ANSI_BOLD+CliOptions.ANSI_GB_WHITE+CliOptions.ANSI_RED+")"+CliOptions.ANSI_GREEN+"}"+CliOptions.ANSI_RESET+
-                       CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (build "+buildnr+")\n");
-
-
-    if(!options.quietMode()) {
-      Logger.getRootLogger().setLevel(Level.TRACE);
-      String logFilePath = addFileAppender();
-      if (logFilePath != null) {
-        System.out.println("Logging to file " + logFilePath + "\n");
-      }
-    }
+                       CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (version "+version+", build "+buildnr+")\n");
 
 
 
 
 
 
-    if(options.printHelpOption()) {
+    if(options.viewerMode()) {
 
-      options.usage();
-
-
-
-    } else if(options.viewerMode()) {
-
-      new RunViewer().go(options);
-
-
+      new RunViewer().go(args);
 
     } else if(options.generateMode()) {
 
-      new RunGenerate().go(options);
-
-
+      new RunGenerate().go(args);
 
     } else if(options.validateMode()) {
 
-      new RunValidate().go(options);
-
-
+      new RunValidate().go(args);
 
     } else if(options.unzipMode()) {
 
-      new RunUnzip().go(options);
+      new RunUnzip().go(args);
 
+    } else if (options.mapMode()) {
 
-
-    } else if(options.mapMode()) {
-
-      new RunMap().go(options);
-
-
+      new RunMap().go(args);
 
     } else {
 
       options.usage();
 
-
-
     }
   }
 
 
-  private String addFileAppender() {
+  public static void startLoggingToFile() {
+
+    Logger.getRootLogger().setLevel(Level.TRACE);
+
 
     try {
 
@@ -129,11 +126,9 @@ public class Run {
       appender.setMaxFileSize("10MB");
       Logger.getRootLogger().addAppender(appender);
 
-
-      return System.getProperty("user.dir") + "/" + "coins-cli.log";
+      System.out.println("Logging to file " + System.getProperty("user.dir") + File.separator + "coins-cli.log" + "\n");
     } catch(IOException e) {
 
     }
-    return null;
   }
 }
