@@ -24,11 +24,11 @@
  **/
 package nl.coinsweb.sdk;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ResIterator;
-import com.hp.hpl.jena.vocabulary.OWL;
-import com.hp.hpl.jena.vocabulary.RDF;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.ResIterator;
+import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.vocabulary.RDF;
 import nl.coinsweb.sdk.exceptions.*;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.apache.commons.lang3.RandomStringUtils;

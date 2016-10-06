@@ -1,7 +1,7 @@
 package nl.coinsweb.sdk.integration.gwwusecases;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.impl.ResourceImpl;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
