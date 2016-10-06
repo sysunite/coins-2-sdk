@@ -28,8 +28,6 @@ package nl.coinsweb.sdk.validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
@@ -42,25 +40,23 @@ public class InferenceQueryResult {
   private String reference;
   private String description;
   private String sparqlQuery;
-  private Map<String, Long> triplesAdded;
   private String errorMessage;
   private long executionTime;
+
+
 
   public InferenceQueryResult(String reference,
                               String description,
                               String sparqlQuery,
-                              Map<String, Long> triplesAdded,
-                              String errorMessage,
-                              long executionTime) {
+                              String errorMessage) {
 
     // Set passed attributes
     this.id = Long.toHexString(Double.doubleToLongBits(Math.random()));
     this.reference = reference;
     this.description = description;
     this.sparqlQuery = sparqlQuery;
-    this.triplesAdded = triplesAdded;
     this.errorMessage = errorMessage;
-    this.executionTime = executionTime;
+    this.executionTime = 0l;
   }
 
 
@@ -76,11 +72,12 @@ public class InferenceQueryResult {
   public String getSparqlQuery() {
     return sparqlQuery;
   }
-  public Map<String, Long> getTriplesAdded() {
-    return triplesAdded;
-  }
   public String getErrorMessage() {
     return errorMessage;
+  }
+  public long addExecutionTime(long time) {
+    executionTime += time;
+    return executionTime;
   }
   public long getExecutionTime() {
     return executionTime;

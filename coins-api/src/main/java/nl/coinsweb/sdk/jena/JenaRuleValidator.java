@@ -28,7 +28,6 @@ package nl.coinsweb.sdk.jena;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.ProfileExecution;
-import nl.coinsweb.sdk.validator.Validator;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ValidityReport;
@@ -40,11 +39,11 @@ import java.util.Iterator;
 /**
  * @author Bastiaan Bijl
  */
-public class JenaRuleValidator implements Validator {
+public class JenaRuleValidator {
 
 
 
-  @Override
+
   public ProfileExecution execute(CoinsModel model, Profile profile) {
     return new ProfileExecution();
   }
