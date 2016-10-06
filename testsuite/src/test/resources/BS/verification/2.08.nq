@@ -3,4 +3,4 @@
 <http://rws.com/starterkit/2.08#FloatProperty_Eenkwart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/2.08#> .
 <http://rws.com/starterkit/2.08#FloatProperty_Eenkwart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://rws.com/starterkit/2.08#> .
 <http://rws.com/starterkit/2.08#FloatProperty_Eenkwart> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "0.25"^^<http://www.w3.org/2001/XMLSchema#float> <http://rws.com/starterkit/2.08#> .
-<http://rws.com/starterkit/2.08> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "2.08"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/2.08#> .
+<http://rws.com/starterkit/2.08> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "2.08" <http://rws.com/starterkit/2.08#> .

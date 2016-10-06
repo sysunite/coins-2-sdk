@@ -2,8 +2,8 @@ package nl.coinsweb.sdk.integration.validation;
 
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaValidator;
 import nl.coinsweb.sdk.validator.Profile;
+import nl.coinsweb.sdk.validator.Validator;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -33,7 +33,7 @@ public class G1_InitValidator {
     JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
 
-    JenaValidator validator = new JenaValidator(model, "COINS 2.0 Lite");
+    Validator validator = new Validator(model, "COINS 2.0 Lite");
     Set<String> profiles = Profile.listProfiles();
 
 

@@ -9,7 +9,7 @@
 <http://www.coinsweb.nl/cbim-2.0.rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf> <http://www.coinsweb.nl/cbim-2.0.rdf#creationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf> <http://www.coinsweb.nl/cbim-2.0.rdf#creator> <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf> <http://www.w3.org/2002/07/owl#versionInfo> "COINS 2.0 by COINS technical management group"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf> <http://www.w3.org/2002/07/owl#versionInfo> "COINS 2.0 by COINS technical management group" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.w3.org/2000/01/rdf-schema#comment> "Getal kenmerk"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.w3.org/2000/01/rdf-schema#comment> "FloatProperty"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -19,7 +19,7 @@
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -34,7 +34,7 @@
 <http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#NumericProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -63,11 +63,11 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#intersectionOf> $SOME_BN$ <http://www.c
 <http://www.coinsweb.nl/cbim-2.0.rdf#classCreator> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "COINS Technical Management Group"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "COINS Technical Management Group" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#creationDate> "2015-11-27T09:39:27.831"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#userID> "COINSTMG"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#userID> "COINSTMG" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#creator> <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#description> "COINS Technical Management Group"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#description> "COINS Technical Management Group" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.w3.org/2000/01/rdf-schema#comment> "Integer kenmerk"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.w3.org/2000/01/rdf-schema#comment> "IntegerProperty"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -77,7 +77,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#intersectionOf> $SOME_BN$ <http://www.c
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#IntegerProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -103,7 +103,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -118,7 +118,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#UriProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -155,7 +155,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#cardinality> "1"^^<http://www.w3.org/20
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredExternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -176,7 +176,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#intersectionOf> $SOME_BN$ <http://www.c
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -235,7 +235,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#InternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -252,7 +252,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#cardinality> "1"^^<http://www.w3.org/20
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -273,7 +273,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.w3.org/2000/01/rdf-schema#label> "VersionObject"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.w3.org/2000/01/rdf-schema#label> "VersieObject"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#VersionObject> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -285,7 +285,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.w3.org/2000/01/rdf-schema#label> "ComplexPropertyValue"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -307,7 +307,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SecuredInternalDocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -327,7 +327,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> $SOME_BN$ <http://w
 <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -348,7 +348,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -371,7 +371,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#SimpleProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DateTimeProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -388,7 +388,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentationProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -406,7 +406,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#intersectionOf> $SOME_BN$ <http://www.c
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -427,7 +427,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#intersectionOf> $SOME_BN$ <http://www.c
 <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -448,7 +448,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -461,7 +461,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -482,7 +482,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#cardinality> "2"^^<http://www.w3.org/20
 <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -513,7 +513,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelationGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -529,7 +529,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.w3.org/2000/01/rdf-schema#label> "Vector"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Vector> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -547,7 +547,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CartesianLocator> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -567,7 +567,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#DirectedConnection> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -616,7 +616,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#unionOf> $SOME_BN$ <http://www.coinsweb
 <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -646,7 +646,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -660,7 +660,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.w3.org/2000/01/rdf-schema#label> "Concept"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.w3.org/2000/01/rdf-schema#label> "Concept"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2002/07/owl#Thing> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -697,7 +697,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.w3.org/2000/01/rdf-schema#label> "Vormrepresentatie"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#DocumentReference> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ShapeRepresentation> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -718,7 +718,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.w3.org/2000/01/rdf-schema#label> "Persoon"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Person> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -736,7 +736,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#unionOf> $SOME_BN$ <http://www.coinsweb
 <http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#BooleanProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -763,7 +763,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#unionOf> $SOME_BN$ <http://www.coinsweb
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ContainsRelation> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -776,7 +776,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#unionOf> $SOME_BN$ <http://www.coinsweb
 <http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.w3.org/2000/01/rdf-schema#label> "Part"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.w3.org/2000/01/rdf-schema#label> "Onderdeel"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Part> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -787,7 +787,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#unionOf> $SOME_BN$ <http://www.coinsweb
 <http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.w3.org/2000/01/rdf-schema#label> "Assembly"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.w3.org/2000/01/rdf-schema#label> "Assembly"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Assembly> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -820,7 +820,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://www.coinswe
 <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Entity> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -982,7 +982,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> $SOME_BN$ <http://w
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#EntityProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -1016,7 +1016,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.w3.org/2000/01/rdf-schema#label> "Locator"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexPropertyValue> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Locator> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -1133,7 +1133,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.coinsweb.nl/
 <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.w3.org/2000/01/rdf-schema#label> "Organisation"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Party> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#Organisation> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -1236,7 +1236,7 @@ $SOME_BN$ <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> $SOME_BN$ <http://w
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.w3.org/2000/01/rdf-schema#label> "ExpiredEntity"@en-GB <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.w3.org/2000/01/rdf-schema#label> "VerlopenEntiteit"@nl-NL <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Concept> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreationDate> "2016-04-04T12:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
@@ -1271,7 +1271,7 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.w3.org/2001/
 <http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#ComplexProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.w3.org/2002/07/owl#equivalentClass> $SOME_BN$ <http://www.coinsweb.nl/cbim-2.0.rdf#> .
-<http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0RC10"^^<http://www.w3.org/2001/XMLSchema#string> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
+<http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classVersionID> "v1.0RC10" <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassExtendable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#isClassAbstract> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> <http://www.coinsweb.nl/cbim-2.0.rdf#> .
 <http://www.coinsweb.nl/cbim-2.0.rdf#LocatorProperty> <http://www.coinsweb.nl/cbim-2.0.rdf#classCreator> <http://www.coinsweb.nl/cbim-2.0.rdf#COINSTechnicalManagementGroup> <http://www.coinsweb.nl/cbim-2.0.rdf#> .

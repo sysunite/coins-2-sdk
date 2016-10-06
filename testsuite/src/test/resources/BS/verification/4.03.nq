@@ -3,10 +3,10 @@
 <http://rws.com/starterkit/4.03#Connection_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#Connection> <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03#FoundationPlate_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/MyLibrary#FoundationPlate> <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03#FoundationPlate_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/4.03#> .
-<http://rws.com/starterkit/4.03#FoundationPlate_1> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "FoundationPlate_1"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/4.03#> .
+<http://rws.com/starterkit/4.03#FoundationPlate_1> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "FoundationPlate_1" <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03#Object_Column_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03#Object_Column_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/MyLibrary#Column> <http://rws.com/starterkit/4.03#> .
-<http://rws.com/starterkit/4.03#Object_Column_1> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Column1"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/4.03#> .
+<http://rws.com/starterkit/4.03#Object_Column_1> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Column1" <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/4.03#> .
 <http://custom.library.com#Column> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://custom.library.com#> .
@@ -15,5 +15,5 @@
 <http://custom.library.com#FoundationPlate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://custom.library.com#> .
 <http://custom.library.com#FoundationPlate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#CataloguePart> <http://custom.library.com#> .
 <http://custom.library.com#FoundationPlate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://custom.library.com#> .
-<http://rws.com/starterkit/4.03> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "4.03"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/4.03#> .
+<http://rws.com/starterkit/4.03> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "4.03" <http://rws.com/starterkit/4.03#> .
 <http://rws.com/starterkit/4.03> <http://www.w3.org/2002/07/owl#imports> <http://custom.library.com#> <http://rws.com/starterkit/4.03#> .

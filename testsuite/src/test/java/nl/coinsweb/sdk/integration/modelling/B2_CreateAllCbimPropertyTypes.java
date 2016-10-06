@@ -8,7 +8,7 @@ import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
+import nl.coinsweb.sdk.jena.TDBGraphSet;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ public class B2_CreateAllCbimPropertyTypes {
 
     boolean contains = false;
 
-    JenaCoinsGraphSet graphSet = new JenaCoinsGraphSet("http://empty.com/");
+    TDBGraphSet graphSet = new TDBGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
 

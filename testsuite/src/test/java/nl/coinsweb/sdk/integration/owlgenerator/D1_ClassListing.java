@@ -3,7 +3,7 @@ package nl.coinsweb.sdk.integration.owlgenerator;
 import org.apache.jena.ontology.OntModelSpec;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
+import nl.coinsweb.sdk.jena.TDBGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class D1_ClassListing {
     // Generate java code in one place
     ClassGenerateEngine engine = new ClassGenerateEngine();
 
-    JenaCoinsGraphSet graphSet = new JenaCoinsGraphSet("http://empty.com/");
+    TDBGraphSet graphSet = new TDBGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM_RDFS_INF);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
 

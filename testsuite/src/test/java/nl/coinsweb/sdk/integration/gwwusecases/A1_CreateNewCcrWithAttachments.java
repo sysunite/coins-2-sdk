@@ -148,7 +148,7 @@ public class A1_CreateNewCcrWithAttachments {
 //  @Test
 //  public void createCcrWithAttachmentTDB() {
 //    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-//    CoinsGraphSet graphSet = new TDBCoinsGraphSet("http://www.example.com/");
+//    CoinsGraphSet graphSet = new TDBStoreGraphSet("http://www.example.com/");
 //    createCcrWithAttachment(new JenaCoinsContainer(defaultPerson, graphSet, true));
 //  }
 

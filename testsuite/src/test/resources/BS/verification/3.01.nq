@@ -2,5 +2,5 @@
 <http://rws.com/starterkit/3.01> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/3.01#> .
 <http://rws.com/starterkit/3.01#Object_Zitbank> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/3.01#> .
 <http://rws.com/starterkit/3.01#Object_Zitbank> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://rws.com/starterkit/3.01#> .
-<http://rws.com/starterkit/3.01#Object_Zitbank> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Zitbank"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.01#> .
-<http://rws.com/starterkit/3.01> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "3.01"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.01#> .
+<http://rws.com/starterkit/3.01#Object_Zitbank> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Zitbank" <http://rws.com/starterkit/3.01#> .
+<http://rws.com/starterkit/3.01> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "3.01" <http://rws.com/starterkit/3.01#> .
