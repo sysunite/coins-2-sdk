@@ -24,23 +24,30 @@
  **/
 package nl.coinsweb.sdk.jena;
 
-import com.hp.hpl.jena.ontology.OntDocumentManager;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFWriter;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.tdb.TDBFactory;
+
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.Namespace;
+import nl.coinsweb.sdk.validator.*;
+import org.apache.jena.ontology.OntDocumentManager;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.RDFWriter;
+import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.tdb.TDBFactory;
+import org.apache.jena.update.UpdateAction;
+import org.apache.jena.update.UpdateRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
+
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
  *
@@ -52,16 +59,16 @@ import java.util.*;
  *
  * @author Bastian Bijl
  */
-public class JenaCoinsGraphSet implements CoinsGraphSet {
+public class TDBGraphSet implements CoinsGraphSet {
 
-  private static final Logger log = LoggerFactory.getLogger(JenaCoinsGraphSet.class);
+  private static final Logger log = LoggerFactory.getLogger(TDBGraphSet.class);
 
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
   OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM;
 
-  private Namespace instanceNamespace;
-  private Model instanceModel;
+  protected Namespace instanceNamespace;
+  protected Model instanceModel;
 
   public static final String INSTANCE_GRAPH = "http://coinsweb.nl/INSTANCE_GRAPH";
   public static final String WOA_GRAPH = "http://coinsweb.nl/WOA_GRAPH";
@@ -69,14 +76,19 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   public static final String SCHEMA_UNION_GRAPH = "http://coinsweb.nl/SCHEMA_UNION_GRAPH";
   public static final String FULL_UNION_GRAPH = "http://coinsweb.nl/FULL_UNION_GRAPH";
 
+
+
   public Namespace woaNamespace = new Namespace("http://woa.coinsweb.nl/");
-  private Model woaModel;
+  protected Model woaModel;
 
-  private Map<Namespace, Model> libraryModels;
+  protected Map<Namespace, Model> libraryModels;
+
+  protected Dataset dataset = null;
+  protected Dataset validationDataset = null;
 
 
 
-  public JenaCoinsGraphSet(String namespace) {
+  public TDBGraphSet(String namespace) {
     this.instanceNamespace = new Namespace(namespace);
     this.libraryModels = new HashMap<>();
     this.instanceModel = getEmptyModel();
@@ -148,7 +160,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
 
   @Override
   public Model getEmptyModel() {
-    return com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+    return org.apache.jena.rdf.model.ModelFactory.createDefaultModel();
   }
 
   @Override
@@ -227,7 +239,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     OntModelSpec modelSpec = ontModelSpec;
     modelSpec.setDocumentManager(dm);
 
-    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+    OntModel result = org.apache.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;
   }
@@ -243,7 +255,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     modelSpec.setDocumentManager(dm);
     modelSpec.setReasoner(reasoner);
 
-    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+    OntModel result = org.apache.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;
   }
@@ -293,33 +305,52 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getDataset() {
+    if(dataset == null) {
+      dataset = rebuildDataset();
+    }
+    return dataset;
+  }
+  public Dataset rebuildDataset() {
 
 
-    Dataset dataset = getEmptyDataset();
+    dataset = getEmptyDataset();
 
-    refreshModel(dataset, instanceNamespace.toString(), instanceModel);
-    refreshModel(dataset, woaNamespace.toString(), woaModel);
+    updateModel(dataset, instanceNamespace.toString(), instanceModel);
+    updateModel(dataset, woaNamespace.toString(), woaModel);
     for(Namespace ns : libraryModels.keySet()) {
-      refreshModel(dataset, ns.toString(), libraryModels.get(ns));
+      updateModel(dataset, ns.toString(), libraryModels.get(ns));
     }
     return dataset;
   }
 
-  public Dataset getDatasetWithUnionGraphs() {
 
+  @Override
+  public Dataset getValidationDataset() {
+    if(validationDataset == null) {
+      validationDataset = rebuildValidationDataset();
+    }
+    return validationDataset;
+  }
+  public Dataset rebuildValidationDataset() {
 
-    Dataset dataset = getEmptyDataset();
+    log.info("arrange dataset with union graphs");
 
-    refreshModel(dataset, INSTANCE_GRAPH, instanceModel);
-    refreshModel(dataset, WOA_GRAPH, woaModel);
-    refreshModel(dataset, SCHEMA_GRAPH, getSchemaModel());
-    refreshModel(dataset, SCHEMA_UNION_GRAPH, getSchemaUnionModel());
-    refreshModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+    validationDataset = getEmptyDataset();
 
-    return dataset;
+    updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
+    updateModel(validationDataset, WOA_GRAPH, woaModel);
+//    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
+    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaUnionModel());
+//    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+
+    log.info("done arranging");
+
+    return validationDataset;
   }
 
-  void refreshModel(Dataset dataset, String ns, Model model) {
+  public void updateModel(Dataset dataset, String ns, Model model) {
+
+    log.info("update model "+ns);
     if(dataset.containsNamedModel(ns)) {
       dataset.replaceNamedModel(ns, model);
     } else {
@@ -327,19 +358,23 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
     }
   }
 
-  public static Map<String, Long> numTriples(Dataset dataset) {
+  public Map<String, Long> numTriples(Dataset dataset) {
     HashMap<String, Long> result = new HashMap<>();
+    result.put(InferenceExecution.TOTAL_NUM, 0l);
     Iterator<String> graphNameIterator = dataset.listNames();
     while(graphNameIterator.hasNext()) {
       String graphName = graphNameIterator.next();
-      result.put(graphName, dataset.getNamedModel(graphName).size());
+      long size = dataset.getNamedModel(graphName).size();
+      result.put(graphName, size);
+      result.put(InferenceExecution.TOTAL_NUM, result.get(InferenceExecution.TOTAL_NUM) + size);
     }
     return result;
   }
 
-  public static Map<String, Long> numTriples(Dataset dataset, Map<String, Long> oldValues) {
+  public Map<String, Long> diffNumTriples(Map<String, Long> oldValues, Map<String, Long> newValues) {
     HashMap<String, Long> result = new HashMap<>();
-    Iterator<String> graphNameIterator = dataset.listNames();
+
+    Iterator<String> graphNameIterator = newValues.keySet().iterator();
     while(graphNameIterator.hasNext()) {
       String graphName = graphNameIterator.next();
 
@@ -349,7 +384,7 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
       } else {
         oldValue = 0l;
       }
-      Long newValue = dataset.getNamedModel(graphName).size();
+      Long newValue = newValues.get(graphName);
       result.put(graphName, newValue - oldValue);
     }
     return result;
@@ -435,6 +470,124 @@ public class JenaCoinsGraphSet implements CoinsGraphSet {
   @Override
   public void writeFullToFile(Dataset dataset, OutputStream output, RDFFormat format) {
     RDFDataMgr.write(output, dataset, format);
+  }
+
+
+
+  @Override
+  public void insert(InferenceQuery query, InferenceQueryResult result) {
+
+    validationDataset = getValidationDataset();
+
+    long start = new Date().getTime();
+    String queryString = query.getSparqlQuery();
+
+//    log.info("will perform insert query:");
+//    log.info(queryString);
+
+    try {
+
+      UpdateRequest request = new UpdateRequest();
+      request.add(queryString);
+      UpdateAction.execute(request, validationDataset);
+
+    } catch (QueryException e) {
+      throw new RuntimeException("There is a problem with this query: " + queryString, e);
+    }
+
+    long executionTime = new Date().getTime() - start;
+    result.addExecutionTime(executionTime);
+  }
+
+  @Override
+  public ValidationQueryResult select(ValidationQuery validationQuery) {
+
+    String errorMessage = null;
+    boolean passed;
+    long start = new Date().getTime();
+    String queryString = validationQuery.getSparqlQuery();
+    Iterator<Map<String, String>> resultSet = null;
+    ArrayList<String> formattedResults = new ArrayList<>();
+
+    try {
+
+      List<Map<String, String>> result = new ArrayList<>();
+
+      Query query = QueryFactory.create(queryString);
+
+      // Execute the query and obtain results
+      QueryExecution qe = QueryExecutionFactory.create(query, getValidationDataset());
+      ResultSet results = qe.execSelect();
+
+      passed = !results.hasNext();
+
+      // Output query results
+      while (results.hasNext()) {
+
+        HashMap<String, String> resultRow = new HashMap();
+
+        QuerySolution row = results.next();
+
+        Iterator columnNames = row.varNames();
+        while(columnNames.hasNext()) {
+          String columnName = (String) columnNames.next();
+          RDFNode item = row.get(columnName);
+          if(item.isAnon()) {
+            resultRow.put(columnName, "BLANK");
+          }
+          if(item.isResource()) {
+            String value = item.asResource().getURI();
+            if(value == null) {
+              value = "NULL";
+            }
+            resultRow.put(columnName, value);
+          } else if(item.isLiteral()) {
+            String value = item.asLiteral().getLexicalForm();
+            if(value == null) {
+              value = "NULL";
+            }
+            resultRow.put(columnName, value);
+          } else {
+            resultRow.put(columnName, "NOT INTERPRETED");
+            log.warn("Skipping a result from the query.");
+          }
+        }
+
+        formattedResults.add(validationQuery.formatResult(resultRow));
+
+        result.add(resultRow);
+      }
+
+      resultSet = result.iterator();
+
+      // Important - free up resources used running the query
+      qe.close();
+
+      if(passed) {
+        log.trace("query found no results, passed");
+      } else {
+        log.trace("! results where found, not passing");
+
+      }
+
+    } catch (QueryParseException e) {
+
+      errorMessage = "Problem executing query: ";
+      errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
+      passed = false;
+    }
+
+    long executionTime = new Date().getTime() - start;
+    return new ValidationQueryResult(validationQuery.getReference(), validationQuery.getDescription(), queryString, resultSet, formattedResults, passed, errorMessage, executionTime);
+  }
+
+  @Override
+  public int numTriples(String graph) {
+    int sum = 0;
+    for(Long num : numTriples(getValidationDataset()).values()) {
+      sum += num;
+    }
+    return sum;
   }
 
 }
