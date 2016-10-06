@@ -1,16 +1,16 @@
 package nl.coinsweb.sdk.integration.modelnames;
 
-import org.apache.jena.ontology.OntModelSpec;
-import org.apache.jena.query.Dataset;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
+import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBGraphSet;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.query.Dataset;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +27,14 @@ import static org.junit.Assert.assertTrue;
  */
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class H1_Getters {
+public class H2_Fuseki {
 
-  protected static final Logger log = LoggerFactory.getLogger(H1_Getters.class);
+  protected static final Logger log = LoggerFactory.getLogger(H2_Fuseki.class);
 
-  @Test
+//  @Test
   public void modelNames() {
 
-    TDBGraphSet graphSet = new TDBGraphSet("http://playground.com/");
+    TDBGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, true);
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());

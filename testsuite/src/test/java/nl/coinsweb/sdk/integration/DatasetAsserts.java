@@ -62,7 +62,7 @@ public class DatasetAsserts {
 
 
       String line = null;
-      log.error("lines from coinsmodel was not found in verification file:");
+      log.error("lines from coinsmodel were not found in verification file:");
       while ((line = normalizeBlankNode(reader.readLine())) != null) {
         if(!verificationLines.containsKey(line)) {
           log.error(line);

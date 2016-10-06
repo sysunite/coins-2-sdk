@@ -4,10 +4,11 @@ import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
+import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
-import nl.coinsweb.sdk.jena.JenaValidator;
-import nl.coinsweb.sdk.jena.TDBCoinsGraphSet;
+import nl.coinsweb.sdk.jena.TDBGraphSet;
+import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
+import nl.coinsweb.sdk.validator.Validator;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -68,7 +69,7 @@ public class G2_StarterKitValidation {
     }
 
     ArrayList<File> verifyFiles = new ArrayList<>();
-    verifyFiles.add(IntegrationHelper.getResourceFile("BS", "verification/" + "4.01" + ".nq"));
+    verifyFiles.add(IntegrationHelper.getResourceFile("BS", "verification/4.01.nq"));
     verifyFiles.add(IntegrationHelper.getResourceFile("BS", "verification/cbim-2.0.nq"));
     assertTrue(DatasetAsserts.verifyCompleteContent(model, verifyFiles.iterator()));
 
@@ -204,10 +205,26 @@ public class G2_StarterKitValidation {
   @Test
   public void readRdfFile_tdb_4_01() {
 
-    JenaCoinsGraphSet graphSet = new TDBCoinsGraphSet("http://playground.com/");
+    TDBGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
     JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
     validate(model, "report_tdb_4.01.html");
+  }
+//  @Test
+  public void readRdfFile_fuseki_4_01() {
+
+    TDBGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
+    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
+    validate(model, "report_fuseki_4.01.html");
+  }
+//  @Test
+  public void readRdfFile_fuseki_4_01_lite() {
+
+    TDBGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
+    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
+    model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
+    validate(model, "report_tdb_4.01.html", "COINS 2.0 Litening Fast");
   }
 
 
@@ -221,9 +238,20 @@ public class G2_StarterKitValidation {
 
 
 //  @Test
+  public void readRdfFile_fuseki_performanceCheck() {
+
+    log.trace("will start performance tests on fuseki");
+    TDBGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
+    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
+    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+    validate(model, "report_fuseki_PerfContCOINS2.0.html");
+  }
+
+
+//  @Test
   public void readRdfFile_tdb_performanceCheck() {
 
-    JenaCoinsGraphSet graphSet = new TDBCoinsGraphSet("http://playground.com/");
+    TDBGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
     JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
     validate(model, "report_tdb_PerfContCOINS2.0.html");
@@ -233,21 +261,13 @@ public class G2_StarterKitValidation {
 
 
   public void validate(JenaCoinsContainer model, String reportFileName) {
+    validate(model, reportFileName, "COINS 2.0 Lite");
+  }
+  public void validate(JenaCoinsContainer model, String reportFileName, String profileName) {
 
     Path reportFile = Paths.get("/tmp/"+reportFileName);
 
-
-    JenaValidator validator = new JenaValidator(model, "COINS 2.0 Lite");
+    Validator validator = new Validator(model, profileName);
     validator.validate(reportFile);
-
-//    String reportHtml;
-//    try {
-//      reportHtml = new String(Files.readAllBytes(reportFile), StandardCharsets.UTF_8);
-//      System.out.println(reportHtml);
-//    } catch (IOException e) {
-//      log.error(e.getMessage(), e);
-//    }
-
   }
-
 }

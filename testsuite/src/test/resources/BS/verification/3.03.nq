@@ -12,10 +12,10 @@
 <http://rws.com/starterkit/3.03#Zitbank_staat_op_Perron_verbinding> <http://www.coinsweb.nl/cbim-2.0.rdf#nextTrunkVersion> <http://rws.com/starterkit/3.03#Zitbank_staat_naast_Perron_verbinding> <http://rws.com/starterkit/3.03#> .
 <http://rws.com/starterkit/3.03> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/3.03#> .
 <http://rws.com/starterkit/3.03> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/3.03#> .
-<http://rws.com/starterkit/3.03> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "3.03"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.03#> .
+<http://rws.com/starterkit/3.03> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "3.03" <http://rws.com/starterkit/3.03#> .
 <http://rws.com/starterkit/3.03#Object_Perron> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/3.03#> .
 <http://rws.com/starterkit/3.03#Object_Perron> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://rws.com/starterkit/3.03#> .
-<http://rws.com/starterkit/3.03#Object_Perron> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Perron"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.03#> .
+<http://rws.com/starterkit/3.03#Object_Perron> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Perron" <http://rws.com/starterkit/3.03#> .
 <http://rws.com/starterkit/3.03#Object_Zitbank> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#CoinsContainerObject> <http://rws.com/starterkit/3.03#> .
 <http://rws.com/starterkit/3.03#Object_Zitbank> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#Object> <http://rws.com/starterkit/3.03#> .
-<http://rws.com/starterkit/3.03#Object_Zitbank> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Zitbank"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/3.03#> .
+<http://rws.com/starterkit/3.03#Object_Zitbank> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Zitbank" <http://rws.com/starterkit/3.03#> .
