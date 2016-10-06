@@ -121,7 +121,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, loadCoreModels);
   }
   public JenaCoinsContainer(CoinsParty party, String namespace, boolean loadCoreModels) {
-    this(party, new JenaCoinsGraphSet(namespace), loadCoreModels);
+    this(party, new TDBGraphSet(namespace), loadCoreModels);
   }
   public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels) {
 
@@ -192,7 +192,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.party.setModel(this);
 
 
-    this.graphSet = new JenaCoinsGraphSet(namespace);
+    this.graphSet = new TDBGraphSet(namespace);
 
     // Load an existing
     this.load(filePath);

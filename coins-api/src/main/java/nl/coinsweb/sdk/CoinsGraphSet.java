@@ -24,6 +24,11 @@
  **/
 package nl.coinsweb.sdk;
 
+
+import nl.coinsweb.sdk.validator.InferenceQuery;
+import nl.coinsweb.sdk.validator.InferenceQueryResult;
+import nl.coinsweb.sdk.validator.ValidationQuery;
+import nl.coinsweb.sdk.validator.ValidationQueryResult;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
@@ -33,6 +38,7 @@ import org.apache.jena.riot.RDFFormat;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Map;
+
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -159,7 +165,11 @@ public interface CoinsGraphSet {
 
   public Dataset getDataset();
 
-  public Dataset getDatasetWithUnionGraphs();
+  public Dataset rebuildDataset();
+
+  public Dataset getValidationDataset();
+
+  public Dataset rebuildValidationDataset();
 
   public void writeModelToFile(Model model, OutputStream output, RDFFormat format);
 
@@ -167,5 +177,18 @@ public interface CoinsGraphSet {
 
   public void writeFullToFile(OutputStream output, RDFFormat format);
   public void writeFullToFile(Dataset dataset, OutputStream output, RDFFormat format);
+
+
+
+
+  // Querying
+
+
+
+  //  public void insert(String sparql);
+  public void insert(InferenceQuery query, InferenceQueryResult result);
+  //  public void select(String sparql, String description);
+  public ValidationQueryResult select(ValidationQuery validationQuery);
+  public int numTriples(String graph);
 
 }
