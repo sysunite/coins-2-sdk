@@ -33,40 +33,26 @@ import java.util.*;
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
-public class ProfileExecution {
+public class InferenceExecution {
 
-  private static final Logger log = LoggerFactory.getLogger(ProfileExecution.class);
+  private static final Logger log = LoggerFactory.getLogger(InferenceExecution.class);
 
-
-
-  private boolean profileChecksPassed = false;
-  private boolean validationPassed = false;
-  private long executionTime;
+  public static final String TOTAL_NUM = "TOTAL_NUM";
 
 
-  private List<ValidationQueryResult> profileChecks = new ArrayList<>();
-  private List<ValidationQueryResult> validationRules = new ArrayList<>();
+  private long executionTime = -1l;
 
-  private InferenceExecution schemaInferences = new InferenceExecution();
-  private InferenceExecution dataInferences = new InferenceExecution();
+  private int numRuns;
+  private Map<String, Long> triplesAdded;
 
-  public ProfileExecution() {
-
-
+  private List<InferenceQueryResult> inferences = new ArrayList<>();
+  public InferenceExecution() {
+    this.numRuns = 0;
+    this.triplesAdded = new HashMap<>();
+    this.triplesAdded.put(TOTAL_NUM, 0l);
   }
 
-  public void setProfileChecksPassed(boolean passed) {
-    this.profileChecksPassed = passed;
-  }
-  public boolean profileChecksPassed() {
-    return this.profileChecksPassed;
-  }
-  public void setValidationPassed(boolean passed) {
-    this.validationPassed = passed;
-  }
-  public boolean validationPassed() {
-    return this.validationPassed;
-  }
+
   public void setExecutionTime(long executionTime) {
     this.executionTime = executionTime;
   }
@@ -74,25 +60,35 @@ public class ProfileExecution {
     return executionTime;
   }
 
-  public void addProfileCheckResult(ValidationQueryResult queryResult) {
-    profileChecks.add(queryResult);
-  }
-  public List<ValidationQueryResult> getProfileCheckResults() {
-    return profileChecks;
+
+  public List<InferenceQueryResult> getQueryResults() {
+    return inferences;
   }
 
-  public InferenceExecution getSchemaInferenceResults() {
-    return schemaInferences;
+  public int addNumRuns(int c ) {
+    numRuns += c;
+    return numRuns;
+  }
+  public int getNumRuns() {
+    return numRuns;
   }
 
-  public InferenceExecution getDataInferenceResults() {
-    return dataInferences;
-  }
+  public void addTriplesAdded(Map<String, Long> counts) {
+    Iterator<String> graphNameIterator = counts.keySet().iterator();
+    while(graphNameIterator.hasNext()) {
+      String graphName = graphNameIterator.next();
 
-  public void addValidationRuleResult(ValidationQueryResult queryResult) {
-    validationRules.add(queryResult);
+      Long oldValue;
+      if(triplesAdded.containsKey(graphName)) {
+        oldValue = triplesAdded.get(graphName);
+      } else {
+        oldValue = 0l;
+      }
+      Long diff = counts.get(graphName);
+      triplesAdded.put(graphName, oldValue + diff);
+    }
   }
-  public List<ValidationQueryResult> getValidationRuleResults() {
-    return validationRules;
+  public Map<String, Long> getTriplesAdded() {
+    return triplesAdded;
   }
 }

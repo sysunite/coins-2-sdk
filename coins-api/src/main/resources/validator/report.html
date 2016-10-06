@@ -36,13 +36,13 @@ String                      : libraries
 String                      : graphs
 String                      : attachments
 String                      : date
+long                        : executionTime
 String                      : profileName
 boolean                     : profileChecksPassed
 boolean                     : validationPassed
-long                        : executionTime
 List<ValidationQueryResult> : profileChecks
-List<InferenceQueryResult>  : schemaInferences
-List<InferenceQueryResult>  : dataInferences
+InferenceExecution          : schemaInferences
+InferenceExecution          : dataInferences
 List<ValidationQueryResult> : validationRules
 
 -->
@@ -75,6 +75,8 @@ List<ValidationQueryResult> : validationRules
       </div>
       <div onclick="document.getElementById('attachment_list').className+=' active';">show all...</div>
     </#if>
+  <#else>
+    <i>none</i>
   </#if>
 </td><tr>
   <tr><th>date</th><td>${date}</td><tr>
@@ -199,22 +201,46 @@ List<ValidationQueryResult> : validationRules
 
 
 
-<h2>2. Details data inferences</h2>
+<h2>2. Details schema inferences</h2>
 
-<#list dataInferences as query>
+<p>Adding schema inferences was done in ${schemaInferences.numRuns} runs and took ${schemaInferences.executionTime} ms.</p>
+<p>Per graph this number of triples were added:
+<table border="1">
+  <#assign keys = schemaInferences.triplesAdded?keys>
+    <#list keys as row>
+      <tr>
+        <td>${row}</td>
+        <td>${schemaInferences.triplesAdded[row]}</td>
+      </tr>
+    </#list>
+</table>
+
+<#list schemaInferences.queryResults as query>
   <a name="${query.id}"></a>
   <h4>${query.reference}</h4>
   <p>${query.description}</p>
-  <p>${query.executionTime} ms</p>
-  <table border="1">
-    <#assign keys = query.triplesAdded?keys>
-      <#list keys as row>
-        <tr>
-          <td>${row}</td>
-          <td>${query.triplesAdded[row]?c}</td>
-        </tr>
-      </#list>
-  </table>
+  <p>All the runs combined this inference query took ${query.executionTime} ms.</p>
+</#list>
+
+<h2>3. Details data inferences</h2>
+
+<p>Adding data inferences was done in ${dataInferences.numRuns} runs and took ${dataInferences.executionTime} ms.</p>
+<p>Per graph this number of triples were added:
+<table border="1">
+  <#assign keys = dataInferences.triplesAdded?keys>
+    <#list keys as row>
+      <tr>
+        <td>${row}</td>
+        <td>${dataInferences.triplesAdded[row]}</td>
+      </tr>
+    </#list>
+</table>
+
+<#list dataInferences.queryResults as query>
+  <a name="${query.id}"></a>
+  <h4>${query.reference}</h4>
+  <p>${query.description}</p>
+  <p>All the runs combined this inference query took ${query.executionTime} ms.</p>
 </#list>
 
 
@@ -229,26 +255,6 @@ List<ValidationQueryResult> : validationRules
 
 
 
-
-
-
-<h2>3. Details schema inferences</h2>
-
-<#list schemaInferences as query>
-  <a name="${query.id}"></a>
-  <h4>${query.reference}</h4>
-  <p>${query.description}</p>
-  <p>${query.executionTime} ms</p>
-  <table border="1">
-    <#assign keys = query.triplesAdded?keys>
-      <#list keys as row>
-        <tr>
-          <td>${row}</td>
-          <td>${query.triplesAdded[row]}</td>
-        </tr>
-      </#list>
-  </table>
-</#list>
 
 
 
