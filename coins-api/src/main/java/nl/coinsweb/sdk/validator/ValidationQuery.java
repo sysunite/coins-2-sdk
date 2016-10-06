@@ -30,7 +30,7 @@ import freemarker.core.InvalidReferenceException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import nl.coinsweb.sdk.jena.JenaCoinsGraphSet;
+import nl.coinsweb.sdk.jena.TDBGraphSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,12 +118,12 @@ public class ValidationQuery {
       Template template = cfg.getTemplate("sparqlQuery");
 
       Map<String, String> data = new HashMap<>();
-      data.put("INSTANCE_GRAPH", "<"+ JenaCoinsGraphSet.INSTANCE_GRAPH +">");
-      data.put("WOA_GRAPH", "<"+ JenaCoinsGraphSet.WOA_GRAPH +">");
-      data.put("CORE_GRAPH", "<"+ JenaCoinsGraphSet.SCHEMA_GRAPH +">");
-      data.put("SCHEMA_GRAPH", "<"+ JenaCoinsGraphSet.SCHEMA_GRAPH +">");
-      data.put("SCHEMA_UNION_GRAPH", "<"+ JenaCoinsGraphSet.SCHEMA_UNION_GRAPH +">");
-      data.put("FULL_UNION_GRAPH", "<"+ JenaCoinsGraphSet.FULL_UNION_GRAPH +">");
+      data.put("INSTANCE_GRAPH", "<"+ TDBGraphSet.INSTANCE_GRAPH +">");
+      data.put("WOA_GRAPH", "<"+ TDBGraphSet.WOA_GRAPH +">");
+      data.put("CORE_GRAPH", "<"+ TDBGraphSet.SCHEMA_GRAPH +">");
+      data.put("SCHEMA_GRAPH", "<"+ TDBGraphSet.SCHEMA_GRAPH +">");
+      data.put("SCHEMA_UNION_GRAPH", "<"+ TDBGraphSet.SCHEMA_UNION_GRAPH +">");
+      data.put("FULL_UNION_GRAPH", "<"+ TDBGraphSet.FULL_UNION_GRAPH +">");
 
       Writer writer = new StringWriter();
       template.process(data, writer);
