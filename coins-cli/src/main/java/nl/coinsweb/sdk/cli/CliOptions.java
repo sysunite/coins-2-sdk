@@ -1,7 +1,29 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2016 Bouw Informatie Raad
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *
+ **/
 package nl.coinsweb.sdk.cli;
 
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import nl.coinsweb.sdk.owlgenerator.Utils;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +32,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -40,17 +64,27 @@ public class CliOptions {
   public static final String ANSI_GB_CYAN   = "\u001B[46m";
   public static final String ANSI_GB_WHITE  = "\u001B[47m";
 
-  public static final String JENA_ENCODINGS  = "RDF/XML | RDF/XML-ABBREV | N-TRIPLE | TURTLE | TTL | N3";
+  public static final String bold(String input) {
+    return CliOptions.ANSI_BOLD + input + CliOptions.ANSI_RESET;
+  }
 
 
 
+
+
+  private String modeString = null;
 
 
 
   /** Print usage message and abort */
   protected void usage() {
     HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "coins-cli [ unzip | viewer | map | generate | validate ]", options );
+    formatter.printHelp(
+        "\n " + bold("coins-cli") + " " + bold("unzip") +
+        "\n " + bold("coins-cli") + " " + bold("viewer") +
+        "\n " + bold("coins-cli") + " " + bold("map") +
+        "\n " + bold("coins-cli") + " " + bold("generate") +
+        "\n " + bold("coins-cli") + " " + bold("validate"), new Options() );
 
   }
 
@@ -59,52 +93,54 @@ public class CliOptions {
 
 
   public boolean viewerMode() {
-    if(cmd.getArgList().isEmpty()) {
-      return false;
-    }
-    return "viewer".equals(cmd.getArgList().get(0));
+    return "viewer".equals(modeString);
   }
   public boolean unzipMode() {
-    if(cmd.getArgList().isEmpty()) {
-      return false;
-    }
-    return "unzip".equals(cmd.getArgList().get(0));
+    return "unzip".equals(modeString);
   }
   public boolean mapMode() {
-    if(cmd.getArgList().isEmpty()) {
-      return false;
-    }
-    return "map".equals(cmd.getArgList().get(0));
+    return "map".equals(modeString);
   }
   public boolean generateMode() {
-    if(cmd.getArgList().isEmpty()) {
-      return false;
-    }
-    return "generate".equals(cmd.getArgList().get(0));
+    return "generate".equals(modeString);
   }
   public boolean validateMode() {
-    if(cmd.getArgList().isEmpty()) {
-      return false;
+    return "validate".equals(modeString);
+  }
+
+  // Constructor
+  public CliOptions(String[] args) {
+
+    if(args.length > 0) {
+      modeString = args[0];
     }
-    return "validate".equals(cmd.getArgList().get(0));
   }
 
 
 
 
 
-  private Path resolvePath(String path) {
+
+
+
+
+
+
+
+
+
+  public static Path resolvePath(String path) {
     try {
       return Paths.get(new File(".").getCanonicalPath()).resolve(path);
     } catch (IOException e) {
       return null;
     }
   }
-  private List<String> breakSemicolonSeparated(String path) {
+  public static List<String> breakSemicolonSeparated(String path) {
     return Arrays.asList(path.split(";"));
   }
 
-  private List<Path> resolvePaths(List<String> paths) {
+  public static List<Path> resolvePaths(List<String> paths) {
     List<Path> result = new ArrayList<>();
     try {
       for(String path : paths) {
@@ -116,70 +152,4 @@ public class CliOptions {
   }
 
 
-  // Instance variables
-  /** The list of command line arguments */
-  private Options options;
-  private CommandLineParser parser = new DefaultParser();
-  CommandLine cmd;
-
-
-
-  // Constructor
-  public CliOptions(String[] args) {
-
-    options = new Options();
-    options.addOption("e", true, "the encoding of the output file: "+JENA_ENCODINGS);
-    options.addOption("h", "help", false, "print help");
-
-    options.addOption(new Option("jar", false, "create jars"));
-    options.addOption(new Option("jarto", true, "create jars and place them in the specified folder"));
-    options.addOption(new Option("sources", false, "include sources in the jar"));
-
-    options.addOption(new Option("dll", false, "create dlls"));
-    options.addOption(new Option("dllto", true, "create dlls and place them in the specified folder"));
-
-    Option input = new Option("i", true, "input file");
-    input.setArgs(Option.UNLIMITED_VALUES);
-    options.addOption(input);
-    options.addOption("a", true, "pointer to coins-api.dll, needed for the code generator");
-    options.addOption("o", true, "output file");
-    options.addOption("order", true, "namespaces to set order of generation (for generating dlls, the order is important, no backward dependency is allowed)");
-    options.addOption("r", true, "use jena reasoner (e.g. OWL_MEM, OWL_MEM_RDFS_INF, ...)");
-    options.addOption("q", false, "quiet, no output to the console");
-    options.addOption("v", false, "verbose logging");
-
-
-    try {
-      cmd = parser.parse( options, args);
-    } catch (ParseException e) {
-      System.out.println("failed to initiate");
-      e.printStackTrace();
-    }
-  }
-
-
-
-  // External interface methods
-  public boolean quietMode() { return cmd.hasOption("q"); }
-  public boolean printHelpOption() { return cmd.hasOption("h"); }
-  public boolean hasEncodingOption() { return cmd.hasOption("e"); }
-  public boolean hasIncludeSourcesOption() { return cmd.hasOption("sources"); }
-  public String getEncodingOption() { return cmd.getOptionValue("e"); }
-  public boolean hasJarOption() { return cmd.hasOption("jar"); }
-  public boolean hasJarPathOption() { return cmd.hasOption("jarto"); }
-  public Path getJarPathOption() { return resolvePath(cmd.getOptionValue("jarto")); }
-  public boolean hasDllOption() { return cmd.hasOption("dll"); }
-  public boolean hasDllPathOption() { return cmd.hasOption("dllto"); }
-  public Path getDllPathOption() { return resolvePath(cmd.getOptionValue("dllto")); }
-  public boolean hasOrderOption() { return cmd.hasOption("order") && !getOrderOptions().isEmpty(); }
-  public List<String> getOrderOptions() { return breakSemicolonSeparated(cmd.getOptionValue("order")); }
-  public boolean hasInputOption() { return cmd.hasOption("i") && !getInputOptions().isEmpty(); }
-  public List<Path> getInputOptions() { return resolvePaths(Arrays.asList(cmd.getOptionValues("i"))); }
-  public boolean hasReasonerOption() { return cmd.hasOption("r"); }
-  public String getReasonerString() { return cmd.getOptionValue("r"); }
-  public OntModelSpec getReasonerOption() { return Utils.reasonerFromString(cmd.getOptionValue("r")); }
-  public boolean hasApiPathOption() { return cmd.hasOption("a"); }
-  public Path getApiPathOption() { return resolvePath(cmd.getOptionValue("a")); }
-  public boolean hasOutputOption() { return cmd.hasOption("o"); }
-  public Path getOutputOption() { return resolvePath(cmd.getOptionValue("o")); }
 }

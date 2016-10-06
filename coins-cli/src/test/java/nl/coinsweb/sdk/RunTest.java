@@ -54,23 +54,5 @@ public class RunTest {
 
 
 
-  //  @Test
-  public void runSchemaGen() {
 
-    File file = new File(getClass().getClassLoader().getResource("Cbim-2.0-RC17.rdf").getFile());
-
-    String[] args = {
-        "--inference",
-        "-i",                    file.getAbsolutePath(),
-        "--classSection",        "    /** CLASSES **/",
-        "--individualsSection",  "    /** INDIVIDUALS **/",
-        "--datatypesSection",    "    /** DATATYPES **/",
-        "--propSection",         "    /** PROPERTIES **/",
-        "-e",                    "RDF/XML",
-        "-o",                    "coins-workbench/target/generated-sources/java",
-        "-n",                    "CbimCore"
-    };
-    jena.schemagen.main(args);
-
-  }
 }
