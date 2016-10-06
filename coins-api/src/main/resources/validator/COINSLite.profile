@@ -496,7 +496,7 @@ Graph ${SCHEMA_UNION_GRAPH}{
 
 Reference COINS-minCar
 Description "minimal cardinality constraint validation"
-ResultFormat " ${this} has ${aantal} properties of <property>.  The minimum is ${min}. "
+ResultFormat " ${this} has ${aantal} properties of ${property}.  The minimum is ${min}. "
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -560,7 +560,7 @@ filter((?aantal<?min) || (?aantal>?min) )
 
 Reference COINS-maxCar
 Description "maximum cardinality constraint validation"
-ResultFormat " ${this} has ${aantal} properties of <property>.  The maximum is ${min}. "
+ResultFormat " ${this} has ${aantal} properties of ${property}.  The maximum is ${min}. "
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -796,7 +796,7 @@ Graph ${INSTANCE_GRAPH}{
 
 Reference COINS-dom
 Description "Domain als een restrictie"
-ResultFormat "individual ${a} has a property {prop} with value ${b}. ${a} is not of the type ${domain} "
+ResultFormat "individual ${a} has a property ${prop} with value ${b}. ${a} is not of the type ${domain} "
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
