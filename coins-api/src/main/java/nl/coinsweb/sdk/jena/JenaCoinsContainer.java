@@ -39,6 +39,7 @@ import org.apache.jena.rdf.model.*;
 import org.apache.jena.rdf.model.impl.PropertyImpl;
 import org.apache.jena.rdf.model.impl.ResourceImpl;
 import org.apache.jena.rdf.model.impl.StatementImpl;
+import org.apache.jena.system.JenaSystem;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
@@ -73,6 +74,11 @@ import java.util.*;
 public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoinsModel {
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
+
+  // init jena 3
+  static {
+    JenaSystem.DEBUG_INIT = true;
+    JenaSystem.setSubsystemRegistry(new JenaSubsystemRegistryHard());}
 
 
   private String internalRef;      // pointer for use in FileManager
