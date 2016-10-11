@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.owlgenerator;
 
-import org.apache.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBGraphSet;

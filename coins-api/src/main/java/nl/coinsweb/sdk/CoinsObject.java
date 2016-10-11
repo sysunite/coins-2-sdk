@@ -24,7 +24,7 @@
  **/
 package nl.coinsweb.sdk;
 
-import org.apache.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Model;
 
 import java.util.Iterator;
 import java.util.Set;

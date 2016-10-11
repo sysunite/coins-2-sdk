@@ -24,9 +24,9 @@
  **/
 package nl.coinsweb.sdk.jena;
 
-import org.apache.jena.query.Dataset;
-import org.apache.jena.tdb.TDB;
-import org.apache.jena.tdb.TDBFactory;
+import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.tdb.TDB;
+import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;

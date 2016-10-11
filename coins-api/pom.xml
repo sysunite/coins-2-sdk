@@ -26,8 +26,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>1.7</source>
+          <target>1.7</target>
           <debug>true</debug>
         </configuration>
       </plugin>
@@ -76,7 +76,7 @@
           <!--<shadedArtifactAttached>false</shadedArtifactAttached>-->
           <transformers>
             <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-              <!--<mainClass>org.apache.jena.fuseki.cmd.FusekiCmd</mainClass>-->
+              <!--<mainClass>com.hp.hpl.jena.fuseki.cmd.FusekiCmd</mainClass>-->
             <!--</transformer>-->
             <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
             <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />-->

@@ -24,27 +24,26 @@
  **/
 package nl.coinsweb.sdk.jena;
 
-import org.apache.jena.datatypes.RDFDatatype;
-import org.apache.jena.datatypes.TypeMapper;
-import org.apache.jena.datatypes.xsd.XSDDatatype;
-import org.apache.jena.datatypes.xsd.XSDDateTime;
-import org.apache.jena.graph.Node;
-import org.apache.jena.graph.Triple;
-import org.apache.jena.ontology.Individual;
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntProperty;
-import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.*;
-import org.apache.jena.rdf.model.impl.PropertyImpl;
-import org.apache.jena.rdf.model.impl.ResourceImpl;
-import org.apache.jena.rdf.model.impl.StatementImpl;
-import org.apache.jena.system.JenaSystem;
-import org.apache.jena.util.iterator.ExtendedIterator;
-import org.apache.jena.vocabulary.OWL;
-import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.RDFS;
-import org.apache.jena.vocabulary.XSD;
+import com.hp.hpl.jena.datatypes.RDFDatatype;
+import com.hp.hpl.jena.datatypes.TypeMapper;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.rdf.model.impl.PropertyImpl;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.rdf.model.impl.StatementImpl;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.vocabulary.OWL;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.vocabulary.XSD;
 import nl.coinsweb.sdk.*;
 import nl.coinsweb.sdk.apolda.impl.XSDAnySimpleTypeLiteral;
 import nl.coinsweb.sdk.apolda.iterator.SparqlPropertyDeclarationIterator;
@@ -74,11 +73,6 @@ import java.util.*;
 public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoinsModel {
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
-
-  // init jena 3
-  static {
-    JenaSystem.DEBUG_INIT = true;
-    JenaSystem.setSubsystemRegistry(new JenaSubsystemRegistryHard());}
 
 
   private String internalRef;      // pointer for use in FileManager

@@ -24,10 +24,10 @@
  **/
 package nl.coinsweb.sdk;
 
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import org.apache.jena.riot.RDFFormat;
 

@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.modelling;
 
-import org.apache.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import nl.coinsweb.cbim.FloatProperty;
 import nl.coinsweb.sdk.AbstractCoinsObject;
 import nl.coinsweb.sdk.CoinsParty;
