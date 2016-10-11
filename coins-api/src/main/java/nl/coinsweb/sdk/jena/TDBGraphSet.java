@@ -25,22 +25,22 @@
 package nl.coinsweb.sdk.jena;
 
 
+import com.hp.hpl.jena.ontology.OntDocumentManager;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.RDFWriter;
+import com.hp.hpl.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.tdb.TDBFactory;
+import com.hp.hpl.jena.update.UpdateAction;
+import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.validator.*;
-import org.apache.jena.ontology.OntDocumentManager;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntModelSpec;
-import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.RDFWriter;
-import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
-import org.apache.jena.tdb.TDBFactory;
-import org.apache.jena.update.UpdateAction;
-import org.apache.jena.update.UpdateRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,7 +160,7 @@ public class TDBGraphSet implements CoinsGraphSet {
 
   @Override
   public Model getEmptyModel() {
-    return org.apache.jena.rdf.model.ModelFactory.createDefaultModel();
+    return com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
   }
 
   @Override
@@ -239,7 +239,7 @@ public class TDBGraphSet implements CoinsGraphSet {
     OntModelSpec modelSpec = ontModelSpec;
     modelSpec.setDocumentManager(dm);
 
-    OntModel result = org.apache.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;
   }
@@ -255,7 +255,7 @@ public class TDBGraphSet implements CoinsGraphSet {
     modelSpec.setDocumentManager(dm);
     modelSpec.setReasoner(reasoner);
 
-    OntModel result = org.apache.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;
   }

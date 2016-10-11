@@ -1,9 +1,9 @@
 package nl.coinsweb.sdk.integration;
 
-import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;

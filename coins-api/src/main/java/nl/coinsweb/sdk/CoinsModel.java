@@ -24,7 +24,7 @@
  **/
 package nl.coinsweb.sdk;
 
-import org.apache.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Model;
 import nl.coinsweb.sdk.injectors.Injector;
 
 import java.util.ArrayList;

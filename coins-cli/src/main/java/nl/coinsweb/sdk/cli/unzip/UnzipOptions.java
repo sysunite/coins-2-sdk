@@ -27,7 +27,7 @@ package nl.coinsweb.sdk.cli.unzip;
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.owlgenerator.Utils;
 import org.apache.commons.cli.*;
-import org.apache.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
