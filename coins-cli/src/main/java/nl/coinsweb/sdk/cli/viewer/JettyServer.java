@@ -24,13 +24,13 @@
  **/
 package nl.coinsweb.sdk.cli.viewer;
 
-import org.apache.jena.graph.Node;
-import org.apache.jena.graph.Triple;
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.impl.ResourceImpl;
-import org.apache.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.ExpertCoinsModel;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.apolda.language.Language;

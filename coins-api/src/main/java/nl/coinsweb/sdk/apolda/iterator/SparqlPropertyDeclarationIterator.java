@@ -24,13 +24,13 @@
  **/
 package nl.coinsweb.sdk.apolda.iterator;
 
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntProperty;
-import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.impl.ResourceImpl;
-import org.apache.jena.util.iterator.ClosableIterator;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.util.iterator.ClosableIterator;
 import nl.coinsweb.sdk.apolda.language.Language;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.apolda.ontology.impl.PropertyDeclarationImpl;

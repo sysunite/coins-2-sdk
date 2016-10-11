@@ -1,8 +1,8 @@
 package nl.coinsweb.sdk.integration.modelling;
 
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModelSpec;
-import org.apache.jena.util.iterator.ExtendedIterator;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.integration.DatasetAsserts;

@@ -32,8 +32,8 @@ import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBGraphSet;
-import org.apache.jena.ontology.OntModelSpec;
-import org.apache.jena.query.Dataset;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.query.Dataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

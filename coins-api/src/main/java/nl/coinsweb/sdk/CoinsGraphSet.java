@@ -29,10 +29,10 @@ import nl.coinsweb.sdk.validator.InferenceQuery;
 import nl.coinsweb.sdk.validator.InferenceQueryResult;
 import nl.coinsweb.sdk.validator.ValidationQuery;
 import nl.coinsweb.sdk.validator.ValidationQueryResult;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.query.Dataset;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.reasoner.Reasoner;
 import org.apache.jena.riot.RDFFormat;
 
 import java.io.OutputStream;

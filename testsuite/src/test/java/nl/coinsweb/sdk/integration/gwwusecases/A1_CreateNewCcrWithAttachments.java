@@ -1,8 +1,8 @@
 package nl.coinsweb.sdk.integration.gwwusecases;
 
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.impl.ResourceImpl;
-import org.apache.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import nl.coinsweb.cbim.InternalDocumentReference;
 import nl.coinsweb.cbim.StringProperty;
 import nl.coinsweb.sdk.*;

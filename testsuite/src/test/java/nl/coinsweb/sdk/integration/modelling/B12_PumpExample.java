@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.modelling;
 
-import org.apache.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Model;
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
 import nl.coinsweb.sdk.integration.DatasetAsserts;

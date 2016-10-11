@@ -30,8 +30,8 @@ import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 import org.apache.commons.cli.ParseException;
-import org.apache.jena.ontology.OntModelSpec;
-import org.apache.jena.tdb.TDB;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.tdb.TDB;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -221,8 +221,8 @@ public class RunGenerate {
 
     TDB.init();
 
-    log.info("javac -target 1.8  -source 1.8 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
-    runCli("javac -target 1.8  -source 1.8 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
+    log.info("javac -target 1.7  -source 1.7 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
+    runCli("javac -target 1.7  -source 1.7 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
 
     if(!doJar) {
       return;

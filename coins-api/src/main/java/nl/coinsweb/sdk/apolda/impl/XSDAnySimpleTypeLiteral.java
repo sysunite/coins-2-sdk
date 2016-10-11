@@ -24,9 +24,9 @@
  **/
 package nl.coinsweb.sdk.apolda.impl;
 
-import org.apache.jena.datatypes.RDFDatatype;
-import org.apache.jena.datatypes.TypeMapper;
-import org.apache.jena.rdf.model.Literal;
+import com.hp.hpl.jena.datatypes.RDFDatatype;
+import com.hp.hpl.jena.datatypes.TypeMapper;
+import com.hp.hpl.jena.rdf.model.Literal;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
 
 /**

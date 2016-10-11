@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.performance;
 
-import org.apache.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;

@@ -134,10 +134,10 @@
                   generate
 
 
-                  -i ${basedir}/../coins-api/src/main/resources/cbim-2.0.rdf
-                     ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
-                     ${basedir}/../coins-api/src/main/resources/BranchVersioning.rdf
-                     ${basedir}/../coins-api/src/main/resources/COINSWOA.rdf
+                  -i ${basedir}/../coins-api/src/main/resources/libraries/cbim-2.0.rdf
+                     ${basedir}/../coins-api/src/main/resources/libraries/units-2.0.rdf
+                     ${basedir}/../coins-api/src/main/resources/libraries/BranchVersioning.rdf
+                     ${basedir}/../coins-api/src/main/resources/libraries/COINSWOA.rdf
                   -o ${basedir}/../tmp/generated-sources/java
                   -order http://qudt.org/schema/qudt#;http://www.coinsweb.nl/cbim-2.0.rdf#;http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#;http://www.coinsweb.nl/COINSWOA.rdf#
                   -jarto ${basedir}/../dist/library/jar
@@ -190,15 +190,70 @@
                     generate
 
                     -a ${basedir}/../dist/sdk/dll/coins-api.dll
-                    -i ${basedir}/../coins-api/src/main/resources/cbim-2.0.rdf
-                       ${basedir}/../coins-api/src/main/resources/units-2.0.rdf
-                       ${basedir}/../coins-api/src/main/resources/BranchVersioning.rdf
-                       ${basedir}/../coins-api/src/main/resources/COINSWOA.rdf
+                    -i ${basedir}/../coins-api/src/main/resources/libraries/cbim-2.0.rdf
+                       ${basedir}/../coins-api/src/main/resources/libraries/units-2.0.rdf
+                       ${basedir}/../coins-api/src/main/resources/libraries/BranchVersioning.rdf
+                       ${basedir}/../coins-api/src/main/resources/libraries/COINSWOA.rdf
                     -o ${basedir}/../tmp/generated-sources/java
                     -order http://qudt.org/schema/qudt#;http://www.coinsweb.nl/cbim-2.0.rdf#;http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#;http://www.coinsweb.nl/COINSWOA.rdf#
                     -jarto ${basedir}/../dist/library/jar
                     -dllto ${basedir}/../dist/library/dll
                     -sources
+
+                  </commandlineArgs>
+                </configuration>
+              </execution>
+
+
+
+
+
+            </executions>
+          </plugin>
+
+
+        </plugins>
+      </build>
+
+    </profile>
+    <profile>
+      <id>generate se library</id>
+
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+
+      <build>
+        <plugins>
+
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+
+
+
+              <execution>
+                <id>generate se</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>
+                    coins-cli
+                  </executable>
+                  <commandlineArgs>
+                    generate
+
+                    -a ${basedir}/../dist/sdk/dll/coins-api.dll
+                    -i ${basedir}/../testsuite/src/test/resources/B15/SE.rdf
+                    -o ${basedir}/../tmp/generated-sources/java
+                    -jarto ${basedir}/../testsuite/lib
+                    -dllto ${basedir}/../testsuite/dll
+                    -sources
+
 
                   </commandlineArgs>
                 </configuration>
