@@ -720,7 +720,7 @@ filter(?aantal>1)
 
 Reference COINS-DTVC
 Description "Datatype check"
-ResultFormat " ${value} is of the type ${?dat} which is not valid for ${prop} for individual ${a}. It should be a ${range}. "
+ResultFormat " ${value} is of the type ${dat} which is not valid for ${prop} for individual ${a}. It should be a ${range}. "
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
