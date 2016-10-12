@@ -91,7 +91,7 @@ public class RunValidate {
 
       try {
         File profileFile = options.getCustomProfile().toFile();
-        Profile profile = Profile.loadProfile(new FileInputStream(profileFile));     // todo handle errorous content
+        Profile profile = Profile.loadProfile(new FileInputStream(profileFile));
         profileName = profile.getName();
       } catch (FileNotFoundException e) {
         System.out.println("custom profile file was not found");
