@@ -24,27 +24,27 @@
  **/
 package nl.coinsweb.sdk.jena;
 
-import nl.coinsweb.sdk.CoinsGraphSet;
-import nl.coinsweb.sdk.Namespace;
-import nl.coinsweb.sdk.validator.*;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.update.UpdateExecutionFactory;
 import com.hp.hpl.jena.update.UpdateFactory;
 import com.hp.hpl.jena.update.UpdateRequest;
+import nl.coinsweb.sdk.CoinsGraphSet;
+import nl.coinsweb.sdk.Namespace;
+import nl.coinsweb.sdk.validator.InferenceExecution;
+import nl.coinsweb.sdk.validator.InferenceQuery;
+import nl.coinsweb.sdk.validator.InferenceQueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Bastiaan Bijl
  */
-public class FusekiGraphSet extends TDBGraphSet implements CoinsGraphSet {
+public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   private static final Logger log = LoggerFactory.getLogger(FusekiGraphSet.class);
 
@@ -75,7 +75,7 @@ public class FusekiGraphSet extends TDBGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getEmptyDataset() {
-    return TDBFactory.createDataset();
+    return null;
   }
 
 
@@ -83,37 +83,41 @@ public class FusekiGraphSet extends TDBGraphSet implements CoinsGraphSet {
 
 
   @Override
+  public Dataset getDataset() {
+    return null;
+  }
+  @Override
   public Dataset rebuildDataset() {
 
 
-    dataset = getEmptyDataset();
+
 
     updateModel(dataset, instanceNamespace.toString(), instanceModel);
     updateModel(dataset, woaNamespace.toString(), woaModel);
     for(Namespace ns : libraryModels.keySet()) {
       updateModel(dataset, ns.toString(), libraryModels.get(ns));
     }
-    return dataset;
+    return null;
   }
 
 
+  @Override
+  public Dataset getValidationDataset() {
+    return null;
+  }
   @Override
   public Dataset rebuildValidationDataset() {
 
     log.info("arrange dataset with union graphs");
 
-
-    validationDataset = getEmptyDataset();
-
     updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
     updateModel(validationDataset, WOA_GRAPH, woaModel);
-//    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
-    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaUnionModel());
-//    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
+    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     log.info("done arranging");
 
-    return validationDataset;
+    return null;
   }
 
   @Override
@@ -156,83 +160,8 @@ public class FusekiGraphSet extends TDBGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public ValidationQueryResult select(ValidationQuery validationQuery) {
-
-    String errorMessage = null;
-    boolean passed;
-    long start = new Date().getTime();
-    String queryString = validationQuery.getSparqlQuery();
-    Iterator<Map<String, String>> resultSet = null;
-    ArrayList<String> formattedResults = new ArrayList<>();
-
-    try {
-
-
-      List<Map<String, String>> result = new ArrayList<>();
-
-
-
-      // Execute the query and obtain results
-      ResultSet results = QueryExecutionFactory.sparqlService(sparqlEndPointQ, queryString).execSelect();
-
-      passed = !results.hasNext();
-
-      // Output query results
-      while (results.hasNext()) {
-
-        HashMap<String, String> resultRow = new HashMap();
-
-        QuerySolution row = results.next();
-
-        Iterator columnNames = row.varNames();
-        while(columnNames.hasNext()) {
-          String columnName = (String) columnNames.next();
-          RDFNode item = row.get(columnName);
-          if(item.isAnon()) {
-            resultRow.put(columnName, "BLANK");
-          }
-          if(item.isResource()) {
-            String value = item.asResource().getURI();
-            if(value == null) {
-              value = "NULL";
-            }
-            resultRow.put(columnName, value);
-          } else if(item.isLiteral()) {
-            String value = item.asLiteral().getLexicalForm();
-            if(value == null) {
-              value = "NULL";
-            }
-            resultRow.put(columnName, value);
-          } else {
-            resultRow.put(columnName, "NOT INTERPRETED");
-            log.warn("Skipping a result from the query.");
-          }
-        }
-
-        formattedResults.add(validationQuery.formatResult(resultRow));
-
-        result.add(resultRow);
-      }
-
-      resultSet = result.iterator();
-
-
-      if(passed) {
-        log.trace("query found no results, passed");
-      } else {
-        log.trace("! results where found, not passing");
-
-      }
-
-    } catch (QueryParseException e) {
-
-      errorMessage = "Problem executing query: ";
-      errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
-      passed = false;
-    }
-
-    long executionTime = new Date().getTime() - start;
-    return new ValidationQueryResult(validationQuery.getReference(), validationQuery.getDescription(), queryString, resultSet, formattedResults, passed, errorMessage, executionTime);
+  public ResultSet getResultSet(String queryString) {
+    return QueryExecutionFactory.sparqlService(sparqlEndPointQ, queryString).execSelect();
   }
 
   @Override
