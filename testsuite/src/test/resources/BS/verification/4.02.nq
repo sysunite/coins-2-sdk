@@ -1,6 +1,6 @@
 <http://rws.com/starterkit/4.02#Column300_1> <http://custom.library.com#hasHeight> <http://rws.com/starterkit/4.02#FloatProperty_Height10> <http://rws.com/starterkit/4.02#> .
 <http://rws.com/starterkit/4.02#Column300_1> <http://custom.library.com#hasProfile> <http://rws.com/starterkit/MyLibrary#StringProperty_Profile300> <http://rws.com/starterkit/4.02#> .
-<http://rws.com/starterkit/4.02#Column300_1> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Column300_1" <http://rws.com/starterkit/4.02#> .
+<http://rws.com/starterkit/4.02#Column300_1> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Column300_1"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/4.02#> .
 <http://rws.com/starterkit/4.02#Column300_1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rws.com/starterkit/MyLibrary#Column300> <http://rws.com/starterkit/4.02#> .
 <http://custom.library.com#hasHeight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> <http://custom.library.com#> .
 <http://custom.library.com#hasHeight> <http://www.w3.org/2000/01/rdf-schema#domain> <http://custom.library.com#Column> <http://custom.library.com#> .
@@ -13,9 +13,9 @@
 <http://custom.library.com#hasProfile> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.coinsweb.nl/cbim-2.0.rdf#hasProperties> <http://custom.library.com#> .
 <http://rws.com/starterkit/4.02> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> <http://rws.com/starterkit/4.02#> .
 <http://rws.com/starterkit/4.02> <http://www.w3.org/2002/07/owl#imports> <http://www.coinsweb.nl/cbim-2.0.rdf> <http://rws.com/starterkit/4.02#> .
-<http://custom.library.com#StringProperty_Profile400> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Profile400" <http://custom.library.com#> .
+<http://custom.library.com#StringProperty_Profile400> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Profile400"^^<http://www.w3.org/2001/XMLSchema#string> <http://custom.library.com#> .
 <http://custom.library.com#StringProperty_Profile400> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://custom.library.com#> .
-<http://custom.library.com#StringProperty_Profile400> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "400" <http://custom.library.com#> .
+<http://custom.library.com#StringProperty_Profile400> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "400"^^<http://www.w3.org/2001/XMLSchema#string> <http://custom.library.com#> .
 <http://custom.library.com#Column300> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://custom.library.com#> .
 <http://custom.library.com#Column300> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://custom.library.com#Column> <http://custom.library.com#> .
 <http://custom.library.com#Column300> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://custom.library.com#> .
@@ -32,8 +32,8 @@ $SOME_BN$ <http://www.w3.org/2002/07/owl#hasValue> <http://custom.library.com#St
 <http://custom.library.com#Column400> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> <http://custom.library.com#> .
 <http://custom.library.com#Column400> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://custom.library.com#Column> <http://custom.library.com#> .
 <http://custom.library.com#Column400> <http://www.w3.org/2000/01/rdf-schema#subClassOf> $SOME_BN$ <http://custom.library.com#> .
-<http://custom.library.com#StringProperty_Profile300> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Profile300" <http://custom.library.com#> .
+<http://custom.library.com#StringProperty_Profile300> <http://www.coinsweb.nl/cbim-2.0.rdf#name> "Profile300"^^<http://www.w3.org/2001/XMLSchema#string> <http://custom.library.com#> .
 <http://custom.library.com#StringProperty_Profile300> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty> <http://custom.library.com#> .
-<http://custom.library.com#StringProperty_Profile300> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "300" <http://custom.library.com#> .
-<http://rws.com/starterkit/4.02> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "4.02" <http://rws.com/starterkit/4.02#> .
+<http://custom.library.com#StringProperty_Profile300> <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> "300"^^<http://www.w3.org/2001/XMLSchema#string> <http://custom.library.com#> .
+<http://rws.com/starterkit/4.02> <http://www.coinsweb.nl/cbim-2.0.rdf#containerId> "4.02"^^<http://www.w3.org/2001/XMLSchema#string> <http://rws.com/starterkit/4.02#> .
 <http://rws.com/starterkit/4.02> <http://www.w3.org/2002/07/owl#imports> <http://custom.library.com#> <http://rws.com/starterkit/4.02#> .
