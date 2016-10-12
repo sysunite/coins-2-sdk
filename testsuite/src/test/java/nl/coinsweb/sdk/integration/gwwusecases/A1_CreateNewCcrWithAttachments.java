@@ -236,9 +236,6 @@ public class A1_CreateNewCcrWithAttachments {
     assertTrue(ZipAsserts.containsFiles(new File("/tmp/coinstest/onelineofrdf.zip"), rdfZipContent, false));
 
 
-    FileManager.destroy(ccr.getInternalRef());
-
-
     // Reopen the ccr
     JenaCoinsContainer ccr2 = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/onelineofrdf.zip", "http://www.example.com/");
     ccr2.close();

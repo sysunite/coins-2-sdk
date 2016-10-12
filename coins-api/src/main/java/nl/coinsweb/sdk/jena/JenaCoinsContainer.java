@@ -184,6 +184,9 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath, namespace);
   }
   public JenaCoinsContainer(CoinsParty party, String filePath, String namespace) {
+    this(party, new InMemGraphSet(namespace), filePath);
+  }
+  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, String filePath) {
 
 
     this.fileName = null;
@@ -192,7 +195,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.party.setModel(this);
 
 
-    this.graphSet = new InMemGraphSet(namespace);
+    this.graphSet = graphSet;
 
     // Load an existing
     this.load(filePath);

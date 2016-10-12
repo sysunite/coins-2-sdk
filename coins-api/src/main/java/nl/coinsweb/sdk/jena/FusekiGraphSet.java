@@ -113,7 +113,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
     updateModel(validationDataset, WOA_GRAPH, woaModel);
     updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
-    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+//    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     log.info("done arranging");
 

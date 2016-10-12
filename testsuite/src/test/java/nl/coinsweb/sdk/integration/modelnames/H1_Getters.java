@@ -73,7 +73,7 @@ public class H1_Getters {
     assertEquals( 199, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     assertEquals(   9, DatasetAsserts.countTriples(model.getCoinsGraphSet().getWoaModel()));
     assertEquals(1348, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaModel()));
-    assertEquals(7646, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaUnionModel()));
+    assertEquals(7646, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaAggregationModel()));
     assertEquals(7854, DatasetAsserts.countTriples(model.getCoinsGraphSet().getFullUnionModel()));
 
     Dataset dataset = model.getCoinsGraphSet().getValidationDataset();
