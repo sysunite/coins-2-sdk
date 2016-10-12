@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk;
 
 
+import com.hp.hpl.jena.query.ResultSet;
 import nl.coinsweb.sdk.validator.InferenceQuery;
 import nl.coinsweb.sdk.validator.InferenceQueryResult;
 import nl.coinsweb.sdk.validator.ValidationQuery;
@@ -188,6 +189,7 @@ public interface CoinsGraphSet {
   //  public void insert(String sparql);
   public void insert(InferenceQuery query, InferenceQueryResult result);
   //  public void select(String sparql, String description);
+  public ResultSet getResultSet(String queryString);
   public ValidationQueryResult select(ValidationQuery validationQuery);
   public int numTriples(String graph);
 

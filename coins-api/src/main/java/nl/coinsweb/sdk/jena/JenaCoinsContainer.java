@@ -121,7 +121,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, loadCoreModels);
   }
   public JenaCoinsContainer(CoinsParty party, String namespace, boolean loadCoreModels) {
-    this(party, new TDBGraphSet(namespace), loadCoreModels);
+    this(party, new InMemGraphSet(namespace), loadCoreModels);
   }
   public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels) {
 
@@ -141,7 +141,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
-    // Prepare an empty dataset
+    // Prepare an empty graphset
     if(this.graphSet.getInstanceNamespace() == null) {
       throw new InvalidNamespaceException("Please provide a namespace if an empty CoinsModel is constructed.");
     }
@@ -192,7 +192,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.party.setModel(this);
 
 
-    this.graphSet = new TDBGraphSet(namespace);
+    this.graphSet = new InMemGraphSet(namespace);
 
     // Load an existing
     this.load(filePath);
@@ -520,7 +520,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     if(!hasOntologyHeader(model)) {
       return false;
     }
-    return model.contains(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(namespace));              // todo remove instanceNamespace
+    return model.contains(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(namespace));
   }
 
 
@@ -759,12 +759,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     List<Map<String, String>> result = new ArrayList<>();
 
-    Query query = QueryFactory.create(sparqlQuery);
-
     // Execute the query and obtain results
-    Dataset dataset = graphSet.getDataset();
-    QueryExecution qe = QueryExecutionFactory.create(query, dataset);
-    ResultSet results = qe.execSelect();
+    ResultSet results = graphSet.getResultSet(sparqlQuery);
 
     // Output query results
     while (results.hasNext()) {
@@ -791,9 +787,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       result.add(resultRow);
     }
-
-    // Important - free up resources used running the query
-    qe.close();
 
     // If all the files from the fileNames where in the zip archive, this list is now supposed to be emtpy
     return result.iterator();
@@ -1632,7 +1625,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public boolean hasOntologyHeader(Model model) {
-    return model.contains(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), RDF.type, OWL.Ontology));  // todo remove instanceNamespace
+    return model.contains(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), RDF.type, OWL.Ontology));
   }
 
   @Override
