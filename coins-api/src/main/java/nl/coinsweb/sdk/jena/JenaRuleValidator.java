@@ -71,7 +71,7 @@ public class JenaRuleValidator {
       throw new RuntimeException("Couldn't find a schema namespace");
     }
 
-    OntModel schemaModel = (OntModel) model.getCoinsGraphSet().getJenaOntModel(someSchemaName);      // todo: find a way to get the relevant schema
+    OntModel schemaModel = model.getCoinsGraphSet().getJenaOntModel(someSchemaName);
 
     String rules =
 
