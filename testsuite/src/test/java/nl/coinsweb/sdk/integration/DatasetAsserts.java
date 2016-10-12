@@ -5,6 +5,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -178,6 +179,22 @@ public class DatasetAsserts {
     StmtIterator iterator = model.listStatements();
     while(iterator.hasNext()) {
       log.info(iterator.next().toString());
+    }
+  }
+
+  public static void logTriples(Dataset dataset) {
+    ByteArrayOutputStream boas = new ByteArrayOutputStream();
+    RDFDataMgr.write(boas, dataset, RDFFormat.NQUADS);
+
+    try {
+      BufferedReader reader = new BufferedReader(new StringReader(boas.toString()));
+
+      String line = null;
+      while ((line = reader.readLine()) != null) {
+        log.info(line);
+      }
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
     }
   }
 }

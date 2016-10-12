@@ -238,7 +238,7 @@ public class RunGenerate {
     }
     for(String namespace : pickList) {
 
-      log.info("dealb with "+namespace);
+      log.info("deal with "+namespace);
       if(!mapping.containsKey(namespace)) {
         log.error("could not match namespace "+namespace+" derived from input files to the namespaces that where found iterating the union model");
         continue;

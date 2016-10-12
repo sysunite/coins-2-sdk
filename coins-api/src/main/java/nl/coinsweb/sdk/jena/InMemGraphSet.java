@@ -34,7 +34,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.sparql.core.DatasetImpl;
+import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.update.UpdateAction;
 import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsGraphSet;
@@ -191,10 +191,8 @@ public class InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Model getFullUnionModel() {
-
     Model nonInstanceUnion = ModelFactory.createUnion(getSchemaAggregationModel(), woaModel);
     Model fullUnion = ModelFactory.createUnion(instanceModel, nonInstanceUnion);
-
     return fullUnion;
   }
 
@@ -239,7 +237,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     OntModelSpec modelSpec = ontModelSpec;
     modelSpec.setDocumentManager(dm);
 
-    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+    OntModel result = ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;
   }
@@ -255,7 +253,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     modelSpec.setDocumentManager(dm);
     modelSpec.setReasoner(reasoner);
 
-    OntModel result = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(modelSpec, model);
+    OntModel result = ModelFactory.createOntologyModel(modelSpec, model);
 
     return result;
   }
@@ -300,7 +298,8 @@ public class InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getEmptyDataset() {
-    return new DatasetImpl(ModelFactory.createDefaultModel());
+    return TDBFactory.createDataset();
+//    return new DatasetImpl(ModelFactory.createDefaultModel());
   }
 
   @Override
@@ -339,9 +338,9 @@ public class InMemGraphSet implements CoinsGraphSet {
 
     updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
     updateModel(validationDataset, WOA_GRAPH, woaModel);
-    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
+//    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
     updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
-    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+//    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     log.info("done arranging");
 
