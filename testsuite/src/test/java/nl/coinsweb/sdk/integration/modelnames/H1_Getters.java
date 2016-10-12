@@ -7,7 +7,7 @@ import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBGraphSet;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import org.apache.jena.riot.RDFFormat;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class H1_Getters {
   @Test
   public void modelNames() {
 
-    TDBGraphSet graphSet = new TDBGraphSet("http://playground.com/");
+    InMemGraphSet graphSet = new InMemGraphSet("http://playground.com/");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, true);
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());

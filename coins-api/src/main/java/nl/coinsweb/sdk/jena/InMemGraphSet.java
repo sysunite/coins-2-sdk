@@ -30,10 +30,11 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.tdb.TDBFactory;
+import com.hp.hpl.jena.sparql.core.DatasetImpl;
 import com.hp.hpl.jena.update.UpdateAction;
 import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsGraphSet;
@@ -59,9 +60,9 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
  *
  * @author Bastian Bijl
  */
-public class TDBGraphSet implements CoinsGraphSet {
+public class InMemGraphSet implements CoinsGraphSet {
 
-  private static final Logger log = LoggerFactory.getLogger(TDBGraphSet.class);
+  private static final Logger log = LoggerFactory.getLogger(InMemGraphSet.class);
 
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
   OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
@@ -88,7 +89,7 @@ public class TDBGraphSet implements CoinsGraphSet {
 
 
 
-  public TDBGraphSet(String namespace) {
+  public InMemGraphSet(String namespace) {
     this.instanceNamespace = new Namespace(namespace);
     this.libraryModels = new HashMap<>();
     this.instanceModel = getEmptyModel();
@@ -160,7 +161,7 @@ public class TDBGraphSet implements CoinsGraphSet {
 
   @Override
   public Model getEmptyModel() {
-    return com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+    return ModelFactory.createDefaultModel();
   }
 
   @Override
@@ -175,27 +176,26 @@ public class TDBGraphSet implements CoinsGraphSet {
 
   @Override
   public Model getSchemaModel() {
-    return getModel("http://www.coinsweb.nl/cbim-2.0.rdf");      // todo: move away this uri
+    return getModel("http://www.coinsweb.nl/cbim-2.0.rdf");
   }
 
   @Override
-  public Model getSchemaUnionModel() {
+  public Model getSchemaAggregationModel() {
 
-    Model schemaUnionModel = getEmptyModel();
+    Model aggregationModel = getEmptyModel();
     for(Namespace key : libraryModels.keySet()) {
-      schemaUnionModel.add(libraryModels.get(key));
+      aggregationModel.add(libraryModels.get(key));
     }
-    return schemaUnionModel;
+    return aggregationModel;
   }
 
   @Override
   public Model getFullUnionModel() {
 
-    Model unionModel = getSchemaUnionModel();
-    unionModel.add(instanceModel);
-    unionModel.add(woaModel);
+    Model nonInstanceUnion = ModelFactory.createUnion(getSchemaAggregationModel(), woaModel);
+    Model fullUnion = ModelFactory.createUnion(instanceModel, nonInstanceUnion);
 
-    return unionModel;
+    return fullUnion;
   }
 
   @Override
@@ -300,7 +300,7 @@ public class TDBGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getEmptyDataset() {
-    return TDBFactory.createDataset();
+    return new DatasetImpl(ModelFactory.createDefaultModel());
   }
 
   @Override
@@ -339,9 +339,9 @@ public class TDBGraphSet implements CoinsGraphSet {
 
     updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
     updateModel(validationDataset, WOA_GRAPH, woaModel);
-//    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
-    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaUnionModel());
-//    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
+    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
+    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     log.info("done arranging");
 
@@ -411,7 +411,7 @@ public class TDBGraphSet implements CoinsGraphSet {
       writer.write(model, output, null);
 
     } else {
-      Dataset dataset = getDataset();                             // todo: does this make sense?
+      Dataset dataset = getDataset();
       dataset.getNamedModel(instanceNamespace.toString());
       RDFDataMgr.write(output, model, format);
     }
@@ -439,7 +439,7 @@ public class TDBGraphSet implements CoinsGraphSet {
       writer.write(model, boas, null);
 
     } else {
-      Dataset dataset = getDataset();                             // todo: does this make sense?
+      Dataset dataset = getDataset();
       dataset.getNamedModel(instanceNamespace.toString());
       RDFDataMgr.write(boas, model, format);
     }
@@ -499,6 +499,15 @@ public class TDBGraphSet implements CoinsGraphSet {
     result.addExecutionTime(executionTime);
   }
 
+
+  public ResultSet getResultSet(String queryString) {
+    Query query = QueryFactory.create(queryString);
+
+    // Execute the query and obtain results
+    QueryExecution qe = QueryExecutionFactory.create(query, getValidationDataset());
+    ResultSet result = qe.execSelect();
+    return result;
+  }
   @Override
   public ValidationQueryResult select(ValidationQuery validationQuery) {
 
@@ -513,11 +522,7 @@ public class TDBGraphSet implements CoinsGraphSet {
 
       List<Map<String, String>> result = new ArrayList<>();
 
-      Query query = QueryFactory.create(queryString);
-
-      // Execute the query and obtain results
-      QueryExecution qe = QueryExecutionFactory.create(query, getValidationDataset());
-      ResultSet results = qe.execSelect();
+      ResultSet results = getResultSet(queryString);
 
       passed = !results.hasNext();
 
@@ -534,17 +539,16 @@ public class TDBGraphSet implements CoinsGraphSet {
           RDFNode item = row.get(columnName);
           if(item.isAnon()) {
             resultRow.put(columnName, "BLANK");
-          }
-          if(item.isResource()) {
+          } else if(item.isResource()) {
             String value = item.asResource().getURI();
             if(value == null) {
-              value = "NULL";
+              value = "NON INTERPRETABLE URI";
             }
             resultRow.put(columnName, value);
           } else if(item.isLiteral()) {
             String value = item.asLiteral().getLexicalForm();
             if(value == null) {
-              value = "NULL";
+              value = "NON INTERPRETABLE LITERAL";
             }
             resultRow.put(columnName, value);
           } else {
@@ -560,8 +564,6 @@ public class TDBGraphSet implements CoinsGraphSet {
 
       resultSet = result.iterator();
 
-      // Important - free up resources used running the query
-      qe.close();
 
       if(passed) {
         log.trace("query found no results, passed");

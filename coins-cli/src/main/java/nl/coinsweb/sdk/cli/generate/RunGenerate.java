@@ -27,7 +27,7 @@ package nl.coinsweb.sdk.cli.generate;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBGraphSet;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 import org.apache.commons.cli.ParseException;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -179,7 +179,7 @@ public class RunGenerate {
     }
 
 
-    TDBGraphSet graphSet = new TDBGraphSet("http://empty.com/");
+    InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
 
