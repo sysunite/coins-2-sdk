@@ -28,6 +28,7 @@ import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
+import nl.coinsweb.sdk.FileManager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ import java.nio.file.Paths;
 /**
  * @author Bastiaan Bijl
  */
-public class TDBStoreGraphSet extends TDBGraphSet implements CoinsGraphSet {
+public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   private static final Logger log = LoggerFactory.getLogger(TDBStoreGraphSet.class);
 
@@ -61,6 +62,7 @@ public class TDBStoreGraphSet extends TDBGraphSet implements CoinsGraphSet {
     Path tempPath = Paths.get(DEFAULT_TEMP_FOLDER);
     Path path = tempPath.resolve(TDB_FOLDER + RandomStringUtils.random(8, true, true) + "/");
     path.toFile().mkdirs();
+    FileManager.foldersToCleanup.add(tempPath.resolve(TDB_FOLDER).toFile());
     this.path = path;
   }
 

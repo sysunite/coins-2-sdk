@@ -31,7 +31,7 @@ import freemarker.template.TemplateException;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.TDBGraphSet;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.Dataset;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class Validator {
   private static final Logger log = LoggerFactory.getLogger(Validator.class);
 
 
-  TDBGraphSet graphSet;
+  InMemGraphSet graphSet;
   Dataset dataset;
   Profile profile;
 
@@ -141,7 +141,7 @@ public class Validator {
     long start = new Date().getTime();
 
     this.model = model;
-    this.graphSet = (TDBGraphSet) model.getCoinsGraphSet();
+    this.graphSet = (InMemGraphSet) model.getCoinsGraphSet();
     this.graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
     this.dataset = this.graphSet.getValidationDataset();
     this.profile = profile;

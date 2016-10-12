@@ -96,7 +96,7 @@ public interface CoinsGraphSet {
 
   public Model getWoaModel();
   public Model getSchemaModel();
-  public Model getSchemaUnionModel();
+  public Model getSchemaAggregationModel();
 
   /**
    * If implemented as Jena model, return a Jena Model object containing all data (instance an library).

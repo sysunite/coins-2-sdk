@@ -29,7 +29,7 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import nl.coinsweb.sdk.jena.TDBGraphSet;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,12 +111,12 @@ public class InferenceQuery {
       Template template = cfg.getTemplate("sparqlQuery");
 
       Map<String, String> data = new HashMap<>();
-      data.put("INSTANCE_GRAPH", "<"+ TDBGraphSet.INSTANCE_GRAPH +">");
-      data.put("WOA_GRAPH", "<"+ TDBGraphSet.WOA_GRAPH +">");
-      data.put("CORE_GRAPH", "<"+ TDBGraphSet.SCHEMA_GRAPH +">");
-      data.put("SCHEMA_GRAPH", "<"+ TDBGraphSet.SCHEMA_GRAPH +">");
-      data.put("SCHEMA_UNION_GRAPH", "<"+ TDBGraphSet.SCHEMA_UNION_GRAPH +">");
-      data.put("FULL_UNION_GRAPH", "<"+ TDBGraphSet.FULL_UNION_GRAPH +">");
+      data.put("INSTANCE_GRAPH", "<"+ InMemGraphSet.INSTANCE_GRAPH +">");
+      data.put("WOA_GRAPH", "<"+ InMemGraphSet.WOA_GRAPH +">");
+      data.put("CORE_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
+      data.put("SCHEMA_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
+      data.put("SCHEMA_UNION_GRAPH", "<"+ InMemGraphSet.SCHEMA_UNION_GRAPH +">");
+      data.put("FULL_UNION_GRAPH", "<"+ InMemGraphSet.FULL_UNION_GRAPH +">");
 
       Writer writer = new StringWriter();
       template.process(data, writer);
