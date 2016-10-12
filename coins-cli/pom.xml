@@ -52,11 +52,11 @@
       <!--higher versions require java 8, this is the last one having java 7-->
       <version>9.2.14.v20151106</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.4.1</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.apache.logging.log4j</groupId>-->
+      <!--<artifactId>log4j-core</artifactId>-->
+      <!--<version>2.4.1</version>-->
+    <!--</dependency>-->
   </dependencies>
 
   <build>
@@ -96,45 +96,45 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <configuration>
-          <!--<shadedArtifactAttached>false</shadedArtifactAttached>-->
-          <transformers>
-            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-            <!--<mainClass>com.hp.hpl.jena.fuseki.cmd.FusekiCmd</mainClass>-->
-            <!--</transformer>-->
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />-->
-            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">-->
-            <!--<addHeader>false</addHeader>-->
-            <!--</transformer>-->
-          </transformers>
-          <!--<filters>-->
-          <!--<filter>-->
-          <!--<artifact>*:*</artifact>-->
-          <!--<excludes>-->
-          <!--&lt;!&ndash; Some jars are signed but shading breaks that.-->
-          <!--Don't include signing files.-->
-          <!--&ndash;&gt;-->
-          <!--<exclude>META-INF/*.SF</exclude>-->
-          <!--<exclude>META-INF/*.DSA</exclude>-->
-          <!--<exclude>META-INF/*.RSA</exclude>-->
-          <!--</excludes>-->
-          <!--</filter>-->
-          <!--</filters>-->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <!--<phase /><!- - Switch off -->
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-shade-plugin</artifactId>-->
+        <!--<configuration>-->
+          <!--&lt;!&ndash;<shadedArtifactAttached>false</shadedArtifactAttached>&ndash;&gt;-->
+          <!--<transformers>-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">&ndash;&gt;-->
+            <!--&lt;!&ndash;<mainClass>com.hp.hpl.jena.fuseki.cmd.FusekiCmd</mainClass>&ndash;&gt;-->
+            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
+            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">&ndash;&gt;-->
+            <!--&lt;!&ndash;<addHeader>false</addHeader>&ndash;&gt;-->
+            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
+          <!--</transformers>-->
+          <!--&lt;!&ndash;<filters>&ndash;&gt;-->
+          <!--&lt;!&ndash;<filter>&ndash;&gt;-->
+          <!--&lt;!&ndash;<artifact>*:*</artifact>&ndash;&gt;-->
+          <!--&lt;!&ndash;<excludes>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash; Some jars are signed but shading breaks that.&ndash;&gt;-->
+          <!--&lt;!&ndash;Don't include signing files.&ndash;&gt;-->
+          <!--&lt;!&ndash;&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<exclude>META-INF/*.SF</exclude>&ndash;&gt;-->
+          <!--&lt;!&ndash;<exclude>META-INF/*.DSA</exclude>&ndash;&gt;-->
+          <!--&lt;!&ndash;<exclude>META-INF/*.RSA</exclude>&ndash;&gt;-->
+          <!--&lt;!&ndash;</excludes>&ndash;&gt;-->
+          <!--&lt;!&ndash;</filter>&ndash;&gt;-->
+          <!--&lt;!&ndash;</filters>&ndash;&gt;-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<phase>package</phase>-->
+            <!--&lt;!&ndash;<phase /><!- - Switch off &ndash;&gt;-->
+            <!--<goals>-->
+              <!--<goal>shade</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
 
       <plugin>
         <groupId>com.coderplus.maven.plugins</groupId>
