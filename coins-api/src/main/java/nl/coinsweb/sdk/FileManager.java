@@ -49,7 +49,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -78,7 +77,12 @@ public class FileManager {
   private static String WOA_PATH = "woa";
 
 
-
+  public static ArrayList<File> foldersToCleanup;
+  static {
+    foldersToCleanup = new ArrayList<>();
+    foldersToCleanup.add(getTempZipPath().toFile());
+    foldersToCleanup.add(getTempLibPath().toFile());
+  }
 
 
   public static String newCoinsContainer() {
@@ -471,9 +475,15 @@ public class FileManager {
 
 
   public static void destroyAll() {
-    List<String> internalRefs = Arrays.asList(getTempZipPath().toFile().list());
-    for(String internalRef : internalRefs) {
-      destroy(internalRef);
+    for(File folder : foldersToCleanup) {
+      if(folder.isDirectory()) {
+        try {
+          log.info("destroying folder "+folder.toString());
+          FileUtils.deleteDirectory(folder);
+        } catch (IOException e) {
+          log.error(e.getMessage(), e);
+        }
+      }
     }
   }
 
@@ -796,7 +806,7 @@ public class FileManager {
     try {
       URI uri = FileManager.class.getResource("/"+path).toURI();
 
-      Path myPath;
+      File myPath;
       if (uri.getScheme().equals("jar")) {
 
         String jarPath = uri.toString().substring(9, uri.toString().indexOf("!"));
@@ -827,15 +837,16 @@ public class FileManager {
         zis.close();
 
       } else {
-        myPath = Paths.get(uri);
-        Stream<Path> walk = Files.walk(myPath);
-        for (Iterator<Path> it = walk.iterator(); it.hasNext(); ) {
-          Path folder = it.next();
-          if(folder.toFile().isFile()) {
-            String fullPath = folder.toString();
-            String relativePath = fullPath.substring(uri.getRawPath().length());
-            if (!relativePath.isEmpty()) {
-              result.add(relativePath.substring(1));
+        myPath = Paths.get(uri).toFile();
+        File[] directoryListing = myPath.listFiles();
+        if(directoryListing != null) {
+          for (File folder : directoryListing ) {
+            if (folder.isFile()) {
+              String fullPath = folder.toString();
+              String relativePath = fullPath.substring(uri.getRawPath().length());
+              if (!relativePath.isEmpty()) {
+                result.add(relativePath.substring(1));
+              }
             }
           }
         }
