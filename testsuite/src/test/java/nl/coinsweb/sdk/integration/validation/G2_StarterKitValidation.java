@@ -218,14 +218,7 @@ public class G2_StarterKitValidation {
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
     validate(model, "report_fuseki_4.01.html");
   }
-//  @Test
-  public void readRdfFile_fuseki_4_01_lite() {
 
-    InMemGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
-    model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath());
-    validate(model, "report_tdb_4.01.html", "COINS 2.0 Litening Fast");
-  }
 
 
 //  @Test
@@ -237,7 +230,25 @@ public class G2_StarterKitValidation {
   }
 
 
-//  @Test
+
+
+  @Test
+  public void readRdfFile_inmem_performanceCheck() {
+
+
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+    validate(model, "report_inmem_PerfContCOINS2.0.html");
+  }
+  @Test
+  public void readRdfFile_tdb_performanceCheck() {
+
+    InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
+    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+    validate(model, "report_tdb_PerfContCOINS2.0.html");
+  }
+  //  @Test
   public void readRdfFile_fuseki_performanceCheck() {
 
     log.trace("will start performance tests on fuseki");
@@ -245,16 +256,6 @@ public class G2_StarterKitValidation {
     JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
     validate(model, "report_fuseki_PerfContCOINS2.0.html");
-  }
-
-
-//  @Test
-  public void readRdfFile_tdb_performanceCheck() {
-
-    InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false);
-    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
-    validate(model, "report_tdb_PerfContCOINS2.0.html");
   }
 
 
