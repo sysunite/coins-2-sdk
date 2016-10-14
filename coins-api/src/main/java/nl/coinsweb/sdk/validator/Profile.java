@@ -26,6 +26,7 @@ package nl.coinsweb.sdk.validator;
 
 
 import nl.coinsweb.sdk.FileManager;
+import nl.coinsweb.sdk.exceptions.InvalidProfileFileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,6 +93,11 @@ public class Profile {
     } catch (IOException e) {
       log.error("Problem reading profile file.", e);
     }
+
+    // Perform some checks
+    if(name == null) {
+      throw new InvalidProfileFileException("No name specified inside the profile file.");
+    }
   }
 
   public static Profile selectProfile(String profileName) {
@@ -100,22 +106,28 @@ public class Profile {
     }
     return getProfiles().get(profileName);
   }
-  private static void initProfiles() {
+  private static void initProfiles() throws InvalidProfileFileException {
 
-    Profile.profiles = new HashMap<>();
+    profiles = new HashMap<>();
 
     ArrayList<String> filePaths = FileManager.listResourceFiles("validator");
     for(String filePath : filePaths) {
       if(filePath.endsWith(".profile")) {
         InputStream stream = FileManager.getResourceFileAsStream("validator/"+filePath);
-        loadProfile(stream);
+        Profile profile = createProfile(stream);
+        profiles.put(profile.getName(), profile);
+        log.info("Profile file registered with this name: "+profile.getName());
       }
     }
   }
 
   private static HashMap<String, Profile> getProfiles() {
     if(profiles == null) {
-      initProfiles();
+      try {
+        initProfiles();
+      } catch(InvalidProfileFileException e) {
+        log.error("One of the profile files bundled with this coins-api.jar was invalid.");
+      }
     }
     return profiles;
   }
@@ -123,17 +135,21 @@ public class Profile {
   public static Set<String> listProfiles() {
     return getProfiles().keySet();
   }
-  public static Profile loadProfile(InputStream stream) {
+  private static Profile createProfile(InputStream stream) throws InvalidProfileFileException {
     BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
     Profile profile = new Profile(reader);
-    Profile.profiles.put(profile.getName(), profile);
-    log.info("Profile file registered with this name: "+profile.getName());
     try {
       reader.close();
       stream.close();
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     }
+    return profile;
+  }
+  public static Profile loadProfile(InputStream stream) throws InvalidProfileFileException {
+    Profile profile = createProfile(stream);
+    getProfiles().put(profile.getName(), profile);
+    log.info("Profile file registered with this name: "+profile.getName());
     return profile;
   }
 
@@ -179,7 +195,7 @@ public class Profile {
       }
     } catch (IOException e) {
       log.error(e.getMessage(), e);
-      throw new RuntimeException("The profile for a Validation Query file could not be interpreted.");
+      throw new InvalidProfileFileException("The profile file could not be interpreted.");
     }
 
     return new InferenceQuery(reference, description, sparqlQuery);
@@ -230,7 +246,7 @@ public class Profile {
       }
     } catch (IOException e) {
       log.error(e.getMessage(), e);
-      throw new RuntimeException("The profile for a Validation Query file could not be interpreted.");
+      throw new InvalidProfileFileException("The profile file could not be interpreted.");
     }
 
     return new ValidationQuery(reference, description, resultFormat, sparqlQuery);
