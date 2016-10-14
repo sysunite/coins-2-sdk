@@ -45,6 +45,7 @@
   </logger>
 
   <root>
+    <level value="WARN" />
   </root>
 
 </log4j:configuration>
