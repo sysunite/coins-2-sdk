@@ -26,6 +26,7 @@ package nl.coinsweb.sdk.jena;
 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
 import com.hp.hpl.jena.update.UpdateExecutionFactory;
 import com.hp.hpl.jena.update.UpdateFactory;
 import com.hp.hpl.jena.update.UpdateRequest;
@@ -69,6 +70,16 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     sparqlEndPointQ = host + "/" + database + "/query";
     sparqlEndPointD = host + "/" + database + "/data";
 
+  }
+
+  public boolean checkIfDbAvailable() {
+    boolean check;
+    try {
+      check = numTriples("urn:x-arq:UnionGraph") > -1;
+    } catch  (QueryExceptionHTTP e) {
+      check = false;
+    }
+    return check;
   }
 
 
