@@ -52,17 +52,34 @@ public class RunViewer {
       System.exit(1);
       return;
     }
+
+    // Print header
+    Run.QUIET = options.quietMode();
+    Run.printHeader();
+
+
+    // Asked for help
+    if(options.printHelpOption()) {
+      ValidateOptions.usage();
+      System.exit(1);
+      return;
+    }
+
     Run.startLoggingToFile();
 
 
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
-      System.out.println("no input file specified");
+      if(!Run.QUIET) {
+        System.out.println("no input file specified");
+      }
       return;
     }
 
     if(options.hasInputOption() && options.getInputOptions().size() > 1) {
-      System.out.println("too many input files specified");
+      if(!Run.QUIET) {
+        System.out.println("too many input files specified");
+      }
       return;
     }
 
@@ -75,9 +92,11 @@ public class RunViewer {
       if(container != null) {
 
         // Start the webserver
-        System.out.println("running coins viewer on " + options.getInputOptions().get(0).getFileName().toString());
-        System.out.println("use your web browser to navigate to " + CliOptions.ANSI_BOLD + server.getUrl() + CliOptions.ANSI_RESET);
-        System.out.println("(use Ctrl-C to stop service)\n");
+        if(!Run.QUIET) {
+          System.out.println("running coins viewer on " + options.getInputOptions().get(0).getFileName().toString());
+          System.out.println("use your web browser to navigate to " + CliOptions.ANSI_BOLD + server.getUrl() + CliOptions.ANSI_RESET);
+          System.out.println("(use Ctrl-C to stop service)\n");
+        }
         server.run();
 
 
@@ -86,7 +105,9 @@ public class RunViewer {
 
       } else {
 
-        System.out.println("unable to open " + options.getInputOptions().get(0).getFileName().toString());
+        if(!Run.QUIET) {
+          System.out.println("unable to open " + options.getInputOptions().get(0).getFileName().toString());
+        }
 
       }
     }

@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk.cli.viewer;
 
 import nl.coinsweb.sdk.cli.CliOptions;
+import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.owlgenerator.Utils;
 import org.apache.commons.cli.*;
 import com.hp.hpl.jena.ontology.OntModelSpec;
@@ -63,8 +64,10 @@ public class ViewerOptions {
   }
 
   public static void usage() {
-    HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "coins-cli validate", getOptions() );
+    if(!Run.QUIET) {
+      HelpFormatter formatter = new HelpFormatter();
+      formatter.printHelp("coins-cli validate", getOptions());
+    }
   }
 
 

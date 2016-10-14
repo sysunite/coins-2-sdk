@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk.cli.map;
 
 import nl.coinsweb.sdk.cli.Run;
+import nl.coinsweb.sdk.cli.validate.ValidateOptions;
 import org.apache.commons.cli.ParseException;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.NoWriterForLangException;
@@ -56,26 +57,45 @@ public class RunMap {
       return;
     }
 
+    // Print header
+    Run.QUIET = options.quietMode();
+    Run.printHeader();
+
+    // Asked for help
+    if(options.printHelpOption()) {
+      ValidateOptions.usage();
+      System.exit(1);
+      return;
+    }
+
     Run.startLoggingToFile();
 
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
-      System.out.println("no input file specified");
+      if(!Run.QUIET) {
+        System.out.println("no input file specified");
+      }
       return;
     }
 
     if(options.hasInputOption() && options.getInputOptions().size() > 1) {
-      System.out.println("too many input files specified");
+      if(!Run.QUIET) {
+        System.out.println("too many input files specified");
+      }
       return;
     }
 
     if(!options.hasOutputOption()) {
-      System.out.println("no output file specified");
+      if(!Run.QUIET) {
+        System.out.println("no output file specified");
+      }
       return;
     }
 
     if(!options.hasEncodingOption()) {
-      System.out.println("no encoding specified");
+      if(!Run.QUIET) {
+        System.out.println("no encoding specified");
+      }
       return;
     }
 
@@ -84,7 +104,9 @@ public class RunMap {
       turtleModel.write(new FileWriter(options.getOutputOption().toAbsolutePath().toString()), options.getEncodingOption());
     } catch (IOException e) {
     } catch (NoWriterForLangException e) {
-      System.out.println("the specified encoding is not supported, try one of these: "+MapOptions.JENA_ENCODINGS);
+      if(!Run.QUIET) {
+        System.out.println("the specified encoding is not supported, try one of these: "+MapOptions.JENA_ENCODINGS);
+      }
     }
 
 
