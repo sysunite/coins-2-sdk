@@ -29,13 +29,12 @@ import nl.coinsweb.sdk.cli.map.RunMap;
 import nl.coinsweb.sdk.cli.unzip.RunUnzip;
 import nl.coinsweb.sdk.cli.validate.RunValidate;
 import nl.coinsweb.sdk.cli.viewer.RunViewer;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Path;
 import java.util.Properties;
 
 /**
@@ -53,6 +52,8 @@ public class Run {
 
   CliOptions options;
 
+  public static boolean QUIET = false;
+
 
   public static void main( String... args ) {
     new Run().go(args);
@@ -61,27 +62,6 @@ public class Run {
   public void go( String[] args ) {
 
     this.options = new CliOptions(args);
-
-    // Load version from properties file
-    Properties props = new Properties();
-    String version = "";
-    String buildnr = "";
-    try {
-      props.load(Run.class.getResourceAsStream("/coins-cli.properties"));
-      version = props.get("version").toString();
-      buildnr = props.get("buildnr").toString();
-    } catch (IOException e) {
-      System.out.println("unable to read coins-cli.properties from jar");
-    }
-
-
-    // Print header
-    System.out.println(CliOptions.ANSI_BOLD+CliOptions.ANSI_GB_WHITE+CliOptions.ANSI_RED+")"+CliOptions.ANSI_GREEN+"}"+CliOptions.ANSI_RESET+
-                       CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (version "+version+", build "+buildnr+")\n");
-
-
-
-
 
 
     if(options.viewerMode()) {
@@ -112,23 +92,134 @@ public class Run {
   }
 
 
+  public static void printHeader() {
+
+    if(QUIET) {
+      return;
+    }
+
+    // Load version from properties file
+    Properties props = new Properties();
+    String version = "";
+    String buildnr = "";
+    try {
+      props.load(Run.class.getResourceAsStream("/coins-cli.properties"));
+      version = props.get("version").toString();
+      buildnr = props.get("buildnr").toString();
+    } catch (IOException e) {
+      System.out.println("(!) unable to read coins-cli.properties from jar");
+    }
+
+    // Print header
+    System.out.println(CliOptions.ANSI_BOLD+CliOptions.ANSI_GB_WHITE+CliOptions.ANSI_RED+")"+CliOptions.ANSI_GREEN+"}"+CliOptions.ANSI_RESET+
+        CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (version "+version+", build "+buildnr+")\n");
+  }
+
+
   public static void startLoggingToFile() {
-
-    Logger.getRootLogger().setLevel(Level.TRACE);
-
+    startLoggingToFile("coins-cli.log");
+  }
+  public static void startLoggingToFile(String filename) {
 
     try {
 
       PatternLayout layout = new PatternLayout("%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n");
-      RollingFileAppender appender = new RollingFileAppender(layout, "coins-cli.log", false);
+      RollingFileAppender appender = new RollingFileAppender(layout, filename, false);
       appender.setName("file");
       appender.setMaxBackupIndex(10);
       appender.setMaxFileSize("10MB");
       Logger.getRootLogger().addAppender(appender);
 
-      System.out.println("Logging to file " + System.getProperty("user.dir") + File.separator + "coins-cli.log" + "\n");
+      if(!Run.QUIET) {
+        System.out.println("Logging to file " + filename + "\n");
+      }
     } catch(IOException e) {
 
     }
   }
+
+
+  public static String getCli(String command) {
+
+    Runtime rt = Runtime.getRuntime();
+
+    try {
+      Process pr = rt.exec(command);
+
+      String output = "";
+
+      BufferedReader stdInput = new BufferedReader(new
+          InputStreamReader(pr.getInputStream()));
+
+      BufferedReader stdError = new BufferedReader(new
+          InputStreamReader(pr.getErrorStream()));
+
+      String line = null;
+      while ((line = stdInput.readLine()) != null) {
+        output += line + "\n";
+      }
+      while ((line = stdError.readLine()) != null) {
+        output += line + "\n";
+      }
+
+      return output.trim();
+
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    }
+
+    return "";
+  }
+  public static void runCli(String command) {
+    runCli(command, null);
+  }
+  public static void runCli(String command, Path path) {
+
+    Runtime rt = Runtime.getRuntime();
+
+    try {
+      String[] env = new String[]{};
+      Process pr;
+      if(path != null) {
+        pr = rt.exec(command, env, path.toFile());
+      } else {
+        pr = rt.exec(command);
+      }
+
+
+      StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
+      StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
+      errorGobbler.start();
+      outputGobbler.start();
+      pr.waitFor();
+
+    } catch (InterruptedException e) {
+      log.error(e.getMessage(), e);
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+    }
+  }
+
+  // Thanks to jitter@stackoverflow
+  public static class StreamGobbler extends Thread {
+    InputStream is;
+
+    // reads everything from is until empty
+    StreamGobbler(InputStream is) {
+      this.is = is;
+    }
+
+    public void run() {
+      try {
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String line = null;
+        while ( (line = br.readLine()) != null)
+          log.info(line);
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+      }
+    }
+  }
+
 }

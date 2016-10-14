@@ -26,6 +26,7 @@ package nl.coinsweb.sdk.cli.generate;
 
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.cli.Run;
+import nl.coinsweb.sdk.cli.validate.ValidateOptions;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
@@ -65,6 +66,18 @@ public class RunGenerate {
       System.exit(1);
       return;
     }
+
+    // Print header
+    Run.QUIET = options.quietMode();
+    Run.printHeader();
+
+    // Asked for help
+    if(options.printHelpOption()) {
+      ValidateOptions.usage();
+      System.exit(1);
+      return;
+    }
+
     Run.startLoggingToFile();
 
 
@@ -76,22 +89,30 @@ public class RunGenerate {
     boolean doInclSources = doJar && options.hasIncludeSourcesOption();
     boolean doDll         = options.hasDllOption() || options.hasDllPathOption();
 
-    if(doCompile && !(getCli("javac -version").startsWith("javac 1.7") || getCli("javac -version").startsWith("javac 1.8"))) {
-      System.out.println("Please make the javac command from the Java SDK (version 7 or 8) available on the path.");
+    if(doCompile && !(Run.getCli("javac -version").startsWith("javac 1.7") || Run.getCli("javac -version").startsWith("javac 1.8"))) {
+      if(!Run.QUIET) {
+        System.out.println("Please make the javac command from the Java SDK (version 7 or 8) available on the path.");
+      }
       return;
     }
-    if(doJar && !getCli("jar").startsWith("Usage: jar {ctxui}")) {
-      System.out.println("Please make the jar command available on the path.");
+    if(doJar && !Run.getCli("jar").startsWith("Usage: jar {ctxui}")) {
+      if(!Run.QUIET) {
+        System.out.println("Please make the jar command available on the path.");
+      }
       return;
     }
 
     if(doDll && !options.hasApiPathOption()) {
-      System.out.println("Please specify a pointer to the coins-api.dll using -a.");
+      if(!Run.QUIET) {
+        System.out.println("Please specify a pointer to the coins-api.dll using -a.");
+      }
       return;
     }
 
-    if(doDll && !(getCli("ikvmc -help").startsWith("IKVM.NET Compiler version "))) {
-      System.out.println("Please make the ikvmc command (version 7 or 8) available on the path.");
+    if(doDll && !(Run.getCli("ikvmc -help").startsWith("IKVM.NET Compiler version "))) {
+      if(!Run.QUIET) {
+        System.out.println("Please make the ikvmc command (version 7 or 8) available on the path.");
+      }
       return;
     }
 
@@ -115,24 +136,32 @@ public class RunGenerate {
       generatedFolder = Paths.get(options.getOutputOption().toFile().getCanonicalPath()).resolve("generated");
       generatedFolder.toFile().mkdirs();
       FileUtils.cleanDirectory(generatedFolder.toFile());
-      System.out.println("Will write java to: " + generatedFolder);
+      if(!Run.QUIET) {
+        System.out.println("Will write java to: " + generatedFolder);
+      }
 
       javaFolder = Paths.get(options.getOutputOption().toFile().getCanonicalPath()).resolve("java");
       if (doCompile) {
         javaFolder.toFile().mkdirs();
         FileUtils.cleanDirectory(javaFolder.toFile());
-        System.out.println("Will write compiled java to: " + javaFolder);
+        if(!Run.QUIET) {
+          System.out.println("Will write compiled java to: " + javaFolder);
+        }
       }
 
       generatedPerJarFolder = Paths.get(options.getOutputOption().toFile().getCanonicalPath()).resolve("java-per-jar");
       if (doJar) {
         generatedPerJarFolder.toFile().mkdirs();
         FileUtils.cleanDirectory(generatedPerJarFolder.toFile());
-        System.out.println("Will split compiled java in: " + generatedPerJarFolder);
+        if(!Run.QUIET) {
+          System.out.println("Will split compiled java in: " + generatedPerJarFolder);
+        }
       }
 
       if (doInclSources) {
-        System.out.println("Will include sources in the jar");
+        if(!Run.QUIET) {
+          System.out.println("Will include sources in the jar");
+        }
       }
 
       jarFolder =
@@ -141,7 +170,9 @@ public class RunGenerate {
               Paths.get(options.getOutputOption().toFile().getCanonicalPath()).resolve("jar");
       if (doJar) {
         jarFolder.toFile().mkdirs();
-        System.out.println("Will put jars in: " + jarFolder);
+        if(!Run.QUIET) {
+          System.out.println("Will put jars in: " + jarFolder);
+        }
       }
 
       dllFolder =
@@ -150,11 +181,15 @@ public class RunGenerate {
               Paths.get(options.getOutputOption().toFile().getCanonicalPath()).resolve("win-dist");
       if (doDll) {
         dllFolder.toFile().mkdirs();
-        System.out.println("Will put dlls in: " + dllFolder);
+        if(!Run.QUIET) {
+          System.out.println("Will put dlls in: " + dllFolder);
+        }
       }
 
     } catch (IOException e) {
-      System.out.println("Something went wrong preparing the folders.");
+      if(!Run.QUIET) {
+        System.out.println("Something went wrong preparing the folders.");
+      }
       log.error("Something went wrong preparing the folders.", e);
       return;
     }
@@ -222,7 +257,7 @@ public class RunGenerate {
     TDB.init();
 
     log.info("javac -target 1.7  -source 1.7 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
-    runCli("javac -target 1.7  -source 1.7 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
+    Run.runCli("javac -target 1.7  -source 1.7 -classpath " + coinsCliJarPath + " -d " + javaFolder.toString() + " " + fileList);
 
     if(!doJar) {
       return;
@@ -298,7 +333,7 @@ public class RunGenerate {
       // Create jar
       String filesToPackageInJar = files(absoluteSubFolder, "", " ", absoluteSubFolder);
       log.info("jar cfM " + jarFolder.resolve(libraryName + ".jar") + " -C " + absoluteSubFolder + "/ " + filesToPackageInJar, absoluteSubFolder);
-      runCli("jar cfM " + jarFolder.resolve(libraryName + ".jar") + " -C " + absoluteSubFolder + "/ " + filesToPackageInJar, absoluteSubFolder);
+      Run.runCli("jar cfM " + jarFolder.resolve(libraryName + ".jar") + " -C " + absoluteSubFolder + "/ " + filesToPackageInJar, absoluteSubFolder);
 
 
       if(doDll) {
@@ -314,7 +349,7 @@ public class RunGenerate {
         String command = "ikvmc -nologo "+references+" -target:library " + jarFolder.resolve(libraryName + ".jar") + " -out:" + dllFile;
 
         log.info(command);
-        runCli(command);
+        Run.runCli(command);
 
         producedDllFiles.add(dllFile);
       }
@@ -323,67 +358,6 @@ public class RunGenerate {
     }
   }
 
-
-  public String getCli(String command) {
-
-    Runtime rt = Runtime.getRuntime();
-
-    try {
-      Process pr = rt.exec(command);
-
-      String output = "";
-
-      BufferedReader stdInput = new BufferedReader(new
-          InputStreamReader(pr.getInputStream()));
-
-      BufferedReader stdError = new BufferedReader(new
-          InputStreamReader(pr.getErrorStream()));
-
-      String line = null;
-      while ((line = stdInput.readLine()) != null) {
-        output += line + "\n";
-      }
-      while ((line = stdError.readLine()) != null) {
-        output += line + "\n";
-      }
-
-      return output.trim();
-
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
-
-    return "";
-  }
-  public void runCli(String command) {
-    runCli(command, null);
-  }
-  public void runCli(String command, Path path) {
-
-    Runtime rt = Runtime.getRuntime();
-
-    try {
-      String[] env = new String[]{};
-      Process pr;
-      if(path != null) {
-        pr = rt.exec(command, env, path.toFile());
-      } else {
-        pr = rt.exec(command);
-      }
-
-
-      StreamGobbler errorGobbler = new StreamGobbler(pr.getErrorStream());
-      StreamGobbler outputGobbler = new StreamGobbler(pr.getInputStream());
-      errorGobbler.start();
-      outputGobbler.start();
-      pr.waitFor();
-
-    } catch (InterruptedException e) {
-      log.error(e.getMessage(), e);
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
-  }
 
   private static String files(Path path, String extension, String delimiter) {
     return files(path, extension, delimiter, null);
@@ -405,27 +379,5 @@ public class RunGenerate {
       }
     }
     return result;
-  }
-
-  // Thanks to jitter@stackoverflow
-  public class StreamGobbler extends Thread {
-    InputStream is;
-
-    // reads everything from is until empty
-    StreamGobbler(InputStream is) {
-      this.is = is;
-    }
-
-    public void run() {
-      try {
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        String line = null;
-        while ( (line = br.readLine()) != null)
-          log.info(line);
-      } catch (IOException ioe) {
-        ioe.printStackTrace();
-      }
-    }
   }
 }

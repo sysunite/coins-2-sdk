@@ -24,9 +24,14 @@
  **/
 package nl.coinsweb.sdk.cli.validate;
 
+import nl.coinsweb.sdk.CoinsGraphSet;
+import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.cli.Run;
+import nl.coinsweb.sdk.exceptions.InvalidProfileFileException;
+import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.Validator;
 import org.apache.commons.cli.ParseException;
@@ -49,6 +54,7 @@ public class RunValidate {
 
   public static void go(String[] args) {
 
+    // Wrong arguments
     ValidateOptions options;
     try {
       options = new ValidateOptions(args);
@@ -59,23 +65,61 @@ public class RunValidate {
       return;
     }
 
+    // Print header
+    Run.QUIET = options.quietMode();
+    Run.printHeader();
 
+    // Asked for help
     if(options.printHelpOption()) {
       ValidateOptions.usage();
       System.exit(1);
       return;
     }
+
+    // Run on empty container
+    boolean emptyRun = false;
+    if(options.emptyRun()) {
+      emptyRun = true;
+    }
+
+
     Run.startLoggingToFile();
 
-    // Input file
-    String inputFile;
-    if(!options.hasInputOption()) {
-      System.out.println("no input file specified");
-      ValidateOptions.usage();
-      System.exit(1);
-      return;
+    // Fuseki
+    CoinsGraphSet graphSet;
+    if(options.hasFusekiAddress()) {
+      graphSet = new FusekiGraphSet("http://validation/", options.getFusekiAddress(), "coins");
+      if(!((FusekiGraphSet)graphSet).checkIfDbAvailable()) {
+
+        if(!Run.QUIET) {
+          System.out.println("(!) fuseki not active at specified address, or does not have dataset with name 'coins' (address should be of form http://localhost:3030)\n");
+        }
+        System.exit(1);
+        return;
+      }
+    } else {
+      graphSet = new TDBStoreGraphSet("http://validation/");
     }
-    inputFile = options.getInputOption().toString();
+
+    // Container
+    JenaCoinsContainer container;
+    if(emptyRun) {
+      container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
+    } else {
+      if (!options.hasInputOption()) {
+        if(!Run.QUIET) {
+          System.out.println("(!) no input file specified\n");
+        }
+        ValidateOptions.usage();
+        System.exit(1);
+        return;
+      }
+      String inputFile = options.getInputOption().toString();
+      container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, inputFile);
+    }
+
+
+
 
     // Output file
     Path reportFile;
@@ -90,11 +134,20 @@ public class RunValidate {
     if(options.hasCustomProfile()) {
 
       try {
+        log.info("supplied custom profile file, will try to register it");
         File profileFile = options.getCustomProfile().toFile();
         Profile profile = Profile.loadProfile(new FileInputStream(profileFile));
         profileName = profile.getName();
       } catch (FileNotFoundException e) {
-        System.out.println("custom profile file was not found");
+        if(!Run.QUIET) {
+          System.out.println("(!) custom profile file was not found\n");
+        }
+        System.exit(1);
+        return;
+      } catch (InvalidProfileFileException e) {
+        if(!Run.QUIET) {
+          System.out.println("(!) the supplied custom profile file contains errors\n");
+        }
         System.exit(1);
         return;
       }
@@ -102,16 +155,31 @@ public class RunValidate {
 
     if(options.hasProfile()) {
       profileName = options.getProfile();
+      if(!Profile.listProfiles().contains(profileName)) {
+
+        if(!Run.QUIET) {
+          System.out.println("(!) profile name " + profileName + " was not found, please choose from:\n");
+          for (String availableProfile : Profile.listProfiles()) {
+            System.out.println(" - " + availableProfile);
+          }
+          System.out.println("");
+        }
+        System.exit(1);
+        return;
+      }
     }
     if(profileName == null) {
       profileName = "COINS 2.0 Lite";
     }
 
-    JenaCoinsContainer container = new JenaCoinsContainer(inputFile, "http://www.example.com/");
 
+    log.info("will init validator and start validation");
     Validator validator = new Validator(container, profileName);
     validator.validate(reportFile);
 
+    if(!Run.QUIET) {
+      System.out.println("Validation finished, see report file "+reportFile.getFileName());
+    }
     System.exit(0);
   }
 }
