@@ -511,7 +511,6 @@ public class BS {
 
     assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
     return reopenend;
-
   }
 
 
