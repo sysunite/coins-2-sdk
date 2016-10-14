@@ -1,0 +1,3 @@
+<SchemaInference>
+<SparqlQuery>
+</SchemaInference>
