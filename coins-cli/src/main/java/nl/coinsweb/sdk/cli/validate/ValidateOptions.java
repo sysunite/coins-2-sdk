@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk.cli.validate;
 
 import nl.coinsweb.sdk.cli.CliOptions;
+import nl.coinsweb.sdk.cli.Run;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +44,12 @@ public class ValidateOptions {
   public static Options getOptions() {
     if(options == null) {
       options = new Options();
+      options.addOption("c", "custom-profile", true, "custom profile file to use (e.g. ./custom.profile)");
+      options.addOption("e", false, "run on empty container, for debugging profile files");
+      options.addOption("f", "fuseki", true, "address of fuseki service (e.g. http://localhost:3030), please create a dataset named 'coins'");
       options.addOption("h", "help", false, "print help");
-
-
       options.addOption("o", true, "output file (default: ./report.html)");
       options.addOption("p", "profile", true, "profile to use (default: \"COINS 2.0 Lite\")");
-      options.addOption("c", "custom-profile", true, "custom profile file to use (e.g. ./custom.profile)");
       options.addOption("q", false, "quiet, no output to the console");
       options.addOption("v", false, "verbose logging (in the current build this can not be disabled)");
     }
@@ -56,8 +57,10 @@ public class ValidateOptions {
   }
 
   public static void usage() {
-    HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp( "coins-cli validate", getOptions() );
+    if(!Run.QUIET) {
+      HelpFormatter formatter = new HelpFormatter();
+      formatter.printHelp("coins-cli validate <input file>", getOptions());
+    }
   }
 
 
@@ -80,8 +83,12 @@ public class ValidateOptions {
 
 
   // External interface methods
+  public boolean emptyRun() { return cmd.hasOption("e"); }
   public boolean quietMode() { return cmd.hasOption("q"); }
   public boolean printHelpOption() { return cmd.hasOption("h"); }
+
+  public boolean hasFusekiAddress() { return cmd.hasOption("f"); }
+  public String getFusekiAddress() { return (!hasFusekiAddress()) ? null : cmd.getOptionValue("f"); }
 
   public boolean hasProfile() { return cmd.hasOption("p"); }
   public String getProfile() { return (!hasProfile()) ? null : cmd.getOptionValue("p"); }

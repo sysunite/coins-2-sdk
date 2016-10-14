@@ -26,6 +26,7 @@ package nl.coinsweb.sdk.cli.unzip;
 
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.cli.Run;
+import nl.coinsweb.sdk.cli.validate.ValidateOptions;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,20 +51,38 @@ public class RunUnzip {
       System.exit(1);
       return;
     }
+
+    // Print header
+    Run.QUIET = options.quietMode();
+    Run.printHeader();
+
+    // Asked for help
+    if(options.printHelpOption()) {
+      ValidateOptions.usage();
+      System.exit(1);
+      return;
+    }
+
     Run.startLoggingToFile();
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
-      System.out.println("no input file specified");
+      if(!Run.QUIET) {
+        System.out.println("no input file specified");
+      }
       return;
     }
 
     if(!options.hasOutputOption()) {
-      System.out.println("no output location specified");
+      if(!Run.QUIET) {
+        System.out.println("no output location specified");
+      }
       return;
     }
 
     if(options.hasInputOption() && options.getInputOptions().size() > 1) {
-      System.out.println("too many input files specified");
+      if(!Run.QUIET) {
+        System.out.println("too many input files specified");
+      }
       return;
     }
 
