@@ -96,6 +96,19 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
         <!--<artifactId>maven-shade-plugin</artifactId>-->
@@ -142,7 +155,7 @@
         <version>1.0</version>
         <executions>
           <execution>
-            <id>copy-file</id>
+            <id>copy-jar-with-dependencies</id>
             <phase>verify</phase>
             <goals>
               <goal>copy</goal>
@@ -150,6 +163,17 @@
             <configuration>
               <sourceFile>target/${project.build.finalName}-jar-with-dependencies.jar</sourceFile>
               <destinationFile>../dist/sdk/jar/coins-cli.jar</destinationFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-sources-jar</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <sourceFile>target/${project.build.finalName}-sources.jar</sourceFile>
+              <destinationFile>../dist/sdk/jar/coins-cli-sources.jar</destinationFile>
             </configuration>
           </execution>
         </executions>
