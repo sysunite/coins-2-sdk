@@ -34,7 +34,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.tdb.TDBFactory;
+import com.hp.hpl.jena.sparql.core.DatasetImpl;
 import com.hp.hpl.jena.update.UpdateAction;
 import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsGraphSet;
@@ -298,8 +298,7 @@ public class InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getEmptyDataset() {
-    return TDBFactory.createDataset();
-//    return new DatasetImpl(ModelFactory.createDefaultModel());
+    return new DatasetImpl(getEmptyModel());
   }
 
   @Override

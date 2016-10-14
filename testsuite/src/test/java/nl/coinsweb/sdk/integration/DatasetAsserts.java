@@ -46,11 +46,13 @@ public class DatasetAsserts {
 
         BufferedReader br = new BufferedReader(new FileReader(nquadFile));
         String line = null;
-        while ((line = normalizeBlankNode(br.readLine())) != null) {
-          if (verificationLines.containsKey(line)) {
-            verificationLines.put(line, verificationLines.get(line) + 1);
-          } else {
-            verificationLines.put(line, 1);
+        while ((line = normalizeDateTime(normalizeBlankNode(br.readLine()))) != null) {
+          if(!disregard(line)) {
+            if (verificationLines.containsKey(line)) {
+              verificationLines.put(line, verificationLines.get(line) + 1);
+            } else {
+              verificationLines.put(line, 1);
+            }
           }
         }
       }
@@ -64,18 +66,20 @@ public class DatasetAsserts {
 
       String line = null;
       log.error("lines from coinsmodel were not found in verification file:");
-      while ((line = normalizeBlankNode(reader.readLine())) != null) {
-        if(!verificationLines.containsKey(line)) {
-          log.error(line);
-          allLinesFoundInVerificationFile = false;
-          if(quick) {
-            return allLinesFoundInVerificationFile;
-          }
-        } else {
-          if (verificationLines.get(line) == 1) {
-            verificationLines.remove(line);
+      while ((line = normalizeDateTime(normalizeBlankNode(reader.readLine()))) != null) {
+        if(!disregard(line)) {
+          if (!verificationLines.containsKey(line)) {
+            log.error(line);
+            allLinesFoundInVerificationFile = false;
+            if (quick) {
+              return allLinesFoundInVerificationFile;
+            }
           } else {
-            verificationLines.put(line, verificationLines.get(line) - 1);
+            if (verificationLines.get(line) == 1) {
+              verificationLines.remove(line);
+            } else {
+              verificationLines.put(line, verificationLines.get(line) - 1);
+            }
           }
         }
       }
@@ -163,6 +167,35 @@ public class DatasetAsserts {
     }
 
     return result;
+  }
+
+  // this is necessary for InMemGraphSet
+  private static String normalizeDateTime(String line) {
+
+    String result = line;
+    while(result != null && result.length() > 0 && result.contains(".00\"^^<http://www.w3.org/2001/XMLSchema#dateTime")) {
+      int begin = result.indexOf(".00\"^^<http://www.w3.org/2001/XMLSchema#dateTime");
+      int end = result.indexOf("\"^^<http://www.w3.org/2001/XMLSchema#dateTime", begin);
+      result = (result.substring(0, begin) + result.substring(end)).trim();
+    }
+
+    return result;
+  }
+
+  private static boolean disregard(String line) {
+    if(line.startsWith("$SOME_BN$ <http://www.w3.org/2002/07/owl#qualifiedCardinality>")) {
+      return true;
+    }
+    if(line.startsWith("$SOME_BN$ <http://www.w3.org/2002/07/owl#maxCardinality>")) {
+      return true;
+    }
+    if(line.startsWith("$SOME_BN$ <http://www.w3.org/2002/07/owl#minQualifiedCardinality>")) {
+      return true;
+    }
+    if(line.startsWith("$SOME_BN$ <http://www.w3.org/2002/07/owl#cardinality>")) {
+      return true;
+    }
+    return false;
   }
 
   public static int countTriples(Model model) {
