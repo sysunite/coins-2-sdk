@@ -151,7 +151,7 @@ List<ValidationQueryResult> : validationRules
 
   <#if query.formattedResults?has_content>
     <table id="val_${query.id}">
-      <#if query.formattedResults?size lt 7>
+      <#if query.formattedResults?size lte 7>
         <#list 0..query.formattedResults?size-1 as i>
           <tr>
             <td>${query.formattedResults[i]}</td>
@@ -164,7 +164,7 @@ List<ValidationQueryResult> : validationRules
           </tr>
         </#list>
 
-        <#if query.formattedResults?size lt 50>
+        <#if query.formattedResults?size lte 50>
           <#list 7..query.formattedResults?size-1 as i>
             <tr style="display:none;">
               <td>${query.formattedResults[i]}</td>
@@ -278,7 +278,7 @@ List<ValidationQueryResult> : validationRules
 
   <#if query.formattedResults?has_content>
     <table id="val_${query.id}">
-      <#if query.formattedResults?size lt 7>
+      <#if query.formattedResults?size lte 7>
         <#list 0..query.formattedResults?size-1 as i>
           <tr>
             <td>${query.formattedResults[i]}</td>
@@ -291,7 +291,7 @@ List<ValidationQueryResult> : validationRules
             </tr>
           </#list>
 
-          <#if query.formattedResults?size lt 50>
+          <#if query.formattedResults?size lte 50>
             <#list 7..query.formattedResults?size-1 as i>
               <tr style="display:none;">
                 <td>${query.formattedResults[i]}</td>
