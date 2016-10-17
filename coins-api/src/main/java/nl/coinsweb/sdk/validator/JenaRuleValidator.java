@@ -22,7 +22,7 @@
  * IN THE SOFTWARE.
  *
  **/
-package nl.coinsweb.sdk.jena;
+package nl.coinsweb.sdk.validator;
 
 
 import nl.coinsweb.sdk.CoinsModel;
