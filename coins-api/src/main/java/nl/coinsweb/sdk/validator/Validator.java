@@ -25,22 +25,24 @@
 package nl.coinsweb.sdk.validator;
 
 
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
-import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.query.Dataset;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Bastiaan Bijl
@@ -49,9 +51,10 @@ public class Validator {
 
   private static final Logger log = LoggerFactory.getLogger(Validator.class);
 
+  public static final int QUERY_THREAD_SIZE = 1;
+
 
   InMemGraphSet graphSet;
-  Dataset dataset;
   Profile profile;
 
 
@@ -143,7 +146,6 @@ public class Validator {
     this.model = model;
     this.graphSet = (InMemGraphSet) model.getCoinsGraphSet();
     this.graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
-    this.dataset = this.graphSet.getValidationDataset();
     this.profile = profile;
 
 
@@ -198,10 +200,10 @@ public class Validator {
 
     do {
 
-      Map<String, Long> initialNumTriples = graphSet.numTriples(dataset);
+      Map<String, Long> initialNumTriples = graphSet.numTriples();
 
       // Prepare list of all queries to be executed this round
-      ExecutorService es = Executors.newFixedThreadPool(1);
+      ExecutorService es = Executors.newFixedThreadPool(Validator.QUERY_THREAD_SIZE);
       List<Callable<Long>> todo = new ArrayList<>(queries.size());
 
       for (final InferenceQuery query : queries) {
@@ -236,7 +238,7 @@ public class Validator {
         log.error(e.getMessage(), e);
       }
 
-      Map<String, Long> diffNumTriples = graphSet.diffNumTriples(initialNumTriples, graphSet.numTriples(dataset));
+      Map<String, Long> diffNumTriples = graphSet.diffNumTriples(initialNumTriples, graphSet.numTriples());
       inferenceExecution.addNumRuns(1);
       inferenceExecution.addTriplesAdded(diffNumTriples);
 

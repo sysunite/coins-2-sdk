@@ -184,7 +184,7 @@ public interface CoinsGraphSet {
 
   // Querying
 
-
+  public Iterator<Map<String, String>> query(String sparqlQuery);
 
   //  public void insert(String sparql);
   public void insert(InferenceQuery query, InferenceQueryResult result);

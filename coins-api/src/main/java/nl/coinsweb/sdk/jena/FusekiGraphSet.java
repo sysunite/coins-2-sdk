@@ -197,7 +197,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public Map<String, Long> numTriples(Dataset dataset) {
+  public Map<String, Long> numTriples() {
     HashMap<String, Long> result = new HashMap<>();
     result.put(InferenceExecution.TOTAL_NUM, 0l);
 
