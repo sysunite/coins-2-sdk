@@ -727,7 +727,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
- select distinct ?a prop ?range ?value (Datatype(?value) as ?dat)
+ select distinct ?a ?prop ?range ?value (Datatype(?value) as ?dat)
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
   ?prop  a owl:DatatypeProperty . 			   ?prop rdfs:range ?range. 
