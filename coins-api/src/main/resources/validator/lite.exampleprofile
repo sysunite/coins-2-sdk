@@ -4,6 +4,9 @@
 #------------------------------------------------------------------
 #
 # A COINS 2.0 profile file
+
+ProfileName Example file
+ProfileAuthor Bastiaan Bijl
 #
 # Any lines starting with a hash will be ignored.
 #
@@ -43,7 +46,7 @@
   <SparqlQuery>
 
   # these can be used:
-  #  ${INSTANCE_GRAPH}, ${WOA_GRAPH}, ${CORE_GRAPH}, ${SCHEMA_UNION_GRAPH}, ${FULL_UNION_GRAPH}
+  #  ${INSTANCE_GRAPH}, ${WOA_GRAPH}, ${SCHEMA_UNION_GRAPH}, ${FULL_UNION_GRAPH}
   #
   #
 
