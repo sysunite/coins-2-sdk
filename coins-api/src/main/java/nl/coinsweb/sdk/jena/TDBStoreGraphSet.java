@@ -24,11 +24,15 @@
  **/
 package nl.coinsweb.sdk.jena;
 
-import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.FileManager;
+import nl.coinsweb.sdk.validator.InferenceQuery;
+import nl.coinsweb.sdk.validator.InferenceQueryResult;
+import nl.coinsweb.sdk.validator.ValidationQuery;
+import nl.coinsweb.sdk.validator.ValidationQueryResult;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
@@ -37,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Bastiaan Bijl
@@ -73,8 +79,78 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
 
 
+  @Override
+  public Iterator<Map<String, String>> query(String sparqlQuery) {
+
+    Iterator<Map<String, String>> result = null;
+    log.trace("start read transaction");
+    getValidationDataset().begin(ReadWrite.READ) ;
+    try {
+      result = super.query(sparqlQuery);
+    } finally {
+      log.trace("stop read transaction");
+      getValidationDataset().end() ;
+    }
+    return result;
+
+  }
 
 
+  @Override
+  public void insert(InferenceQuery query, InferenceQueryResult result) {
+
+    log.trace("start write transaction");
+    getValidationDataset().begin(ReadWrite.WRITE);
+    try {
+      super.insert(query, result);
+      getValidationDataset().commit() ;
+    } finally {
+      log.trace("stop write transaction");
+      getValidationDataset().end() ;
+    }
+  }
+
+
+  public ResultSet getResultSet(String queryString) {
+    Query query = QueryFactory.create(queryString);
+
+    // Execute the query and obtain results
+    QueryExecution qe = QueryExecutionFactory.create(query, getValidationDataset());
+    ResultSet result = qe.execSelect();
+    return result;
+  }
+  @Override
+  public ValidationQueryResult select(ValidationQuery validationQuery) {
+
+    ValidationQueryResult result = null;
+    log.trace("start read transaction");
+    getValidationDataset().begin(ReadWrite.READ) ;
+    try {
+      result = super.select(validationQuery);
+    } finally {
+      log.trace("stop read transaction");
+      getValidationDataset().end() ;
+    }
+    return result;
+  }
+
+
+
+
+  @Override
+  public Map<String, Long> numTriples() {
+
+    Map<String, Long> result = null;
+    log.trace("start read transaction");
+    getValidationDataset().begin(ReadWrite.READ) ;
+    try {
+      result = super.numTriples();
+    } finally {
+      log.trace("stop read transaction");
+      getValidationDataset().end() ;
+    }
+    return result;
+  }
 
 
   public void close(Dataset dataset) {

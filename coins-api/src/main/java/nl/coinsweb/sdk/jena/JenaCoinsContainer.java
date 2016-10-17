@@ -759,40 +759,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public Iterator<Map<String, String>> query(String sparqlQuery) {
-
-    List<Map<String, String>> result = new ArrayList<>();
-
-    // Execute the query and obtain results
-    ResultSet results = graphSet.getResultSet(sparqlQuery);
-
-    // Output query results
-    while (results.hasNext()) {
-
-      HashMap<String, String> resultRow = new HashMap();
-
-      QuerySolution row = results.next();
-
-      Iterator columnNames = row.varNames();
-      while(columnNames.hasNext()) {
-        String columnName = (String) columnNames.next();
-        RDFNode item = row.get(columnName);
-        if(item.isAnon()) {
-          continue;
-        }
-        if(item.isResource()) {
-          resultRow.put(columnName, item.asResource().getURI());
-        } else if(item.isLiteral()) {
-          resultRow.put(columnName, item.asLiteral().getLexicalForm());
-        } else {
-          log.warn("Skipping a result from the query.");
-        }
-      }
-
-      result.add(resultRow);
-    }
-
-    // If all the files from the fileNames where in the zip archive, this list is now supposed to be emtpy
-    return result.iterator();
+    return graphSet.query(sparqlQuery);
   }
 
 

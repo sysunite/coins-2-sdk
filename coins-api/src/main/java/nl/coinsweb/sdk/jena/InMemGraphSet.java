@@ -356,13 +356,13 @@ public class InMemGraphSet implements CoinsGraphSet {
     }
   }
 
-  public Map<String, Long> numTriples(Dataset dataset) {
+  public Map<String, Long> numTriples() {
     HashMap<String, Long> result = new HashMap<>();
     result.put(InferenceExecution.TOTAL_NUM, 0l);
-    Iterator<String> graphNameIterator = dataset.listNames();
+    Iterator<String> graphNameIterator = getValidationDataset().listNames();
     while(graphNameIterator.hasNext()) {
       String graphName = graphNameIterator.next();
-      long size = dataset.getNamedModel(graphName).size();
+      long size = getValidationDataset().getNamedModel(graphName).size();
       result.put(graphName, size);
       result.put(InferenceExecution.TOTAL_NUM, result.get(InferenceExecution.TOTAL_NUM) + size);
     }
@@ -468,6 +468,44 @@ public class InMemGraphSet implements CoinsGraphSet {
   @Override
   public void writeFullToFile(Dataset dataset, OutputStream output, RDFFormat format) {
     RDFDataMgr.write(output, dataset, format);
+  }
+
+  @Override
+  public Iterator<Map<String, String>> query(String sparqlQuery) {
+
+    List<Map<String, String>> result = new ArrayList<>();
+
+    // Execute the query and obtain results
+    ResultSet results = getResultSet(sparqlQuery);
+
+    // Output query results
+    while (results.hasNext()) {
+
+      HashMap<String, String> resultRow = new HashMap();
+
+      QuerySolution row = results.next();
+
+      Iterator columnNames = row.varNames();
+      while(columnNames.hasNext()) {
+        String columnName = (String) columnNames.next();
+        RDFNode item = row.get(columnName);
+        if(item.isAnon()) {
+          continue;
+        }
+        if(item.isResource()) {
+          resultRow.put(columnName, item.asResource().getURI());
+        } else if(item.isLiteral()) {
+          resultRow.put(columnName, item.asLiteral().getLexicalForm());
+        } else {
+          log.warn("Skipping a result from the query.");
+        }
+      }
+
+      result.add(resultRow);
+    }
+
+    // If all the files from the fileNames where in the zip archive, this list is now supposed to be empty
+    return result.iterator();
   }
 
 
@@ -584,7 +622,7 @@ public class InMemGraphSet implements CoinsGraphSet {
   @Override
   public int numTriples(String graph) {
     int sum = 0;
-    for(Long num : numTriples(getValidationDataset()).values()) {
+    for(Long num : numTriples().values()) {
       sum += num;
     }
     return sum;
