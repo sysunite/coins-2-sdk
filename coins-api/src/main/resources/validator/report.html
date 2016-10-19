@@ -84,8 +84,8 @@ List<ValidationQueryResult> : validationRules
   <tr><th>profile</th><td>${profileName}</td><tr>
   <tr><th>performed steps</th><td>
 <#if profileChecksPassed>✅ meets profile requirements<#else>⛔️ not meeting profile requirements</#if><br/>
- added schema inferences<br/>
- added data inferences<br/>
+✅ added schema inferences<br/>
+✅ added data inferences<br/>
 <#if validationPassed>✅ validation passed<#else>⛔️ validation failed</#if>
   </ol></td><tr>
 </table>
@@ -98,7 +98,7 @@ List<ValidationQueryResult> : validationRules
 
 
 
-<h2>Validation summary</h2>
+<h2>Profile checks summary</h2>
 
 <table>
   <tr><th></th><th>name</th><th>description</th><th>duration</th><tr>
@@ -116,6 +116,13 @@ List<ValidationQueryResult> : validationRules
     </#if></td>
   <tr>
 </#list>
+</table>
+
+
+<h2>Validation summary</h2>
+
+<table>
+  <tr><th></th><th>name</th><th>description</th><th>duration</th><tr>
 <#list validationRules as query>
   <tr>
     <td><#if query.passed>✅<#else>⛔️</#if></td>
@@ -275,6 +282,9 @@ List<ValidationQueryResult> : validationRules
   <a name="${query.id}"></a>
   <h4><#if query.passed>✅<#else>⛔️</#if> ${query.reference}</h4>
   <p>${query.description}</p>
+  <#if query.errorMessage??>
+  <p>${query.errorMessage}</p>
+  </#if>
 
   <#if query.formattedResults?has_content>
     <table id="val_${query.id}">
