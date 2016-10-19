@@ -72,7 +72,7 @@ public class B2_CreateAllCbimPropertyTypes {
 
     InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, true);
 
     model.addImport(Paths.get(IntegrationHelper.getResourceFile("BS", "Cbim-2.0.rdf").getAbsolutePath()).toFile().toString(), null, true, true, true);
 
