@@ -30,7 +30,7 @@ public class D1_ClassListing {
 
     InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM_RDFS_INF);
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, true);
 
 
     ArrayList<String> sourceFileNames = new ArrayList<>();
