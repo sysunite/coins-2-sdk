@@ -74,18 +74,13 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
 
-
-  private String internalRef;      // pointer for use in FileManager
+  private String internalRef;
 
   private HashMap<String, File> attachments = new HashMap<>();
   private HashMap<Namespace, File> availableLibraryFiles = new HashMap<>();
 
-  // stuff from model
-
-
   private CoinsParty party;
   private File originalContainerFile;
-
 
   private File rdfFile;
   private String rdfFileName = "content.rdf";
@@ -93,22 +88,17 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   private File woaFile;
   private String woaFileName = "woa.rdf";
 
-
   private ArrayList<Injector> injectors;
 
   private String containerId;
   private String fileName;
 
-
-
   private CoinsGraphSet graphSet;
 
 
 
-
-
   /**
-   * create an empty clean container
+   * Create an empty clean container
    * @param namespace
    */
   public JenaCoinsContainer(String namespace) {
@@ -385,7 +375,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
       getCoinsGraphSet().writeModelToFile(model, out, format);
-      log.info("exported to " + file.getAbsolutePath());
+      log.info("Exported to " + file.getAbsolutePath());
       return file;
 
 
@@ -1600,7 +1590,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public void addOntologyHeader() {
 
     // Add header itself
-    log.info("use this as subject for ontology header "+graphSet.getInstanceNamespace());
+    log.info("Use this as subject for ontology header "+graphSet.getInstanceNamespace());
     graphSet.getInstanceModel().add(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), RDF.type, OWL.Ontology));
 
     // Add creator and containerId
@@ -1615,7 +1605,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     // Add import statements
     for(Namespace key : graphSet.getLibraryModels().keySet()) {
-      log.info("add an imports statement to "+key.toString());
+      log.info("Add an imports statement to "+key.toString());
       graphSet.getInstanceModel().add(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(key.toString())));
     }
   }
@@ -1766,7 +1756,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     OntModel enrichedModel = graphSet.asOntModel(model);
 
     for(String imp : enrichedModel.listImportedOntologyURIs()) {
-      log.trace("need to load "+imp);
+      log.trace("Need to load "+imp);
       Namespace namespace = new Namespace(imp);
       loadLibraryContent(namespace);
     }
@@ -1798,7 +1788,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
     } catch (RuntimeException e) {
-      log.info("failed importing file linked to namespace " + namespace.toString());
+      log.info("Failed importing file linked to namespace " + namespace.toString());
     }
   }
 

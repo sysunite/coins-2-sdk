@@ -107,7 +107,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
 
     this.uri = uri;
-    log.info("set uri to "+this.uri);
+    log.info("Set uri to "+this.uri);
 
     // Create fields for this new instance
     if(((OntModel)coinsModel.getCoinsGraphSet().getUnionJenaOntModel()).getIndividual(uri) == null) {
@@ -454,7 +454,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     try {
       for(String fileName : Arrays.asList((String[]) getClass().getField("sourceFiles").get(Array.class))) {
 
-        log.trace("register "+fileName+" from jar");
+        log.trace("Register "+fileName+" from jar.");
 
         InputStream fileStream = getClass().getResourceAsStream("/"+fileName);
         Namespace ns = FileManager.copyAndRegisterLibrary(fileStream, fileName, coinsModel.getAvailableLibraryFiles());

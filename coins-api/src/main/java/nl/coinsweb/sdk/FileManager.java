@@ -481,7 +481,7 @@ public class FileManager {
     for(File folder : foldersToCleanup) {
       if(folder.isDirectory()) {
         try {
-          log.info("destroying folder "+folder.toString());
+          log.info("Destroying folder "+folder.toString());
           FileUtils.deleteDirectory(folder);
         } catch (IOException e) {
           log.error(e.getMessage(), e);
@@ -492,7 +492,7 @@ public class FileManager {
 
   public static void destroy(String internalRef) {
     try {
-      log.info("destroying cache folder for "+internalRef);
+      log.info("Destroying cache folder for "+internalRef);
       File homePath = getTempZipPath().resolve(internalRef).toFile();
       if(homePath.isDirectory()) {
         FileUtils.deleteDirectory(homePath);
@@ -537,12 +537,12 @@ public class FileManager {
    */
   public static URI getLibrary(JenaCoinsContainer container, String internalRef, URI resource) {
 
-    log.trace("get library "+resource+" in "+internalRef);
+    log.trace("Get library "+resource+" in "+internalRef);
 
     try {
       File file = new File(resource);
       if (file.exists()) {
-        log.trace("found file as local path " + resource);
+        log.trace("Found file as local path " + resource);
         copyAndLinkLibrary(internalRef, file);
 
         return file.toURI();
@@ -563,7 +563,7 @@ public class FileManager {
         if (container.getAvailableLibraryFiles().containsKey(resourceAsNs)) {
 
           File matchingFile = container.getAvailableLibraryFiles().get(resourceAsNs);
-          log.trace("found file as previously registered " + matchingFile.getAbsolutePath());
+          log.trace("Found file as previously registered " + matchingFile.getAbsolutePath());
           copyAndLinkLibrary(internalRef, matchingFile);
           return matchingFile.toURI();
         }
@@ -578,7 +578,7 @@ public class FileManager {
       connection.setRequestMethod("HEAD");
       int responseCode = connection.getResponseCode();
       if (responseCode == 200) {
-        log.info("found active link online: "+resource);
+        log.info("Found active link online: "+resource);
         return resource;
       }
     } catch (MalformedURLException e) {
@@ -609,9 +609,9 @@ public class FileManager {
     if(namespace == null) {
       try {
         namespace = new Namespace(model.getNsPrefixURI(""));
-        log.info("xmlns="+namespace.toString()+" found while importing file " + file.getName());
+        log.info("The xmlns="+namespace.toString()+" found while importing file " + file.getName());
       } catch(InvalidNamespaceException e) {
-        log.info("xmlns not found while importing file " + file.getName());}
+        log.info("The xmlns not found while importing file " + file.getName());}
     }
 
     // If still null, base the model name on the subject of the owl:Ontology object
@@ -619,7 +619,7 @@ public class FileManager {
       ResIterator subjects = model.listSubjectsWithProperty(RDF.type, OWL.Ontology);
       if(subjects.hasNext()) {
         namespace = new Namespace(subjects.next().asResource().getNameSpace());
-        log.info("rdf:type found for owl:Ontology to "+namespace.toString()+", using as namespace while importing file " + file.getName());
+        log.info("The rdf:type found for owl:Ontology to "+namespace.toString()+", using as namespace while importing file " + file.getName());
       }
     }
 
@@ -666,7 +666,7 @@ public class FileManager {
     } catch (SAXException e) {
       // do not print this, this is supposed to crash for non-xml files
     } catch (IOException e) {
-      log.error("problem reading xml file",e);
+      log.error("Problem reading xml file.", e);
     }
 
     if(baseUriDropHere.isEmpty()) {
@@ -724,7 +724,7 @@ public class FileManager {
   public static Namespace copyAndRegisterLibrary(InputStream stream, String fileName, HashMap<Namespace, File> availableLibraryFiles) {
 
     if(stream == null) {
-      log.warn("failed saving file "+fileName+", stream is null");
+      log.warn("Failed saving file "+fileName+", stream is null.");
       return null;
     }
 
@@ -744,22 +744,22 @@ public class FileManager {
           resStreamOut.write(buffer, 0, readBytes);
         }
       } catch (IOException ex) {
-        log.warn("problem saving file "+fileName+" to temp folder "+copyTo, ex);
+        log.warn("Problem saving file "+fileName+" to temp folder "+copyTo, ex);
       } finally {
         stream.close();
         resStreamOut.close();
       }
     } catch (IOException ex) {
-      log.warn("problem saving file "+fileName+" to temp folder "+copyTo, ex);
+      log.warn("Problem saving file "+fileName+" to temp folder "+copyTo, ex);
     }
 
     Model libraryModel = graphSet.readModel(fullPathUri.toString());
     Namespace ns = getLeadingNamespace(fullPathFile, libraryModel);
     if(!availableLibraryFiles.containsKey(ns)) {
-      log.info("registering for namespace " + ns + " for file " + fileName);
+      log.info("Registering for namespace " + ns + " for file " + fileName);
       availableLibraryFiles.put(ns,fullPathFile);
     } else {
-      log.info("skipping, already a file registered for namespace " + ns);
+      log.info("Skipping, already a file registered for namespace " + ns);
       // Remove file and folder too
       fullPathFile.delete();
       copyTo.toFile().delete();
@@ -777,7 +777,7 @@ public class FileManager {
         return null;
       }
     }
-    log.info("registering for namespace "+ns+" for file "+newFile.getName());
+    log.info("Registering for namespace "+ns+" for file "+newFile.getName());
 
     availableLibraryFiles.put(ns, newFile);
     return ns;

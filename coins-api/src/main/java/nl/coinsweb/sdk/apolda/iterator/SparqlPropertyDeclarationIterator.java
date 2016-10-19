@@ -182,7 +182,7 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
 
       RDFNode property = row.get("property");
       if (property == null || !property.isResource() || property.asResource().getLocalName() == null) {
-        log.error("found unparsable property " + property + " for querying property declaration");
+        log.error("Found unparsable property " + property + " for querying property declaration");
         continue;
       }
       result.setPropertyUri(property.asResource().getURI());
@@ -196,7 +196,7 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
 
       OntProperty ontProperty = ontModel.getOntProperty(property.asResource().getURI());
       if(ontProperty == null) {
-        log.warn("could not interpret " + property.asResource().getURI() + " as ont property, skipping this one");
+        log.warn("Could not interpret " + property.asResource().getURI() + " as ont property, skipping this one");
         continue;
       }
       String label = Language.getLabel(ontProperty);

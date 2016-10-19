@@ -129,7 +129,7 @@ public class WOAInjector implements Injector {
 
     // Is the level was not set already, easy
     if(!cache.containsKey(clearance.uri)) {
-      log.info("set level "+clearance.level+" for "+clearance.uri);
+      log.info("Set level "+clearance.level+" for "+clearance.uri);
       cache.put(clearance.uri, clearance);
       return;
     }
@@ -144,26 +144,26 @@ public class WOAInjector implements Injector {
 
     // Take the new one
     if(clearance.distance < current.distance) {
-      log.info("set level "+clearance.level+" for "+clearance.uri);
+      log.info("Set level "+clearance.level+" for "+clearance.uri);
       cache.put(clearance.uri, clearance);
       return;
     }
 
     // If the distance is equal, pick the more restrictive
     if(NO_ACCESS.equals(clearance.level) || NO_ACCESS.equals(current.level)) {
-      log.info("set level "+NO_ACCESS+" for "+clearance.uri);
+      log.info("Set level "+NO_ACCESS+" for "+clearance.uri);
       cache.put(clearance.uri, new Clearance(clearance.uri, NO_ACCESS, clearance.distance));
       return;
     }
 
     if(READ_ACCESS.equals(clearance.level) || READ_ACCESS.equals(current.level)) {
-      log.info("set level "+READ_ACCESS+" for "+clearance.uri);
+      log.info("Set level "+READ_ACCESS+" for "+clearance.uri);
       cache.put(clearance.uri, new Clearance(clearance.uri, READ_ACCESS, clearance.distance));
       return;
     }
 
     if(WRITE_ACCESS.equals(clearance.level) || WRITE_ACCESS.equals(current.level)) {
-      log.info("set level "+WRITE_ACCESS+" for "+clearance.uri);
+      log.info("Set level "+WRITE_ACCESS+" for "+clearance.uri);
       cache.put(clearance.uri, new Clearance(clearance.uri, WRITE_ACCESS, clearance.distance));
       return;
     }

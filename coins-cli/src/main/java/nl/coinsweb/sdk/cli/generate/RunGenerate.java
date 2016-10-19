@@ -231,7 +231,7 @@ public class RunGenerate {
         log.error(e.getMessage(), e);
       }
       model.addImport(filePath, null, true, true, true);
-      log.info("adding "+filePath);
+      log.info("Adding "+filePath);
       sourceFileNames.add(modelPath.getFileName().toString());
     }
 
@@ -268,14 +268,14 @@ public class RunGenerate {
     List<String> producedDllFiles = new ArrayList<>();
     List<String> pickList = new ArrayList(mapping.keySet());
     if(options.hasOrderOption()) {
-      log.info("use specified order");
+      log.info("Use specified order.");
       pickList = options.getOrderOptions();
     }
     for(String namespace : pickList) {
 
-      log.info("deal with "+namespace);
+      log.info("Deal with "+namespace);
       if(!mapping.containsKey(namespace)) {
-        log.error("could not match namespace "+namespace+" derived from input files to the namespaces that where found iterating the union model");
+        log.error("Could not match namespace "+namespace+" derived from input files to the namespaces that where found iterating the union model.");
         continue;
       }
 
@@ -287,7 +287,7 @@ public class RunGenerate {
       absoluteSubFolder.toFile().mkdirs();
 
 
-      log.info("start with with "+libraryName);
+      log.info("Start with with "+libraryName);
 
       // Copy to different folders
       try {
@@ -323,7 +323,7 @@ public class RunGenerate {
         try {
           FileUtils.copyFileToDirectory(inputFile.toFile(), generatedPerJarFolder.resolve(libraryName).toFile());
         } catch (IOException e) {
-          log.error("error while copying source rdf file to namespace folder", e);
+          log.error("Error while copying source rdf file to namespace folder.", e);
         }
       }
 
@@ -354,7 +354,7 @@ public class RunGenerate {
         producedDllFiles.add(dllFile);
       }
 
-      log.info("done with "+libraryName);
+      log.info("Done with "+libraryName);
     }
   }
 

@@ -239,7 +239,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     log.warn("InstanceModel: "+instanceNamespace.toString());
     log.warn("WoaModel: "+woaNamespace.toString());
     for(Namespace candidate : libraryModels.keySet()) {
-      log.warn("libraries: "+candidate.toString());
+      log.warn("Libraries: "+candidate.toString());
     }
     return null;
   }
@@ -353,7 +353,7 @@ public class InMemGraphSet implements CoinsGraphSet {
   }
   public Dataset rebuildValidationDataset() {
 
-    log.info("arrange dataset with union graphs");
+    log.info("Arrange dataset with union graphs.");
 
     validationDataset = getEmptyDataset();
 
@@ -363,14 +363,14 @@ public class InMemGraphSet implements CoinsGraphSet {
     updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
 //    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
-    log.info("done arranging");
+    log.info("Done arranging.");
 
     return validationDataset;
   }
 
   public void updateModel(Dataset dataset, String ns, Model model) {
 
-    log.info("update model "+ns);
+    log.info("Update model "+ns);
     if(dataset.containsNamedModel(ns)) {
       dataset.replaceNamedModel(ns, model);
     } else {
@@ -441,7 +441,7 @@ public class InMemGraphSet implements CoinsGraphSet {
   @Override
   public String writeModelToString(Model model, RDFFormat format) {
 
-    log.trace("starting to export");
+    log.trace("Starting to export.");
 
 
     ByteArrayOutputStream boas = new ByteArrayOutputStream();
@@ -609,7 +609,7 @@ public class InMemGraphSet implements CoinsGraphSet {
             resultRow.put(columnName, value);
           } else {
             resultRow.put(columnName, "NOT INTERPRETED");
-            log.warn("Skipping a result from the query.");
+            log.warn("Skipping a result from the query "+validationQuery.getReference()+".");
           }
         }
 
@@ -622,9 +622,9 @@ public class InMemGraphSet implements CoinsGraphSet {
 
 
       if(passed) {
-        log.trace("query found no results, passed");
+        log.trace("Query "+validationQuery.getReference()+" found no results, passed.");
       } else {
-        log.trace("! results where found, not passing");
+        log.trace("For query "+validationQuery.getReference()+" results where found, not passing validation.");
 
       }
 
