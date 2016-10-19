@@ -416,6 +416,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     for(Namespace namespace : availableLibraryFiles.keySet()) {
       list.add(namespace.toString());
     }
+    Collections.sort(list);
     return list;
   }
 
@@ -441,6 +442,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public List<String> getAttachments() {
     ArrayList<String> list = new ArrayList<>();
     list.addAll(attachments.keySet());
+    Collections.sort(list);
     return list;
   }
 
