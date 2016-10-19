@@ -728,7 +728,6 @@ public class FileManager {
       return null;
     }
 
-
     Path copyTo = getTempLibPath().resolve(RandomStringUtils.random(4, true, true));
     copyTo.toFile().mkdirs();
     URI fullPathUri = copyTo.resolve(fileName).toUri();
