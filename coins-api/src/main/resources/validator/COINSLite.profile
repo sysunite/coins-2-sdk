@@ -1,8 +1,9 @@
 ProfileName COINS 2.0 Lite
+ProfileVersion 0.9.1
 ProfileAuthor Hans Schevers
 <ProfileCheck>
 Reference COINS 2.0 Lite
-Description "COINS 2.0 Lite profile check on predicate (subject predicate object) usage "
+Description "COINS 2.0 Lite profile check on predicate usage "
 ResultFormat "The subject ${a} uses an unsupported predicate ${b} to object ${c}"
 
 <SparqlQuery>
@@ -20,7 +21,7 @@ filter (?b not in (owl:allValuesFrom,owl:cardinality,owl:disjointWith,owl:distin
 </ProfileCheck>
 <ProfileCheck>
 Reference COINS 2.0 Lite
-Description "COINS 2.0 Lite profile check on object (subject predicate object) usage"
+Description "COINS 2.0 Lite profile check on object usage"
 ResultFormat "The subject ${a} has a predicate ${b} to an unsupported object ${c}"
 
 <SparqlQuery>
@@ -31,7 +32,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 select distinct ?a ?b ?c 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{ 
  ?a ?b ?c   filter (STRSTARTS(STR(?c),"http://www.w3.org/2002/07/owl#")).
-filter (?c not in (owl:AllDisjointClasses,owl:Annotation,owl:AnnotationProperty,owl:Class,owl:DatatypeProperty,owl:FunctionalProperty,owl:NamedIndividual,owl:ObjectProperty,owl:Ontology,owl:Restriction,owl:TransitiveProperty,owl:Thing)) }}
+filter (?c not in (owl:AllDisjointClasses,owl:Annotation,owl:AnnotationProperty,owl:Class,owl:DatatypeProperty,owl:FunctionalProperty,owl:NamedIndividual,owl:ObjectProperty,owl:Ontology,owl:Restriction,owl:TransitiveProperty,owl:Thing,owl:topDataProperty,owl:topObjectProperty)) }}
 </SparqlQuery>
 
 </ProfileCheck>
@@ -52,7 +53,8 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
   ?c1 owl:allValuesFrom ?y1 . 
-  ?y1 rdfs:subClassOf ?y2.  ?c2 owl:allValuesFrom ?y2 . 
+  ?y1 rdfs:subClassOf ?y2. 
+ ?c2 owl:allValuesFrom ?y2 . 
    ?c1 owl:onProperty ?p . 
   ?c2 owl:onProperty ?p      
 }
@@ -78,7 +80,11 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?c1 owl:allValuesFrom ?y .     ?c1 owl:onProperty ?p1 .    ?c2 owl:allValuesFrom ?y .    ?c2 owl:onProperty ?p2 .    ?p1 rdfs:subPropertyOf ?p2 
+  ?c1 owl:allValuesFrom ?y . 
+    ?c1 owl:onProperty ?p1 .  
+  ?c2 owl:allValuesFrom ?y .  
+  ?c2 owl:onProperty ?p2 .  
+  ?p1 rdfs:subPropertyOf ?p2 
 }
 
 }
@@ -102,7 +108,8 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?p2 rdfs:domain ?c .    ?p1 rdfs:subPropertyOf ?p2 
+  ?p2 rdfs:domain ?c . 
+   ?p1 rdfs:subPropertyOf ?p2 
 }
 
 }
@@ -126,7 +133,11 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?c1 owl:hasValue ?i .    ?c1 owl:onProperty ?p1 .    ?c2 owl:hasValue ?i .    ?c2 owl:onProperty ?p2 .    ?p1 rdfs:subPropertyOf ?p2 
+  ?c1 owl:hasValue ?i .  
+  ?c1 owl:onProperty ?p1 .  
+  ?c2 owl:hasValue ?i . 
+   ?c2 owl:onProperty ?p2 . 
+   ?p1 rdfs:subPropertyOf ?p2 
 }
 
 }
@@ -174,7 +185,8 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?p rdfs:range ?c1 .    ?c1 rdfs:subClassOf ?c2 
+  ?p rdfs:range ?c1 .  
+  ?c1 rdfs:subClassOf ?c2 
 }
 
 }
@@ -198,7 +210,8 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-    ?p2 rdfs:range ?c .	    ?p1 rdfs:subPropertyOf ?p2 
+    ?p2 rdfs:range ?c .	
+    ?p1 rdfs:subPropertyOf ?p2 
 }
 
 }
@@ -222,7 +235,8 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?c1 rdfs:subClassOf ?c2 .    ?c2 rdfs:subClassOf ?c3 
+  ?c1 rdfs:subClassOf ?c2 . 
+   ?c2 rdfs:subClassOf ?c3 
 }
 
 }
@@ -246,7 +260,8 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?p1 rdfs:subPropertyOf ?p2 .   ?p2 rdfs:subPropertyOf ?p3 
+  ?p1 rdfs:subPropertyOf ?p2 . 
+  ?p2 rdfs:subPropertyOf ?p3 
 }
 
 }
@@ -270,7 +285,11 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?c1 owl:someValuesFrom ?y1 .    ?c1 owl:onProperty ?p .    ?c2 owl:someValuesFrom ?y2 .    ?c2 owl:onProperty ?p .    ?y1 rdfs:subClassOf ?y2 
+  ?c1 owl:someValuesFrom ?y1 .  
+  ?c1 owl:onProperty ?p . 
+   ?c2 owl:someValuesFrom ?y2 .  
+  ?c2 owl:onProperty ?p .  
+  ?y1 rdfs:subClassOf ?y2 
 }
 
 }
@@ -294,7 +313,11 @@ insert {Graph ${SCHEMA_UNION_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?c1 owl:someValuesFrom ?y .    ?c1 owl:onProperty ?p1 .    ?c2 owl:someValuesFrom ?y .    ?c2 owl:onProperty ?p2 .    ?p1 rdfs:subPropertyOf ?p2  
+  ?c1 owl:someValuesFrom ?y .  
+  ?c1 owl:onProperty ?p1 .  
+  ?c2 owl:someValuesFrom ?y .  
+  ?c2 owl:onProperty ?p2 .  
+  ?p1 rdfs:subPropertyOf ?p2  
 }
 
 }
@@ -375,7 +398,8 @@ insert {Graph ${INSTANCE_GRAPH}{
    ?p a owl:TransitiveProperty 
 }
 Graph ${INSTANCE_GRAPH}{
-    ?x ?p ?y .	    ?y ?p ?z  
+    ?x ?p ?y .	
+    ?y ?p ?z  
 }
 
 }
@@ -399,7 +423,8 @@ insert {Graph ${INSTANCE_GRAPH}{
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?x owl:hasValue ?y .    ?x owl:onProperty ?p .
+  ?x owl:hasValue ?y . 
+   ?x owl:onProperty ?p .
 }
 Graph ${INSTANCE_GRAPH}{
    ?u a ?x  .
@@ -483,7 +508,8 @@ insert {Graph ${INSTANCE_GRAPH}{
 ?y a ?ci 
 }
 Graph ${SCHEMA_UNION_GRAPH}{
-    ?c owl:unionOf ?x .     ?x rdf:rest*/rdf:first ?ci 
+    ?c owl:unionOf ?x . 
+    ?x rdf:rest*/rdf:first ?ci 
 }
 
 }
@@ -509,10 +535,18 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?this ?class ?min (count(distinct ?value) as ?aantal) ?property 
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-   ?class a owl:Restriction .     ?class owl:minCardinality ?min .    ?class owl:onProperty ?property  
+   ?class a owl:Restriction .   
+  ?class owl:minCardinality ?min . 
+   ?class owl:onProperty ?property  
 }
 Graph ${INSTANCE_GRAPH}{
- {?this a ?class . ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } union {?this a ?class . filter not exists {?this ?property ?value} }	
+ {?this a ?class .
+ 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}. 
+ ?this ?property ?value. 
+ filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } 
+ union 
+ {?this a ?class .
+ filter not exists {?this ?property ?value} }	
 }
 
 }group by ?this ?class ?min ?property
@@ -541,10 +575,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?this ?min (count(distinct ?value) as ?aantal) ?property 
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?class a owl:Restriction .    ?class owl:cardinality ?min .    ?class owl:onProperty ?property .
+  ?class a owl:Restriction . 
+   ?class owl:cardinality ?min .  
+  ?class owl:onProperty ?property .
 }
 Graph ${INSTANCE_GRAPH}{
- {?this a ?class . ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } union {?this a ?class . filter not exists {?this ?property ?value} }	
+ {?this a ?class . 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}   
+ ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} }  
+ union 
+ {?this a ?class . filter not exists {?this ?property ?value} }	
 }
 
 }  group by ?class ?this ?min ?property  
@@ -573,10 +612,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?this  ?min (count(distinct ?value) as ?aantal) ?property 
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-   ?class a owl:Restriction .     ?class owl:maxCardinality ?min .    ?class owl:onProperty ?property   
+   ?class a owl:Restriction .   
+  ?class owl:maxCardinality ?min .  
+  ?class owl:onProperty ?property   
 }
 Graph ${INSTANCE_GRAPH}{
- ?this a ?class . ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}	
+ ?this a ?class . 
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}  
+ ?this ?property ?value. 
+ filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}	
 }
 
 }group by ?this ?class ?min  ?property
@@ -604,11 +648,22 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  WHERE {{
  select distinct ?this ?class ?min (count(distinct ?value) as ?aantal) ?property ?onClass
 
+ WHERE {{
+ select distinct  ?class ?min ?property ?onClass
+
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?class a owl:Restriction .    ?class owl:onClass ?onClass .  ?class owl:qualifiedCardinality ?min .    ?class owl:onProperty ?property .
+  ?class a owl:Restriction .  
+  ?class owl:onClass ?onClass . 
+ ?class owl:qualifiedCardinality ?min . 
+   ?class owl:onProperty ?property .
 }
+
+}}
 Graph ${INSTANCE_GRAPH}{
-    ?this a ?class .			optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}. ?value a ?onClass }
+    ?this a ?class .	
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}	
+	optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.
+ ?value a ?onClass }
 }
 
 }  group by ?this ?class ?min  ?property  ?onClass
@@ -637,10 +692,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?this ?class ?min  (count(distinct ?value) as ?aantal)	 ?property 
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-    ?class a owl:Restriction .   ?class owl:onClass ?onClass.   ?class owl:maxQualifiedCardinality ?min .    ?class owl:onProperty ?property .
+    ?class a owl:Restriction .  
+ ?class owl:onClass ?onClass.  
+ ?class owl:maxQualifiedCardinality ?min .  
+  ?class owl:onProperty ?property .
 }
 Graph ${INSTANCE_GRAPH}{
-    ?this a ?class .	 optional{ ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.?value a ?onClass}		
+    ?this a ?class . 	
+ filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} 	
+ optional{ ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.?value a ?onClass}		
 }
 
 }  group by  ?this ?class ?min  ?property  
@@ -669,10 +729,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?this ?class ?min (count(distinct ?value) as ?aantal)  ?property 
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?class a owl:Restriction .   ?class owl:onClass ?onClass.   ?class owl:minQualifiedCardinality ?min .    ?class owl:onProperty ?property .
+  ?class a owl:Restriction . 
+  ?class owl:onClass ?onClass. 
+  ?class owl:minQualifiedCardinality ?min .  
+  ?class owl:onProperty ?property .
 }
 Graph ${INSTANCE_GRAPH}{
-    ?this a ?class .			optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.?value a ?onClass}	  	
+    ?this a ?class .	
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} 	
+	optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.?value a ?onClass}	  	
 }
 
 }  group by ?this ?class ?min  ?property  
@@ -704,7 +769,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
    ?property a owl:FunctionalProperty
 }
 Graph ${INSTANCE_GRAPH}{
- ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}  
+ ?this ?property ?value. 
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} 
+ filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}  
 }
 
 } group by  ?this ?property  
@@ -730,7 +797,8 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?a ?prop ?range ?value (Datatype(?value) as ?dat)
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
-  ?prop  a owl:DatatypeProperty . 			   ?prop rdfs:range ?range. 
+  ?prop  a owl:DatatypeProperty . 	
+		   ?prop rdfs:range ?range. 
 }
 Graph ${INSTANCE_GRAPH}{
   ?a ?prop ?value
@@ -759,7 +827,8 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   ?prop  a owl:DatatypeProperty 
 }
 Graph ${INSTANCE_GRAPH}{
-  ?a ?prop ?value.	filter(!isLiteral(?value)) 
+  ?a ?prop ?value. 
+	filter(!isLiteral(?value)) 
 }
 
 }
@@ -784,7 +853,8 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   ?prop  a owl:ObjectProperty 
 }
 Graph ${INSTANCE_GRAPH}{
-  ?a ?prop ?value.	filter(!isIRI(?value)) 
+  ?a ?prop ?value. 
+	filter(!isIRI(?value)) 
 }
 
 }
@@ -916,7 +986,7 @@ filter not exists{Graph ${INSTANCE_GRAPH}{
 
 Reference COINS-CCO
 Description "Only COINS concept instances check"
-ResultFormat "instance ${x} is a member of ${type}.${type} is not a COINS Concept "
+ResultFormat "instance ${x} is a member of ${type}. ${type} is not a COINS Concept "
 <SparqlQuery>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -926,7 +996,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?x ?type
 
  WHERE {Graph ${INSTANCE_GRAPH}{
-  ?x a ?type. Filter not exists {?x a <http://www.coinsweb.nl/cbim-2.0.rdf#Concept>}.  filter not exists{ ?x a owl:Ontology}
+  ?x a ?type. 
+ Filter not exists {?x a <http://www.coinsweb.nl/cbim-2.0.rdf#Concept>}. 
+ filter not exists{ ?x a owl:Ontology}
 }
 
 }
@@ -948,7 +1020,11 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?a ?b ?c
 
  WHERE {Graph ${INSTANCE_GRAPH}{
-    ?a ?b ?c.   filter (?c!=owl:Thing).  filter (?c!=owl:Ontology). filter (?c!=owl:NamedIndividual). filter (?c!=owl:Nothing) . filter (STRSTARTS(STR(?c),"http://www.w3.org/1999/02/22-rdf-syntax-ns#")||(STRSTARTS(STR(?c),"http://www.w3.org/2000/01/rdf-schema#"))||(STRSTARTS(STR(?c),"http://www.w3.org/2002/07/owl#")))
+    ?a ?b ?c.   filter (?c!=owl:Thing). 
+ filter (?c!=owl:Ontology). 
+ filter (?c!=owl:NamedIndividual).
+ filter (?c!=owl:Nothing) . 
+ filter (STRSTARTS(STR(?c),"http://www.w3.org/1999/02/22-rdf-syntax-ns#")||(STRSTARTS(STR(?c),"http://www.w3.org/2000/01/rdf-schema#"))||(STRSTARTS(STR(?c),"http://www.w3.org/2002/07/owl#")))
 }
 
 }
@@ -1014,10 +1090,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  select distinct ?x ?c1 ?c2
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
- ?y a owl:AllDisjointClasses .    ?y owl:members ?members .     ?members rdf:rest*/rdf:first ?c1 .		    ?members rdf:rest*/rdf:first ?c2 .  		    FILTER (?c1 != ?c2) .
+ ?y a owl:AllDisjointClasses .  
+  ?y owl:members ?members .  
+   ?members rdf:rest*/rdf:first ?c1 .	
+	    ?members rdf:rest*/rdf:first ?c2 .  	
+	    FILTER (?c1 != ?c2) .
 }
 Graph ${INSTANCE_GRAPH}{
- ?x a ?c1 . 	 ?x a ?c2 
+ ?x a ?c1 . 	
+ ?x a ?c2 
 }
 
 }
@@ -1042,7 +1123,8 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  ?c1 owl:disjointWith ?c2 
 }
 Graph ${INSTANCE_GRAPH}{
-   ?x a ?c1 .   ?x a ?c2 .
+   ?x a ?c1 . 
+  ?x a ?c2 .
 }
 
 }
