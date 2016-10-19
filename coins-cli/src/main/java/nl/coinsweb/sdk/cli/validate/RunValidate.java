@@ -134,7 +134,7 @@ public class RunValidate {
     if(options.hasCustomProfile()) {
 
       try {
-        log.info("supplied custom profile file, will try to register it");
+        log.info("Supplied custom profile file, will try to register it.");
         File profileFile = options.getCustomProfile().toFile();
         Profile profile = Profile.loadProfile(new FileInputStream(profileFile));
         profileName = profile.getName();
@@ -173,7 +173,7 @@ public class RunValidate {
     }
 
 
-    log.info("will init validator and start validation");
+    log.info("Will init validator and start validation.");
     Validator validator = new Validator(container, profileName);
     validator.validate(reportFile);
 

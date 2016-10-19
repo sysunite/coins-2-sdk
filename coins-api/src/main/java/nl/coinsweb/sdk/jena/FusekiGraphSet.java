@@ -119,14 +119,14 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public Dataset rebuildValidationDataset() {
 
-    log.info("arrange dataset with union graphs");
+    log.info("Arrange dataset with union graphs.");
 
     updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
     updateModel(validationDataset, WOA_GRAPH, woaModel);
     updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
 //    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
-    log.info("done arranging");
+    log.info("Done arranging.");
 
     return null;
   }
@@ -134,7 +134,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public void updateModel(Dataset dataset, String ns, Model model) {
 
-    log.info("update model "+ns);
+    log.info("Update model "+ns);
     DatasetAccessor accessor = DatasetAccessorFactory.createHTTP(sparqlEndPointD);
     accessor.putModel(ns, model);
   }
