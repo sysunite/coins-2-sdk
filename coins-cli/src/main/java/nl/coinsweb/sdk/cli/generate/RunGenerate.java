@@ -216,7 +216,7 @@ public class RunGenerate {
 
     InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, true);
 
 
 

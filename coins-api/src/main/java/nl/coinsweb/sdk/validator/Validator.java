@@ -282,7 +282,7 @@ public class Validator {
         log.error(e.getMessage(), e);
       }
 
-      Map<String, Long> diffNumTriples = graphSet.diffNumTriples(initialNumTriples, graphSet.numTriples());
+      Map<String, Long> diffNumTriples = InMemGraphSet.diffNumTriples(initialNumTriples, graphSet.numTriples());
       inferenceExecution.addNumRuns(1);
       inferenceExecution.addTriplesAdded(diffNumTriples);
 
