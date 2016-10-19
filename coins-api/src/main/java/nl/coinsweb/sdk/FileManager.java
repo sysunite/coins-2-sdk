@@ -25,11 +25,11 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import nl.coinsweb.sdk.exceptions.*;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
@@ -48,7 +48,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -75,6 +77,8 @@ public class FileManager {
   private static String ONTOLOGIES_PATH = "bim/repository";
   private static String ATTACHMENT_PATH = "doc";
   private static String WOA_PATH = "woa";
+
+  private static CoinsGraphSet graphSet = new InMemGraphSet("http://sandbox/");
 
 
   public static ArrayList<File> foldersToCleanup;
@@ -345,8 +349,7 @@ public class FileManager {
 
           log.info("Index file as ontology file: "+listOfFiles[i].getName());
 
-          Model libraryModel = ModelFactory.createDefaultModel();
-          libraryModel.read(listOfFiles[i].toURI().toString());
+          Model libraryModel = graphSet.readModel(listOfFiles[i].toURI().toString());
           Namespace ns = getLeadingNamespace(listOfFiles[i], libraryModel);
           log.info("Found leading namespace " + ns + " for file " + listOfFiles[i].getName()+".");
 
@@ -751,9 +754,7 @@ public class FileManager {
       log.warn("problem saving file "+fileName+" to temp folder "+copyTo, ex);
     }
 
-
-    Model libraryModel = ModelFactory.createDefaultModel();
-    libraryModel.read(fullPathUri.toString());
+    Model libraryModel = graphSet.readModel(fullPathUri.toString());
     Namespace ns = getLeadingNamespace(fullPathFile, libraryModel);
     if(!availableLibraryFiles.containsKey(ns)) {
       log.info("registering for namespace " + ns + " for file " + fileName);
@@ -768,8 +769,7 @@ public class FileManager {
   }
   public static Namespace registerLibrary(URI fileUri, Namespace fallbackNs, HashMap<Namespace, File> availableLibraryFiles) {
     File newFile = new File(fileUri);
-    Model libraryModel = ModelFactory.createDefaultModel();
-    libraryModel.read(fileUri.toString());
+    Model libraryModel = graphSet.readModel(fileUri.toString());
     Namespace ns = fallbackNs;
     try {
       ns = getLeadingNamespace(newFile, libraryModel);

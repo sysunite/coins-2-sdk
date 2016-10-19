@@ -86,6 +86,8 @@ public interface CoinsGraphSet {
   // Models
 
   public Model getEmptyModel();
+  public Model readModel(String url);
+  public void readModel(Model model, String url);
 
   /**
    * If implemented as Jena model, return a Jena Model object containing the instances.
