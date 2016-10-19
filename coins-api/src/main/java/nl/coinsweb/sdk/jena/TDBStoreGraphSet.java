@@ -64,7 +64,7 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   public TDBStoreGraphSet(String namespace) {
     super(namespace);
-    log.info("start new tdb for namespace given file");
+    log.info("Start new tdb for namespace given file.");
     Path tempPath = Paths.get(DEFAULT_TEMP_FOLDER);
     Path path = tempPath.resolve(TDB_FOLDER + RandomStringUtils.random(8, true, true) + "/");
     path.toFile().mkdirs();
@@ -83,12 +83,12 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public Iterator<Map<String, String>> query(String sparqlQuery) {
 
     Iterator<Map<String, String>> result = null;
-    log.trace("start read transaction");
+    log.trace("Start read transaction.");
     getValidationDataset().begin(ReadWrite.READ) ;
     try {
       result = super.query(sparqlQuery);
     } finally {
-      log.trace("stop read transaction");
+      log.trace("Stop read transaction.");
       getValidationDataset().end() ;
     }
     return result;
@@ -99,13 +99,13 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public void insert(InferenceQuery query, InferenceQueryResult result) {
 
-    log.trace("start write transaction");
+    log.trace("Start write transaction.");
     getValidationDataset().begin(ReadWrite.WRITE);
     try {
       super.insert(query, result);
-      getValidationDataset().commit() ;
+      getValidationDataset().commit();
     } finally {
-      log.trace("stop write transaction");
+      log.trace("Stop write transaction.");
       getValidationDataset().end() ;
     }
   }
@@ -123,12 +123,12 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public ValidationQueryResult select(ValidationQuery validationQuery) {
 
     ValidationQueryResult result = null;
-    log.trace("start read transaction");
+    log.trace("Start read transaction.");
     getValidationDataset().begin(ReadWrite.READ) ;
     try {
       result = super.select(validationQuery);
     } finally {
-      log.trace("stop read transaction");
+      log.trace("Stop read transaction.");
       getValidationDataset().end() ;
     }
     return result;
@@ -141,12 +141,12 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public Map<String, Long> numTriples() {
 
     Map<String, Long> result = null;
-    log.trace("start read transaction");
+    log.trace("Start read transaction.");
     getValidationDataset().begin(ReadWrite.READ) ;
     try {
       result = super.numTriples();
     } finally {
-      log.trace("stop read transaction");
+      log.trace("Stop read transaction.");
       getValidationDataset().end() ;
     }
     return result;

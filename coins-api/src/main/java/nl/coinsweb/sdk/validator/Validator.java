@@ -75,10 +75,10 @@ public class Validator {
    */
   public boolean validate(Path reportLocation) {
 
-    log.info("execute profile");
+    log.info("Execute profile.");
     ProfileExecution execution = execute(model, profile);
 
-    log.info("build report");
+    log.info("Build report.");
     List<String> libraries = new ArrayList<>();
     List<String> graphs = new ArrayList<>();
     for(Namespace ns : ((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().keySet()) {
@@ -289,7 +289,7 @@ public class Validator {
 
 
       triplesAddedThisRun = diffNumTriples.get(InferenceExecution.TOTAL_NUM);
-      log.info("this round "+triplesAddedThisRun+" triples were added");
+      log.info("This round "+triplesAddedThisRun+" triples were added.");
 
     // Loop
     } while (recursive && triplesAddedThisRun > 0l);
