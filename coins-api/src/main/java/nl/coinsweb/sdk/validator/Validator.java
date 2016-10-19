@@ -248,8 +248,8 @@ public class Validator {
       Map<String, Long> initialNumTriples = graphSet.numTriples();
 
       // Prepare list of all queries to be executed this round
-      ExecutorService es = Executors.newFixedThreadPool(Validator.QUERY_THREAD_SIZE);
-      List<Callable<Long>> todo = new ArrayList<>(queries.size());
+      ExecutorService es = Executors.newFixedThreadPool(Validator.QUERY_THREAD_POOL_SIZE);
+      List<Callable<Object>> todo = new ArrayList<>(queries.size());
 
       for (final InferenceQuery query : queries) {
         if (query.hasSparqlQuery()) {
@@ -262,15 +262,14 @@ public class Validator {
           final InferenceQueryResult resultCarrier = resultByReference.get(query.getReference());
 
           // Create a thread for each insert query
-          Callable<Long> queryTread = new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
+          Thread queryThread = new Thread() {
+            public void run() {
               graphSet.insert(query, resultCarrier);
-              return 0l; // does not mean anything
             }
           };
+          Callable<Object> callable = Executors.callable(queryThread);
 
-          todo.add(queryTread);
+          todo.add(callable);
         }
       }
 
