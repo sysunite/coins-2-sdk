@@ -191,6 +191,7 @@ public interface CoinsGraphSet {
   //  public void select(String sparql, String description);
   public ResultSet getResultSet(String queryString);
   public ValidationQueryResult select(ValidationQuery validationQuery);
+  public Map<String, Long> numTriples();
   public int numTriples(String graph);
 
 }

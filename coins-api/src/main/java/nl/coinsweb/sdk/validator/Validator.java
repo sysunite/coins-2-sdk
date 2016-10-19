@@ -29,6 +29,7 @@ import com.hp.hpl.jena.ontology.OntModelSpec;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
@@ -51,10 +52,10 @@ public class Validator {
 
   private static final Logger log = LoggerFactory.getLogger(Validator.class);
 
-  public static final int QUERY_THREAD_SIZE = 1;
+  public static int QUERY_THREAD_POOL_SIZE = 1;
 
 
-  InMemGraphSet graphSet;
+  CoinsGraphSet graphSet;
   Profile profile;
 
 
@@ -93,6 +94,10 @@ public class Validator {
     data.put("attachments", model.getCoinsContainer().getAttachments());
     data.put("date", new Date().toString());
     data.put("executionTime", execution.getExecutionTime());
+    data.put("memLimit", execution.getMemLimit());
+    data.put("memMaxUsage", execution.getMemMaxUsage());
+    data.put("queryThreads", Validator.QUERY_THREAD_POOL_SIZE);
+    data.put("graphSetImpl", graphSet.getClass().getCanonicalName());
     data.put("profileName", this.profile.getName());
     data.put("profileChecksPassed", execution.profileChecksPassed());
     data.put("validationPassed", execution.validationPassed());
@@ -102,6 +107,7 @@ public class Validator {
     data.put("validationRules", execution.getValidationRuleResults());
 
     writeReport(reportLocation, data);
+    writeReportXML(reportLocation.getParent().resolve(reportLocation.getFileName().toString().replaceAll(".html",".xml")), data);
     return execution.profileChecksPassed() && execution.validationPassed();
   }
 
@@ -137,6 +143,38 @@ public class Validator {
 
   }
 
+  private void writeReportXML(Path reportLocation, Map<String, Object> data) {
+
+    try {
+
+      Configuration cfg = new Configuration();
+      cfg.setLocale(Locale.GERMAN); // for dutch number format
+      cfg.setClassForTemplateLoading(nl.coinsweb.sdk.validator.Validator.class, "/validator/");
+      cfg.setDefaultEncoding("UTF-8");
+      Template template = cfg.getTemplate("report.xml");
+
+      File out;
+      if(reportLocation.toString().endsWith("xml")) {
+        out = reportLocation.toFile();
+      } else {
+        out = reportLocation.resolve("report.xml").toFile();
+      }
+      PrintStream printStream = new PrintStream( new FileOutputStream( out ) );
+      Writer file = new PrintWriter(new OutputStreamWriter(printStream, "UTF-8"));
+
+      template.process(data, file);
+      file.flush();
+      file.close();
+
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (TemplateException e) {
+      log.error(e.getMessage(), e);
+    }
+
+  }
+
   public ProfileExecution execute(CoinsModel model, Profile profile) {
 
     ProfileExecution resultCollection = new ProfileExecution();
@@ -144,22 +182,28 @@ public class Validator {
     long start = new Date().getTime();
 
     this.model = model;
-    this.graphSet = (InMemGraphSet) model.getCoinsGraphSet();
-    this.graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
+    this.graphSet =  model.getCoinsGraphSet();
+    ((InMemGraphSet)this.graphSet).setOntModelSpec(OntModelSpec.OWL_MEM);
     this.profile = profile;
 
 
+    Runtime runtime = Runtime.getRuntime();
+
     log.info("\uD83D\uDC1A Will perform profile checks.");
     profileCheck(resultCollection);
+    resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
     log.info("\uD83D\uDC1A Will add schema inferences.");
     addInferences(profile.getSchemaInferences(), resultCollection.getSchemaInferenceResults());
+    resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
     log.info("\uD83D\uDC1A Will add data inferences.");
     addInferences(profile.getDataInferences(), resultCollection.getDataInferenceResults());
+    resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
     log.info("\uD83D\uDC1A Will perform validation checks.");
     performValidation(resultCollection);
+    resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
     resultCollection.setExecutionTime(new Date().getTime() - start);
 
