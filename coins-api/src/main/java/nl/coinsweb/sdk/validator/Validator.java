@@ -85,6 +85,7 @@ public class Validator {
       graphs.add(ns.toString());
       libraries.add(((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().get(ns).getName());
     }
+    Collections.sort(libraries);
 
     // Prepare data to transfer to the template
     Map<String, Object> data = new HashMap<>();

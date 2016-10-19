@@ -378,6 +378,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     }
   }
 
+  @Override
   public Map<String, Long> numTriples() {
     HashMap<String, Long> result = new HashMap<>();
     result.put(InferenceExecution.TOTAL_NUM, 0l);
@@ -470,7 +471,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     try {
       BufferedReader reader = new BufferedReader(new StringReader(boas.toString()));
 
-      String line = null;
+      String line;
       while ((line = reader.readLine()) != null) {
         result += line+"\n";
       }
