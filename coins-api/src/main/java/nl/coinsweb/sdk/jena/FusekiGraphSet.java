@@ -201,10 +201,10 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     HashMap<String, Long> result = new HashMap<>();
     result.put(InferenceExecution.TOTAL_NUM, 0l);
 
-    Long instanceTriples = new Long(this.numTriples("http://coinsweb.nl/INSTANCE_GRAPH"));
-    Long schemaTriples = new Long(this.numTriples("http://coinsweb.nl/SCHEMA_UNION_GRAPH"));
-    result.put("http://coinsweb.nl/INSTANCE_GRAPH", instanceTriples);
-    result.put("http://coinsweb.nl/SCHEMA_UNION_GRAPH", schemaTriples);
+    Long instanceTriples = new Long(this.numTriples(InMemGraphSet.INSTANCE_GRAPH));
+    Long schemaTriples = new Long(this.numTriples(InMemGraphSet.SCHEMA_UNION_GRAPH));
+    result.put(InMemGraphSet.INSTANCE_GRAPH, instanceTriples);
+    result.put(InMemGraphSet.SCHEMA_UNION_GRAPH, schemaTriples);
     result.put(InferenceExecution.TOTAL_NUM, instanceTriples + schemaTriples);
 
     return result;
