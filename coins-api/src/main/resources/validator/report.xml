@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<#--
+
+Variables posted to this report page
+#####
+
+String                      : filename
+String                      : libraries
+String                      : graphs
+String                      : attachments
+String                      : date
+long                        : executionTime
+long                        : memLimit
+long                        : memMaxUsage
+int                         : queryThreads
+String                      : profileName
+boolean                     : profileChecksPassed
+boolean                     : validationPassed
+List<ValidationQueryResult> : profileChecks
+InferenceExecution          : schemaInferences
+InferenceExecution          : dataInferences
+List<ValidationQueryResult> : validationRules
+
+-->
+<profileRun>
+  <profile>
+    <name>${profileName}</name>
+  </profile>
+  <configuration>
+    <graphSet>
+      <implementation>${graphSetImpl}</implementation>
+      <queryThreads>${queryThreads}</queryThreads>
+      <memoryLimit>${memLimit}</memoryLimit>
+      <maxMemoryUsage>${memMaxUsage}</maxMemoryUsage>
+    </graphSet>
+    <container>
+      <name>${filename}</name>
+      <libraries>
+        <#if libraries?has_content>
+        <#list 0..libraries?size-1 as i>
+        <library>
+          <fileName>${libraries[i]}</fileName>
+          <namespace>${graphs[i]}</namespace>
+        </library>
+        </#list>
+        </#if>
+      </libraries>
+      <attachments>
+        <#if attachments?has_content>
+        <#list 0..attachments?size-1 as i>
+        <attachment>${attachments[i]}</attachment>
+        </#list>
+        </#if>
+      </attachments>
+    </container>
+  </configuration>
+  <run>
+    <date>${date}</date>
+    <executionTime>${executionTime?c}</executionTime>
+    <profileChecks>
+      <#list profileChecks as query>
+      <profileCheck>
+        <reference>${query.reference}</reference>
+        <passed><#if query.passed>true<#else>false</#if></passed>
+        <executionTime>${query.executionTime?c}</executionTime>
+        <#if query.formattedResults?has_content>
+        <results>
+          <#list 0..query.formattedResults?size-1 as i>
+          <result>${query.formattedResults[i]}</result>
+          </#list>
+        </results>
+        </#if>
+      </profileCheck>
+      </#list>
+    </profileChecks>
+    <schemaInferences>
+      <runs>${schemaInferences.numRuns}</runs>
+      <executionTime>${schemaInferences.executionTime?c}</executionTime>
+      <graphs>
+        <#assign keys = schemaInferences.triplesAdded?keys>
+        <#list keys as graphname>
+        <graph>
+          <name>${graphname}</name>
+          <triplesAdded>${schemaInferences.triplesAdded[graphname]?c}</triplesAdded>
+        </graph>
+        </#list>
+      </graphs>
+      <#list schemaInferences.queryResults as query>
+      <schemaInference>
+        <reference>${query.reference}</reference>
+        <executionTime>${query.executionTime?c}</executionTime>
+      </schemaInference>
+      </#list>
+    </schemaInferences>
+    <dataInferences>
+      <runs>${dataInferences.numRuns}</runs>
+      <executionTime>${dataInferences.executionTime?c}</executionTime>
+      <graphs>
+        <#assign keys = dataInferences.triplesAdded?keys>
+        <#list keys as graphname>
+        <graph>
+          <name>${graphname}</name>
+          <triplesAdded>${dataInferences.triplesAdded[graphname]?c}</triplesAdded>
+        </graph>
+        </#list>
+      </graphs>
+      <#list dataInferences.queryResults as query>
+      <dataInference>
+        <reference>${query.reference}</reference>
+        <executionTime>${query.executionTime?c}</executionTime>
+      </dataInference>
+      </#list>
+    </dataInferences>
+    <validationRules>
+      <#list validationRules as query>
+      <validationRule>
+        <reference>${query.reference}</reference>
+        <passed><#if query.passed>true<#else>false</#if></passed>
+        <executionTime>${query.executionTime?c}</executionTime>
+        <#if query.errorMessage??>
+        <errorMessage>${query.errorMessage}</errorMessage>
+        </#if>
+        <#if query.formattedResults?has_content>
+        <results>
+          <#list 0..query.formattedResults?size-1 as i>
+          <result>${query.formattedResults[i]}</result>
+          </#list>
+        </results>
+        </#if>
+      </validationRule>
+      </#list>
+    </validationRules>
+  </run>
+</profileRun>
