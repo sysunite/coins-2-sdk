@@ -42,6 +42,8 @@ public class ProfileExecution {
   private boolean profileChecksPassed = false;
   private boolean validationPassed = false;
   private long executionTime;
+  private long memLimit;
+  private long memMaxUsage = 0l;
 
 
   private List<ValidationQueryResult> profileChecks = new ArrayList<>();
@@ -52,7 +54,9 @@ public class ProfileExecution {
 
   public ProfileExecution() {
 
-
+    // Read the jvms max memory limit
+    Runtime runtime = Runtime.getRuntime();
+    memLimit = runtime.maxMemory();
   }
 
   public void setProfileChecksPassed(boolean passed) {
@@ -71,7 +75,18 @@ public class ProfileExecution {
     this.executionTime = executionTime;
   }
   public long getExecutionTime() {
-    return executionTime;
+    return this.executionTime;
+  }
+  public long getMemLimit() {
+    return this.memLimit;
+  }
+  public long getMemMaxUsage() {
+    return memMaxUsage;
+  }
+  public void updateMemMaxUsage(long sample) {
+    if(sample > this.memMaxUsage) {
+      this.memMaxUsage = sample;
+    }
   }
 
   public void addProfileCheckResult(ValidationQueryResult queryResult) {
