@@ -165,6 +165,28 @@ public class InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
+  public Model readModel(String url) {
+    Model model = null;
+    try {
+      model = getEmptyModel().read(url);
+    } catch (java.lang.OutOfMemoryError e) {
+      log.error("Out of memory while loading "+url+", please assign more memory, the process will be stopped");
+      System.exit(1);
+    }
+    return model;
+  }
+
+  @Override
+  public void readModel(Model model, String url) {
+    try {
+      model.read(url);
+    } catch (java.lang.OutOfMemoryError e) {
+      log.error("Out of memory while loading "+url+", please assign more memory, the process will be stopped");
+      System.exit(1);
+    }
+  }
+
+  @Override
   public Model getInstanceModel() {
     return instanceModel;
   }
@@ -369,7 +391,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     return result;
   }
 
-  public Map<String, Long> diffNumTriples(Map<String, Long> oldValues, Map<String, Long> newValues) {
+  public static Map<String, Long> diffNumTriples(Map<String, Long> oldValues, Map<String, Long> newValues) {
     HashMap<String, Long> result = new HashMap<>();
 
     Iterator<String> graphNameIterator = newValues.keySet().iterator();
@@ -518,9 +540,6 @@ public class InMemGraphSet implements CoinsGraphSet {
     long start = new Date().getTime();
     String queryString = query.getSparqlQuery();
 
-//    log.info("will perform insert query:");
-//    log.info(queryString);
-
     try {
 
       UpdateRequest request = new UpdateRequest();
@@ -610,7 +629,13 @@ public class InMemGraphSet implements CoinsGraphSet {
 
     } catch (QueryParseException e) {
 
-      errorMessage = "Problem executing query: ";
+      errorMessage = "Problem executing query "+validationQuery.getReference()+": ";
+      errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
+      passed = false;
+
+    } catch (OutOfMemoryError e) {
+
+      errorMessage = "Problem executing query "+validationQuery.getReference()+", not enough memory: ";
       errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
       passed = false;
     }

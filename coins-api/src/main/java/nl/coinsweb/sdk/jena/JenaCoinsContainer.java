@@ -315,7 +315,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     // Create model and read the instance base model
     if(rdfFile != null) {
-      graphSet.getInstanceModel().read(this.rdfFile.toURI().toString());
+      graphSet.readModel(graphSet.getInstanceModel(), this.rdfFile.toURI().toString());
       graphSet.setInstanceNamespace(FileManager.getLeadingNamespace(this.rdfFile, graphSet.getInstanceModel()).toString());
     }
     graphSet.getInstanceModel().setNsPrefix("", graphSet.getInstanceNamespace());
@@ -339,7 +339,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     // Create woa model and read the woa base model
     if(woaFile != null) {
-      graphSet.getWoaModel().read(this.woaFile.toURI().toString());
+      graphSet.readModel(graphSet.getWoaModel(), this.woaFile.toURI().toString());
       graphSet.setWoaNamespace(FileManager.getLeadingNamespace(this.woaFile, graphSet.getWoaModel()).toString());
     }
     graphSet.getWoaModel().setNsPrefix("", graphSet.getWoaNamespace());
