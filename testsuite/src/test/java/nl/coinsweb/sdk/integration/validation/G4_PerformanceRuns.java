@@ -47,7 +47,7 @@ public class G4_PerformanceRuns {
   }
 
   @Test
-  public void readRdfFile_4_01() {
+  public void run_401() {
     runTest(new InMemGraphSet("http://playground.com/"), 1, "starterskit4.01_inmem.ccr", "401-inmem-1.html");
     runTest(new InMemGraphSet("http://playground.com/"), 4, "starterskit4.01_inmem.ccr", "401-inmem-4.html");
     runTest(new TDBStoreGraphSet("http://playground.com/"), 1, "starterskit4.01_inmem.ccr", "401-tdb-1.html");
@@ -56,15 +56,17 @@ public class G4_PerformanceRuns {
 //    runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 4, "starterskit4.01_inmem.ccr", "401-fuseki-4.html");
   }
 
-//  @Test
 
 
 
-//  @Test
-  public void readRdfFile_performanceCheck() {
-
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
-    model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
+  @Test
+  public void run_performance() {
+    runTest(new InMemGraphSet("http://playground.com/"), 1, "PerformanceContainerCOINS2.0.ccr", "perf-inmem-1.html");
+    runTest(new InMemGraphSet("http://playground.com/"), 4, "PerformanceContainerCOINS2.0.ccr", "perf-inmem-4.html");
+    runTest(new TDBStoreGraphSet("http://playground.com/"), 1, "PerformanceContainerCOINS2.0.ccr", "perf-tdb-1.html");
+    runTest(new TDBStoreGraphSet("http://playground.com/"), 4, "PerformanceContainerCOINS2.0.ccr", "perf-tdb-4.html");
+//    runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 1, "PerformanceContainerCOINS2.0.ccr", "perf-fuseki-1.html");
+//    runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 4, "PerformanceContainerCOINS2.0.ccr", "perf-fuseki-4.html");
 
   }
 
