@@ -104,7 +104,7 @@ public class RunValidate {
     // Container
     JenaCoinsContainer container;
     if(emptyRun) {
-      container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false);
+      container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, false);
     } else {
       if (!options.hasInputOption()) {
         if(!Run.QUIET) {

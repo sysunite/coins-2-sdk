@@ -121,25 +121,19 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, loadCoreModels);
   }
   public JenaCoinsContainer(CoinsParty party, String namespace, boolean loadCoreModels) {
-    this(party, new InMemGraphSet(namespace), loadCoreModels);
+    this(party, new InMemGraphSet(namespace), loadCoreModels, true);
   }
-  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels) {
-
+  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels, boolean initHeader) {
 
     this.fileName = null;
 
     this.party = party;
     this.party.setModel(this);
 
-
     this.graphSet = graphSet;
-
-
 
     this.internalRef = FileManager.newCoinsContainer();
     this.containerId = UUID.randomUUID().toString();
-
-
 
     // Prepare an empty graphset
     if(this.graphSet.getInstanceNamespace() == null) {
@@ -154,8 +148,10 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     // Create empty model
     graphSet.getInstanceModel().setNsPrefix("", this.graphSet.getInstanceNamespace());
     graphSet.getInstanceModel().setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
-    addOntologyHeader();
-    log.info("Added instance model with name "+ this.graphSet.getInstanceNamespace());
+    if(initHeader) {
+      addOntologyHeader();
+      log.info("Added instance model with name " + this.graphSet.getInstanceNamespace());
+    }
 
     // Add core model
     Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/cbim-2.0.rdf"), "cbim-2.0.rdf", availableLibraryFiles);
@@ -1791,8 +1787,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       }
 
       // Load the model
-      Model libraryModel = graphSet.getEmptyModel();
-      libraryModel.read(importUri.toString());
+      Model libraryModel = graphSet.readModel(importUri.toString());
       graphSet.getLibraryModels().put(namespace, libraryModel);
       log.info("\u2705 Adding model with name " + namespace.toString());
 
