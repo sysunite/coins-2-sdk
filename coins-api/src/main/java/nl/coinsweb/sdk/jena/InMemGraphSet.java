@@ -499,7 +499,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     List<Map<String, String>> result = new ArrayList<>();
 
     // Execute the query and obtain results
-    ResultSet results = getResultSet(sparqlQuery);
+    ResultSet results = getResultSet(sparqlQuery, getDataset());
 
     // Output query results
     while (results.hasNext()) {
@@ -556,11 +556,11 @@ public class InMemGraphSet implements CoinsGraphSet {
   }
 
 
-  public ResultSet getResultSet(String queryString) {
+  public ResultSet getResultSet(String queryString, Dataset dataset) {
     Query query = QueryFactory.create(queryString);
 
     // Execute the query and obtain results
-    QueryExecution qe = QueryExecutionFactory.create(query, getValidationDataset());
+    QueryExecution qe = QueryExecutionFactory.create(query, dataset);
     ResultSet result = qe.execSelect();
     return result;
   }
@@ -578,7 +578,7 @@ public class InMemGraphSet implements CoinsGraphSet {
 
       List<Map<String, String>> result = new ArrayList<>();
 
-      ResultSet results = getResultSet(queryString);
+      ResultSet results = getResultSet(queryString, getValidationDataset());
 
       passed = !results.hasNext();
 
