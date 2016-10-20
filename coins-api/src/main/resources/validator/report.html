@@ -38,6 +38,7 @@ String                      : attachments
 String                      : date
 long                        : executionTime
 String                      : profileName
+String                      : profileVersion
 boolean                     : profileChecksPassed
 boolean                     : validationPassed
 List<ValidationQueryResult> : profileChecks
@@ -82,6 +83,7 @@ List<ValidationQueryResult> : validationRules
   <tr><th>date</th><td>${date}</td><tr>
   <tr><th>total duration</th><td>${executionTime / 1000} sec</td><tr>
   <tr><th>profile</th><td>${profileName}</td><tr>
+  <tr><th>version</th><td>${profileVersion}</td><tr>
   <tr><th>performed steps</th><td>
 <#if profileChecksPassed>✅ meets profile requirements<#else>⛔️ not meeting profile requirements</#if><br/>
 ✅ added schema inferences<br/>
