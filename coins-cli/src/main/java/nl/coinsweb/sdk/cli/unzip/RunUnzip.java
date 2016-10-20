@@ -47,6 +47,7 @@ public class RunUnzip {
       options = new UnzipOptions(args);
     } catch (ParseException e) {
       System.out.println(e.getMessage() + "\n");
+      Run.printHeader();
       UnzipOptions.usage();
       System.exit(1);
       return;
