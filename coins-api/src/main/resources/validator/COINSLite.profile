@@ -1,5 +1,5 @@
 ProfileName COINS 2.0 Lite
-ProfileVersion 0.9.1
+ProfileVersion Jena/Fuseki version 0.9.3
 ProfileAuthor Hans Schevers
 <ProfileCheck>
 Reference COINS 2.0 Lite
@@ -36,6 +36,33 @@ filter (?c not in (owl:AllDisjointClasses,owl:Annotation,owl:AnnotationProperty,
 </SparqlQuery>
 
 </ProfileCheck>
+
+<SchemaInference>
+
+Reference Scm-otp
+Description "defining object Properties"
+<SparqlQuery>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+insert {Graph ${SCHEMA_UNION_GRAPH}{
+ ?prop a owl:ObjectProperty 
+}}
+
+ WHERE {Graph ${SCHEMA_UNION_GRAPH}{
+ ?prop rdfs:range ?class. 
+ ?class a owl:Class.
+		filter (?class!=rdfs:Resource). 
+ 	filter not exists{?prop a owl:ObjectProperty} 
+}
+
+}
+</SparqlQuery>
+
+</SchemaInference>
+
 
 <SchemaInference>
 
@@ -419,7 +446,7 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 insert {Graph ${INSTANCE_GRAPH}{
-?u ?p ?y
+?u a ?x  
 }}
 
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
@@ -427,7 +454,7 @@ insert {Graph ${INSTANCE_GRAPH}{
    ?x owl:onProperty ?p .
 }
 Graph ${INSTANCE_GRAPH}{
-   ?u a ?x  .
+ ?u ?p ?y 
 }
 
 }
@@ -541,12 +568,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 }
 Graph ${INSTANCE_GRAPH}{
  {?this a ?class .
- 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}. 
- ?this ?property ?value. 
- filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } 
+ 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } 
  union 
- {?this a ?class .
- filter not exists {?this ?property ?value} }	
+ { ?this a ?class .
+ 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity> } 
+ optional{ ?this ?property ?value. 
+ filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} } }
 }
 
 }group by ?this ?class ?min ?property
@@ -580,10 +607,11 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   ?class owl:onProperty ?property .
 }
 Graph ${INSTANCE_GRAPH}{
- {?this a ?class . 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}   
+ {?this a ?class . filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}  
  ?this ?property ?value. filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} }  
  union 
- {?this a ?class . filter not exists {?this ?property ?value} }	
+ {?this a ?class . filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}
+ filter not exists {?this ?property ?value} }	
 }
 
 }  group by ?class ?this ?min ?property  
@@ -617,13 +645,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   ?class owl:onProperty ?property   
 }
 Graph ${INSTANCE_GRAPH}{
+#fuseki bugfix 
  ?this a ?class . 
 	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}  
  ?this ?property ?value. 
  filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}	
 }
 
-}group by ?this ?class ?min  ?property
+}group by ?this ?class ?min ?property
 }
 filter(?aantal>?min)
 
@@ -648,22 +677,18 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  WHERE {{
  select distinct ?this ?class ?min (count(distinct ?value) as ?aantal) ?property ?onClass
 
- WHERE {{
- select distinct  ?class ?min ?property ?onClass
-
  WHERE {Graph ${SCHEMA_UNION_GRAPH}{
   ?class a owl:Restriction .  
   ?class owl:onClass ?onClass . 
  ?class owl:qualifiedCardinality ?min . 
    ?class owl:onProperty ?property .
 }
-
-}}
 Graph ${INSTANCE_GRAPH}{
-    ?this a ?class .	
-	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}	
-	optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.
- ?value a ?onClass }
+ {   ?this a ?class .	
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} }union {?this a ?class .	
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} 	
+	optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}
+  ?value a ?onClass } }
 }
 
 }  group by ?this ?class ?min  ?property  ?onClass
@@ -735,9 +760,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   ?class owl:onProperty ?property .
 }
 Graph ${INSTANCE_GRAPH}{
-    ?this a ?class .	
-	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} 	
-	optional{   ?this ?property ?value.	filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}.?value a ?onClass}	  	
+  {  ?this a ?class .	
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}  }union { ?this a ?class .	
+	filter not exists {?this a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>}	
+	optional{   ?this ?property ?value. 
+ ?value a ?onClass. 
+ filter not exists {?value a <http://www.coinsweb.nl/cbim-2.0.rdf#ExpiredEntity>} }	}  	
 }
 
 }  group by ?this ?class ?min  ?property  
