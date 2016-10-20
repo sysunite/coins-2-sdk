@@ -30,6 +30,7 @@ import freemarker.core.InvalidReferenceException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,10 +109,10 @@ public class ValidationQuery {
     return reference;
   }
 
-  public String getSparqlQuery() {
-    return getSparqlQuery(true);
+  public String getSparqlQuery(CoinsGraphSet graphSet) {
+    return getSparqlQuery(graphSet, true);
   }
-  public String getSparqlQuery(boolean limit) {
+  public String getSparqlQuery(CoinsGraphSet graphSet, boolean limit) {
 
     if(sparqlQuery == null) {
       throw new RuntimeException("Please set a <SparqlQuery>...</SparqlQuery> before the query can be returned.");
@@ -123,10 +124,10 @@ public class ValidationQuery {
       Map<String, String> data = new HashMap<>();
       data.put("INSTANCE_GRAPH", "<"+ InMemGraphSet.INSTANCE_GRAPH +">");
       data.put("WOA_GRAPH", "<"+ InMemGraphSet.WOA_GRAPH +">");
-      data.put("CORE_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
-      data.put("SCHEMA_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
+//      data.put("CORE_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
+//      data.put("SCHEMA_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
       data.put("SCHEMA_UNION_GRAPH", "<"+ InMemGraphSet.SCHEMA_UNION_GRAPH +">");
-      data.put("FULL_UNION_GRAPH", "<"+ InMemGraphSet.FULL_UNION_GRAPH +">");
+      data.put("FULL_UNION_GRAPH", "<"+ graphSet.getFullUnionNamespace() +">");
 
       Writer writer = new StringWriter();
       template.process(data, writer);
