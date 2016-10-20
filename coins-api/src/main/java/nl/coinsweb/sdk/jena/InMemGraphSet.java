@@ -152,6 +152,11 @@ public class InMemGraphSet implements CoinsGraphSet {
     return this.woaNamespace.toString();
   }
 
+  @Override
+  public String getFullUnionNamespace() {
+    return FULL_UNION_GRAPH;
+  }
+
 
 
 
@@ -359,9 +364,8 @@ public class InMemGraphSet implements CoinsGraphSet {
 
     updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
     updateModel(validationDataset, WOA_GRAPH, woaModel);
-//    updateModel(dataset, SCHEMA_GRAPH, getSchemaModel());
     updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
-//    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
+    updateModel(validationDataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     log.info("Done arranging.");
 
@@ -570,7 +574,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     String errorMessage = null;
     boolean passed;
     long start = new Date().getTime();
-    String queryString = validationQuery.getSparqlQuery();
+    String queryString = validationQuery.getSparqlQuery(this);
     Iterator<Map<String, String>> resultSet = null;
     ArrayList<String> formattedResults = new ArrayList<>();
 

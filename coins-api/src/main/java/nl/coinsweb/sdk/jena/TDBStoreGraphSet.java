@@ -73,6 +73,11 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
+  public String getFullUnionNamespace() {
+    return "urn:x-arq:UnionGraph";
+  }
+
+  @Override
   public Dataset getEmptyDataset() {
     return TDBFactory.createDataset(path.toString());
   }

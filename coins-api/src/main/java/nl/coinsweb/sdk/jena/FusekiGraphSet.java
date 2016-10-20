@@ -69,7 +69,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public boolean checkIfDbAvailable() {
     boolean check;
     try {
-      check = numTriples("urn:x-arq:UnionGraph") > -1;
+      check = numTriples(getFullUnionNamespace()) > -1;
     } catch  (QueryExceptionHTTP e) {
       check = false;
     }
@@ -79,6 +79,11 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   private void wipe() {
     UpdateRequest request = UpdateFactory.create("DELETE {?s ?p ?o} WHERE {?s ?p ?o}");
     UpdateExecutionFactory.createRemote(request, sparqlEndPointU).execute();
+  }
+
+  @Override
+  public String getFullUnionNamespace() {
+    return "urn:x-arq:UnionGraph";
   }
 
 
