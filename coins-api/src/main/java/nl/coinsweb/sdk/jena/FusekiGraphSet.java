@@ -49,27 +49,21 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   private static final Logger log = LoggerFactory.getLogger(FusekiGraphSet.class);
 
-  private String host;
-  private String database;
-
-
   public static String sparqlEndPointU;
   public static String sparqlEndPointQ;
   public static String sparqlEndPointD;
 
-
-
-
+  private boolean initDataset = false;
+  private boolean initValidationDataset = false;
 
   public FusekiGraphSet(String namespace, String host, String database) {
     super(namespace);
-    this.host = host;
-    this.database = database;
 
     sparqlEndPointU = host + "/" + database + "/update";
     sparqlEndPointQ = host + "/" + database + "/query";
     sparqlEndPointD = host + "/" + database + "/data";
 
+    wipe();
   }
 
   public boolean checkIfDbAvailable() {
@@ -80,6 +74,11 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
       check = false;
     }
     return check;
+  }
+
+  private void wipe() {
+    UpdateRequest request = UpdateFactory.create("DELETE {?s ?p ?o} WHERE {?s ?p ?o}");
+    UpdateExecutionFactory.createRemote(request, sparqlEndPointU).execute();
   }
 
 
@@ -95,13 +94,17 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getDataset() {
+    if(!initDataset) {
+      rebuildDataset();
+      initDataset = true;
+    }
     return null;
   }
   @Override
   public Dataset rebuildDataset() {
 
-
-
+    log.info("Wipe fuseki.");
+    wipe();
 
     updateModel(dataset, instanceNamespace.toString(), instanceModel);
     updateModel(dataset, woaNamespace.toString(), woaModel);
@@ -114,10 +117,17 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getValidationDataset() {
+    if(!initValidationDataset) {
+      rebuildValidationDataset();
+      initValidationDataset = true;
+    }
     return null;
   }
   @Override
   public Dataset rebuildValidationDataset() {
+
+    log.info("Wipe fuseki.");
+    wipe();
 
     log.info("Arrange dataset with union graphs.");
 
@@ -171,7 +181,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public ResultSet getResultSet(String queryString) {
+  public ResultSet getResultSet(String queryString, Dataset dataset) {
     return QueryExecutionFactory.sparqlService(sparqlEndPointQ, queryString).execSelect();
   }
 
