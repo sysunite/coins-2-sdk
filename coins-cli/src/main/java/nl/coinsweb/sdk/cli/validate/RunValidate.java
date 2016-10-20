@@ -60,6 +60,7 @@ public class RunValidate {
       options = new ValidateOptions(args);
     } catch (ParseException e) {
       System.out.println(e.getMessage() + "\n");
+      Run.printHeader();
       ValidateOptions.usage();
       System.exit(1);
       return;

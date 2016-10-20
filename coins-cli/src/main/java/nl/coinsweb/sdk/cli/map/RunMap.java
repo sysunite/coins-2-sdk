@@ -52,6 +52,7 @@ public class RunMap {
       options = new MapOptions(args);
     } catch (ParseException e) {
       System.out.println(e.getMessage() + "\n");
+      Run.printHeader();
       MapOptions.usage();
       System.exit(1);
       return;
