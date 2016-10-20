@@ -630,15 +630,23 @@ public class InMemGraphSet implements CoinsGraphSet {
 
     } catch (QueryParseException e) {
 
+      log.error("Query parse exception while processing query "+validationQuery.getReference());
+
       errorMessage = "Problem executing query "+validationQuery.getReference()+": ";
       errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
       passed = false;
 
     } catch (OutOfMemoryError e) {
 
+      log.error("Out of memory error while processing query "+validationQuery.getReference());
+
       errorMessage = "Problem executing query "+validationQuery.getReference()+", not enough memory: ";
       errorMessage += escapeHtml4("\n" + queryString + "\n" + e.getMessage());
       passed = false;
+
+      // Free up variables
+      resultSet = null;
+      formattedResults = null;
     }
 
     long executionTime = new Date().getTime() - start;
