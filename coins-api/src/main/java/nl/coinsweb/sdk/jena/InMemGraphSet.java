@@ -70,6 +70,7 @@ public class InMemGraphSet implements CoinsGraphSet {
 
   protected Namespace instanceNamespace;
   protected Model instanceModel;
+  protected Model fullUnionModel;
 
   public static final String INSTANCE_GRAPH = "http://coinsweb.nl/INSTANCE_GRAPH";
   public static final String WOA_GRAPH = "http://coinsweb.nl/WOA_GRAPH";
@@ -218,9 +219,11 @@ public class InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Model getFullUnionModel() {
-    Model nonInstanceUnion = ModelFactory.createUnion(getSchemaAggregationModel(), woaModel);
-    Model fullUnion = ModelFactory.createUnion(instanceModel, nonInstanceUnion);
-    return fullUnion;
+    if(fullUnionModel == null) {
+      Model nonInstanceUnion = ModelFactory.createUnion(getSchemaAggregationModel(), woaModel);
+      fullUnionModel = ModelFactory.createUnion(instanceModel, nonInstanceUnion);
+    }
+    return fullUnionModel;
   }
 
   @Override
@@ -391,7 +394,9 @@ public class InMemGraphSet implements CoinsGraphSet {
       String graphName = graphNameIterator.next();
       long size = getValidationDataset().getNamedModel(graphName).size();
       result.put(graphName, size);
-      result.put(InferenceExecution.TOTAL_NUM, result.get(InferenceExecution.TOTAL_NUM) + size);
+      if(!getFullUnionNamespace().equals(graphName)) {
+        result.put(InferenceExecution.TOTAL_NUM, result.get(InferenceExecution.TOTAL_NUM) + size);
+      }
     }
     return result;
   }
@@ -658,12 +663,8 @@ public class InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public int numTriples(String graph) {
-    int sum = 0;
-    for(Long num : numTriples().values()) {
-      sum += num;
-    }
-    return sum;
+  public long numTriples(String graph) {
+    return getValidationDataset().getNamedModel(graph).size();
   }
 
 }

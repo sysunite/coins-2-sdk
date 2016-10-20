@@ -195,6 +195,6 @@ public interface CoinsGraphSet {
   public ResultSet getResultSet(String queryString, Dataset dataset);
   public ValidationQueryResult select(ValidationQuery validationQuery);
   public Map<String, Long> numTriples();
-  public int numTriples(String graph);
+  public long numTriples(String graph);
 
 }

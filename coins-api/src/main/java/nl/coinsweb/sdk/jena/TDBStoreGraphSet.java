@@ -29,10 +29,7 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.FileManager;
-import nl.coinsweb.sdk.validator.InferenceQuery;
-import nl.coinsweb.sdk.validator.InferenceQueryResult;
-import nl.coinsweb.sdk.validator.ValidationQuery;
-import nl.coinsweb.sdk.validator.ValidationQueryResult;
+import nl.coinsweb.sdk.validator.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
@@ -41,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -145,18 +143,31 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public Map<String, Long> numTriples() {
 
-    Map<String, Long> result = null;
+    Map<String, Long> result = new HashMap<>();
     log.trace("Start read transaction.");
     getValidationDataset().begin(ReadWrite.READ) ;
     try {
-      result = super.numTriples();
+
+
+      result.put(InferenceExecution.TOTAL_NUM, 0l);
+
+      long instanceTriples = this.numTriples(InMemGraphSet.INSTANCE_GRAPH);
+      long woaTriples = this.numTriples(InMemGraphSet.WOA_GRAPH);
+      long schemaTriples = this.numTriples(InMemGraphSet.SCHEMA_UNION_GRAPH);
+      long fullUnionTriples = this.numTriples(getFullUnionNamespace());
+
+      result.put(InMemGraphSet.INSTANCE_GRAPH, instanceTriples);
+      result.put(InMemGraphSet.SCHEMA_UNION_GRAPH, schemaTriples);
+      result.put(getFullUnionNamespace(), fullUnionTriples);
+      result.put(InferenceExecution.TOTAL_NUM, instanceTriples + schemaTriples);
+      result.put(InMemGraphSet.WOA_GRAPH, woaTriples);
+
     } finally {
       log.trace("Stop read transaction.");
       getValidationDataset().end() ;
     }
     return result;
   }
-
 
   public void close(Dataset dataset) {
 
