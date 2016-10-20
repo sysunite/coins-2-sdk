@@ -49,6 +49,7 @@ public class Profile {
   private static HashMap<String, Profile> profiles = null;
 
   private String name;
+  private String version;
   private String author;
 
   private List<ValidationQuery> profileChecks = new ArrayList<>();
@@ -70,6 +71,9 @@ public class Profile {
 
         if(line.startsWith("ProfileName")) {
           name = unquote(line.substring(line.indexOf(" ") + 1));
+        }
+        if(line.startsWith("ProfileVersion")) {
+          version = unquote(line.substring(line.indexOf(" ") + 1));
         }
         if(line.startsWith("ProfileAuthor")) {
           author = unquote(line.substring(line.indexOf(" ") + 1));
@@ -270,6 +274,10 @@ public class Profile {
 
   public String getName() {
     return name;
+  }
+
+  public String getVersion() {
+    return version;
   }
 
   public String getAuthor() {

@@ -14,6 +14,7 @@ long                        : memLimit
 long                        : memMaxUsage
 int                         : queryThreads
 String                      : profileName
+String                      : profileVersion
 boolean                     : profileChecksPassed
 boolean                     : validationPassed
 List<ValidationQueryResult> : profileChecks
@@ -25,13 +26,13 @@ List<ValidationQueryResult> : validationRules
 <profileRun>
   <profile>
     <name>${profileName}</name>
+    <version>${profileVersion}</version>
   </profile>
   <configuration>
     <graphSet>
       <implementation>${graphSetImpl}</implementation>
       <queryThreads>${queryThreads}</queryThreads>
       <memoryLimit>${memLimit}</memoryLimit>
-      <maxMemoryUsage>${memMaxUsage}</maxMemoryUsage>
     </graphSet>
     <container>
       <name>${filename}</name>
@@ -57,6 +58,7 @@ List<ValidationQueryResult> : validationRules
   <run>
     <date>${date}</date>
     <executionTime>${executionTime?c}</executionTime>
+    <maxMemoryUsage>${memMaxUsage}</maxMemoryUsage>
     <profileChecks>
       <#list profileChecks as query>
       <profileCheck>

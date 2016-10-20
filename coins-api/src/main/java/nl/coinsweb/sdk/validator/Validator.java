@@ -100,6 +100,7 @@ public class Validator {
     data.put("queryThreads", Validator.QUERY_THREAD_POOL_SIZE);
     data.put("graphSetImpl", graphSet.getClass().getCanonicalName());
     data.put("profileName", this.profile.getName());
+    data.put("profileVersion", this.profile.getVersion());
     data.put("profileChecksPassed", execution.profileChecksPassed());
     data.put("validationPassed", execution.validationPassed());
     data.put("profileChecks", execution.getProfileCheckResults());

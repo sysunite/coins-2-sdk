@@ -1,4 +1,5 @@
 ProfileName COINS 2.0 Lite EQ
+ProfileVersion 0.9.0
 ProfileAuthor Hans Schevers
 <ProfileCheck>
 Reference COINS 2.0 Lite EQ
