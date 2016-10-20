@@ -191,7 +191,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
-  public int numTriples(String graph) {
+  public long numTriples(String graph) {
 
     String query;
     if(graph == null || graph.isEmpty()) {
@@ -202,13 +202,13 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
     try {
       ResultSet rss = QueryExecutionFactory.sparqlService(sparqlEndPointQ, query).execSelect();
-      int count = rss.next().getLiteral("count").getInt();
+      long count = rss.next().getLiteral("count").getLong();
       return count;
 
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return -1;
+    return -1l;
   }
 
   @Override
@@ -217,10 +217,15 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     result.put(InferenceExecution.TOTAL_NUM, 0l);
 
     Long instanceTriples = new Long(this.numTriples(InMemGraphSet.INSTANCE_GRAPH));
+    Long woaTriples = new Long(this.numTriples(InMemGraphSet.WOA_GRAPH));
     Long schemaTriples = new Long(this.numTriples(InMemGraphSet.SCHEMA_UNION_GRAPH));
+    Long fullUnionTriples = new Long(this.numTriples(getFullUnionNamespace()));
+
     result.put(InMemGraphSet.INSTANCE_GRAPH, instanceTriples);
     result.put(InMemGraphSet.SCHEMA_UNION_GRAPH, schemaTriples);
+    result.put(getFullUnionNamespace(), fullUnionTriples);
     result.put(InferenceExecution.TOTAL_NUM, instanceTriples + schemaTriples);
+    result.put(InMemGraphSet.WOA_GRAPH, woaTriples);
 
     return result;
   }
