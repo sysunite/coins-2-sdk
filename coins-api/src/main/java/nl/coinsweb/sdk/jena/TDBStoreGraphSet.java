@@ -84,12 +84,12 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
     Iterator<Map<String, String>> result = null;
     log.trace("Start read transaction.");
-    getValidationDataset().begin(ReadWrite.READ) ;
+    getDataset().begin(ReadWrite.READ) ;
     try {
       result = super.query(sparqlQuery);
     } finally {
       log.trace("Stop read transaction.");
-      getValidationDataset().end() ;
+      getDataset().end() ;
     }
     return result;
 
@@ -111,11 +111,11 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
 
-  public ResultSet getResultSet(String queryString) {
+  public ResultSet getResultSet(String queryString, Dataset dataset) {
     Query query = QueryFactory.create(queryString);
 
     // Execute the query and obtain results
-    QueryExecution qe = QueryExecutionFactory.create(query, getValidationDataset());
+    QueryExecution qe = QueryExecutionFactory.create(query, dataset);
     ResultSet result = qe.execSelect();
     return result;
   }
