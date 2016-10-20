@@ -79,6 +79,7 @@ public interface CoinsGraphSet {
 
   public void setWoaNamespace(String namespace);
   public String getWoaNamespace();
+  public String getFullUnionNamespace();
 
 
 
