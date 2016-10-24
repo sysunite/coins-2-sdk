@@ -52,6 +52,10 @@ public class Validator {
 
   private static final Logger log = LoggerFactory.getLogger(Validator.class);
 
+  public static final int GENERATE_HTML = 1;
+  public static final int GENERATE_XML = 2;
+  public static final int GENERATE_BOTH = 3;
+
   public static int QUERY_THREAD_POOL_SIZE = 1;
 
 
@@ -108,8 +112,14 @@ public class Validator {
     data.put("dataInferences", execution.getDataInferenceResults());
     data.put("validationRules", execution.getValidationRuleResults());
 
-    writeReport(reportLocation, data);
-    writeReportXML(reportLocation.getParent().resolve(reportLocation.getFileName().toString().replaceAll(".html",".xml")), data);
+    if(reportType == GENERATE_HTML || reportType == GENERATE_BOTH) {
+      writeReport(reportLocation, data);
+    }
+    if(reportType == GENERATE_XML || reportType == GENERATE_BOTH) {
+      reportLocation = reportLocation.getParent().resolve(reportLocation.getFileName().toString().replaceAll(".html",".xml"));
+      writeReportXML(reportLocation, data);
+    }
+
     return execution.profileChecksPassed() && execution.validationPassed();
   }
 
