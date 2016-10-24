@@ -1,4 +1,4 @@
-# COINS 2 SDK
+# COINS 2.0 SDK
 This is the official COINS 2.0 software development kit for Java and .NET. The SDK can help you in the following situations:
 * you have a .ccr file and you want to **view the content**
 * you want to **write some software** to read or create .ccr files
