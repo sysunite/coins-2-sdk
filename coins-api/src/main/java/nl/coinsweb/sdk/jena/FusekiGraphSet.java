@@ -131,8 +131,7 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     }
     return null;
   }
-  @Override
-  public Dataset rebuildValidationDataset() {
+  private Dataset rebuildValidationDataset() {
 
     log.info("Wipe fuseki.");
     wipe();

@@ -29,6 +29,7 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.FileManager;
+import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.validator.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
@@ -49,10 +50,14 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   private static final Logger log = LoggerFactory.getLogger(TDBStoreGraphSet.class);
 
+  private Dataset dataset = null;
+  private Dataset validationDataset = null;
+
   private static final String DEFAULT_TEMP_FOLDER = "/tmp/";
   private static final String TDB_FOLDER = "coinstdb/";
 
-  private Path path;
+  private Path datasetPath;
+  private Path validationDatasetPath;
 
 
 
@@ -64,10 +69,13 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
     super(namespace);
     log.info("Start new tdb for namespace given file.");
     Path tempPath = Paths.get(DEFAULT_TEMP_FOLDER);
-    Path path = tempPath.resolve(TDB_FOLDER + RandomStringUtils.random(8, true, true) + "/");
-    path.toFile().mkdirs();
+    Path datasetPath = tempPath.resolve(TDB_FOLDER + "d_" + RandomStringUtils.random(8, true, true) + "/");
+    Path validationDatasetPath = tempPath.resolve(TDB_FOLDER + "v_" + RandomStringUtils.random(8, true, true) + "/");
+    datasetPath.toFile().mkdirs();
+    validationDatasetPath.toFile().mkdirs();
     FileManager.foldersToCleanup.add(tempPath.resolve(TDB_FOLDER).toFile());
-    this.path = path;
+    this.datasetPath = datasetPath;
+    this.validationDatasetPath = validationDatasetPath;
   }
 
   @Override
@@ -82,7 +90,50 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public Dataset getEmptyDataset() {
-    return TDBFactory.createDataset(path.toString());
+    String message = "The TDBStoreGraphSet is not able to create more than one dataset per instance, so the getEmptyDataset() should not be used.";
+    log.warn(message);
+    throw new RuntimeException(message);
+  }
+  @Override
+  public Dataset getDataset() {
+    if(dataset == null) {
+      dataset = rebuildDataset();
+    }
+    return dataset;
+  }
+  public Dataset rebuildDataset() {
+
+    dataset = TDBFactory.createDataset(datasetPath.toString());
+
+    updateModel(dataset, instanceNamespace.toString(), instanceModel);
+    updateModel(dataset, woaNamespace.toString(), woaModel);
+    for(Namespace ns : libraryModels.keySet()) {
+      updateModel(dataset, ns.toString(), libraryModels.get(ns));
+    }
+    return dataset;
+  }
+
+  @Override
+  public Dataset getValidationDataset() {
+    if(validationDataset == null) {
+      validationDataset = rebuildValidationDataset();
+    }
+    return validationDataset;
+  }
+  private Dataset rebuildValidationDataset() {
+
+    log.info("Arrange dataset with union graphs.");
+
+    validationDataset = TDBFactory.createDataset(validationDatasetPath.toString());
+
+    updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
+    updateModel(validationDataset, WOA_GRAPH, woaModel);
+    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
+    updateModel(validationDataset, FULL_UNION_GRAPH, getFullUnionModel());
+
+    log.info("Done arranging.");
+
+    return validationDataset;
   }
 
 
