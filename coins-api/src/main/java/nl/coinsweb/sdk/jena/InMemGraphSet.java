@@ -364,7 +364,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     }
     return validationDataset;
   }
-  public Dataset rebuildValidationDataset() {
+  private Dataset rebuildValidationDataset() {
 
     log.info("Arrange dataset with union graphs.");
 
