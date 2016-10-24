@@ -235,6 +235,7 @@ public class FileManager {
       ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFile));
       ZipEntry ze = zis.getNextEntry();
 
+      int fileCounter = 0;
       while(ze != null) {
 
         if(ze.isDirectory()) {
@@ -243,8 +244,6 @@ public class FileManager {
         }
 
         String fileName = ze.getName();
-
-        log.info("Dealing with file "+fileName);
 
         // If the first folder is a somename/bim/file.ref skip it
         Path filePath = Paths.get(fileName);
@@ -279,7 +278,7 @@ public class FileManager {
 
         String insideStartFolder = filePath.toString().substring(startFolder.length());
         File newFile = new File(destinationPath + "/" + insideStartFolder);
-        log.info("Extract "+newFile);
+        fileCounter++;
 
         // Create all non exists folders
         // else you will hit FileNotFoundException for compressed folder
@@ -295,6 +294,7 @@ public class FileManager {
         fos.close();
         ze = zis.getNextEntry();
       }
+      log.info("Extracted "+fileCounter+" files.");
 
       zis.closeEntry();
       zis.close();
@@ -364,14 +364,15 @@ public class FileManager {
     log.info("Will index "+folder+" for attachment files.");
     listOfFiles = folder.listFiles();
 
+    int fileCount = 0;
     for (int i = 0; i < listOfFiles.length; i++) {
       if (listOfFiles[i].isFile()) {
-        log.info("Index file as attachment: "+listOfFiles[i].getName());
+        fileCount++;
         attachments.put(listOfFiles[i].getName(), listOfFiles[i]);
-
       }
     }
 
+    log.info("Indexed "+fileCount+" files as attachment.");
   }
 
   /**
