@@ -259,7 +259,8 @@ public class Validator {
       Map<String, Long> initialNumTriples = graphSet.numTriples();
 
       // Prepare list of all queries to be executed this round
-      ExecutorService es = Executors.newFixedThreadPool(Validator.QUERY_THREAD_POOL_SIZE);
+      ExecutorService executor = Executors.newFixedThreadPool(graphSet.supportsMultiThreading() ? Validator.QUERY_THREAD_POOL_SIZE : 1);
+
       List<Callable<Object>> todo = new ArrayList<>(queries.size());
 
       for (final InferenceQuery query : queries) {
