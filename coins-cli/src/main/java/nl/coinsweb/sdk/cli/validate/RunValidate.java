@@ -176,7 +176,16 @@ public class RunValidate {
 
     log.info("Will init validator and start validation.");
     Validator validator = new Validator(container, profileName);
-    validator.validate(reportFile);
+
+    if(options.generateHtml() && options.generateXml()) {
+      validator.validate(reportFile, Validator.GENERATE_BOTH);
+
+    } else if(options.generateHtml()) {
+      validator.validate(reportFile, Validator.GENERATE_HTML);
+
+    } else if(options.generateXml()) {
+      validator.validate(reportFile, Validator.GENERATE_XML);
+    }
 
     if(!Run.QUIET) {
       System.out.println("Validation finished, see report file "+reportFile.getFileName());
