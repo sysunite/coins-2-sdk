@@ -62,8 +62,11 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     sparqlEndPointU = host + "/" + database + "/update";
     sparqlEndPointQ = host + "/" + database + "/query";
     sparqlEndPointD = host + "/" + database + "/data";
+  }
 
-    wipe();
+  @Override
+  public boolean supportsMultiThreading() {
+    return true;
   }
 
   public boolean checkIfDbAvailable() {
