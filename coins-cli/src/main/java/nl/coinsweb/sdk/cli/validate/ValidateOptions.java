@@ -44,14 +44,16 @@ public class ValidateOptions {
   public static Options getOptions() {
     if(options == null) {
       options = new Options();
-      options.addOption("c", "custom-profile", true, "custom profile file to use (e.g. ./custom.profile)");
+      options.addOption("b", "both", false, "generate both html and xml report");
+      options.addOption("c", "custom-profile", true, "custom profile file to use (e.g.: custom.profile)");
       options.addOption("e", false, "run on empty container, for debugging profile files");
-      options.addOption("f", "fuseki", true, "address of fuseki service (e.g. http://localhost:3030), please create a dataset named 'coins'");
+      options.addOption("f", "fuseki", true, "address of fuseki service (e.g.: http://localhost:3030), please create a dataset named 'coins'");
       options.addOption("h", "help", false, "print help");
-      options.addOption("o", true, "output file (default: ./report.html)");
+      options.addOption("o", true, "output file (default: report.html)");
       options.addOption("p", "profile", true, "profile to use (default: \"COINS 2.0 Lite\")");
       options.addOption("q", false, "quiet, no output to the console");
       options.addOption("v", false, "verbose logging (in the current build this can not be disabled)");
+      options.addOption("x", "xml", false, "generate xml report (html is default)");
     }
     return options;
   }
@@ -86,6 +88,9 @@ public class ValidateOptions {
   public boolean emptyRun() { return cmd.hasOption("e"); }
   public boolean quietMode() { return cmd.hasOption("q"); }
   public boolean printHelpOption() { return cmd.hasOption("h"); }
+
+  public boolean generateXml() { return cmd.hasOption("b") || cmd.hasOption("x"); }
+  public boolean generateHtml() { return cmd.hasOption("b") || !cmd.hasOption("x"); }
 
   public boolean hasFusekiAddress() { return cmd.hasOption("f"); }
   public String getFusekiAddress() { return (!hasFusekiAddress()) ? null : cmd.getOptionValue("f"); }
