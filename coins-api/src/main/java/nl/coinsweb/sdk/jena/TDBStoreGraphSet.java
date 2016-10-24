@@ -71,6 +71,11 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   @Override
+  public boolean supportsMultiThreading() {
+    return true;
+  }
+
+  @Override
   public String getFullUnionNamespace() {
     return "urn:x-arq:UnionGraph";
   }
