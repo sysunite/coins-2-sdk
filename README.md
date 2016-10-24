@@ -9,7 +9,7 @@ The SDK consists of a set of tools:
 * [coins-api](https://github.com/sysunite/coins-2-sdk/wiki/coins-api-reference) - software library to include in your Java or .NET project
 * [coins-cli](https://github.com/sysunite/coins-2-sdk/wiki/installation-of-coins-cli) - command line tool for Windows / Linux / Mac that contains all tools
 * [viewer](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-viewer) - view the content of a .ccr file
-* [validator](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-validate) - validate the conttent of a .ccr file
+* [validator](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-validate) - validate the content of a .ccr file
 * [generator](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-generate) - generate Java or .NET classes from an RDF Object Library
 
 
