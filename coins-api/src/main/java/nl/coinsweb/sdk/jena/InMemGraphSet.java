@@ -85,8 +85,8 @@ public class InMemGraphSet implements CoinsGraphSet {
 
   protected Map<Namespace, Model> libraryModels;
 
-  protected Dataset dataset = null;
-  protected Dataset validationDataset = null;
+  private Dataset dataset = null;
+  private Dataset validationDataset = null;
 
 
 
@@ -95,6 +95,10 @@ public class InMemGraphSet implements CoinsGraphSet {
     this.libraryModels = new HashMap<>();
     this.instanceModel = getEmptyModel();
     this.woaModel = getEmptyModel();
+
+    if(Validator.QUERY_THREAD_POOL_SIZE > 1) {
+      log.warn("As CoinsGraphSet the InMemGraphSet is used, but this graphset does not support multi threading. The thread use was set to "+Validator.QUERY_THREAD_POOL_SIZE+" but this value will be ignored.");
+    }
   }
 
 
