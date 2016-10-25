@@ -4,6 +4,7 @@ import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.Validator;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -27,6 +29,11 @@ public class G1_InitValidator {
 
   protected static final Logger log = LoggerFactory.getLogger(G1_InitValidator.class);
 
+  @BeforeClass
+  public static void initProfile() {
+    Profile.initProfiles();
+  }
+
   @Test
   public void init() {
 
@@ -36,13 +43,10 @@ public class G1_InitValidator {
     Validator validator = new Validator(model, "COINS 2.0 Lite");
     Set<String> profiles = Profile.listProfiles();
 
-
-
-    assertTrue("Profiles should find two profiles", profiles.size() == 2);
+    assertEquals(2, profiles.size());
     assertTrue("Profiles should find this profile", profiles.contains("COINS 2.0 Lite"));
     assertTrue("Profiles should find this profile", profiles.contains("COINS 2.0 Lite EQ"));
     validator.validate(Paths.get("/tmp/"));
-
 
     String reportHtml;
     try {
@@ -52,14 +56,5 @@ public class G1_InitValidator {
       log.error(e.getMessage(), e);
     }
 
-
-
-
   }
-
-
-
 }
-
-
-
