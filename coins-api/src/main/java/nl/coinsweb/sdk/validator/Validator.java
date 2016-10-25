@@ -202,7 +202,7 @@ public class Validator {
     Runtime runtime = Runtime.getRuntime();
 
     log.info("\uD83D\uDC1A Will perform profile checks.");
-    profileCheck(resultCollection);
+    boolean profileChecks = executeQueries(profile.getProfileChecks(), resultCollection.getProfileCheckResults());
     resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
     log.info("\uD83D\uDC1A Will add schema inferences.");
@@ -214,9 +214,10 @@ public class Validator {
     resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
     log.info("\uD83D\uDC1A Will perform validation checks.");
-    performValidation(resultCollection);
+    boolean validationRules = executeQueries(profile.getValidationRules(), resultCollection.getValidationRuleResults());
     resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
+    resultCollection.setProfileChecksPassed(profileChecks && validationRules);
     resultCollection.setExecutionTime(new Date().getTime() - start);
 
     return resultCollection;
@@ -224,20 +225,18 @@ public class Validator {
 
 
 
-  private boolean profileCheck(ProfileExecution resultCollection) {
+  private boolean executeQueries(List<ValidationQuery> queries, List<ValidationQueryResult> resultCollection) {
 
     boolean allChecksPassed = true;
-    for(ValidationQuery query : profile.getProfileChecks()) {
+    for(ValidationQuery query : queries) {
       if(query.hasSparqlQuery()) {
 
         ValidationQueryResult result = graphSet.select(query);
         allChecksPassed &= result.getPassed();
-
-        resultCollection.addProfileCheckResult(result);
+        resultCollection.add(result);
       }
     }
 
-    resultCollection.setProfileChecksPassed(allChecksPassed);
     return allChecksPassed;
   }
 
@@ -268,7 +267,7 @@ public class Validator {
 
           // Prepare a resultCarrier
           if(!resultByReference.containsKey(query.getReference())) {
-            InferenceQueryResult resultCarrier = new InferenceQueryResult(query.getReference(), query.getDescription(), query.getSparqlQuery(), null);
+            InferenceQueryResult resultCarrier = new InferenceQueryResult(query.getReference(), query.getDescription(), query.getSparqlQuery(graphSet), null);
             resultByReference.put(query.getReference(), resultCarrier);
           }
           final InferenceQueryResult resultCarrier = resultByReference.get(query.getReference());
@@ -287,7 +286,7 @@ public class Validator {
 
       // Execute them, calculate the result
       try {
-        es.invokeAll(todo);
+        executor.invokeAll(todo);
       } catch (CancellationException e) {
         log.error(e.getMessage(), e);
       } catch (InterruptedException e) {
@@ -298,9 +297,8 @@ public class Validator {
       inferenceExecution.addNumRuns(1);
       inferenceExecution.addTriplesAdded(diffNumTriples);
 
-
-      triplesAddedThisRun = diffNumTriples.get(InferenceExecution.TOTAL_NUM);
-      log.info("This round "+triplesAddedThisRun+" triples were added.");
+      triplesAddedThisRun = diffNumTriples.get(graphSet.getFullUnionNamespace());
+      log.info("This round " + triplesAddedThisRun + " triples were added.");
 
     // Loop
     } while (recursive && triplesAddedThisRun > 0l);
@@ -309,20 +307,5 @@ public class Validator {
     long executionTime = new Date().getTime() - start;
     inferenceExecution.setExecutionTime(executionTime);
     inferenceExecution.getQueryResults().addAll(resultByReference.values());
-  }
-
-  private boolean performValidation(ProfileExecution resultCollection) {
-    boolean allPassed = true;
-    for(ValidationQuery query : profile.getValidationRules()) {
-      if(query.hasSparqlQuery()) {
-
-        ValidationQueryResult result = graphSet.select(query);
-        allPassed &= result.getPassed();
-
-        resultCollection.addValidationRuleResult(result);
-      }
-    }
-    resultCollection.setValidationPassed(allPassed);
-    return allPassed;
   }
 }
