@@ -37,8 +37,6 @@ public class InferenceExecution {
 
   private static final Logger log = LoggerFactory.getLogger(InferenceExecution.class);
 
-  public static final String TOTAL_NUM = "TOTAL_NUM";
-
 
   private long executionTime = -1l;
 
@@ -49,7 +47,6 @@ public class InferenceExecution {
   public InferenceExecution() {
     this.numRuns = 0;
     this.triplesAdded = new HashMap<>();
-    this.triplesAdded.put(TOTAL_NUM, 0l);
   }
 
 

@@ -397,15 +397,11 @@ public class InMemGraphSet implements CoinsGraphSet {
   @Override
   public Map<String, Long> numTriples() {
     HashMap<String, Long> result = new HashMap<>();
-    result.put(InferenceExecution.TOTAL_NUM, 0l);
     Iterator<String> graphNameIterator = getValidationDataset().listNames();
     while(graphNameIterator.hasNext()) {
       String graphName = graphNameIterator.next();
       long size = getValidationDataset().getNamedModel(graphName).size();
       result.put(graphName, size);
-      if(!getFullUnionNamespace().equals(graphName)) {
-        result.put(InferenceExecution.TOTAL_NUM, result.get(InferenceExecution.TOTAL_NUM) + size);
-      }
     }
     return result;
   }
