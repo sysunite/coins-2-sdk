@@ -114,10 +114,10 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     log.info("Wipe fuseki.");
     wipe();
 
-    updateModel(dataset, instanceNamespace.toString(), instanceModel);
-    updateModel(dataset, woaNamespace.toString(), woaModel);
+    updateModel(null, instanceNamespace.toString(), instanceModel);
+    updateModel(null, woaNamespace.toString(), woaModel);
     for(Namespace ns : libraryModels.keySet()) {
-      updateModel(dataset, ns.toString(), libraryModels.get(ns));
+      updateModel(null, ns.toString(), libraryModels.get(ns));
     }
     return null;
   }
@@ -138,9 +138,9 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
     log.info("Arrange dataset with union graphs.");
 
-    updateModel(validationDataset, INSTANCE_GRAPH, instanceModel);
-    updateModel(validationDataset, WOA_GRAPH, woaModel);
-    updateModel(validationDataset, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
+    updateModel(null, INSTANCE_GRAPH, instanceModel);
+    updateModel(null, WOA_GRAPH, woaModel);
+    updateModel(null, SCHEMA_UNION_GRAPH, getSchemaAggregationModel());
 //    updateModel(dataset, FULL_UNION_GRAPH, getFullUnionModel());
 
     log.info("Done arranging.");
