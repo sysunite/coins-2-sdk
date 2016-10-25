@@ -35,7 +35,7 @@ List<ValidationQueryResult> : validationRules
       <memoryLimit>${memLimit}</memoryLimit>
     </graphSet>
     <container>
-      <name>${filename}</name>
+      <#if filename??><name>${filename}</name></#if>
       <libraries>
         <#if libraries?has_content>
         <#list 0..libraries?size-1 as i>
