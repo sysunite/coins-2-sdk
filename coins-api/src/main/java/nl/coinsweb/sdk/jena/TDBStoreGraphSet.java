@@ -233,7 +233,8 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
     // destroy
     try {
-      FileUtils.deleteDirectory(path.toFile());
+      FileUtils.deleteDirectory(datasetPath.toFile());
+      FileUtils.deleteDirectory(validationDatasetPath.toFile());
     } catch (IOException e) {
       log.error(e.getMessage(), e);
     }
