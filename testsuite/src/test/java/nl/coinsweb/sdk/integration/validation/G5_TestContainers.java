@@ -2,12 +2,14 @@ package nl.coinsweb.sdk.integration.validation;
 
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.CoinsParty;
+import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import nl.coinsweb.sdk.validator.Validator;
+import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -25,10 +27,10 @@ public class G5_TestContainers {
 
   protected static final Logger log = LoggerFactory.getLogger(G5_TestContainers.class);
 
-//  @AfterClass
-//  public static void cleanup() {
-//    FileManager.destroyAll();
-//  }
+  @AfterClass
+  public static void cleanup() {
+    FileManager.destroyAll();
+  }
 
   public void runTest(CoinsGraphSet graphSet, int threads, String ccrFile, String reportName) {
 
@@ -42,6 +44,7 @@ public class G5_TestContainers {
 
   @Test
   public void inmem() {
+
     runTest(new InMemGraphSet("http://playground.com/"), 1, "VC_CardinalityCheck.ccr",  "VC_CARD-inmem-1.html");
     runTest(new InMemGraphSet("http://playground.com/"), 4, "VC_CardinalityCheck.ccr",  "VC_CARD-inmem-4.html");
 
@@ -63,6 +66,7 @@ public class G5_TestContainers {
 
   @Test
   public void tdb() {
+
     runTest(new TDBStoreGraphSet("http://playground.com/"), 1, "VC_CardinalityCheck.ccr",  "VC_CARD-tdb-1.html");
     runTest(new TDBStoreGraphSet("http://playground.com/"), 4, "VC_CardinalityCheck.ccr",  "VC_CARD-tdb-4.html");
 
@@ -82,8 +86,9 @@ public class G5_TestContainers {
     runTest(new TDBStoreGraphSet("http://playground.com/"), 4, "VC_Transitief.ccr",        "VC_TRANS-tdb-4.html");
   }
 
-  @Test
+//  @Test
   public void fuseki() {
+
     runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 1, "VC_CardinalityCheck.ccr",  "VC_CARD-fuseki-1.html");
     runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 4, "VC_CardinalityCheck.ccr",  "VC_CARD-fuseki-4.html");
 
@@ -101,6 +106,5 @@ public class G5_TestContainers {
 
     runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 1, "VC_Transitief.ccr",        "VC_TRANS-fuseki-1.html");
     runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), 4, "VC_Transitief.ccr",        "VC_TRANS-fuseki-4.html");
-
   }
 }

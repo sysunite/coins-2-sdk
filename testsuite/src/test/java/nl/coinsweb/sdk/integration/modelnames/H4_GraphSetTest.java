@@ -1,6 +1,7 @@
 package nl.coinsweb.sdk.integration.modelnames;
 
 import nl.coinsweb.sdk.CoinsParty;
+import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
@@ -8,6 +9,7 @@ import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import nl.coinsweb.sdk.validator.Profile;
 import nl.coinsweb.sdk.validator.Validator;
+import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -28,10 +30,10 @@ public class H4_GraphSetTest {
   protected static final Logger log = LoggerFactory.getLogger(H4_GraphSetTest.class);
 
 
-  //@AfterClass
-//  public static void cleanup() {
-//    FileManager.destroyAll();
-//  }
+  @AfterClass
+  public static void cleanup() {
+    FileManager.destroyAll();
+  }
 
 
 

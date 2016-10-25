@@ -105,7 +105,7 @@ public class G3_RunningViaCli {
     assertTrue(result.contains("(!) fuseki not active at specified address, or does not have dataset with name 'coins' (address should be of form http://localhost:3030)"));
   }
 
-  @Test
+//  @Test
   public void rightFuseki() {
 
     String result = Run.getCli("coins-cli validate -e -f http://192.168.99.101:3030");
@@ -120,6 +120,7 @@ public class G3_RunningViaCli {
 
   public void assertHelp(String result) {
     assertTrue(result.contains("coins-cli validate <input file>"));
+    assertTrue(result.contains("-b"));
     assertTrue(result.contains("-c"));
     assertTrue(result.contains("-e"));
     assertTrue(result.contains("-f"));
@@ -128,6 +129,7 @@ public class G3_RunningViaCli {
     assertTrue(result.contains("-p"));
     assertTrue(result.contains("-q"));
     assertTrue(result.contains("-v"));
+    assertTrue(result.contains("-x"));
   }
 
   public void assertSuccessfulRun(String result) {

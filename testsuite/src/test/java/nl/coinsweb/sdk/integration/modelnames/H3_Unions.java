@@ -10,7 +10,6 @@ import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
-import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -93,92 +92,4 @@ public class H3_Unions {
 
   }
 
-  @Test
-  public void mickyMouseTDBExample() {
-
-
-    CoinsGraphSet graphSet = new TDBStoreGraphSet("http://dfg");
-
-
-    Model a = graphSet.getEmptyModel();
-    Model b = graphSet.getEmptyModel();
-
-    a.add(new StatementImpl(new ResourceImpl("http://x"), new PropertyImpl("http://y"), new ResourceImpl("http://z")));
-    b.add(new StatementImpl(new ResourceImpl("http://k"), new PropertyImpl("http://l"), new ResourceImpl("http://m")));
-
-    log.info("a");
-    DatasetAsserts.logTriples(a);
-    log.info("b");
-    DatasetAsserts.logTriples(b);
-
-
-
-    Dataset dataset = graphSet.getEmptyDataset();
-
-
-    dataset.addNamedModel("http://a", a);
-    dataset.addNamedModel("http://b", b);
-
-    Model union = dataset.getNamedModel("urn:x-arq:UnionGraph");
-
-    log.info("dataset before adding");
-    DatasetAsserts.logTriples(dataset);
-
-    UpdateRequest request = new UpdateRequest();
-    request.add("INSERT DATA { GRAPH <http://b> { <http://insert> <http://insert> <http://insert> } }");
-    UpdateAction.execute(request, dataset);
-
-
-
-
-    log.info("dataset after adding");
-    DatasetAsserts.logTriples(dataset);
-
-    log.info("get from models:");
-    log.info("union graph");
-    DatasetAsserts.logTriples(union);
-    log.info("a");
-    DatasetAsserts.logTriples(a);
-    log.info("b");
-    DatasetAsserts.logTriples(b);
-
-
-
-
-    log.info("get from dataset:");
-    log.info("default graph");
-    DatasetAsserts.logTriples(dataset.getDefaultModel());
-    log.info("union graph");
-    DatasetAsserts.logTriples(dataset.getNamedModel("urn:x-arq:UnionGraph"));
-    log.info("a");
-    DatasetAsserts.logTriples(dataset.getNamedModel("http://a"));
-    log.info("b");
-    DatasetAsserts.logTriples(dataset.getNamedModel("http://b"));
-
-
-    dataset.getNamedModel("http://a").add(new StatementImpl(new ResourceImpl("http://f"), new PropertyImpl("http://g"), new ResourceImpl("http://h")));
-
-    log.info("get from models:");
-    log.info("union graph");
-    DatasetAsserts.logTriples(union);
-    log.info("a");
-    DatasetAsserts.logTriples(a);
-    log.info("b");
-    DatasetAsserts.logTriples(b);
-
-
-
-
-    log.info("get from dataset:");
-    log.info("default graph");
-    DatasetAsserts.logTriples(dataset.getDefaultModel());
-    log.info("union graph");
-    DatasetAsserts.logTriples(dataset.getNamedModel("urn:x-arq:UnionGraph"));
-    log.info("a");
-    DatasetAsserts.logTriples(dataset.getNamedModel("http://a"));
-    log.info("b");
-    DatasetAsserts.logTriples(dataset.getNamedModel("http://b"));
-
-
-  }
 }
