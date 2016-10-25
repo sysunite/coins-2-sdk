@@ -29,6 +29,7 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +102,7 @@ public class InferenceQuery {
     return reference;
   }
 
-  public String getSparqlQuery() {
+  public String getSparqlQuery(CoinsGraphSet graphSet) {
 
     if(sparqlQuery == null) {
       throw new RuntimeException("Please set a <SparqlQuery>...</SparqlQuery> before the query can be returned.");

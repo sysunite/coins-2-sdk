@@ -553,7 +553,7 @@ public class InMemGraphSet implements CoinsGraphSet {
     validationDataset = getValidationDataset();
 
     long start = new Date().getTime();
-    String queryString = query.getSparqlQuery();
+    String queryString = query.getSparqlQuery(this);
 
     try {
 
