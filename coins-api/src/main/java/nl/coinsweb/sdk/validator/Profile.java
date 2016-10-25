@@ -25,7 +25,6 @@
 package nl.coinsweb.sdk.validator;
 
 
-import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.exceptions.InvalidProfileFileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +33,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -46,11 +44,13 @@ public class Profile {
 
   private static final Logger log = LoggerFactory.getLogger(nl.coinsweb.sdk.validator.Profile.class);
 
-  private static HashMap<String, Profile> profiles = null;
+  private static HashMap<String, HashMap<String, Profile>> profiles = null;
+
+  public static String PROFILE_REPO_URL = "http://www.coinsweb.nl/coins2/profiles/";
 
   private String name;
-  private String version;
-  private String author;
+  private String version = "not specified";
+  private String author = "not specified";
 
   private List<ValidationQuery> profileChecks = new ArrayList<>();
   private List<InferenceQuery> schemaInferences = new ArrayList<>();
@@ -108,24 +108,80 @@ public class Profile {
     if(!getProfiles().containsKey(profileName)) {
       throw new RuntimeException("The profile with name \""+profileName+"\" is not registered.");
     }
-    return getProfiles().get(profileName);
+    ArrayList<String> versions = new ArrayList();
+    versions.addAll(getProfiles().get(profileName).keySet());
+    Collections.sort(versions);
+    return selectProfile(profileName, versions.get(versions.size()-1));
   }
-  private static void initProfiles() throws InvalidProfileFileException {
+  public static Profile selectProfile(String profileName, String version) {
+    if(!getProfiles().containsKey(profileName)) {
+      throw new RuntimeException("The profile with name \""+profileName+"\" is not registered.");
+    }
+    if(!getProfiles().get(profileName).containsKey(version)) {
+      throw new RuntimeException("The profile with name \""+profileName+"\" has now version "+version+" registered.");
+    }
+    return getProfiles().get(profileName).get(version);
+  }
+  public static void initProfiles() throws InvalidProfileFileException {
 
     profiles = new HashMap<>();
 
-    ArrayList<String> filePaths = FileManager.listResourceFiles("validator");
-    for(String filePath : filePaths) {
-      if(filePath.endsWith(".profile")) {
-        InputStream stream = FileManager.getResourceFileAsStream("validator/"+filePath);
-        Profile profile = createProfile(stream);
-        profiles.put(profile.getName(), profile);
-        log.info("Profile file registered with this name: "+profile.getName());
+    String listUrl = PROFILE_REPO_URL+"list.txt";
+    log.info("Will read from here to load profiles: "+listUrl);
+
+    URL url;
+    Scanner s;
+    try {
+      url = new URL(listUrl);
+      s = new Scanner(url.openStream());
+    } catch(MalformedURLException e) {
+      log.error("Not able to load profiles from "+listUrl);
+      return;
+    } catch(IOException e) {
+      log.error("Not able to load profiles from "+listUrl);
+      return;
+    }
+    while(s.hasNextLine()) {
+
+      String line = s.nextLine().trim();
+
+      // If line starts with hash, ignore
+      if(line.startsWith("#")) {
+        continue;
       }
+
+      // We are looking for the .profile extension
+      if(!line.endsWith(".profile")) {
+        continue;
+      }
+      String filename = line;
+
+      // Build the profile
+      InputStream stream;
+      try {
+        stream = new URL(PROFILE_REPO_URL+filename).openStream();
+      } catch(MalformedURLException e) {
+        log.error("Not able to load profile from "+PROFILE_REPO_URL+filename);
+        continue;
+      } catch(IOException e) {
+        log.error("Not able to load profile from "+PROFILE_REPO_URL+filename);
+        continue;
+      }
+      Profile profile = createProfile(stream);
+
+      // Add it to the register
+      if(!profiles.containsKey(profile.getName())) {
+        profiles.put(profile.getName(), new HashMap<String, Profile>());
+      }
+      if(profiles.get(profile.getName()).containsKey(profile.getVersion())) {
+        log.warn("A profile with filename "+filename+" contains the same version information as a profile listed earlier. Skipping this one.");
+        continue;
+      }
+      profiles.get(profile.getName()).put(profile.getVersion(), profile);
     }
   }
 
-  private static HashMap<String, Profile> getProfiles() {
+  private static HashMap<String, HashMap<String, Profile>> getProfiles() {
     if(profiles == null) {
       try {
         initProfiles();
@@ -152,8 +208,16 @@ public class Profile {
   }
   public static Profile loadProfile(InputStream stream) throws InvalidProfileFileException {
     Profile profile = createProfile(stream);
-    getProfiles().put(profile.getName(), profile);
-    log.info("Profile file registered with this name: "+profile.getName());
+
+    if(!profiles.containsKey(profile.getName())) {
+      profiles.put(profile.getName(), new HashMap<String, Profile>());
+    }
+    if(profiles.get(profile.getName()).containsKey(profile.getVersion())) {
+      log.warn("A profile contains the same version information as a profile listed earlier. Overriding it with the new that is manually added.");
+    }
+    profiles.get(profile.getName()).put(profile.getVersion(), profile);
+
+    log.info("Profile file registered with this name and version: "+profile.getName() + " / "+profile.getVersion());
     return profile;
   }
 
