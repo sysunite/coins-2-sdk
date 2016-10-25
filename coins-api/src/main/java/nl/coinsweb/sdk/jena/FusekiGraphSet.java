@@ -32,7 +32,6 @@ import com.hp.hpl.jena.update.UpdateFactory;
 import com.hp.hpl.jena.update.UpdateRequest;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.Namespace;
-import nl.coinsweb.sdk.validator.InferenceExecution;
 import nl.coinsweb.sdk.validator.InferenceQuery;
 import nl.coinsweb.sdk.validator.InferenceQueryResult;
 import org.slf4j.Logger;
@@ -70,16 +69,11 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   public boolean checkIfDbAvailable() {
-    boolean check;
-    try {
-      check = numTriples(getFullUnionNamespace()) > -1;
-    } catch  (QueryExceptionHTTP e) {
-      check = false;
-    }
-    return check;
+    return numTriples(getFullUnionNamespace()) > -1l;
   }
 
   private void wipe() {
+    log.info("Wipe Fuseki.");
     UpdateRequest request = UpdateFactory.create("DELETE {?s ?p ?o} WHERE {?s ?p ?o}");
     UpdateExecutionFactory.createRemote(request, sparqlEndPointU).execute();
   }
@@ -111,7 +105,6 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public Dataset rebuildDataset() {
 
-    log.info("Wipe fuseki.");
     wipe();
 
     updateModel(null, instanceNamespace.toString(), instanceModel);
@@ -132,8 +125,6 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     return null;
   }
   private Dataset rebuildValidationDataset() {
-
-    log.info("Wipe fuseki.");
     wipe();
 
     log.info("Arrange dataset with union graphs.");
@@ -168,11 +159,12 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public void insert(InferenceQuery query, InferenceQueryResult result) {
 
-    long start = new Date().getTime();
-    String queryString = query.getSparqlQuery();
+    log.info("Insert query fired to Fuseki.");
+//    log.info(query.getSparqlQuery(this));
 
-//    log.info("will perform insert query:");
-//    log.info(queryString);
+
+    long start = new Date().getTime();
+    String queryString = query.getSparqlQuery(this);
 
     try {
 
@@ -189,7 +181,15 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
 
   @Override
   public ResultSet getResultSet(String queryString, Dataset dataset) {
-    return QueryExecutionFactory.sparqlService(sparqlEndPointQ, queryString).execSelect();
+    log.info("Select query fired to Fuseki.");
+//    log.info(queryString);
+    ResultSet resultSet;
+    try {
+      resultSet = QueryExecutionFactory.sparqlService(sparqlEndPointQ, queryString).execSelect();
+    } catch (QueryExceptionHTTP e) {
+      throw new OutOfMemoryError("Fuseki returned some error, so probably it is out of memory.");
+    }
+    return resultSet;
   }
 
   @Override
@@ -203,12 +203,12 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     }
 
     try {
-      ResultSet rss = QueryExecutionFactory.sparqlService(sparqlEndPointQ, query).execSelect();
+      ResultSet rss = getResultSet(query, null);
       long count = rss.next().getLiteral("count").getLong();
       return count;
 
     } catch (Exception e) {
-      e.printStackTrace();
+      log.warn("Failed to count triples in Fuseki. This probably means the connection to Fuseki is not property configured.");
     }
     return -1l;
   }
