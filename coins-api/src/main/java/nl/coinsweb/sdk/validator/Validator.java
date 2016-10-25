@@ -40,10 +40,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @author Bastiaan Bijl
@@ -78,6 +75,9 @@ public class Validator {
    * @return true if no problems were found, false otherwise (see the generated report for reasons)
    */
   public boolean validate(Path reportLocation) {
+    return validate(reportLocation, GENERATE_HTML);
+  }
+  public boolean validate(Path reportLocation, int reportType) {
 
     log.info("Execute profile.");
     ProfileExecution execution = execute(model, profile);
