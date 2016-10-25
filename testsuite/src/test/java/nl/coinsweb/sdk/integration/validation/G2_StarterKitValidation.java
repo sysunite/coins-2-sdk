@@ -230,14 +230,14 @@ public class G2_StarterKitValidation {
 
 
 
-  @Test
+//  @Test
   public void readRdfFile_inmem_performanceCheck() {
 
     JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
     validate(model, "report_inmem_PerfContCOINS2.0.html");
   }
-  @Test
+//  @Test
   public void readRdfFile_tdb_performanceCheck() {
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
@@ -245,7 +245,7 @@ public class G2_StarterKitValidation {
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
     validate(model, "report_tdb_PerfContCOINS2.0.html");
   }
-  @Test
+//  @Test
   public void readRdfFile_tdb_4_core_performanceCheck() {
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
