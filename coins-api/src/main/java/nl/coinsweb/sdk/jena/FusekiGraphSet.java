@@ -216,7 +216,6 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public Map<String, Long> numTriples() {
     HashMap<String, Long> result = new HashMap<>();
-    result.put(InferenceExecution.TOTAL_NUM, 0l);
 
     Long instanceTriples = new Long(this.numTriples(InMemGraphSet.INSTANCE_GRAPH));
     Long woaTriples = new Long(this.numTriples(InMemGraphSet.WOA_GRAPH));
@@ -226,7 +225,6 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     result.put(InMemGraphSet.INSTANCE_GRAPH, instanceTriples);
     result.put(InMemGraphSet.SCHEMA_UNION_GRAPH, schemaTriples);
     result.put(getFullUnionNamespace(), fullUnionTriples);
-    result.put(InferenceExecution.TOTAL_NUM, instanceTriples + schemaTriples);
     result.put(InMemGraphSet.WOA_GRAPH, woaTriples);
 
     return result;

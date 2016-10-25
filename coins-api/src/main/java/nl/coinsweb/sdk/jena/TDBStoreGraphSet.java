@@ -204,9 +204,6 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
     getValidationDataset().begin(ReadWrite.READ) ;
     try {
 
-
-      result.put(InferenceExecution.TOTAL_NUM, 0l);
-
       long instanceTriples = this.numTriples(InMemGraphSet.INSTANCE_GRAPH);
       long woaTriples = this.numTriples(InMemGraphSet.WOA_GRAPH);
       long schemaTriples = this.numTriples(InMemGraphSet.SCHEMA_UNION_GRAPH);
@@ -215,7 +212,6 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
       result.put(InMemGraphSet.INSTANCE_GRAPH, instanceTriples);
       result.put(InMemGraphSet.SCHEMA_UNION_GRAPH, schemaTriples);
       result.put(getFullUnionNamespace(), fullUnionTriples);
-      result.put(InferenceExecution.TOTAL_NUM, instanceTriples + schemaTriples);
       result.put(InMemGraphSet.WOA_GRAPH, woaTriples);
 
     } finally {

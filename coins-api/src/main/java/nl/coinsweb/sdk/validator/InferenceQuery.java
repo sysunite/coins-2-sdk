@@ -113,10 +113,10 @@ public class InferenceQuery {
       Map<String, String> data = new HashMap<>();
       data.put("INSTANCE_GRAPH", "<"+ InMemGraphSet.INSTANCE_GRAPH +">");
       data.put("WOA_GRAPH", "<"+ InMemGraphSet.WOA_GRAPH +">");
-      data.put("CORE_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
-      data.put("SCHEMA_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
+//      data.put("CORE_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
+//      data.put("SCHEMA_GRAPH", "<"+ InMemGraphSet.SCHEMA_GRAPH +">");
       data.put("SCHEMA_UNION_GRAPH", "<"+ InMemGraphSet.SCHEMA_UNION_GRAPH +">");
-      data.put("FULL_UNION_GRAPH", "<"+ InMemGraphSet.FULL_UNION_GRAPH +">");
+      data.put("FULL_UNION_GRAPH", "<"+ graphSet.getFullUnionNamespace() +">");
 
       Writer writer = new StringWriter();
       template.process(data, writer);
