@@ -217,7 +217,8 @@ public class Validator {
     boolean validationRules = executeQueries(profile.getValidationRules(), resultCollection.getValidationRuleResults());
     resultCollection.updateMemMaxUsage(runtime.totalMemory());
 
-    resultCollection.setProfileChecksPassed(profileChecks && validationRules);
+    resultCollection.setProfileChecksPassed(profileChecks);
+    resultCollection.setValidationPassed(validationRules);
     resultCollection.setExecutionTime(new Date().getTime() - start);
 
     return resultCollection;
