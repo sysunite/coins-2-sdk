@@ -33,7 +33,6 @@ public class G4_PerformanceRuns {
   public void runTest(CoinsGraphSet graphSet, int threads, String ccrFile, String reportName) {
 
     Validator.QUERY_THREAD_POOL_SIZE = threads;
-    Validator.QUERY_EXECUTION_TIMEOUT_SEC = 1;
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", ccrFile).getAbsolutePath());
     Path reportFile = Paths.get("/tmp/"+reportName);
