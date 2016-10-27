@@ -107,7 +107,7 @@ public class RunViewer {
       } else {
 
         if(!Run.QUIET) {
-          System.out.println("unable to open " + options.getInputOptions().get(0).getFileName().toString());
+          System.out.println("(!) unable to open " + options.getInputOptions().get(0).getFileName().toString());
         }
 
       }
