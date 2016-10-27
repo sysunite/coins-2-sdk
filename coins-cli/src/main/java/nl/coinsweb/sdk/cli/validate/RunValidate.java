@@ -85,6 +85,7 @@ public class RunValidate {
 
 
     Run.startLoggingToFile();
+    log.info("Started validation.");
 
     // Fuseki
     CoinsGraphSet graphSet;

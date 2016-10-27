@@ -24,7 +24,6 @@
  **/
 package nl.coinsweb.sdk.cli.viewer;
 
-import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.cli.validate.ValidateOptions;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -67,19 +66,20 @@ public class RunViewer {
     }
 
     Run.startLoggingToFile();
+    log.info("Started viewer.");
 
 
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
       if(!Run.QUIET) {
-        System.out.println("no input file specified");
+        System.out.println("(!) no input file specified");
       }
       return;
     }
 
     if(options.hasInputOption() && options.getInputOptions().size() > 1) {
       if(!Run.QUIET) {
-        System.out.println("too many input files specified");
+        System.out.println("(!) too many input files specified");
       }
       return;
     }
@@ -95,7 +95,7 @@ public class RunViewer {
         // Start the webserver
         if(!Run.QUIET) {
           System.out.println("running coins viewer on " + options.getInputOptions().get(0).getFileName().toString());
-          System.out.println("use your web browser to navigate to " + CliOptions.ANSI_BOLD + server.getUrl() + CliOptions.ANSI_RESET);
+          System.out.println("use your web browser to navigate to " + server.getUrl() );
           System.out.println("(use Ctrl-C to stop service)\n");
         }
         server.run();

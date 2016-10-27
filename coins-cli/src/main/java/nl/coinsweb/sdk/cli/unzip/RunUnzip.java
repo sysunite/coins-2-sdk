@@ -65,6 +65,7 @@ public class RunUnzip {
     }
 
     Run.startLoggingToFile();
+    log.info("Started upzipping.");
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
       if(!Run.QUIET) {
