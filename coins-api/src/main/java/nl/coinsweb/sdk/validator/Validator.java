@@ -53,8 +53,6 @@ public class Validator {
   public static final int GENERATE_XML = 2;
   public static final int GENERATE_BOTH = 3;
 
-  public static int QUERY_THREAD_POOL_SIZE = 1;
-
 
   CoinsGraphSet graphSet;
   Profile profile;
@@ -101,7 +99,6 @@ public class Validator {
     data.put("executionTime", execution.getExecutionTime());
     data.put("memLimit", execution.getMemLimit());
     data.put("memMaxUsage", execution.getMemMaxUsage());
-    data.put("queryThreads", Validator.QUERY_THREAD_POOL_SIZE);
     data.put("graphSetImpl", graphSet.getClass().getCanonicalName());
     data.put("profileName", this.profile.getName());
     data.put("profileVersion", this.profile.getVersion());
@@ -259,7 +256,7 @@ public class Validator {
       Map<String, Long> initialNumTriples = graphSet.numTriples();
 
       // Prepare list of all queries to be executed this round
-      ExecutorService executor = Executors.newFixedThreadPool(graphSet.supportsMultiThreading() ? Validator.QUERY_THREAD_POOL_SIZE : 1);
+      ExecutorService executor = Executors.newSingleThreadExecutor();
 
       List<Callable<Object>> todo = new ArrayList<>(queries.size());
 
