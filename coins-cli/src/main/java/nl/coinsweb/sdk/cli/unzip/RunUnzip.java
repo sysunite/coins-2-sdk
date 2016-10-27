@@ -69,21 +69,21 @@ public class RunUnzip {
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
       if(!Run.QUIET) {
-        System.out.println("no input file specified");
+        System.out.println("(!) no input file specified");
       }
       return;
     }
 
     if(!options.hasOutputOption()) {
       if(!Run.QUIET) {
-        System.out.println("no output location specified");
+        System.out.println("(!) no output location specified");
       }
       return;
     }
 
     if(options.hasInputOption() && options.getInputOptions().size() > 1) {
       if(!Run.QUIET) {
-        System.out.println("too many input files specified");
+        System.out.println("(!) too many input files specified");
       }
       return;
     }
