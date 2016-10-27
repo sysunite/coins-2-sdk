@@ -80,6 +80,25 @@ public class RunGenerate {
     }
 
     Run.startLoggingToFile();
+    log.info("Started generation.");
+
+    // Check requirements
+    if (!options.hasInputOption()) {
+      if(!Run.QUIET) {
+        System.out.println("(!) no input file specified\n");
+      }
+      GenerateOptions.usage();
+      System.exit(1);
+      return;
+    }
+    if (!options.hasOutputOption()) {
+      if(!Run.QUIET) {
+        System.out.println("(!) no output file specified\n");
+      }
+      GenerateOptions.usage();
+      System.exit(1);
+      return;
+    }
 
 
 
@@ -90,31 +109,49 @@ public class RunGenerate {
     boolean doInclSources = doJar && options.hasIncludeSourcesOption();
     boolean doDll         = options.hasDllOption() || options.hasDllPathOption();
 
-    if(doCompile && !(Run.getCli("javac -version").startsWith("javac 1.7") || Run.getCli("javac -version").startsWith("javac 1.8"))) {
+    String javaCheck = Run.getCli("javac -version");
+    log.info("Result javac -version: "+javaCheck.substring(0, Math.min(javaCheck.length(), 30))+"...");
+    if(doCompile && !(javaCheck.startsWith("javac 1.7") || javaCheck.startsWith("javac 1.8"))) {
       if(!Run.QUIET) {
         System.out.println("Please make the javac command from the Java SDK (version 7 or 8) available on the path.");
       }
+      System.exit(1);
       return;
     }
-    if(doJar && !Run.getCli("jar").startsWith("Usage: jar {ctxui}")) {
+    log.info("Java version accepted.");
+
+    String jarCheck = Run.getCli("jar");
+    log.info("Result jar: "+jarCheck.substring(0, Math.min(jarCheck.length(), 30))+"...");
+    if(doJar && !jarCheck.startsWith("Usage: jar {ctxui}")) {
       if(!Run.QUIET) {
         System.out.println("Please make the jar command available on the path.");
       }
+      System.exit(1);
       return;
     }
+    log.info("Jar command accepted.");
 
     if(doDll && !options.hasApiPathOption()) {
       if(!Run.QUIET) {
         System.out.println("Please specify a pointer to the coins-api.dll using -a.");
       }
+      System.exit(1);
       return;
     }
+    log.info("Will use supplied coins-api.dll: "+options.getApiPathOption().toString());
 
-    if(doDll && !(Run.getCli("ikvmc -help").startsWith("IKVM.NET Compiler version "))) {
-      if(!Run.QUIET) {
-        System.out.println("Please make the ikvmc command (version 7 or 8) available on the path.");
+
+    if(doDll) {
+      String ikvmCheck = Run.getCli("ikvmc --nonexistantcommand");
+      log.info("Result ikvmc --nonexistantcommand: "+ikvmCheck.substring(0, Math.min(ikvmCheck.length(), 30))+"...");
+      if(!(ikvmCheck.startsWith("IKVM.NET Compiler version "))) {
+        if (!Run.QUIET) {
+          System.out.println("Please make the ikvmc command (version 7 or 8) available on the path.");
+        }
+        System.exit(1);
+        return;
       }
-      return;
+      log.info("Ikvmc version accepted.");
     }
 
 
