@@ -52,7 +52,6 @@ public class ViewerOptions {
 
       Option input = new Option("i", true, "input file");
       input.setArgs(Option.UNLIMITED_VALUES);
-      input.setRequired(true);
       options.addOption(input);
 
       options.addOption("o", true, "output file");
