@@ -208,7 +208,7 @@ public class Profile {
   }
   public static Profile loadProfile(InputStream stream) throws InvalidProfileFileException {
     Profile profile = createProfile(stream);
-
+    getProfiles();
     if(!profiles.containsKey(profile.getName())) {
       profiles.put(profile.getName(), new HashMap<String, Profile>());
     }

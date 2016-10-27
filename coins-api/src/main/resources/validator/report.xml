@@ -31,7 +31,6 @@ List<ValidationQueryResult> : validationRules
   <configuration>
     <graphSet>
       <implementation>${graphSetImpl}</implementation>
-      <queryThreads>${queryThreads}</queryThreads>
       <memoryLimit>${memLimit}</memoryLimit>
     </graphSet>
     <container>
