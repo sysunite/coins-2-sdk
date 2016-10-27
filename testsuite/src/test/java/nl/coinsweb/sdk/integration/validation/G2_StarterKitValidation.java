@@ -1,6 +1,7 @@
 package nl.coinsweb.sdk.integration.validation;
 
 import nl.coinsweb.sdk.CoinsParty;
+import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.FusekiGraphSet;
@@ -8,6 +9,7 @@ import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import nl.coinsweb.sdk.validator.Validator;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -44,10 +46,10 @@ public class G2_StarterKitValidation {
 
   }
 
-//  @AfterClass
-//  public static void cleanup() {
-//    FileManager.destroyAll();
-//  }
+  @AfterClass
+  public static void cleanup() {
+    FileManager.destroyAll();
+  }
 
 
   @Test
