@@ -86,6 +86,7 @@ public class Run {
 
     } else {
 
+      Run.printHeader();
       options.usage();
 
     }
@@ -111,8 +112,9 @@ public class Run {
     }
 
     // Print header
-    System.out.println(CliOptions.ANSI_BOLD+CliOptions.ANSI_GB_WHITE+CliOptions.ANSI_RED+")"+CliOptions.ANSI_GREEN+"}"+CliOptions.ANSI_RESET+
-        CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (version "+version+", build "+buildnr+")\n");
+//    System.out.println(CliOptions.ANSI_BOLD+CliOptions.ANSI_GB_WHITE+CliOptions.ANSI_RED+")"+CliOptions.ANSI_GREEN+"}"+CliOptions.ANSI_RESET+
+//        CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (version "+version+", build "+buildnr+")\n");
+    System.out.println(")} COINS 2.0\ncommand line interface (version "+version+", build "+buildnr+")\n");
   }
 
 
@@ -134,17 +136,22 @@ public class Run {
         System.out.println("Logging to file " + filename + "\n");
       }
     } catch(IOException e) {
-
+      if(!Run.QUIET) {
+        System.out.println("Failed to start logger.");
+        e.printStackTrace();
+      }
     }
   }
 
 
   public static String getCli(String command) {
+    log.info("Will execute command: "+command);
 
     Runtime rt = Runtime.getRuntime();
 
     try {
       Process pr = rt.exec(command);
+      log.info("Finished command, will read output.");
 
       String output = "";
 
@@ -157,9 +164,11 @@ public class Run {
       String line = null;
       while ((line = stdInput.readLine()) != null) {
         output += line + "\n";
+        log.info("Read line form inputstream: "+line);
       }
       while ((line = stdError.readLine()) != null) {
         output += line + "\n";
+        log.info("Read line form errorstream: "+line);
       }
 
       return output.trim();

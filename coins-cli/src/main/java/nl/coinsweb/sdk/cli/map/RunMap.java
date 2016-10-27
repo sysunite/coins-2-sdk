@@ -70,32 +70,33 @@ public class RunMap {
     }
 
     Run.startLoggingToFile();
+    log.info("Started mapping.");
 
 
     if(!options.hasInputOption() || options.getInputOptions().isEmpty()) {
       if(!Run.QUIET) {
-        System.out.println("no input file specified");
+        System.out.println("(!) no input file specified");
       }
       return;
     }
 
     if(options.hasInputOption() && options.getInputOptions().size() > 1) {
       if(!Run.QUIET) {
-        System.out.println("too many input files specified");
+        System.out.println("(!) too many input files specified");
       }
       return;
     }
 
     if(!options.hasOutputOption()) {
       if(!Run.QUIET) {
-        System.out.println("no output file specified");
+        System.out.println("(!) no output file specified");
       }
       return;
     }
 
     if(!options.hasEncodingOption()) {
       if(!Run.QUIET) {
-        System.out.println("no encoding specified");
+        System.out.println("(!) no encoding specified");
       }
       return;
     }

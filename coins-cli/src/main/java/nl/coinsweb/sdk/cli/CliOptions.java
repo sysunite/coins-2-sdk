@@ -43,30 +43,7 @@ public class CliOptions {
 
   protected static final Logger log = LoggerFactory.getLogger(CliOptions.class);
 
-  public static final String ANSI_RESET  = "\u001B[0m";
-  public static final String ANSI_BOLD  =  "\u001B[1m";
 
-  public static final String ANSI_BLACK  = "\u001B[30m";
-  public static final String ANSI_RED    = "\u001B[31m";
-  public static final String ANSI_GREEN  = "\u001B[32m";
-  public static final String ANSI_YELLOW = "\u001B[33m";
-  public static final String ANSI_BLUE   = "\u001B[34m";
-  public static final String ANSI_PURPLE = "\u001B[35m";
-  public static final String ANSI_CYAN   = "\u001B[36m";
-  public static final String ANSI_WHITE  = "\u001B[37m";
-
-  public static final String ANSI_GB_BLACK  = "\u001B[40m";
-  public static final String ANSI_GB_RED    = "\u001B[41m";
-  public static final String ANSI_GB_GREEN  = "\u001B[42m";
-  public static final String ANSI_GB_YELLOW = "\u001B[43m";
-  public static final String ANSI_GB_BLUE   = "\u001B[44m";
-  public static final String ANSI_GB_PURPLE = "\u001B[45m";
-  public static final String ANSI_GB_CYAN   = "\u001B[46m";
-  public static final String ANSI_GB_WHITE  = "\u001B[47m";
-
-  public static final String bold(String input) {
-    return CliOptions.ANSI_BOLD + input + CliOptions.ANSI_RESET;
-  }
 
 
 
@@ -80,11 +57,11 @@ public class CliOptions {
   protected void usage() {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp(
-        "\n " + bold("coins-cli") + " " + bold("unzip") +
-        "\n " + bold("coins-cli") + " " + bold("viewer") +
-        "\n " + bold("coins-cli") + " " + bold("map") +
-        "\n " + bold("coins-cli") + " " + bold("generate") +
-        "\n " + bold("coins-cli") + " " + bold("validate"), new Options() );
+        "\n coins-cli unzip" +
+        "\n coins-cli viewer" +
+        "\n coins-cli map" +
+        "\n coins-cli generate" +
+        "\n coins-cli validate", new Options() );
 
   }
 
@@ -130,9 +107,12 @@ public class CliOptions {
 
 
   public static Path resolvePath(String path) {
+
     try {
-      return Paths.get(new File(".").getCanonicalPath()).resolve(path);
+      Path currentPath = Paths.get(new File(System.getProperty("user.dir")).getCanonicalPath());
+      return currentPath.resolve(path);
     } catch (IOException e) {
+      log.warn("Failed to locate path "+path+" relative to user dir "+System.getProperty("user.dir"));
       return null;
     }
   }
