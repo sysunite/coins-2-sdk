@@ -51,7 +51,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setPropertyLabel(String propertyLabel) {
     if(this.propertyLabel!=null) {
-      log.warn("overriding "+this.propertyLabel+" with "+propertyLabel);
+      log.warn("Overriding "+this.propertyLabel+" with "+propertyLabel);
     }
     this.propertyLabel = propertyLabel;
   }
@@ -64,7 +64,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setPropertyUri(String propertyUri) {
     if(this.propertyUri!=null) {
-      log.warn("overriding "+this.propertyUri+" with "+propertyUri);
+      log.warn("Overriding "+this.propertyUri+" with "+propertyUri);
     }
     this.propertyUri = propertyUri;
   }
@@ -77,7 +77,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setPropertyName(String propertyName) {
     if(this.propertyName!=null) {
-      log.warn("overriding "+this.propertyName+" with "+propertyName);
+      log.warn("Overriding "+this.propertyName+" with "+propertyName);
     }
     this.propertyName = propertyName;
   }
@@ -90,7 +90,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setPropertyOwner(String propertyOwnerUri) {
     if(this.propertyOwnerUri!=null) {
-      log.warn("overriding "+this.propertyOwnerUri+" with "+propertyOwnerUri);
+      log.warn("Overriding "+this.propertyOwnerUri+" with "+propertyOwnerUri);
     }
     this.propertyOwnerUri = propertyOwnerUri;
   }
@@ -102,7 +102,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setRangeUri(String rangeUri) {
     if(this.rangeUri!=null) {
-      log.warn("overriding "+this.rangeUri+" with "+rangeUri);
+      log.warn("Overriding "+this.rangeUri+" with "+rangeUri);
     }
     this.rangeUri = rangeUri;
   }
@@ -121,7 +121,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setRangeName(String rangeName) {
     if(this.rangeName!=null) {
-      log.warn("overriding "+this.rangeName+" with "+rangeName);
+      log.warn("Overriding "+this.rangeName+" with "+rangeName);
     }
     this.rangeName = rangeName;
   }
@@ -133,7 +133,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public void setCardinality(int cardinality) {
     if(this.cardinality!=-1) {
-      log.warn("overriding "+this.cardinality+" with "+cardinality);
+      log.warn("Overriding "+this.cardinality+" with "+cardinality);
     }
     this.cardinality = cardinality;
   }

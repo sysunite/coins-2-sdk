@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+
+  fuseki:
+    image: stain/jena-fuseki
+    ports: 
+     - "3030:3030"
+    environment:
+     - JVM_ARGS=-Xmx8g
+     - ADMIN_PASSWORD=pw123

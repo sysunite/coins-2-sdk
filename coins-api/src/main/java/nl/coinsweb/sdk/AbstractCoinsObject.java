@@ -67,7 +67,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
    * Constructor for new Individual.
    */
   public AbstractCoinsObject(ExpertCoinsModel coinsModel) {
-    this(coinsModel, (Model)coinsModel.getJenaModel());
+    this(coinsModel, (Model)coinsModel.getCoinsGraphSet().getInstanceModel());
   }
   public AbstractCoinsObject(ExpertCoinsModel coinsModel, Model model) {
     this.coinsModel = coinsModel;
@@ -96,7 +96,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     this(coinsModel, model, uri, false);
   }
   public AbstractCoinsObject(ExpertCoinsModel coinsModel, String uri, boolean dontCheck) {
-    this(coinsModel, (Model)coinsModel.getJenaModel(), uri, dontCheck);
+    this(coinsModel, (Model)coinsModel.getCoinsGraphSet().getInstanceModel(), uri, dontCheck);
   }
   public AbstractCoinsObject(ExpertCoinsModel coinsModel, Model model, String uri, boolean dontCheck) {
     this.coinsModel = coinsModel;
@@ -107,10 +107,10 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
 
     this.uri = uri;
-    log.info("set uri to "+this.uri);
+    log.info("Set uri to "+this.uri);
 
     // Create fields for this new instance
-    if(((OntModel)coinsModel.getUnionJenaOntModel()).getIndividual(uri) == null) {
+    if(((OntModel)coinsModel.getCoinsGraphSet().getUnionJenaOntModel()).getIndividual(uri) == null) {
       log.info("Uri "+uri+" not found, creating new individual with this uri.");
 
       // Save this new instance to model
@@ -198,7 +198,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   }
   @Override
   public <T extends CoinsObject> void addType(Class<T> clazz) {
-    addType((Model)coinsModel.getJenaModel(), clazz);
+    addType((Model)coinsModel.getCoinsGraphSet().getInstanceModel(), clazz);
   }
   @Override
   public <T extends CoinsObject> void addType(Model model, Class<T> clazz) {
@@ -221,7 +221,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
   }
   @Override
   public <T extends CoinsObject> void removeType(Class<T> clazz) {
-    removeType((Model)coinsModel.getJenaModel(), clazz);
+    removeType((Model)coinsModel.getCoinsGraphSet().getInstanceModel(), clazz);
   }
   @Override
   public <T extends CoinsObject> void removeType(Model model, Class<T> clazz) {
@@ -454,7 +454,7 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     try {
       for(String fileName : Arrays.asList((String[]) getClass().getField("sourceFiles").get(Array.class))) {
 
-        log.trace("register "+fileName+" from jar");
+        log.trace("Register "+fileName+" from jar.");
 
         InputStream fileStream = getClass().getResourceAsStream("/"+fileName);
         Namespace ns = FileManager.copyAndRegisterLibrary(fileStream, fileName, coinsModel.getAvailableLibraryFiles());

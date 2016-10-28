@@ -129,7 +129,7 @@ public class WOAInjector implements Injector {
 
     // Is the level was not set already, easy
     if(!cache.containsKey(clearance.uri)) {
-      log.info("set level "+clearance.level+" for "+clearance.uri);
+      log.info("Set level "+clearance.level+" for "+clearance.uri);
       cache.put(clearance.uri, clearance);
       return;
     }
@@ -144,26 +144,26 @@ public class WOAInjector implements Injector {
 
     // Take the new one
     if(clearance.distance < current.distance) {
-      log.info("set level "+clearance.level+" for "+clearance.uri);
+      log.info("Set level "+clearance.level+" for "+clearance.uri);
       cache.put(clearance.uri, clearance);
       return;
     }
 
     // If the distance is equal, pick the more restrictive
     if(NO_ACCESS.equals(clearance.level) || NO_ACCESS.equals(current.level)) {
-      log.info("set level "+NO_ACCESS+" for "+clearance.uri);
+      log.info("Set level "+NO_ACCESS+" for "+clearance.uri);
       cache.put(clearance.uri, new Clearance(clearance.uri, NO_ACCESS, clearance.distance));
       return;
     }
 
     if(READ_ACCESS.equals(clearance.level) || READ_ACCESS.equals(current.level)) {
-      log.info("set level "+READ_ACCESS+" for "+clearance.uri);
+      log.info("Set level "+READ_ACCESS+" for "+clearance.uri);
       cache.put(clearance.uri, new Clearance(clearance.uri, READ_ACCESS, clearance.distance));
       return;
     }
 
     if(WRITE_ACCESS.equals(clearance.level) || WRITE_ACCESS.equals(current.level)) {
-      log.info("set level "+WRITE_ACCESS+" for "+clearance.uri);
+      log.info("Set level "+WRITE_ACCESS+" for "+clearance.uri);
       cache.put(clearance.uri, new Clearance(clearance.uri, WRITE_ACCESS, clearance.distance));
       return;
     }
@@ -219,11 +219,11 @@ public class WOAInjector implements Injector {
 
 
     if(!hasClearance(subject, READ_ACCESS)) {
-      log.trace("Received 🛂 propose read, deny.");
+      log.trace("Received \uD83D\uDEC2 propose read, deny.");
       throw new WOAAccessDeniedException("WOA restriction blocked operation.");
     }
 
-    log.trace("Received 🛂 propose read, grant." );
+    log.trace("Received \uD83D\uDEC2 propose read, grant." );
     return true;
   }
 
@@ -231,11 +231,11 @@ public class WOAInjector implements Injector {
   public boolean proposeRead(CoinsModel model, String subject, String predicate) {
 
     if(!hasClearance(subject, READ_ACCESS)) {
-      log.trace("Received 🛂 propose read, deny.");
+      log.trace("Received \uD83D\uDEC2 propose read, deny.");
       throw new WOAAccessDeniedException("WOA restriction blocked operation.");
     }
 
-    log.trace("Received 🛂 propose read, grant." );
+    log.trace("Received \uD83D\uDEC2 propose read, grant." );
     return true;
   }
 
@@ -243,11 +243,11 @@ public class WOAInjector implements Injector {
   public boolean proposeWrite(CoinsModel model, String subject, String predicate, String object) {
 
     if(!hasClearance(subject, WRITE_ACCESS)) {
-      log.trace("Received 🛂 propose write, deny.");
+      log.trace("Received \uD83D\uDEC2 propose write, deny.");
       throw new WOAAccessDeniedException("WOA restriction blocked operation.");
     }
 
-    log.trace("Received 🛂 propose write, grant." );
+    log.trace("Received \uD83D\uDEC2 propose write, grant." );
     return true;
   }
 

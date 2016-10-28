@@ -2,9 +2,8 @@ package nl.coinsweb.sdk.integration.owlgenerator;
 
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import nl.coinsweb.sdk.CoinsParty;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 import org.junit.Test;
 
@@ -29,9 +28,9 @@ public class D1_ClassListing {
     // Generate java code in one place
     ClassGenerateEngine engine = new ClassGenerateEngine();
 
-    ModelFactory factory = new JenaModelFactory();
-    factory.setReasoner(OntModelSpec.OWL_MEM_RDFS_INF);
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), "http://empty.com/", false);
+    InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
+    graphSet.setOntModelSpec(OntModelSpec.OWL_MEM_RDFS_INF);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, true);
 
 
     ArrayList<String> sourceFileNames = new ArrayList<>();

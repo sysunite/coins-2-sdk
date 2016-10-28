@@ -15,7 +15,7 @@
     <level value="INFO"/>
   </logger>
 
-  <logger name="org.apache.jena">
+  <logger name="com.hp.hpl.jena">
     <level value="INFO"/>
   </logger>
 
@@ -23,8 +23,12 @@
     <level value="INFO"/>
   </logger>
 
-  <logger name="freemarker.template">
+  <logger name="freemarker">
     <level value="WARN"/>
+  </logger>
+
+  <logger name="nl.coinsweb">
+    <level value="TRACE"/>
   </logger>
 
   <logger name="nl.rws">
@@ -32,7 +36,7 @@
   </logger>
 
   <root>
-    <level value="TRACE" />
+    <level value="WARN" />
     <appender-ref ref="console" />
   </root>
 

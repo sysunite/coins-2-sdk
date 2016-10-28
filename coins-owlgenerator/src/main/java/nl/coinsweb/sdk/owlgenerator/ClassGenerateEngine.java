@@ -68,7 +68,7 @@ public class ClassGenerateEngine {
   }
 
   public void addNamespace(String rdfNamespace, String javaPackageName) {
-    log.info("adding to namespaceToPackage map "+rdfNamespace+" / "+javaPackageName);
+    log.info("Adding to namespaceToPackage map "+rdfNamespace+" / "+javaPackageName);
     if(!subjectIgnoreList.contains(rdfNamespace)) {
       namespaceToPackage.put(rdfNamespace, javaPackageName);
     }
@@ -136,7 +136,7 @@ public class ClassGenerateEngine {
         if(javaPackageName != null) {
           addNamespace(clazz.asResource().getNameSpace(), javaPackageName);
         } else {
-          log.warn("failed to process class "+clazz.getURI());
+          log.warn("Failed to process class "+clazz.getURI());
         }
       }
 
@@ -161,7 +161,7 @@ public class ClassGenerateEngine {
       }
 
       if(!processClass(model, clazz)) {
-        log.warn("skipping processing class "+clazz.asResource().getURI());
+        log.warn("Skipping processing class "+clazz.asResource().getURI());
         continue;
       }
 
@@ -214,7 +214,7 @@ public class ClassGenerateEngine {
 
     if(!namespaceToPackage.containsKey(clazz.asResource().getNameSpace())) {
 
-      log.warn("class should have been in namespaceToPackage list: "+clazz.getURI());
+      log.warn("Class should have been in namespaceToPackage list: "+clazz.getURI());
       return false;
     }
 
@@ -285,7 +285,7 @@ public class ClassGenerateEngine {
 
     String fullyQualifiedName = currentPackage+"."+className;
     if(fullyQualifiedJavaClasses.contains(fullyQualifiedName.toLowerCase())) {
-      log.warn("already mapped to "+fullyQualifiedName.toLowerCase()+" (this time: "+clazz.asResource().getURI()+"), skipping");
+      log.warn("Already mapped to "+fullyQualifiedName.toLowerCase()+" (this time: "+clazz.asResource().getURI()+"), skipping");
       return false;
     }
     fullyQualifiedJavaClasses.add(fullyQualifiedName.toLowerCase());
@@ -389,7 +389,7 @@ public class ClassGenerateEngine {
               literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), simplify(javaClass.getSimpleName()), javaClass.getSimpleName(), propertyClassName));
               imports.add(javaClass.getCanonicalName());
             } else {
-              log.debug("no java class found by TypeMapper/RDFDatatype for range uri " + declaration.getRangeUri() + ", using String");
+              log.debug("No java class found by TypeMapper/RDFDatatype for range uri " + declaration.getRangeUri() + ", using String.");
               literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "String", propertyClassName));
             }
           }

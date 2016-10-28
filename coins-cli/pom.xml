@@ -5,11 +5,12 @@
   <parent>
     <groupId>nl.coinsweb.sdk</groupId>
     <artifactId>coins-2-sdk</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>coins-cli</artifactId>
+  <version>1.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,7 +20,7 @@
     <dependency>
       <groupId>nl.coinsweb.sdk</groupId>
       <artifactId>coins-owlgenerator</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>commons-cli</groupId>
@@ -51,15 +52,27 @@
       <!--higher versions require java 8, this is the last one having java 7-->
       <version>9.2.14.v20151106</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.4.1</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.apache.logging.log4j</groupId>-->
+      <!--<artifactId>log4j-core</artifactId>-->
+      <!--<version>2.4.1</version>-->
+    <!--</dependency>-->
   </dependencies>
 
   <build>
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <debug>true</debug>
+        </configuration>
+      </plugin>
+
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -84,12 +97,65 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-shade-plugin</artifactId>-->
+        <!--<configuration>-->
+          <!--&lt;!&ndash;<shadedArtifactAttached>false</shadedArtifactAttached>&ndash;&gt;-->
+          <!--<transformers>-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">&ndash;&gt;-->
+            <!--&lt;!&ndash;<mainClass>com.hp.hpl.jena.fuseki.cmd.FusekiCmd</mainClass>&ndash;&gt;-->
+            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
+            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">&ndash;&gt;-->
+            <!--&lt;!&ndash;<addHeader>false</addHeader>&ndash;&gt;-->
+            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
+          <!--</transformers>-->
+          <!--&lt;!&ndash;<filters>&ndash;&gt;-->
+          <!--&lt;!&ndash;<filter>&ndash;&gt;-->
+          <!--&lt;!&ndash;<artifact>*:*</artifact>&ndash;&gt;-->
+          <!--&lt;!&ndash;<excludes>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash; Some jars are signed but shading breaks that.&ndash;&gt;-->
+          <!--&lt;!&ndash;Don't include signing files.&ndash;&gt;-->
+          <!--&lt;!&ndash;&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<exclude>META-INF/*.SF</exclude>&ndash;&gt;-->
+          <!--&lt;!&ndash;<exclude>META-INF/*.DSA</exclude>&ndash;&gt;-->
+          <!--&lt;!&ndash;<exclude>META-INF/*.RSA</exclude>&ndash;&gt;-->
+          <!--&lt;!&ndash;</excludes>&ndash;&gt;-->
+          <!--&lt;!&ndash;</filter>&ndash;&gt;-->
+          <!--&lt;!&ndash;</filters>&ndash;&gt;-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<phase>package</phase>-->
+            <!--&lt;!&ndash;<phase /><!- - Switch off &ndash;&gt;-->
+            <!--<goals>-->
+              <!--<goal>shade</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
+
+      <plugin>
         <groupId>com.coderplus.maven.plugins</groupId>
         <artifactId>copy-rename-maven-plugin</artifactId>
         <version>1.0</version>
         <executions>
           <execution>
-            <id>copy-file</id>
+            <id>copy-jar-with-dependencies</id>
             <phase>verify</phase>
             <goals>
               <goal>copy</goal>
@@ -99,8 +165,20 @@
               <destinationFile>../dist/sdk/jar/coins-cli.jar</destinationFile>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-sources-jar</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <sourceFile>target/${project.build.finalName}-sources.jar</sourceFile>
+              <destinationFile>../dist/sdk/jar/coins-cli-sources.jar</destinationFile>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
+
 
     </plugins>
 
@@ -133,6 +211,8 @@
       </activation>
       <build>
         <plugins>
+
+
 
           <plugin>
             <groupId>org.codehaus.mojo</groupId>

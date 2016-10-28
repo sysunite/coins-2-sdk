@@ -5,11 +5,12 @@
   <parent>
     <groupId>nl.coinsweb.sdk</groupId>
     <artifactId>coins-2-sdk</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>coins-owlgenerator</artifactId>
+  <version>1.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,12 +20,7 @@
     <dependency>
       <groupId>nl.coinsweb.sdk</groupId>
       <artifactId>coins-api</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.freemarker</groupId>
-      <artifactId>freemarker</artifactId>
-      <version>2.3.20</version>
+      <version>1.1</version>
     </dependency>
   </dependencies>
 

@@ -32,7 +32,7 @@
     <level value="WARN"/>
   </logger>
 
-  <logger name="org.apache.jena">
+  <logger name="com.hp.hpl.jena">
     <level value="WARN"/>
   </logger>
 
@@ -45,6 +45,7 @@
   </logger>
 
   <root>
+    <level value="WARN" />
   </root>
 
 </log4j:configuration>

@@ -152,7 +152,7 @@ public class Utils {
       }
       return null;
     } catch (MalformedURLException e) {
-      log.warn("could not map "+input+" to namespace");
+      log.warn("Could not map "+input+" to namespace.");
       return null;
     }
   }
