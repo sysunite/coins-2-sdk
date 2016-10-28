@@ -69,7 +69,7 @@ public class B5_InstantiateRWSOTL {
 //    }
 //
 //    log.info("Statements listing:");
-////    StmtIterator statements = ((JenaCoinsModel)workspace).getJenaModel().listStatements();
+////    StmtIterator statements = ((JenaCoinsModel)workspace).getInstanceModel().listStatements();
 ////    while (statements.hasNext()) {
 ////      Statement statement = statements.nextStatement();
 ////      if(!statement.getSubject().isAnon()) {

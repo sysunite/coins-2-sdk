@@ -59,7 +59,7 @@ public class CoinsParty {
     if(model == null) {
       throw new CoinsObjectCastNotAllowedException("CoinsParty can only be cast if it is used to open a CoinsContainer class.");
     }
-    log.info("try to cast a CoinsParty to "+clazz.getCanonicalName() + " with uri "+uri);
+    log.info("Try to cast a CoinsParty to "+clazz.getCanonicalName() + " with uri "+uri);
     try {
       Constructor constructor = clazz.getConstructor(ExpertCoinsModel.class, String.class);
       T constructed = (T) constructor.newInstance(model, uri);

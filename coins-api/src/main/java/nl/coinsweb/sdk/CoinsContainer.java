@@ -28,7 +28,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -45,14 +44,23 @@ public interface CoinsContainer {
 
 
   /**
+   * Get filename.
+   *
+   * @return  a string containing the file name, or null when no saved yet
+   */
+  public String getFileName();
+
+
+  /**
    * Import the model content and all registered attachments from a .ccr file specified by the target file path.
    *
    * This triggers a reinitialisation of the complete CoinsContainer object.
    *
    * @param target  a file path ('/tmp/container.ccr' or 'C:\tmp\container.ccr')
+   * @param strict  set true to let the function throw an InvalidContainerFileException when something is wrong with the filestructure
    *
    */
-  public void load(String target);
+  public void load(String target, boolean strict);
 
 
 
@@ -96,7 +104,7 @@ public interface CoinsContainer {
    *
    * @return  list of file names ('map.pdf', 'pic.jpg')
    */
-  public Set<String> getAttachments();
+  public List<String> getAttachments();
 
   /**
    * Return a pointer to an attachment file.

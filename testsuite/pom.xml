@@ -5,7 +5,7 @@
   <parent>
     <groupId>nl.coinsweb.sdk</groupId>
     <artifactId>coins-2-sdk</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -19,13 +19,13 @@
     <dependency>
       <groupId>nl.coinsweb.sdk</groupId>
       <artifactId>coins-cli</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
     </dependency>
 
     <dependency>
       <groupId>libs</groupId>
       <artifactId>lib-cbim</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/../dist/library/jar/cbim.jar</systemPath>
     </dependency>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>libs</groupId>
       <artifactId>lib-qudt</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/../dist/library/jar/qudt.jar</systemPath>
     </dependency>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>libs</groupId>
       <artifactId>lib-woa</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/../dist/library/jar/coinswoa.jar</systemPath>
     </dependency>

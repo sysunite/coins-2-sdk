@@ -65,7 +65,7 @@ public class AttachmentInjector implements Injector {
       return true;
     } else {
 
-      ExtendedIterator<Triple> iterator = ((OntModel) model.getJenaOntModel()).getGraph().find(
+      ExtendedIterator<Triple> iterator = ((OntModel) model.getCoinsGraphSet().getInstanceOntModel()).getGraph().find(
           new ResourceImpl(object).asNode(),
           new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue").asNode(),
           Node.ANY);

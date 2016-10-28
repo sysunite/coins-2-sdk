@@ -1,12 +1,11 @@
 package nl.coinsweb.sdk.integration.modelling;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -28,8 +27,7 @@ public class B12_PumpExample {
   @Test
   public void aCreateContainer() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://zhejiangdayuan.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://zhejiangdayuan.com/");
 
     Assembly a = new Assembly(model);
 
@@ -70,16 +68,15 @@ public class B12_PumpExample {
 
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
+    DatasetAsserts.logTriples((Model)model.getCoinsGraphSet().getInstanceModel());
   }
 
 
   @Test
   public void bReopenCcr() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "/tmp/coinstest/zhejiangdayuan.ccr","http://zhejiangdayuan.com/");
-    DatasetAsserts.logTriples(model.getJenaModel());
+    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/zhejiangdayuan.ccr","http://zhejiangdayuan.com/");
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
   }
 
 

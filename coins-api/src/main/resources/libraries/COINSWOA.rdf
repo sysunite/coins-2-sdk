@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.coinsweb.nl/COINSWOA.rdf#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:cbim-2.0="http://www.coinsweb.nl/cbim-2.0.rdf#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xml:base="http://www.coinsweb.nl/COINSWOA.rdf">
+  <owl:Ontology rdf:about="">
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >owl:Ontology added by TopBraid</owl:versionInfo>
+    <owl:imports rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf"/>
+  </owl:Ontology>
+  <owl:Ontology rdf:about="#">
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created with TopBraid Composer</owl:versionInfo>
+  </owl:Ontology>
+  <owl:Class rdf:ID="ReadAccess">
+    <rdfs:subClassOf>
+      <cbim-2.0:COINSClass rdf:ID="ObjectPermissions">
+        <rdfs:label xml:lang="nl-NL">ObjectPermissie</rdfs:label>
+        <rdfs:subClassOf>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:ID="layerdepth"/>
+            </owl:onProperty>
+            <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+            >1</owl:cardinality>
+          </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="nl-NL">Specificeert de rechten voor dit Object</rdfs:comment>
+        <rdfs:comment xml:lang="en-GB">Specifies the rights for this Object</rdfs:comment>
+        <rdfs:label xml:lang="en-GB">ObjectPermission</rdfs:label>
+        <rdfs:subClassOf>
+          <cbim-2.0:COINSClass rdf:ID="PermissionClass">
+            <rdfs:comment xml:lang="en-GB">Specifies the modification rights for this object</rdfs:comment>
+            <rdfs:comment xml:lang="nl-NL">Specificeert de wijzigings rechten voor dit object</rdfs:comment>
+            <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            <rdfs:label xml:lang="en-GB">PermissionClass</rdfs:label>
+            <rdfs:label xml:lang="nl-NL">PermissionClass</rdfs:label>
+            <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+          </cbim-2.0:COINSClass>
+        </rdfs:subClassOf>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        <rdfs:subClassOf rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#Object"/>
+      </cbim-2.0:COINSClass>
+    </rdfs:subClassOf>
+    <rdfs:label xml:lang="en-GB">ReadAccess</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">LeesToegang</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">ReadAccess for this SystemSlot</rdfs:comment>
+    <rdfs:comment xml:lang="nl-NL">Leestoegang voor dit SysteemSlot</rdfs:comment>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#COINSClass"/>
+  </owl:Class>
+  <owl:Class rdf:ID="WriteAccess">
+    <rdfs:subClassOf rdf:resource="#ObjectPermissions"/>
+    <rdfs:comment xml:lang="nl-NL">Schrijfrechten voor dit SysteemSlot</rdfs:comment>
+    <rdfs:label xml:lang="en-GB">WriteAccess</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">Schrijfrecht</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">Writeaccess for this SystemSlot</rdfs:comment>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#COINSClass"/>
+  </owl:Class>
+  <owl:Class rdf:ID="NoAccess">
+    <rdfs:subClassOf rdf:resource="#ObjectPermissions"/>
+    <rdfs:label xml:lang="en-GB">NoAccess</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">GeenToegang</rdfs:label>
+    <rdfs:comment xml:lang="en-GB">No Access for this systemslot</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">Geen toegang voor dit systeemslot</rdfs:comment>
+    <rdf:type rdf:resource="http://www.coinsweb.nl/cbim-2.0.rdf#COINSClass"/>
+  </owl:Class>
+  <owl:FunctionalProperty rdf:about="#layerdepth">
+    <rdfs:domain rdf:resource="#ObjectPermissions"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label xml:lang="en-GB">layerdepth</rdfs:label>
+    <rdfs:label xml:lang="nl-NL">laagdiepte</rdfs:label>
+    <rdfs:comment xml:lang="nl-NL">bepaald de laagdiepte via de linkAccess relatie waarop deze permissie actief is</rdfs:comment>
+    <rdfs:comment xml:lang="en-GB">determines the layerdepth via the linkAccess relation on which this permission applies</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <rdf:Description rdf:about="http://www.coinsweb.nl/cbim-2.0.rdf#checksumUri">
+    <rdfs:comment xml:lang="nl-NL">Checksum tabel voor het webdocument.</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">checksumUri</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.coinsweb.nl/cbim-2.0.rdf#checksumFileAlgorithm">
+    <rdfs:comment xml:lang="nl-NL">De checksum algoritme voor de file</rdfs:comment>
+    <rdfs:label xml:lang="nl-NL">checksum file algorithm</rdfs:label>
+  </rdf:Description>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->
