@@ -142,13 +142,13 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public Iterator<Map<String, String>> query(String sparqlQuery) {
 
     Iterator<Map<String, String>> result = null;
-    log.trace("Start read transaction.");
-    getDataset().begin(ReadWrite.READ) ;
+//    log.trace("Start read transaction.");
+//    getDataset().begin(ReadWrite.READ) ;
     try {
       result = super.query(sparqlQuery);
     } finally {
-      log.trace("Stop read transaction.");
-      getDataset().end() ;
+//      log.trace("Stop read transaction.");
+//      getDataset().end() ;
     }
     return result;
 
@@ -158,14 +158,14 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   @Override
   public void insert(InferenceQuery query, InferenceQueryResult result) {
 
-    log.trace("Start write transaction.");
-    getValidationDataset().begin(ReadWrite.WRITE);
+//    log.trace("Start write transaction.");
+//    getValidationDataset().begin(ReadWrite.WRITE);
     try {
       super.insert(query, result);
-      getValidationDataset().commit();
+//      getValidationDataset().commit();
     } finally {
-      log.trace("Stop write transaction.");
-      getValidationDataset().end() ;
+//      log.trace("Stop write transaction.");
+//      getValidationDataset().end() ;
     }
   }
 
@@ -182,13 +182,13 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public ValidationQueryResult select(ValidationQuery validationQuery) {
 
     ValidationQueryResult result = null;
-    log.trace("Start read transaction.");
-    getValidationDataset().begin(ReadWrite.READ) ;
+//    log.trace("Start read transaction.");
+//    getValidationDataset().begin(ReadWrite.READ) ;
     try {
       result = super.select(validationQuery);
     } finally {
-      log.trace("Stop read transaction.");
-      getValidationDataset().end() ;
+//      log.trace("Stop read transaction.");
+//      getValidationDataset().end() ;
     }
     return result;
   }
@@ -200,8 +200,8 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public Map<String, Long> numTriples() {
 
     Map<String, Long> result = new HashMap<>();
-    log.trace("Start read transaction.");
-    getValidationDataset().begin(ReadWrite.READ) ;
+//    log.trace("Start read transaction.");
+//    getValidationDataset().begin(ReadWrite.READ) ;
     try {
 
       long instanceTriples = this.numTriples(InMemGraphSet.INSTANCE_GRAPH);
@@ -215,8 +215,8 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
       result.put(InMemGraphSet.WOA_GRAPH, woaTriples);
 
     } finally {
-      log.trace("Stop read transaction.");
-      getValidationDataset().end() ;
+//      log.trace("Stop read transaction.");
+//      getValidationDataset().end() ;
     }
     return result;
   }

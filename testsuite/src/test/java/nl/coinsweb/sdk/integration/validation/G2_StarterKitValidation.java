@@ -251,7 +251,6 @@ public class G2_StarterKitValidation {
   public void readRdfFile_tdb_4_core_performanceCheck() {
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
-    Validator.QUERY_THREAD_POOL_SIZE = 4;
     JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath());
     validate(model, "report_tdb_4_core_PerfContCOINS2.0.html");
