@@ -273,7 +273,11 @@ public class Validator {
           // Create a thread for each insert query
           Thread queryThread = new Thread() {
             public void run() {
+
+              Map<String, Long> before = graphSet.numTriples();
               graphSet.insert(query, resultCarrier);
+              Map<String, Long> diff = InMemGraphSet.diffNumTriples(before, graphSet.numTriples());
+              resultCarrier.addTriplesAdded(diff);
             }
           };
           Callable<Object> callable = Executors.callable(queryThread);
