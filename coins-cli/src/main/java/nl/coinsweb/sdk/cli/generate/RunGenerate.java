@@ -61,8 +61,8 @@ public class RunGenerate {
     try {
       options = new GenerateOptions(args);
     } catch (ParseException e) {
-      System.out.println(e.getMessage() + "\n");
       Run.printHeader();
+      System.out.println("(!)" + e.getMessage() + "\n");
       GenerateOptions.usage();
       System.exit(1);
       return;

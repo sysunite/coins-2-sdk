@@ -4,7 +4,6 @@ import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
-import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.AfterClass;
@@ -33,7 +32,7 @@ public class G4_PerformanceRuns {
   public void runTest(CoinsGraphSet graphSet, String ccrFile, String reportName) {
 
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), graphSet, false, true);
-    model.load(IntegrationHelper.getResourceFile("G2", ccrFile).getAbsolutePath());
+    model.load(IntegrationHelper.getResourceFile("G2", ccrFile).getAbsolutePath(), false);
     Path reportFile = Paths.get("/tmp/"+reportName);
     Validator validator = new Validator(model, "COINS 2.0 Lite");
     validator.validate(reportFile);
@@ -45,7 +44,7 @@ public class G4_PerformanceRuns {
 //    runTest(new InMemGraphSet("http://playground.com/"), "starterskit4.01_inmem.ccr", "401-inmem-4.html");
 //    runTest(new TDBStoreGraphSet("http://playground.com/"), "starterskit4.01_inmem.ccr", "401-tdb-1.html");
 //    runTest(new TDBStoreGraphSet("http://playground.com/"), "starterskit4.01_inmem.ccr", "401-tdb-4.html");
-    runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), "starterskit4.01_inmem.ccr", "401-fuseki-1.html");
+//    runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), "starterskit4.01_inmem.ccr", "401-fuseki-1.html");
 //    runTest(new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins"), "starterskit4.01_inmem.ccr", "401-fuseki-4.html");
   }
 

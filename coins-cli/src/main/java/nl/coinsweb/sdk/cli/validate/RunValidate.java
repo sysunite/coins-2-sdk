@@ -28,6 +28,8 @@ import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.cli.Run;
+import nl.coinsweb.sdk.exceptions.CoinsFileNotFoundException;
+import nl.coinsweb.sdk.exceptions.InvalidContainerFileException;
 import nl.coinsweb.sdk.exceptions.InvalidProfileFileException;
 import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -59,8 +61,8 @@ public class RunValidate {
     try {
       options = new ValidateOptions(args);
     } catch (ParseException e) {
-      System.out.println(e.getMessage() + "\n");
       Run.printHeader();
+      System.out.println("(!)" + e.getMessage() + "\n");
       ValidateOptions.usage();
       System.exit(1);
       return;
@@ -104,6 +106,7 @@ public class RunValidate {
     }
 
     // Container
+    JenaCoinsContainer.STRICT = true; // Cause the InvalidContainerFileException to fire with wrong file structure
     JenaCoinsContainer container;
     if(emptyRun) {
       container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, false);
@@ -117,7 +120,22 @@ public class RunValidate {
         return;
       }
       String inputFile = options.getInputOption().toString();
-      container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, inputFile);
+      try {
+        container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, inputFile);
+      } catch (InvalidContainerFileException e) {
+        if(!Run.QUIET) {
+          System.out.println("(!) the file structure inside the supplied container is wrong:");
+          System.out.println(e.getMessage()+"\n");
+        }
+        System.exit(1);
+        return;
+      } catch (CoinsFileNotFoundException e) {
+        if(!Run.QUIET) {
+          System.out.println("(!) input file was not found\n");
+        }
+        System.exit(1);
+        return;
+      }
     }
 
 
