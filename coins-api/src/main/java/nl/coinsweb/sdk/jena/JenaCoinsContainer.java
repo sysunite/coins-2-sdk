@@ -74,6 +74,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
 
+  public static boolean STRICT = false;
+
   private String internalRef;
 
   private HashMap<String, File> attachments = new HashMap<>();
@@ -184,7 +186,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.graphSet = graphSet;
 
     // Load an existing
-    this.load(filePath);
+    this.load(filePath, STRICT);
 
 
 
@@ -220,7 +222,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
   @Override
-  public void load(String sourceFile) {
+  public void load(String sourceFile, boolean strict) {
 
     // Start with a clean sheet
     this.graphSet.reset();
@@ -252,7 +254,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       // Analyse the rdf-files
       HashMap<String, File> rdfFiles = new HashMap<>();
       HashMap<String, File> woaFiles = new HashMap<>();
-      this.internalRef = FileManager.existingCoinsContainer(file, rdfFiles, woaFiles, attachments, availableLibraryFiles);
+      this.internalRef = FileManager.existingCoinsContainer(file, rdfFiles, woaFiles, attachments, availableLibraryFiles, strict);
 
       if(rdfFiles.isEmpty()) {
         if(this.graphSet.getInstanceNamespace() == null) {

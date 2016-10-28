@@ -93,7 +93,7 @@ public class FileManager {
 
     String internalRef = RandomStringUtils.random(8, true, true);
     Path homePath = getTempZipPath().resolve(internalRef);
-    initContainer(homePath);
+    initContainer(homePath, false);
 
     return internalRef;
   }
@@ -102,7 +102,8 @@ public class FileManager {
                                               HashMap<String, File> rdfFiles,
                                               HashMap<String, File> woaFiles,
                                               HashMap<String, File> attachments,
-                                              HashMap<Namespace, File> libraryFiles) {
+                                              HashMap<Namespace, File> libraryFiles,
+                                              boolean strict) {
 
     if (!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
@@ -111,11 +112,11 @@ public class FileManager {
     String internalRef = RandomStringUtils.random(8, true, true);
     Path homePath = getTempZipPath().resolve(internalRef);
     unzipTo(sourceFile, homePath);
-    initContainer(homePath);
+    initContainer(homePath, strict);
 
 
 
-    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, libraryFiles);
+    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, libraryFiles, strict);
 
 
     return internalRef;
@@ -147,8 +148,7 @@ public class FileManager {
 
 
 
-
-  private static void initContainer(Path homePath) {
+  private static void initContainer(Path homePath, boolean strict) {
 
     // Create output directory is not exists
     File homePathFile = homePath.toFile();
@@ -159,28 +159,48 @@ public class FileManager {
     }
     Path rdfPath = homePath.resolve(RDF_PATH);
     File rdfPathFile = rdfPath.toFile();
-    if(!rdfPathFile.exists()){
+    if(!rdfPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+RDF_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + rdfPathFile);
+      }
       if(!rdfPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+rdfPathFile+".");
       }
     }
     Path ontologiesPath = homePath.resolve(ONTOLOGIES_PATH);
     File ontologiesPathFile = ontologiesPath.toFile();
-    if(!ontologiesPathFile.exists()){
+    if(!ontologiesPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+ONTOLOGIES_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + ontologiesPathFile);
+      }
       if(!ontologiesPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+ontologiesPathFile+".");
       }
     }
     Path attachmentPath = homePath.resolve(ATTACHMENT_PATH);
     File attachmentPathFile = attachmentPath.toFile();
-    if(!attachmentPathFile.exists()){
+    if(!attachmentPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+ATTACHMENT_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + attachmentPath);
+      }
       if(!attachmentPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+attachmentPathFile+".");
       }
     }
     Path woaPath = homePath.resolve(WOA_PATH);
     File woaPathFile = woaPath.toFile();
-    if(!woaPathFile.exists()){
+    if(!woaPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+WOA_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + woaPathFile);
+      }
       if(!woaPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+woaPathFile+".");
       }
@@ -225,6 +245,9 @@ public class FileManager {
    *
    */
   public static void unzipTo(File sourceFile, Path destinationPath) {
+    unzipTo(sourceFile, destinationPath, false);
+  }
+  public static void unzipTo(File sourceFile, Path destinationPath, boolean strict) {
 
     byte[] buffer = new byte[1024];
     String startFolder = null;
@@ -248,7 +271,7 @@ public class FileManager {
         // If the first folder is a somename/bim/file.ref skip it
         Path filePath = Paths.get(fileName);
         Path pathPath = filePath.getParent();
-        String pathPathString = pathPath.toString().toLowerCase();
+        String pathPathString = (pathPath!=null) ? pathPath.toString().toLowerCase() : "";
 
         if(pathPathString.endsWith("bim") ||
            pathPathString.endsWith("bim/repository") || pathPathString.endsWith("bim\\repository") ||
@@ -270,7 +293,11 @@ public class FileManager {
             throw new InvalidContainerFileException("The container file has an inconsistent file root, was "+startFolder+", now dealing with "+prefix+".");
           }
         } else {
-          log.debug("Skipping file: "+filePath.toString());
+          if(strict) {
+            throw new InvalidContainerFileException("File found in the container that was not in the correct folder: "+filePath.toString());
+          } else {
+            log.warn("Skipping illegal file: " + filePath.toString());
+          }
           ze = zis.getNextEntry();
           continue;
         }
@@ -282,7 +309,15 @@ public class FileManager {
 
         // Create all non exists folders
         // else you will hit FileNotFoundException for compressed folder
-        new File(newFile.getParent()).mkdirs();
+        File newFileParent = new File(newFile.getParent());
+        if(!newFileParent.exists()) {
+          if(strict) {
+            throw new InvalidContainerFileException("Folder "+newFileParent+" does not exist inside the container file.");
+          } else {
+            log.warn("Folder " + newFileParent.toString() + " does not exist yet, created.");
+          }
+          newFileParent.mkdirs();
+        }
 
         FileOutputStream fos = new FileOutputStream(newFile);
 
@@ -308,7 +343,8 @@ public class FileManager {
                                   HashMap<String, File> rdfFiles,
                                   HashMap<String, File> woaFiles,
                                   HashMap<String, File> attachments,
-                                  HashMap<Namespace, File> libraryFiles) {
+                                  HashMap<Namespace, File> libraryFiles,
+                                  boolean strict) {
 
     Path homePath = getTempZipPath().resolve(internalRef);
 
@@ -355,7 +391,11 @@ public class FileManager {
 
           libraryFiles.put(ns, listOfFiles[i]);
         } else {
-          log.warn("Failed to interpret file as ontology file: "+listOfFiles[i]);
+          if(strict) {
+            throw new InvalidContainerFileException("Failed to interpret file as ontology file: " + listOfFiles[i]);
+          } else {
+            log.warn("Failed to interpret file as ontology file: " + listOfFiles[i]);
+          }
         }
       }
     }

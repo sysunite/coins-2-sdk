@@ -38,7 +38,7 @@ public class G1_InitValidator {
   public void init() {
 
     JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
+    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
     Validator validator = new Validator(model, "COINS 2.0 Lite");
     Set<String> profiles = Profile.listProfiles();
