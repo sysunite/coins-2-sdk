@@ -37,7 +37,7 @@ public class H1_Getters {
     InMemGraphSet graphSet = new InMemGraphSet("http://playground.com/");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
     JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, true, true);
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
+    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
 
     // Check all model names

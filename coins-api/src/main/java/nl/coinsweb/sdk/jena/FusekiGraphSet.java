@@ -69,7 +69,11 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
   }
 
   public boolean checkIfDbAvailable() {
-    return numTriples(getFullUnionNamespace()) > -1l;
+    try {
+      return numTriples(getFullUnionNamespace()) > -1l;
+    } catch(OutOfMemoryError e) {
+      return false;
+    }
   }
 
   private void wipe() {

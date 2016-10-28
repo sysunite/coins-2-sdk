@@ -34,7 +34,7 @@ public class F1_ReadExampleWOA {
 
     try {
 
-      model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
+      model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
       Part landhoofd = new Part(model, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
       log.debug(landhoofd.getDescription());
@@ -66,7 +66,7 @@ public class F1_ReadExampleWOA {
 
     JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath());
+    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
     model.disableWOA();
 

@@ -46,8 +46,8 @@ public class RunViewer {
     try {
       options = new ViewerOptions(args);
     } catch (ParseException e) {
-      System.out.println(e.getMessage() + "\n");
       Run.printHeader();
+      System.out.println("(!)" + e.getMessage() + "\n");
       ValidateOptions.usage();
       System.exit(1);
       return;
