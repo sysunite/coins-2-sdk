@@ -3,12 +3,12 @@ package nl.coinsweb.sdk.integration.modelling;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.util.iterator.ExtendedIterator;
-import nl.coinsweb.sdk.ModelFactory;
+import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,9 +70,9 @@ public class B2_CreateAllCbimPropertyTypes {
 
     boolean contains = false;
 
-    ModelFactory factory = new JenaModelFactory();
-    factory.setReasoner(reasoner);
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://empty.com/", false);
+    InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
+    graphSet.setOntModelSpec(reasoner);
+    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, true);
 
     model.addImport(Paths.get(IntegrationHelper.getResourceFile("BS", "Cbim-2.0.rdf").getAbsolutePath()).toFile().toString(), null, true, true, true);
 
@@ -88,7 +88,7 @@ public class B2_CreateAllCbimPropertyTypes {
       }
     }
 
-    log.info(Integer.toString(DatasetAsserts.countTriples(model.getUnionJenaOntModel())));
+    log.info(Integer.toString(DatasetAsserts.countTriples(model.getCoinsGraphSet().getUnionJenaOntModel())));
 
     return contains;
   }

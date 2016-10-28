@@ -4,13 +4,11 @@ import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
 import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.integration.ZipAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -284,7 +282,7 @@ public class BS {
 
     // Do asserts on objects
     assertEquals("2.12", model.getContainerId());
-    assertNotNull(model.getJenaModel("http://custom.library.com#"));
+    assertNotNull(model.getCoinsGraphSet().getModel("http://custom.library.com#"));
 
     RuntimeCoinsObject column = new RuntimeCoinsObject(model, "http://custom.library.com#Column", "http://rws.com/starterkit/2.12#Object_Column_1");
     assertEquals("Column1", column.getLiteralValue("http://www.coinsweb.nl/cbim-2.0.rdf#name", String.class));
@@ -473,8 +471,7 @@ public class BS {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", nr + ".rdf").getCanonicalFile();
-      ModelFactory factory = new JenaModelFactory();
-      model = new JenaCoinsContainer(factory, defaultPerson, testFile.toString(), "http://www.example.com/");
+      model = new JenaCoinsContainer(defaultPerson, testFile.toString(), "http://www.example.com/");
       if(withLib) {
 
         File libFile = IntegrationHelper.getResourceFile("BS", nr + "-lib.rdf").getCanonicalFile();
@@ -510,12 +507,10 @@ public class BS {
 
 
     // Reopen the ccr
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer reopenend = new JenaCoinsContainer(factory, defaultPerson, "/tmp/coinstest/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
+    JenaCoinsContainer reopenend = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
 
     assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
     return reopenend;
-
   }
 
 

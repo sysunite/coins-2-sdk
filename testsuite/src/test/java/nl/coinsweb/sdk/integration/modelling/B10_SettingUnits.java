@@ -2,10 +2,8 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.sdk.CoinsObject;
-import nl.coinsweb.sdk.ModelFactory;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.JenaModelFactory;
 import org.junit.Test;
 import org.qudt.schema.qudt.LengthUnit;
 import org.qudt.schema.qudt.Unit;
@@ -32,8 +30,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnits() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 
@@ -114,8 +111,8 @@ public class B10_SettingUnits {
 
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    assertEquals(28, DatasetAsserts.countTriples(model.getJenaModel()));
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    assertEquals(28, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -142,8 +139,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnitsForExample() {
 
-    ModelFactory factory = new JenaModelFactory();
-    JenaCoinsContainer model = new JenaCoinsContainer(factory, "http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
 
     Assembly a = new Assembly(model);
 
@@ -168,8 +164,8 @@ public class B10_SettingUnits {
     property.setUnit(new LengthUnit(model, LengthUnit.MILLIMETER));
 
 
-    DatasetAsserts.logTriples(model.getJenaModel());
-    DatasetAsserts.logTriples(model.getWoaModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
+    DatasetAsserts.logTriples(model.getCoinsGraphSet().getWoaModel());
 
     Iterator<Map<String, String>> result =  model.query("SELECT * WHERE { GRAPH <http://playground.com/> { ?s ?p ?o}}");
     while(result.hasNext()) {

@@ -5,23 +5,17 @@
   <parent>
     <groupId>nl.coinsweb.sdk</groupId>
     <artifactId>coins-2-sdk</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>coins-api</artifactId>
+  <version>1.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>nl.coinsweb.sdk</groupId>
-      <artifactId>coins-apolda</artifactId>
-      <version>1.0</version>
-    </dependency>
-  </dependencies>
 
   <build>
 
@@ -62,7 +56,7 @@
         <version>1.0</version>
         <executions>
           <execution>
-            <id>copy-file</id>
+            <id>copy-jar-with-dependencies</id>
             <phase>verify</phase>
             <goals>
               <goal>copy</goal>
@@ -72,8 +66,73 @@
               <destinationFile>../dist/sdk/jar/coins-api.jar</destinationFile>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-sources-jar</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <sourceFile>target/${project.build.finalName}-sources.jar</sourceFile>
+              <destinationFile>../dist/sdk/jar/coins-api-sources.jar</destinationFile>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-shade-plugin</artifactId>-->
+        <!--<configuration>-->
+          <!--&lt;!&ndash;<shadedArtifactAttached>false</shadedArtifactAttached>&ndash;&gt;-->
+          <!--<transformers>-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">&ndash;&gt;-->
+              <!--&lt;!&ndash;<mainClass>com.hp.hpl.jena.fuseki.cmd.FusekiCmd</mainClass>&ndash;&gt;-->
+            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
+            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">&ndash;&gt;-->
+              <!--&lt;!&ndash;<addHeader>false</addHeader>&ndash;&gt;-->
+            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
+          <!--</transformers>-->
+          <!--&lt;!&ndash;<filters>&ndash;&gt;-->
+            <!--&lt;!&ndash;<filter>&ndash;&gt;-->
+              <!--&lt;!&ndash;<artifact>*:*</artifact>&ndash;&gt;-->
+              <!--&lt;!&ndash;<excludes>&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash; Some jars are signed but shading breaks that.&ndash;&gt;-->
+                     <!--&lt;!&ndash;Don't include signing files.&ndash;&gt;-->
+                <!--&lt;!&ndash;&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;<exclude>META-INF/*.SF</exclude>&ndash;&gt;-->
+                <!--&lt;!&ndash;<exclude>META-INF/*.DSA</exclude>&ndash;&gt;-->
+                <!--&lt;!&ndash;<exclude>META-INF/*.RSA</exclude>&ndash;&gt;-->
+              <!--&lt;!&ndash;</excludes>&ndash;&gt;-->
+            <!--&lt;!&ndash;</filter>&ndash;&gt;-->
+          <!--&lt;!&ndash;</filters>&ndash;&gt;-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<phase>package</phase>-->
+            <!--&lt;!&ndash;<phase /><!- - Switch off &ndash;&gt;-->
+            <!--<goals>-->
+              <!--<goal>shade</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
+
 
 
 
@@ -108,7 +167,7 @@
                     ikvmc
                   </executable>
                   <commandlineArgs>
-                    -version:1.0.${buildNumber}.0 -nologo -target:library ../dist/sdk/jar/coins-api.jar -out:../dist/sdk/dll/coins-api.dll
+                    -version:1.1.${buildNumber}.0 -nologo -target:library ../dist/sdk/jar/coins-api.jar -out:../dist/sdk/dll/coins-api.dll
                   </commandlineArgs>
                 </configuration>
               </execution>

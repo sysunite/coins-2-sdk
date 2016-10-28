@@ -25,11 +25,11 @@
 package nl.coinsweb.sdk;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import nl.coinsweb.sdk.exceptions.*;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.plexus.util.FileUtils;
@@ -51,7 +51,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -79,15 +78,22 @@ public class FileManager {
   private static String ATTACHMENT_PATH = "doc";
   private static String WOA_PATH = "woa";
 
+  private static CoinsGraphSet graphSet = new InMemGraphSet("http://sandbox/");
 
 
+  public static ArrayList<File> foldersToCleanup;
+  static {
+    foldersToCleanup = new ArrayList<>();
+    foldersToCleanup.add(getTempZipPath().toFile());
+    foldersToCleanup.add(getTempLibPath().toFile());
+  }
 
 
   public static String newCoinsContainer() {
 
     String internalRef = RandomStringUtils.random(8, true, true);
     Path homePath = getTempZipPath().resolve(internalRef);
-    initContainer(homePath);
+    initContainer(homePath, false);
 
     return internalRef;
   }
@@ -96,7 +102,8 @@ public class FileManager {
                                               HashMap<String, File> rdfFiles,
                                               HashMap<String, File> woaFiles,
                                               HashMap<String, File> attachments,
-                                              HashMap<Namespace, File> libraryFiles) {
+                                              HashMap<Namespace, File> libraryFiles,
+                                              boolean strict) {
 
     if (!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
@@ -105,11 +112,11 @@ public class FileManager {
     String internalRef = RandomStringUtils.random(8, true, true);
     Path homePath = getTempZipPath().resolve(internalRef);
     unzipTo(sourceFile, homePath);
-    initContainer(homePath);
+    initContainer(homePath, strict);
 
 
 
-    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, libraryFiles);
+    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, libraryFiles, strict);
 
 
     return internalRef;
@@ -141,8 +148,7 @@ public class FileManager {
 
 
 
-
-  private static void initContainer(Path homePath) {
+  private static void initContainer(Path homePath, boolean strict) {
 
     // Create output directory is not exists
     File homePathFile = homePath.toFile();
@@ -153,28 +159,48 @@ public class FileManager {
     }
     Path rdfPath = homePath.resolve(RDF_PATH);
     File rdfPathFile = rdfPath.toFile();
-    if(!rdfPathFile.exists()){
+    if(!rdfPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+RDF_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + rdfPathFile);
+      }
       if(!rdfPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+rdfPathFile+".");
       }
     }
     Path ontologiesPath = homePath.resolve(ONTOLOGIES_PATH);
     File ontologiesPathFile = ontologiesPath.toFile();
-    if(!ontologiesPathFile.exists()){
+    if(!ontologiesPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+ONTOLOGIES_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + ontologiesPathFile);
+      }
       if(!ontologiesPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+ontologiesPathFile+".");
       }
     }
     Path attachmentPath = homePath.resolve(ATTACHMENT_PATH);
     File attachmentPathFile = attachmentPath.toFile();
-    if(!attachmentPathFile.exists()){
+    if(!attachmentPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+ATTACHMENT_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + attachmentPath);
+      }
       if(!attachmentPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+attachmentPathFile+".");
       }
     }
     Path woaPath = homePath.resolve(WOA_PATH);
     File woaPathFile = woaPath.toFile();
-    if(!woaPathFile.exists()){
+    if(!woaPathFile.exists()) {
+      if(strict) {
+        throw new InvalidContainerFileException("Folder "+WOA_PATH+" does not exist inside the container file.");
+      } else {
+        log.warn("Missing folder in container, will create it: " + woaPathFile);
+      }
       if(!woaPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+woaPathFile+".");
       }
@@ -219,6 +245,9 @@ public class FileManager {
    *
    */
   public static void unzipTo(File sourceFile, Path destinationPath) {
+    unzipTo(sourceFile, destinationPath, false);
+  }
+  public static void unzipTo(File sourceFile, Path destinationPath, boolean strict) {
 
     byte[] buffer = new byte[1024];
     String startFolder = null;
@@ -229,6 +258,7 @@ public class FileManager {
       ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFile));
       ZipEntry ze = zis.getNextEntry();
 
+      int fileCounter = 0;
       while(ze != null) {
 
         if(ze.isDirectory()) {
@@ -238,19 +268,17 @@ public class FileManager {
 
         String fileName = ze.getName();
 
-        log.info("Dealing with file "+fileName);
-
         // If the first folder is a somename/bim/file.ref skip it
         Path filePath = Paths.get(fileName);
         Path pathPath = filePath.getParent();
+        String pathPathString = (pathPath!=null) ? pathPath.toString().toLowerCase() : "";
 
-        if(pathPath.endsWith("bim") ||
-           pathPath.endsWith("bim/repository") ||
-           pathPath.endsWith("doc") ||
-           pathPath.endsWith("woa")) {
+        if(pathPathString.endsWith("bim") ||
+           pathPathString.endsWith("bim/repository") || pathPathString.endsWith("bim\\repository") ||
+           pathPathString.endsWith("doc") ||
+           pathPathString.endsWith("woa")) {
 
-
-          Path pathRoot = pathPath.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
+          Path pathRoot = pathPathString.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
 
           String prefix = "";
           if (pathRoot != null) {
@@ -265,18 +293,31 @@ public class FileManager {
             throw new InvalidContainerFileException("The container file has an inconsistent file root, was "+startFolder+", now dealing with "+prefix+".");
           }
         } else {
-          log.debug("Skipping file: "+filePath.toString());
+          if(strict) {
+            throw new InvalidContainerFileException("File found in the container that was not in the correct folder: "+filePath.toString());
+          } else {
+            log.warn("Skipping illegal file: " + filePath.toString());
+          }
+          ze = zis.getNextEntry();
           continue;
         }
 
 
         String insideStartFolder = filePath.toString().substring(startFolder.length());
         File newFile = new File(destinationPath + "/" + insideStartFolder);
-        log.info("Extract "+newFile);
+        fileCounter++;
 
         // Create all non exists folders
         // else you will hit FileNotFoundException for compressed folder
-        new File(newFile.getParent()).mkdirs();
+        File newFileParent = new File(newFile.getParent());
+        if(!newFileParent.exists()) {
+          if(strict) {
+            throw new InvalidContainerFileException("Folder "+newFileParent+" does not exist inside the container file.");
+          } else {
+            log.warn("Folder " + newFileParent.toString() + " does not exist yet, created.");
+          }
+          newFileParent.mkdirs();
+        }
 
         FileOutputStream fos = new FileOutputStream(newFile);
 
@@ -288,6 +329,7 @@ public class FileManager {
         fos.close();
         ze = zis.getNextEntry();
       }
+      log.info("Extracted "+fileCounter+" files.");
 
       zis.closeEntry();
       zis.close();
@@ -301,7 +343,8 @@ public class FileManager {
                                   HashMap<String, File> rdfFiles,
                                   HashMap<String, File> woaFiles,
                                   HashMap<String, File> attachments,
-                                  HashMap<Namespace, File> libraryFiles) {
+                                  HashMap<Namespace, File> libraryFiles,
+                                  boolean strict) {
 
     Path homePath = getTempZipPath().resolve(internalRef);
 
@@ -342,14 +385,17 @@ public class FileManager {
 
           log.info("Index file as ontology file: "+listOfFiles[i].getName());
 
-          Model libraryModel = ModelFactory.createDefaultModel();
-          libraryModel.read(listOfFiles[i].toURI().toString());
+          Model libraryModel = graphSet.readModel(listOfFiles[i].toURI().toString());
           Namespace ns = getLeadingNamespace(listOfFiles[i], libraryModel);
           log.info("Found leading namespace " + ns + " for file " + listOfFiles[i].getName()+".");
 
           libraryFiles.put(ns, listOfFiles[i]);
         } else {
-          log.warn("Failed to interpret file as ontology file: "+listOfFiles[i]);
+          if(strict) {
+            throw new InvalidContainerFileException("Failed to interpret file as ontology file: " + listOfFiles[i]);
+          } else {
+            log.warn("Failed to interpret file as ontology file: " + listOfFiles[i]);
+          }
         }
       }
     }
@@ -358,14 +404,15 @@ public class FileManager {
     log.info("Will index "+folder+" for attachment files.");
     listOfFiles = folder.listFiles();
 
+    int fileCount = 0;
     for (int i = 0; i < listOfFiles.length; i++) {
       if (listOfFiles[i].isFile()) {
-        log.info("Index file as attachment: "+listOfFiles[i].getName());
+        fileCount++;
         attachments.put(listOfFiles[i].getName(), listOfFiles[i]);
-
       }
     }
 
+    log.info("Indexed "+fileCount+" files as attachment.");
   }
 
   /**
@@ -472,15 +519,21 @@ public class FileManager {
 
 
   public static void destroyAll() {
-    List<String> internalRefs = Arrays.asList(getTempZipPath().toFile().list());
-    for(String internalRef : internalRefs) {
-      destroy(internalRef);
+    for(File folder : foldersToCleanup) {
+      if(folder.isDirectory()) {
+        try {
+          log.info("Destroying folder "+folder.toString());
+          FileUtils.deleteDirectory(folder);
+        } catch (IOException e) {
+          log.error(e.getMessage(), e);
+        }
+      }
     }
   }
 
   public static void destroy(String internalRef) {
     try {
-      log.info("destroying cache folder for "+internalRef);
+      log.info("Destroying cache folder for "+internalRef);
       File homePath = getTempZipPath().resolve(internalRef).toFile();
       if(homePath.isDirectory()) {
         FileUtils.deleteDirectory(homePath);
@@ -525,12 +578,12 @@ public class FileManager {
    */
   public static URI getLibrary(JenaCoinsContainer container, String internalRef, URI resource) {
 
-    log.trace("get library "+resource+" in "+internalRef);
+    log.trace("Get library "+resource+" in "+internalRef);
 
     try {
       File file = new File(resource);
       if (file.exists()) {
-        log.trace("found file as local path " + resource);
+        log.trace("Found file as local path " + resource);
         copyAndLinkLibrary(internalRef, file);
 
         return file.toURI();
@@ -551,7 +604,7 @@ public class FileManager {
         if (container.getAvailableLibraryFiles().containsKey(resourceAsNs)) {
 
           File matchingFile = container.getAvailableLibraryFiles().get(resourceAsNs);
-          log.trace("found file as previously registered " + matchingFile.getAbsolutePath());
+          log.trace("Found file as previously registered " + matchingFile.getAbsolutePath());
           copyAndLinkLibrary(internalRef, matchingFile);
           return matchingFile.toURI();
         }
@@ -566,7 +619,7 @@ public class FileManager {
       connection.setRequestMethod("HEAD");
       int responseCode = connection.getResponseCode();
       if (responseCode == 200) {
-        log.info("found active link online: "+resource);
+        log.info("Found active link online: "+resource);
         return resource;
       }
     } catch (MalformedURLException e) {
@@ -597,9 +650,9 @@ public class FileManager {
     if(namespace == null) {
       try {
         namespace = new Namespace(model.getNsPrefixURI(""));
-        log.info("xmlns="+namespace.toString()+" found while importing file " + file.getName());
+        log.info("The xmlns="+namespace.toString()+" found while importing file " + file.getName());
       } catch(InvalidNamespaceException e) {
-        log.info("xmlns not found while importing file " + file.getName());}
+        log.info("The xmlns not found while importing file " + file.getName());}
     }
 
     // If still null, base the model name on the subject of the owl:Ontology object
@@ -607,7 +660,7 @@ public class FileManager {
       ResIterator subjects = model.listSubjectsWithProperty(RDF.type, OWL.Ontology);
       if(subjects.hasNext()) {
         namespace = new Namespace(subjects.next().asResource().getNameSpace());
-        log.info("rdf:type found for owl:Ontology to "+namespace.toString()+", using as namespace while importing file " + file.getName());
+        log.info("The rdf:type found for owl:Ontology to "+namespace.toString()+", using as namespace while importing file " + file.getName());
       }
     }
 
@@ -654,7 +707,7 @@ public class FileManager {
     } catch (SAXException e) {
       // do not print this, this is supposed to crash for non-xml files
     } catch (IOException e) {
-      log.error("problem reading xml file",e);
+      log.error("Problem reading xml file.", e);
     }
 
     if(baseUriDropHere.isEmpty()) {
@@ -712,10 +765,9 @@ public class FileManager {
   public static Namespace copyAndRegisterLibrary(InputStream stream, String fileName, HashMap<Namespace, File> availableLibraryFiles) {
 
     if(stream == null) {
-      log.warn("failed saving file "+fileName+", stream is null");
+      log.warn("Failed saving file "+fileName+", stream is null.");
       return null;
     }
-
 
     Path copyTo = getTempLibPath().resolve(RandomStringUtils.random(4, true, true));
     copyTo.toFile().mkdirs();
@@ -733,24 +785,22 @@ public class FileManager {
           resStreamOut.write(buffer, 0, readBytes);
         }
       } catch (IOException ex) {
-        log.warn("problem saving file "+fileName+" to temp folder "+copyTo, ex);
+        log.warn("Problem saving file "+fileName+" to temp folder "+copyTo, ex);
       } finally {
         stream.close();
         resStreamOut.close();
       }
     } catch (IOException ex) {
-      log.warn("problem saving file "+fileName+" to temp folder "+copyTo, ex);
+      log.warn("Problem saving file "+fileName+" to temp folder "+copyTo, ex);
     }
 
-
-    Model libraryModel = ModelFactory.createDefaultModel();
-    libraryModel.read(fullPathUri.toString());
+    Model libraryModel = graphSet.readModel(fullPathUri.toString());
     Namespace ns = getLeadingNamespace(fullPathFile, libraryModel);
     if(!availableLibraryFiles.containsKey(ns)) {
-      log.info("registering for namespace " + ns + " for file " + fileName);
+      log.info("Registering for namespace " + ns + " for file " + fileName);
       availableLibraryFiles.put(ns,fullPathFile);
     } else {
-      log.info("skipping, already a file registered for namespace " + ns);
+      log.info("Skipping, already a file registered for namespace " + ns);
       // Remove file and folder too
       fullPathFile.delete();
       copyTo.toFile().delete();
@@ -759,8 +809,7 @@ public class FileManager {
   }
   public static Namespace registerLibrary(URI fileUri, Namespace fallbackNs, HashMap<Namespace, File> availableLibraryFiles) {
     File newFile = new File(fileUri);
-    Model libraryModel = ModelFactory.createDefaultModel();
-    libraryModel.read(fileUri.toString());
+    Model libraryModel = graphSet.readModel(fileUri.toString());
     Namespace ns = fallbackNs;
     try {
       ns = getLeadingNamespace(newFile, libraryModel);
@@ -769,7 +818,7 @@ public class FileManager {
         return null;
       }
     }
-    log.info("registering for namespace "+ns+" for file "+newFile.getName());
+    log.info("Registering for namespace "+ns+" for file "+newFile.getName());
 
     availableLibraryFiles.put(ns, newFile);
     return ns;
@@ -782,5 +831,81 @@ public class FileManager {
       }
     }
     return false;
+  }
+
+
+  // this should be able to be run from everywhere
+  public static ArrayList<String> listResourceFiles(String path) {
+
+    ArrayList<String> result = new ArrayList<>();
+
+    while(path.startsWith("/")) {
+      path = path.substring(1);
+    }
+
+    try {
+      URI uri = FileManager.class.getResource("/"+path).toURI();
+
+      File myPath;
+      if (uri.getScheme().equals("jar")) {
+
+        String jarPath = uri.toString().substring(9, uri.toString().indexOf("!"));
+        String insideJar = uri.toString().substring(uri.toString().indexOf("!")+1);
+        while(insideJar.startsWith("/")) {
+          insideJar = insideJar.substring(1);
+        }
+
+        ZipInputStream zis = new ZipInputStream(new FileInputStream(new File(jarPath)));
+        ZipEntry ze = zis.getNextEntry();
+
+        while (ze != null) {
+
+          if (!ze.isDirectory() && ze.getName().startsWith(insideJar)) {
+            String relativePath = ze.getName().substring(insideJar.length());
+            while (relativePath.startsWith("/")) {
+              relativePath = relativePath.substring(1);
+            }
+            if (!relativePath.isEmpty()) {
+              result.add(relativePath);
+            }
+          }
+
+          ze = zis.getNextEntry();
+        }
+
+        zis.closeEntry();
+        zis.close();
+
+      } else {
+        myPath = Paths.get(uri).toFile();
+        File[] directoryListing = myPath.listFiles();
+        if(directoryListing != null) {
+          for (File folder : directoryListing ) {
+            if (folder.isFile()) {
+              String fullPath = folder.toString();
+              String relativePath = fullPath.substring(uri.getRawPath().length());
+              if (!relativePath.isEmpty()) {
+                result.add(relativePath.substring(1));
+              }
+            }
+          }
+        }
+      }
+
+
+    } catch (IOException e) {
+    } catch (URISyntaxException e) {
+    }
+
+
+    return result;
+  }
+
+  public static InputStream getResourceFileAsStream(String path) {
+
+    while(path.startsWith("/")) {
+      path = path.substring(1);
+    }
+    return FileManager.class.getResourceAsStream("/"+path);
   }
 }

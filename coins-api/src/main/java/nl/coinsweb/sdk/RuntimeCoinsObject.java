@@ -53,7 +53,7 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
    * Constructor for new ...
    */
   public RuntimeCoinsObject(ExpertCoinsModel coinsModel, String classUri) {
-    this(coinsModel, (Model)coinsModel.getJenaModel(), classUri);
+    this(coinsModel, (Model)coinsModel.getCoinsGraphSet().getInstanceModel(), classUri);
   }
   public RuntimeCoinsObject(ExpertCoinsModel coinsModel, Model model, String classUri) {
 
@@ -80,7 +80,7 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
    * Constructor for existing ...
    */
   public RuntimeCoinsObject(ExpertCoinsModel coinsModel, String classUri, String uri) {
-    this(coinsModel, (Model)coinsModel.getJenaModel(), classUri, uri);
+    this(coinsModel, (Model)coinsModel.getCoinsGraphSet().getInstanceModel(), classUri, uri);
   }
   public RuntimeCoinsObject(ExpertCoinsModel coinsModel, Model model, String classUri, String uri) {
     this.coinsModel = coinsModel;

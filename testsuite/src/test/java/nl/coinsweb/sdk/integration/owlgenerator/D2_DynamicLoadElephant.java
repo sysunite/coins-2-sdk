@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.owlgenerator;
 
-import nl.coinsweb.sdk.cli.generate.RunGenerate;
+import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.Test;
@@ -44,7 +44,6 @@ public class D2_DynamicLoadElephant {
   @Test
   public void generateJarAndCheckContent() {
 
-    RunGenerate runner = new RunGenerate();
     String command =
 
         "coins-cli generate -q"+
@@ -52,7 +51,7 @@ public class D2_DynamicLoadElephant {
             " -o /tmp/coinstest/D2/java/ " +
             " -jarto /tmp/coinstest/D2/jar/";
 
-    String result = runner.getCli(command);
+    String result = Run.getCli(command);
 
     log.info(command);
     log.info(result);
