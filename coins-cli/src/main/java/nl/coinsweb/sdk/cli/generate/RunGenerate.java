@@ -131,17 +131,18 @@ public class RunGenerate {
     }
     log.info("Jar command accepted.");
 
-    if(doDll && !options.hasApiPathOption()) {
-      if(!Run.QUIET) {
-        System.out.println("Please specify a pointer to the coins-api.dll using -a.");
-      }
-      System.exit(1);
-      return;
-    }
-    log.info("Will use supplied coins-api.dll: "+options.getApiPathOption().toString());
-
 
     if(doDll) {
+      if(!options.hasApiPathOption()) {
+        if (!Run.QUIET) {
+          System.out.println("Please specify a pointer to the coins-api.dll using -a.");
+        }
+        System.exit(1);
+        return;
+      } else {
+        log.info("Will use supplied coins-api.dll: " + options.getApiPathOption().toString());
+      }
+
       String ikvmCheck = Run.getCli("ikvmc --nonexistantcommand");
       log.info("Result ikvmc --nonexistantcommand: "+ikvmCheck.substring(0, Math.min(ikvmCheck.length(), 30))+"...");
       if(!(ikvmCheck.startsWith("IKVM.NET Compiler version "))) {
