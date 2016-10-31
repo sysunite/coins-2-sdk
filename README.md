@@ -7,6 +7,14 @@ This is the official COINS 2.0 software development kit for Java and .NET. The S
 ###Main components
 The SDK consists of a set of tools:
 * [coins-api](https://github.com/sysunite/coins-2-sdk/wiki/coins-api-reference) - software library to include in your Java or .NET project
+```xml
+<dependency>
+  <groupId>com.sysunite.coinsweb</groupId>
+  <artifactId>coins-api</artifactId>
+  <version>1.1.500</version>
+</dependency>
+```
+\* currently only the api is available via maven
 * [coins-cli](https://github.com/sysunite/coins-2-sdk/wiki/installation-of-coins-cli) - command line tool for Windows / Linux / Mac that contains all tools
 * [viewer](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-viewer) - view the content of a .ccr file
 * [validator](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-validate) - validate the content of a .ccr file
