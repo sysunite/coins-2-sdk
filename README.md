@@ -14,7 +14,7 @@ The SDK consists of a set of tools:
   <version>1.1.500</version>
 </dependency>
 ```
-\* currently only the api is available via maven
+(currently only the api is available via maven)
 * [coins-cli](https://github.com/sysunite/coins-2-sdk/wiki/installation-of-coins-cli) - command line tool for Windows / Linux / Mac that contains all tools
 * [viewer](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-viewer) - view the content of a .ccr file
 * [validator](https://github.com/sysunite/coins-2-sdk/wiki/coins-cli-validate) - validate the content of a .ccr file
