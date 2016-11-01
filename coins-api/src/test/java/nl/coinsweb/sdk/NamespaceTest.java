@@ -12,9 +12,7 @@ public class NamespaceTest {
   @Test
   public void testNamespace() {
 
-
     assertFalse(new Namespace("http://baab.nl/dingdong/#").equals(new Namespace("http://baab.nl/dingdong#")));
-
 
     assertTrue(new Namespace("http://baab.nl/dingdong").equals(new Namespace("http://baab.nl/dingdong#")));
     assertTrue(new Namespace("http://baab.nl/dingdong").equals(new Namespace("http://baab.nl/dingdong#").toString()));
@@ -58,18 +56,6 @@ public class NamespaceTest {
     assertTrue(new Namespace("http://baab.nl/dingdong/").hashCode() == new Namespace("http://baab.nl/dingdong/").hashCode());
     assertTrue(new Namespace("http://baab.nl/dingdong/").hashCode() == new Namespace("http://baab.nl/dingdong/").hashCode());
 
-
-
-
-
     assertEquals(new Namespace("http://baab.nl/dingdong/#babab"), new Namespace("http://baab.nl/dingdong/"));
-
-
-
-
-
   }
-
-
-
 }
