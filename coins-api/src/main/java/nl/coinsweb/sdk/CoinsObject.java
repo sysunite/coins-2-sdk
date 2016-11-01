@@ -101,6 +101,7 @@ public interface CoinsObject {
   /**
    * Add an instantiation statement with rdf:type to the model.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param clazz  CoinsObject extension representing the class
    */
   public <T extends CoinsObject> void addType(Class<T> clazz);
@@ -119,6 +120,7 @@ public interface CoinsObject {
   /**
    * Remove any instantiation statement with rdf:type from the model.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param clazz  CoinsObject extension representing the class
    */
   public <T extends CoinsObject> void removeType(Class<T> clazz);
@@ -157,6 +159,7 @@ public interface CoinsObject {
   /**
    * Check if the instance can be cast to the specified CoinsObject class.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param clazz  the Class to cast to
    *
    * @return  true if the cast can be done
@@ -168,6 +171,7 @@ public interface CoinsObject {
   /**
    * Instantiate a CoinsObject specified by the instance uri as a specific CoinsObject extension.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param clazz  the Class (CoinsObject extension) to instantiate
    * @return  a cast of the specified instance to the specified CoinsObject type
    */
@@ -219,6 +223,7 @@ public interface CoinsObject {
    * Iterate over all the properties of the instance of a specific property type. The returned properties are
    * instances of the specified property type.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param propertyTypeClass  the class object (extension of CoinsObject) representing the property type
    *
    * @return  iterator with CoinsObjects (of the type specified)
@@ -244,6 +249,7 @@ public interface CoinsObject {
    * Iterate over all the properties of the instance of a specific property type using a specified predicate.
    * The returned properties are instances of the specified property type.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used as predicate pointing to the property object
    * @param propertyTypeClass  the class object (extension of CoinsObject) representing the property type
    *
@@ -270,6 +276,7 @@ public interface CoinsObject {
   /**
    * Create a new property object and link the supplied instance to this property using the specified predicate.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicateUri  the uri of the predicate
    * @param propertyClass  a CoinsObject extension representing the property class
    *
@@ -303,6 +310,7 @@ public interface CoinsObject {
    * Get the value of a property of the specified type (String, Integer, etc.). A predicate needs to be supplied
    * that is used to relate the property to the value.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used between property and value
    * @param clazz  the expected type
    *
@@ -316,6 +324,7 @@ public interface CoinsObject {
    * Get all the values of a property of the specified type (String, Integer, etc.). A predicate needs to be supplied
    * that is used to relate the property to the value.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used between property and value
    * @param clazz  the expected type
    *
@@ -329,10 +338,9 @@ public interface CoinsObject {
    * If the property can only have one value, set the value of a property. A predicate needs to be supplied
    * that is used to relate the property to the value.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used between property and value
    * @param object  the new value
-   *
-   * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void setLiteralValue(String predicate, T object);
   public <T> void setLiteralValue(Model model, String predicate, T object);
@@ -342,10 +350,9 @@ public interface CoinsObject {
    * If the property can have more than one value, add a value to a property. A predicate needs to be supplied
    * that is used to relate the property to the value.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used between instance and object
    * @param object  the new value
-   *
-   * @return  iterator with the values as String, Integer, etc.
    */
   public <T> void addLiteralValue(String predicate, T object);
   public <T> void addLiteralValue(Model model, String predicate, T object);
@@ -355,6 +362,7 @@ public interface CoinsObject {
    * Get the object of a relation of the specified type. A predicate needs to be supplied
    * that is used to relate the instance to the object.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used between instance and object
    * @param clazz  the expected type
    *
@@ -368,6 +376,7 @@ public interface CoinsObject {
    * Get all the objects of relations of the specified type. A predicate needs to be supplied
    * that is used to relate the instance to the object.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param predicate  uri used between property and value
    * @param clazz  the expected type
    *
