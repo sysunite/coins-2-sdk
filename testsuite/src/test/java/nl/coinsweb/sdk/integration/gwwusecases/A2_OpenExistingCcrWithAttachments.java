@@ -39,11 +39,6 @@ public class A2_OpenExistingCcrWithAttachments {
   @Rule
   public ExpectedException expectedEx = ExpectedException.none();
 
-  @Before
-  public void unsetWorkspaceConf() {
-
-    FileManager.TEMP_ZIP_PATH = null;
-  }
 
 
 
