@@ -102,11 +102,9 @@ public class Run {
     // Load version from properties file
     Properties props = new Properties();
     String version = "";
-    String buildnr = "";
     try {
       props.load(Run.class.getResourceAsStream("/coins-cli.properties"));
       version = props.get("version").toString();
-      buildnr = props.get("buildnr").toString();
     } catch (IOException e) {
       System.out.println("(!) unable to read coins-cli.properties from jar");
     }
@@ -114,7 +112,7 @@ public class Run {
     // Print header
 //    System.out.println(CliOptions.ANSI_BOLD+CliOptions.ANSI_GB_WHITE+CliOptions.ANSI_RED+")"+CliOptions.ANSI_GREEN+"}"+CliOptions.ANSI_RESET+
 //        CliOptions.ANSI_BOLD+" COINS 2.0"+CliOptions.ANSI_RESET+"\ncommand line interface (version "+version+", build "+buildnr+")\n");
-    System.out.println(")} COINS 2.0\ncommand line interface (version "+version+", build "+buildnr+")\n");
+    System.out.println(")} COINS 2.0\ncommand line interface (version "+version+")\n");
   }
 
 
