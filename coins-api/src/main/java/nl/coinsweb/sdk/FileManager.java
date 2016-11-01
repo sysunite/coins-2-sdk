@@ -62,13 +62,13 @@ public class FileManager {
 
   private static final Logger log = LoggerFactory.getLogger(FileManager.class);
 
-  public static Path TEMP_ZIP_PATH;
-  public static Path TEMP_LIB_PATH;
+  private static Path TEMP_ZIP_PATH;
+  private static Path TEMP_LIB_PATH;
 
 
   private static final String[] INDEX_AS_RDF =  {".rdf", ".owl", ".ttl"};
 
-  private static final String DEFAULT_TEMP_FOLDER = "/tmp/";
+  public static String DEFAULT_TEMP_FOLDER = "/tmp/";
   private static final String ZIP_FOLDER = "coinscontainers/";
   private static final String LIB_FOLDER = "coinsgloballibraries/";
 
