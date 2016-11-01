@@ -28,7 +28,8 @@ For using the tools:
 * or run the Windows executable [coins-cli.exe](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501) (don't forget to add the needed [ikvm dlls](https://github.com/sysunite/coins-2-sdk/wiki/DLL-dependencies))
 
 For a Java project:
-* download the most recent [coins-api.jar](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
+* use the maven dependency showed above
+* or download the most recent [coins-api.jar](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
 * optionally downloaded [pre-generated libraries (jar)](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
 
 For a dotNET project:
