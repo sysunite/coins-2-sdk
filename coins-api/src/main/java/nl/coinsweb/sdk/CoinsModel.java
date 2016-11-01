@@ -67,8 +67,6 @@ public interface CoinsModel {
 
   /**
    * Disable checking for woa access rights. Needs to be disabled after loading a new model.
-   *
-   * @return  a list of injectors
    */
   public void disableWOA();
 
@@ -112,8 +110,6 @@ public interface CoinsModel {
 
   /**
    * Register the party that is used to check and record the authority.
-   *
-   * @return  the active party
    */
   public void setActiveParty(CoinsParty party);
 
@@ -150,6 +146,7 @@ public interface CoinsModel {
   /**
    * List all instances of the owl:Class subclass represented by the specified CoinsObject class.
    *
+   * @param <T>    type of class the argument can be an instance of
    * @param objectClass  the CoinsObject to find instances of
    * @return  a list of Java instances of the specified CoinsObject class
    */
@@ -196,7 +193,7 @@ public interface CoinsModel {
    *
    * @param sparqlQuery the query, SPARQL 1.1 is used
    * @return  an iterator returning rows of the result set
-   *          as a map with binding -> value ("comment" -> "Color used for ...")
+   *          as a map with binding to value ("comment" to "Color used for ...")
    */
   public Iterator<Map<String,String>> query(String sparqlQuery);
 
