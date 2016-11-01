@@ -2,19 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>nl.coinsweb.sdk</groupId>
     <artifactId>coins-2-sdk</artifactId>
-    <version>1.1</version>
+    <version>1.1.501</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
 
   <artifactId>generatelibraries</artifactId>
-  <version>1.1</version>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <version>1.1.501</version>
 
   <dependencies>
     <dependency>
@@ -22,10 +19,35 @@
       <artifactId>coins-cli</artifactId>
       <version>1.1</version>
     </dependency>
-
-
-
   </dependencies>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <!-- do not build a jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase/>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- and do not try to install anything -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>
@@ -37,13 +59,10 @@
       <build>
       <plugins>
 
-
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
           <executions>
-
-
 
             <execution>
               <id>generate elephant model</id>
@@ -58,17 +77,13 @@
                 <commandlineArgs>
                   generate
 
-
                   -i ${basedir}/../testsuite/src/test/resources/D4/olifant.rdf
                   -o ${basedir}/../tmp/generated-sources/java
                   -jarto ${basedir}/../testsuite/lib
                   -q
-
                 </commandlineArgs>
               </configuration>
             </execution>
-
-
 
             <execution>
               <id>generate lifecycle</id>
@@ -93,13 +108,8 @@
               </configuration>
             </execution>
 
-
-
-
-
           </executions>
         </plugin>
-
 
       </plugins>
     </build>
@@ -113,7 +123,6 @@
       </activation>
       <build>
       <plugins>
-
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -133,28 +142,20 @@
                 <commandlineArgs>
                   generate
 
-
                   -i ${basedir}/../coins-api/src/main/resources/libraries/cbim-2.0.rdf
                      ${basedir}/../coins-api/src/main/resources/libraries/units-2.0.rdf
                      ${basedir}/../coins-api/src/main/resources/libraries/BranchVersioning.rdf
                      ${basedir}/../coins-api/src/main/resources/libraries/COINSWOA.rdf
                   -o ${basedir}/../tmp/generated-sources/java
                   -order http://qudt.org/schema/qudt#;http://www.coinsweb.nl/cbim-2.0.rdf#;http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#;http://www.coinsweb.nl/COINSWOA.rdf#
-                  -jarto ${basedir}/../dist/library/jar
+                  -jarto target
                   -sources
-
-
                 </commandlineArgs>
               </configuration>
             </execution>
 
-
-
-
-
           </executions>
         </plugin>
-
 
       </plugins>
     </build>
@@ -169,7 +170,6 @@
 
       <build>
         <plugins>
-
 
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -189,28 +189,23 @@
                   <commandlineArgs>
                     generate
 
-                    -a ${basedir}/../dist/sdk/dll/coins-api.dll
+                    -a ${basedir}/../coins-api/target/coins-api-1.1.501.dll
                     -i ${basedir}/../coins-api/src/main/resources/libraries/cbim-2.0.rdf
                        ${basedir}/../coins-api/src/main/resources/libraries/units-2.0.rdf
                        ${basedir}/../coins-api/src/main/resources/libraries/BranchVersioning.rdf
                        ${basedir}/../coins-api/src/main/resources/libraries/COINSWOA.rdf
                     -o ${basedir}/../tmp/generated-sources/java
                     -order http://qudt.org/schema/qudt#;http://www.coinsweb.nl/cbim-2.0.rdf#;http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#;http://www.coinsweb.nl/COINSWOA.rdf#
-                    -jarto ${basedir}/../dist/library/jar
-                    -dllto ${basedir}/../dist/library/dll
+                    -jarto target
+                    -dllto target
                     -sources
 
                   </commandlineArgs>
                 </configuration>
               </execution>
 
-
-
-
-
             </executions>
           </plugin>
-
 
         </plugins>
       </build>
@@ -226,13 +221,10 @@
       <build>
         <plugins>
 
-
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <executions>
-
-
 
               <execution>
                 <id>generate se</id>
@@ -247,31 +239,23 @@
                   <commandlineArgs>
                     generate
 
-                    -a ${basedir}/../dist/sdk/dll/coins-api.dll
+                    -a ${basedir}/../coins-api/target/coins-api-1.1.501.dll
                     -i ${basedir}/../testsuite/src/test/resources/B15/SE.rdf
                     -o ${basedir}/../tmp/generated-sources/java
                     -jarto ${basedir}/../testsuite/lib
-                    -dllto ${basedir}/../testsuite/dll
+                    -dllto ${basedir}/../testsuite/lib
                     -sources
-
-
                   </commandlineArgs>
                 </configuration>
               </execution>
 
-
-
-
-
             </executions>
           </plugin>
-
 
         </plugins>
       </build>
 
     </profile>
   </profiles>
-
 
 </project>
