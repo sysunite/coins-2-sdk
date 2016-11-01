@@ -2,20 +2,64 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>nl.coinsweb.sdk</groupId>
-    <artifactId>coins-2-sdk</artifactId>
-    <version>1.1</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.sysunite.coinsweb</groupId>
   <artifactId>coins-api</artifactId>
-  <version>1.1</version>
+  <version>1.1.501</version>
+  <!-- Required metadata for Central -->
+  <name>coins-api</name>
+  <description>COINS api</description>
+  <url>https://github.com/sysunite/coins-2-sdk</url>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/sysunite/coins-2-sdk</url>
+    <connection>scm:git://github.com/sysunite/coins-2-sdk.git</connection>
+    <developerConnection>scm:git:git@github.com/sysunite/coins-2-sdk.git</developerConnection>
+  </scm>
+
+  <developers>
+    <developer>
+      <email>bastiaan@sysunite.com</email>
+      <name>Bastiaan Bijl</name>
+      <url>https://github.com/bastbijl</url>
+      <id>bastbijl</id>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>apache-jena-libs</artifactId>
+      <type>pom</type>
+      <version>2.13.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.20</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+  </dependencies>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
 
   <build>
 
@@ -51,36 +95,6 @@
       </plugin>
 
       <plugin>
-        <groupId>com.coderplus.maven.plugins</groupId>
-        <artifactId>copy-rename-maven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>copy-jar-with-dependencies</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <sourceFile>target/${project.build.finalName}-jar-with-dependencies.jar</sourceFile>
-              <destinationFile>../dist/sdk/jar/coins-api.jar</destinationFile>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-sources-jar</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <sourceFile>target/${project.build.finalName}-sources.jar</sourceFile>
-              <destinationFile>../dist/sdk/jar/coins-api-sources.jar</destinationFile>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
@@ -93,65 +107,19 @@
         </executions>
       </plugin>
 
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-shade-plugin</artifactId>-->
-        <!--<configuration>-->
-          <!--&lt;!&ndash;<shadedArtifactAttached>false</shadedArtifactAttached>&ndash;&gt;-->
-          <!--<transformers>-->
-            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">&ndash;&gt;-->
-              <!--&lt;!&ndash;<mainClass>com.hp.hpl.jena.fuseki.cmd.FusekiCmd</mainClass>&ndash;&gt;-->
-            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
-            <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />-->
-            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">&ndash;&gt;-->
-              <!--&lt;!&ndash;<addHeader>false</addHeader>&ndash;&gt;-->
-            <!--&lt;!&ndash;</transformer>&ndash;&gt;-->
-          <!--</transformers>-->
-          <!--&lt;!&ndash;<filters>&ndash;&gt;-->
-            <!--&lt;!&ndash;<filter>&ndash;&gt;-->
-              <!--&lt;!&ndash;<artifact>*:*</artifact>&ndash;&gt;-->
-              <!--&lt;!&ndash;<excludes>&ndash;&gt;-->
-                <!--&lt;!&ndash;&lt;!&ndash; Some jars are signed but shading breaks that.&ndash;&gt;-->
-                     <!--&lt;!&ndash;Don't include signing files.&ndash;&gt;-->
-                <!--&lt;!&ndash;&ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;<exclude>META-INF/*.SF</exclude>&ndash;&gt;-->
-                <!--&lt;!&ndash;<exclude>META-INF/*.DSA</exclude>&ndash;&gt;-->
-                <!--&lt;!&ndash;<exclude>META-INF/*.RSA</exclude>&ndash;&gt;-->
-              <!--&lt;!&ndash;</excludes>&ndash;&gt;-->
-            <!--&lt;!&ndash;</filter>&ndash;&gt;-->
-          <!--&lt;!&ndash;</filters>&ndash;&gt;-->
-        <!--</configuration>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<phase>package</phase>-->
-            <!--&lt;!&ndash;<phase /><!- - Switch off &ndash;&gt;-->
-            <!--<goals>-->
-              <!--<goal>shade</goal>-->
-            <!--</goals>-->
-          <!--</execution>-->
-        <!--</executions>-->
-      <!--</plugin>-->
-
-
-
-
-
-
     </plugins>
   </build>
 
-
-
   <profiles>
     <profile>
-      <id>generate dlls</id>
+      <id>ikvmc</id>
 
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <build>
         <plugins>
+
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -167,17 +135,94 @@
                     ikvmc
                   </executable>
                   <commandlineArgs>
-                    -version:1.1.${buildNumber}.0 -nologo -target:library ../dist/sdk/jar/coins-api.jar -out:../dist/sdk/dll/coins-api.dll
+                    -version:${project.version} -nologo -target:library target/${project.build.finalName}-jar-with-dependencies.jar -out:target/${project.build.finalName}.dll
                   </commandlineArgs>
                 </configuration>
               </execution>
             </executions>
           </plugin>
 
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>deploy to sonatype</id>
+      <build>
+        <plugins>
 
+          <!-- Deploying to Central -->
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.3</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+
+          <!-- Sources in Central -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- JavaDoc in Central -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- GPG signing for Central -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
+
+  <!--http://central.sonatype.org/pages/apache-maven.html-->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
 </project>
