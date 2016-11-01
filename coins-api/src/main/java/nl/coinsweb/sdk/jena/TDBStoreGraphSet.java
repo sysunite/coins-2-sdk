@@ -53,7 +53,6 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   private Dataset dataset = null;
   private Dataset validationDataset = null;
 
-  private static final String DEFAULT_TEMP_FOLDER = "/tmp/";
   private static final String TDB_FOLDER = "coinstdb/";
 
   private Path datasetPath;
@@ -68,7 +67,7 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
   public TDBStoreGraphSet(String namespace) {
     super(namespace);
     log.info("Start new tdb for namespace given file.");
-    Path tempPath = Paths.get(DEFAULT_TEMP_FOLDER);
+    Path tempPath = Paths.get(FileManager.DEFAULT_TEMP_FOLDER);
     Path datasetPath = tempPath.resolve(TDB_FOLDER + "d_" + RandomStringUtils.random(8, true, true) + "/");
     Path validationDatasetPath = tempPath.resolve(TDB_FOLDER + "v_" + RandomStringUtils.random(8, true, true) + "/");
     datasetPath.toFile().mkdirs();
