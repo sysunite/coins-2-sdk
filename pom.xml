@@ -7,76 +7,10 @@
   <groupId>nl.coinsweb.sdk</groupId>
   <artifactId>coins-2-sdk</artifactId>
   <packaging>pom</packaging>
-  <version>1.1</version>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <!-- dummy needed for  -->
-  <scm>
-    <connection>scm:git:http://127.0.0.1/dummy</connection>
-    <developerConnection>scm:git:https://127.0.0.1/dummy</developerConnection>
-    <tag>HEAD</tag>
-    <url>http://127.0.0.1/dummy</url>
-  </scm>
-
-   <!-- Needed for deploying versions to Nexus -->
-  <distributionManagement>
-    <snapshotRepository>
-      <id>nexus-snapshots</id>
-      <url>http://nexus.sysunite.com/nexus/content/repositories/snapshots/</url>
-    </snapshotRepository>
-    <repository>
-      <id>nexus-releases</id>
-      <url>http://nexus.sysunite.com/nexus/content/repositories/releases</url>
-    </repository>
-  </distributionManagement>
-
-  <build>
-    <plugins>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-          <debug>true</debug>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <doCheck>false</doCheck>
-          <doUpdate>false</doUpdate>
-          <format>{0,number}</format>
-          <items>
-            <item>buildNumber0</item>
-          </items>
-        </configuration>
-      </plugin>
-
-
-
-
-
-    </plugins>
-  </build>
+  <version>1.1.501</version>
 
   <modules>
-    <module>coins-api</module>
+    <!-- the coins-api module is bundeled in a separate project to make it easy to deploy it to maven -->
     <module>coins-owlgenerator</module>
     <module>coins-cli</module>
     <module>mvn-generate-libraries</module>
@@ -84,6 +18,11 @@
   </modules>
 
   <dependencies>
+    <dependency>
+      <groupId>com.sysunite.coinsweb</groupId>
+      <artifactId>coins-api</artifactId>
+      <version>1.1.501</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -111,22 +50,32 @@
       <!--this version is needed for jetty-server-->
       <version>1.6.6</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.slf4j</groupId>-->
-      <!--<artifactId>slf4j-simple</artifactId>-->
-      <!--&lt;!&ndash;this version is needed for jetty-server&ndash;&gt;-->
-      <!--<version>1.6.6</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>log4j</groupId>-->
-      <!--<artifactId>log4j</artifactId>-->
-      <!--<version>1.2.17</version>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>2.3.20</version>
     </dependency>
   </dependencies>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <debug>true</debug>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
 
 </project>
