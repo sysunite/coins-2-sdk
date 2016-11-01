@@ -17,7 +17,6 @@ public class ApoPropertyDeclaration {
   @Test
   public void testEquals() {
 
-
     PropertyDeclarationImpl a = new PropertyDeclarationImpl();
     a.setPropertyUri("http://baab.nl/dingdong/#");
     a.setRangeUri("http://baab.nl/bang/#");
@@ -27,15 +26,7 @@ public class ApoPropertyDeclaration {
 
     assertTrue(a.equals(b));
 
-
     log.info(""+a.hashCode());
     log.info(""+b.hashCode());
-
-
-
-
   }
-
-
-
 }

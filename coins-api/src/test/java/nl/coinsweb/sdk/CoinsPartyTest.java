@@ -1,6 +1,5 @@
 package nl.coinsweb.sdk;
 
-import nl.coinsweb.sdk.CoinsParty;
 import org.junit.Test;
 
 /**
@@ -13,9 +12,5 @@ public class CoinsPartyTest {
 
     // Init the coins api
     CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
-
-
   }
-
 }
