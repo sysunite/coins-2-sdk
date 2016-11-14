@@ -24,18 +24,18 @@ The SDK consists of a set of tools:
 ###Getting started
 
 For using the tools:
-* either run the jar version of the CLI [coins-cli.jar](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
-* or run the Windows executable [coins-cli.exe](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501) (don't forget to add the needed [ikvm dlls](https://github.com/sysunite/coins-2-sdk/wiki/DLL-dependencies))
+* either run the jar version of the CLI [coins-cli-VERSION-jar-with-dependencies.jar](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.502)
+* or run the Windows executable [coins-cli.exe](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.502) (don't forget to add the needed [ikvm dlls](https://github.com/sysunite/coins-2-sdk/wiki/DLL-dependencies))
 
 For a Java project:
 * use the maven dependency showed above
-* or download the most recent [coins-api.jar](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
-* optionally downloaded [pre-generated libraries (jar)](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
+* or download the most recent [coins-api-VERSION-jar-with-dependencies.jar](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.502)
+* optionally downloaded [pre-generated libraries (jar)](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.502)
 
 For a dotNET project:
-* download the most recent [coins-api.dll](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
+* download the most recent [coins-api.dll](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.502)
 * download the dlls needed from [ikvm 7.2](https://sourceforge.net/projects/ikvm/files/ikvm/7.2.4630.5/ikvmbin-7.2.4630.5.zip)/bin, see list [DLL dependencies](https://github.com/sysunite/coins-2-sdk/wiki/DLL-dependencies))
-* optionally downloaded [pre-generated libraries (dll)](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.501)
+* optionally downloaded [pre-generated libraries (dll)](https://github.com/sysunite/coins-2-sdk/releases/tag/v1.1.502)
 
 ###Documentation
 Visit the [documentation](https://github.com/sysunite/coins-2-sdk/wiki) page for more information.
