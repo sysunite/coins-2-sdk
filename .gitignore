@@ -11,4 +11,4 @@ coins-viewer/node_modules
 coins-viewer/vendors/bower_components
 buildNumber.properties
 tmp/
-testsuite/lib
+testsuite/libdist/
