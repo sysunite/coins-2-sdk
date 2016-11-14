@@ -58,7 +58,7 @@
   </dependencies>
 
   <properties>
-      <coins.version>1.1.501</coins.version>
+    <coins.version>1.1.502</coins.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

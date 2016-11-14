@@ -162,9 +162,8 @@ public class FileManager {
     if(!rdfPathFile.exists()) {
       if(strict) {
         throw new InvalidContainerFileException("Folder "+RDF_PATH+" does not exist inside the container file.");
-      } else {
-        log.warn("Missing folder in container, will create it: " + rdfPathFile);
       }
+      log.warn("Missing folder in container, will create it: " + rdfPathFile);
       if(!rdfPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+rdfPathFile+".");
       }
@@ -172,11 +171,7 @@ public class FileManager {
     Path ontologiesPath = homePath.resolve(ONTOLOGIES_PATH);
     File ontologiesPathFile = ontologiesPath.toFile();
     if(!ontologiesPathFile.exists()) {
-      if(strict) {
-        throw new InvalidContainerFileException("Folder "+ONTOLOGIES_PATH+" does not exist inside the container file.");
-      } else {
-        log.warn("Missing folder in container, will create it: " + ontologiesPathFile);
-      }
+      log.warn("Missing folder in container, will create it: " + ontologiesPathFile);
       if(!ontologiesPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+ontologiesPathFile+".");
       }
@@ -184,11 +179,7 @@ public class FileManager {
     Path attachmentPath = homePath.resolve(ATTACHMENT_PATH);
     File attachmentPathFile = attachmentPath.toFile();
     if(!attachmentPathFile.exists()) {
-      if(strict) {
-        throw new InvalidContainerFileException("Folder "+ATTACHMENT_PATH+" does not exist inside the container file.");
-      } else {
-        log.warn("Missing folder in container, will create it: " + attachmentPath);
-      }
+      log.warn("Missing folder in container, will create it: " + attachmentPath);
       if(!attachmentPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+attachmentPathFile+".");
       }
@@ -196,11 +187,7 @@ public class FileManager {
     Path woaPath = homePath.resolve(WOA_PATH);
     File woaPathFile = woaPath.toFile();
     if(!woaPathFile.exists()) {
-      if(strict) {
-        throw new InvalidContainerFileException("Folder "+WOA_PATH+" does not exist inside the container file.");
-      } else {
-        log.warn("Missing folder in container, will create it: " + woaPathFile);
-      }
+      log.warn("Missing folder in container, will create it: " + woaPathFile);
       if(!woaPathFile.mkdirs()) {
         throw new CoinsFileNotFoundException("Not able to create temp path "+woaPathFile+".");
       }
@@ -311,11 +298,7 @@ public class FileManager {
         // else you will hit FileNotFoundException for compressed folder
         File newFileParent = new File(newFile.getParent());
         if(!newFileParent.exists()) {
-          if(strict) {
-            throw new InvalidContainerFileException("Folder "+newFileParent+" does not exist inside the container file.");
-          } else {
-            log.warn("Folder " + newFileParent.toString() + " does not exist yet, created.");
-          }
+          log.warn("Unpacking for the first time to folder " + newFileParent.toString() + ".");
           newFileParent.mkdirs();
         }
 

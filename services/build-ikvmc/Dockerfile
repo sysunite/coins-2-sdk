@@ -9,6 +9,7 @@ RUN echo "#!/usr/bin/env bash\nmono /etc/ikvm/bin/ikvmc.exe \"\$@\"" > /usr/bin/
 RUN chmod 777 /usr/bin/ikvmc
 
 WORKDIR /opt
-CMD ikvmc -version:1.1.501 -nologo -target:exe     coins-cli/target/coins-cli-1.1.501-jar-with-dependencies.jar -out:dist/coins-cli-1.1.501.exe && \
-    ikvmc -version:1.1.501 -nologo -target:library coins-api/target/coins-api-1.1.501-jar-with-dependencies.jar -out:dist/coins-api-1.1.501.dll && \
+CMD VERSION=1.1.502 && \
+    ikvmc -version:$VERSION -nologo -target:exe     "coins-cli/target/coins-cli-$VERSION-jar-with-dependencies.jar" -out:"dist/coins-cli-$VERSION.exe" && \
+    ikvmc -version:$VERSION -nologo -target:library "coins-api/target/coins-api-$VERSION-jar-with-dependencies.jar" -out:"dist/coins-api-$VERSION.dll" && \
     sleep 1s
