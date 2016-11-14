@@ -112,40 +112,7 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>ikvmc</id>
 
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>make win version</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>
-                    ikvmc
-                  </executable>
-                  <commandlineArgs>
-                    -version:${project.version} -nologo -target:library target/${project.build.finalName}-jar-with-dependencies.jar -out:target/${project.build.finalName}.dll
-                  </commandlineArgs>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>deploy to sonatype</id>
       <build>

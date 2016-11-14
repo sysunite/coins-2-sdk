@@ -13,3 +13,4 @@ buildNumber.properties
 tmp/
 testsuite/libdist/
 testsuite/lib
+dist
