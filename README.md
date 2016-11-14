@@ -11,7 +11,7 @@ The SDK consists of a set of tools:
 <dependency>
   <groupId>com.sysunite.coinsweb</groupId>
   <artifactId>coins-api</artifactId>
-  <version>1.1.501</version>
+  <version>1.1.502</version>
 </dependency>
 ```
 (currently only the api is available via maven)
