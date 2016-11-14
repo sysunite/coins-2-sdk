@@ -120,7 +120,6 @@ public class ClassGenerateEngine {
     this.sourceFileNames = sourceFileNames;
 
 
-    System.out.println("pre-visit all classes");
     int preCount = 0;
     ExtendedIterator<OntClass> clazzIterator = model.listOntClasses();
     while (clazzIterator.hasNext()) {
@@ -141,7 +140,7 @@ public class ClassGenerateEngine {
       }
 
       try {
-        System.out.write(("\r" + (++preCount)).getBytes());
+        System.out.write(("\rpre-visit all classes " + (++preCount)).getBytes());
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       }
@@ -151,7 +150,6 @@ public class ClassGenerateEngine {
 
 
     // Iterate over all classes
-    System.out.println("process classes");
     int realCount = 0;
     clazzIterator = model.listOntClasses();
     while (clazzIterator.hasNext()) {
@@ -179,7 +177,7 @@ public class ClassGenerateEngine {
 
 
       try {
-        System.out.write(("\r" + (++realCount)).getBytes());
+        System.out.write(("\rprocess classes " + (++realCount)).getBytes());
       } catch (IOException e) {
         log.error(e.getMessage(), e);
       }

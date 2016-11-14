@@ -7,13 +7,12 @@
   <groupId>nl.coinsweb.sdk</groupId>
   <artifactId>coins-2-sdk</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.501</version>
+  <version>${coins.version}</version>
 
   <modules>
     <!-- the coins-api module is bundeled in a separate project to make it easy to deploy it to maven -->
     <module>coins-owlgenerator</module>
     <module>coins-cli</module>
-    <module>mvn-generate-libraries</module>
     <module>testsuite</module>
   </modules>
 
@@ -21,7 +20,7 @@
     <dependency>
       <groupId>com.sysunite.coinsweb</groupId>
       <artifactId>coins-api</artifactId>
-      <version>1.1.501</version>
+      <version>${coins.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -58,6 +57,7 @@
   </dependencies>
 
   <properties>
+    <coins.version>1.1.501</coins.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
