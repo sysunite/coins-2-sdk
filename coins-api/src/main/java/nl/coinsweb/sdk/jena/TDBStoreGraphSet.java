@@ -72,7 +72,7 @@ public class TDBStoreGraphSet extends InMemGraphSet implements CoinsGraphSet {
     Path validationDatasetPath = tempPath.resolve(TDB_FOLDER + "v_" + RandomStringUtils.random(8, true, true) + "/");
     datasetPath.toFile().mkdirs();
     validationDatasetPath.toFile().mkdirs();
-    FileManager.foldersToCleanup.add(tempPath.resolve(TDB_FOLDER).toFile());
+    FileManager.getFoldersToCleanup().add(tempPath.resolve(TDB_FOLDER).toFile());
     this.datasetPath = datasetPath;
     this.validationDatasetPath = validationDatasetPath;
   }

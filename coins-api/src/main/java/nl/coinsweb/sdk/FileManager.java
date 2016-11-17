@@ -81,17 +81,28 @@ public class FileManager {
   private static CoinsGraphSet graphSet = new InMemGraphSet("http://sandbox/");
 
 
-  public static ArrayList<File> foldersToCleanup;
-  static {
-    foldersToCleanup = new ArrayList<>();
-    foldersToCleanup.add(getTempZipPath().toFile());
-    foldersToCleanup.add(getTempLibPath().toFile());
+  private static ArrayList<File> foldersToCleanup;
+  public static ArrayList<File> getFoldersToCleanup() {
+    if(foldersToCleanup == null) {
+      foldersToCleanup = new ArrayList<>();
+      foldersToCleanup.add(getTempZipPath().toFile());
+      foldersToCleanup.add(getTempLibPath().toFile());
+    }
+    return foldersToCleanup;
   }
 
 
   public static String newCoinsContainer() {
 
     String internalRef = RandomStringUtils.random(8, true, true);
+    Path homePath = getTempZipPath().resolve(internalRef);
+    initContainer(homePath, false);
+
+    return internalRef;
+  }
+
+  public static String existingCoinsContainer(String internalRef) {
+
     Path homePath = getTempZipPath().resolve(internalRef);
     initContainer(homePath, false);
 
@@ -502,7 +513,7 @@ public class FileManager {
 
 
   public static void destroyAll() {
-    for(File folder : foldersToCleanup) {
+    for(File folder : getFoldersToCleanup()) {
       if(folder.isDirectory()) {
         try {
           log.info("Destroying folder "+folder.toString());
