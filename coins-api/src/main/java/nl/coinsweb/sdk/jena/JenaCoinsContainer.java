@@ -104,7 +104,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * Create an empty clean container
    */
   public JenaCoinsContainer() {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), DEFAULT_NAMESPACE, true);
+    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), true);
   }
   public JenaCoinsContainer(CoinsParty party) {
     this(party, true);
@@ -193,6 +193,36 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     initInjectors();
   }
 
+  /**
+   * create a container from existing file structure in FileManager
+   * @param filePath not read
+   * @param internalRef the id used by the FileManager
+   */
+  public JenaCoinsContainer(String filePath, String internalRef) {
+    this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath, internalRef);
+  }
+  public JenaCoinsContainer(CoinsParty party, String filePath, String internalRef) {
+    this(party, new InMemGraphSet(DEFAULT_NAMESPACE), filePath, internalRef);
+  }
+  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, String filePath, String internalRef) {
+
+
+    this.fileName = null;
+
+    this.party = party;
+    this.party.setModel(this);
+
+
+    this.graphSet = graphSet;
+
+    // Load an existing
+    this.loadFromFileManager(internalRef, STRICT);
+
+
+
+    initInjectors();
+  }
+
 
 
 
@@ -220,13 +250,82 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
-
-  @Override
-  public void load(String sourceFile, boolean strict) {
+  public void loadFromFileManager(String internalRef, boolean strict) {
 
     // Start with a clean sheet
     this.graphSet.reset();
 
+    // Analyse the rdf-files
+    HashMap<String, File> rdfFiles = new HashMap<>();
+    HashMap<String, File> woaFiles = new HashMap<>();
+    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, availableLibraryFiles, strict);
+
+    this.internalRef = internalRef;
+
+    if(rdfFiles.isEmpty()) {
+      if(this.graphSet.getInstanceNamespace() == null) {
+        throw new InvalidNamespaceException("No rdf file contained in coins container, please specify preferred namespace.");
+      }
+      this.rdfFile = null;
+    } else {
+      if(rdfFiles.size()>1) {
+        log.warn("More than one rdf file found, picking a random first.");
+      }
+      this.rdfFile = rdfFiles.get(rdfFiles.keySet().iterator().next());
+      log.info("Found file: " + this.rdfFile.toURI().toString());
+      this.rdfFileName = this.rdfFile.getName();
+    }
+
+    if(woaFiles.isEmpty()) {
+      this.woaFile = null;
+    } else {
+      if(woaFiles.size()>1) {
+        log.warn("More than one woa file found, picking a random first.");
+      }
+      this.woaFile = woaFiles.get(woaFiles.keySet().iterator().next());
+      log.info("Found file: " + this.woaFile.toURI().toString());
+      this.woaFileName = this.woaFile.getName();
+    }
+
+    // Create model and read the instance base model
+    if(rdfFile != null) {
+      graphSet.readModel(graphSet.getInstanceModel(), this.rdfFile.toURI().toString());
+      graphSet.setInstanceNamespace(FileManager.getLeadingNamespace(this.rdfFile, graphSet.getInstanceModel()).toString());
+    }
+    graphSet.getInstanceModel().setNsPrefix("", graphSet.getInstanceNamespace());
+    graphSet.getInstanceModel().setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
+    log.info("Added instance model with name "+ graphSet.getInstanceNamespace());
+
+    Statement searchResult = graphSet.getInstanceModel().getProperty(new ResourceImpl(graphSet.getInstanceNamespaceWithoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
+    if(searchResult!=null && searchResult.getObject() != null) {
+      this.containerId = searchResult.getObject().asLiteral().getLexicalForm();
+    } else {
+      this.containerId = UUID.randomUUID().toString();
+      log.warn("No containerId found, setting it to: "+containerId+".");
+      graphSet.getInstanceModel().add(new StatementImpl(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
+        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
+        graphSet.getInstanceModel().createTypedLiteral(containerId)));
+    }
+
+    log.info("Found containerId "+this.containerId);
+    addNamedModelForImports(graphSet.getInstanceModel());
+
+    // Create woa model and read the woa base model
+    if(woaFile != null) {
+      graphSet.readModel(graphSet.getWoaModel(), this.woaFile.toURI().toString());
+      graphSet.setWoaNamespace(FileManager.getLeadingNamespace(this.woaFile, graphSet.getWoaModel()).toString());
+    }
+    graphSet.getWoaModel().setNsPrefix("", graphSet.getWoaNamespace());
+    log.info("Added woa model with name "+ graphSet.getWoaNamespace());
+
+    initInjectors();
+  }
+
+  @Override
+  public void load(String sourceFile, boolean strict) {
+
+    String internalRef;
     File file = new File(sourceFile);
 
     if(!file.exists()) {
@@ -251,35 +350,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       // Keep a pointer to the original .ccr/.zip file
       this.originalContainerFile = file;
 
-      // Analyse the rdf-files
-      HashMap<String, File> rdfFiles = new HashMap<>();
-      HashMap<String, File> woaFiles = new HashMap<>();
-      this.internalRef = FileManager.existingCoinsContainer(file, rdfFiles, woaFiles, attachments, availableLibraryFiles, strict);
+      internalRef = FileManager.existingCoinsContainer(file, strict);
 
-      if(rdfFiles.isEmpty()) {
-        if(this.graphSet.getInstanceNamespace() == null) {
-          throw new InvalidNamespaceException("No rdf file contained in coins container, please specify preferred namespace.");
-        }
-        this.rdfFile = null;
-      } else {
-        if(rdfFiles.size()>1) {
-          log.warn("More than one rdf file found, picking a random first.");
-        }
-        this.rdfFile = rdfFiles.get(rdfFiles.keySet().iterator().next());
-        log.info("Found file: " + this.rdfFile.toURI().toString());
-        this.rdfFileName = this.rdfFile.getName();
-      }
-
-      if(woaFiles.isEmpty()) {
-        this.woaFile = null;
-      } else {
-        if(woaFiles.size()>1) {
-          log.warn("More than one woa file found, picking a random first.");
-        }
-        this.woaFile = woaFiles.get(woaFiles.keySet().iterator().next());
-        log.info("Found file: " + this.woaFile.toURI().toString());
-        this.woaFileName = this.woaFile.getName();
-      }
 
 
     // Try to interpret as rdf-file
@@ -294,46 +366,14 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       log.info("Create CoinsContainer from rdf file: " + file.getName());
 
       this.originalContainerFile = null;
-      this.internalRef = FileManager.newCoinsContainer();
+      internalRef = FileManager.newCoinsContainer();
 
       this.rdfFile = file;
       this.rdfFileName = file.getName();
     }
 
 
-    // Create model and read the instance base model
-    if(rdfFile != null) {
-      graphSet.readModel(graphSet.getInstanceModel(), this.rdfFile.toURI().toString());
-      graphSet.setInstanceNamespace(FileManager.getLeadingNamespace(this.rdfFile, graphSet.getInstanceModel()).toString());
-    }
-    graphSet.getInstanceModel().setNsPrefix("", graphSet.getInstanceNamespace());
-    graphSet.getInstanceModel().setNsPrefix("coins2", "http://www.coinsweb.nl/cbim-2.0.rdf#");
-    log.info("Added instance model with name "+ graphSet.getInstanceNamespace());
-
-    Statement searchResult = graphSet.getInstanceModel().getProperty(new ResourceImpl(graphSet.getInstanceNamespaceWithoutHash()), new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"));
-    if(searchResult!=null && searchResult.getObject() != null) {
-      this.containerId = searchResult.getObject().asLiteral().getLexicalForm();
-    } else {
-      this.containerId = UUID.randomUUID().toString();
-      log.warn("No containerId found, setting it to: "+containerId+".");
-      graphSet.getInstanceModel().add(new StatementImpl(
-          new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
-          new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
-          graphSet.getInstanceModel().createTypedLiteral(containerId)));
-    }
-
-    log.info("Found containerId "+this.containerId);
-    addNamedModelForImports(graphSet.getInstanceModel());
-
-    // Create woa model and read the woa base model
-    if(woaFile != null) {
-      graphSet.readModel(graphSet.getWoaModel(), this.woaFile.toURI().toString());
-      graphSet.setWoaNamespace(FileManager.getLeadingNamespace(this.woaFile, graphSet.getWoaModel()).toString());
-    }
-    graphSet.getWoaModel().setNsPrefix("", graphSet.getWoaNamespace());
-    log.info("Added woa model with name "+ graphSet.getWoaNamespace());
-
-    initInjectors();
+    loadFromFileManager(internalRef, strict);
   }
 
 

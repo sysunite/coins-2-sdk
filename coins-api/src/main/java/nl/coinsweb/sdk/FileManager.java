@@ -101,20 +101,15 @@ public class FileManager {
     return internalRef;
   }
 
-  public static String existingCoinsContainer(String internalRef) {
+  public static JenaCoinsContainer existingCoinsContainer(String internalRef, boolean strict) {
 
     Path homePath = getTempZipPath().resolve(internalRef);
-    initContainer(homePath, false);
+    initContainer(homePath, strict);
 
-    return internalRef;
+    return new JenaCoinsContainer("", internalRef);
   }
 
-  public static String existingCoinsContainer(File sourceFile,
-                                              HashMap<String, File> rdfFiles,
-                                              HashMap<String, File> woaFiles,
-                                              HashMap<String, File> attachments,
-                                              HashMap<Namespace, File> libraryFiles,
-                                              boolean strict) {
+  public static String existingCoinsContainer(File sourceFile, boolean strict) {
 
     if (!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
@@ -124,11 +119,6 @@ public class FileManager {
     Path homePath = getTempZipPath().resolve(internalRef);
     unzipTo(sourceFile, homePath);
     initContainer(homePath, strict);
-
-
-
-    FileManager.indexZipFile(internalRef, rdfFiles, woaFiles, attachments, libraryFiles, strict);
-
 
     return internalRef;
   }
