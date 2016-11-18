@@ -75,6 +75,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   private static final Logger log = LoggerFactory.getLogger(JenaCoinsContainer.class);
 
   public static boolean STRICT = false;
+  public static String DEFAULT_NAMESPACE = "http://default";
 
   private String internalRef;
 
@@ -101,19 +102,18 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   /**
    * Create an empty clean container
-   * @param namespace
    */
-  public JenaCoinsContainer(String namespace) {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, true);
+  public JenaCoinsContainer() {
+    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), DEFAULT_NAMESPACE, true);
   }
-  public JenaCoinsContainer(CoinsParty party, String namespace) {
-    this(party, namespace, true);
+  public JenaCoinsContainer(CoinsParty party) {
+    this(party, true);
   }
-  public JenaCoinsContainer(String namespace, boolean loadCoreModels) {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), namespace, loadCoreModels);
+  public JenaCoinsContainer(boolean loadCoreModels) {
+    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), loadCoreModels);
   }
-  public JenaCoinsContainer(CoinsParty party, String namespace, boolean loadCoreModels) {
-    this(party, new InMemGraphSet(namespace), loadCoreModels, true);
+  public JenaCoinsContainer(CoinsParty party, boolean loadCoreModels) {
+    this(party, new InMemGraphSet(DEFAULT_NAMESPACE), loadCoreModels, true);
   }
   public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels, boolean initHeader) {
 
@@ -168,11 +168,11 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * create a container from existing files
    * @param filePath       a container (ccr-file) or an rdf-file
    */
-  public JenaCoinsContainer(String filePath, String namespace) {
-    this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath, namespace);
+  public JenaCoinsContainer(String filePath) {
+    this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath);
   }
-  public JenaCoinsContainer(CoinsParty party, String filePath, String namespace) {
-    this(party, new InMemGraphSet(namespace), filePath);
+  public JenaCoinsContainer(CoinsParty party, String filePath) {
+    this(party, new InMemGraphSet(DEFAULT_NAMESPACE), filePath);
   }
   public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, String filePath) {
 
