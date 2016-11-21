@@ -108,6 +108,18 @@ public class FileManager {
 
     return new JenaCoinsContainer("", internalRef);
   }
+  public static JenaCoinsContainer existingCoinsContainer(File sourceFile, String internalRef, boolean strict) {
+
+    if (!sourceFile.exists()) {
+      throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
+    }
+
+    Path homePath = getTempZipPath().resolve(internalRef);
+    unzipTo(sourceFile, homePath);
+    initContainer(homePath, strict);
+
+    return new JenaCoinsContainer("", internalRef);
+  }
 
   public static String existingCoinsContainer(File sourceFile, boolean strict) {
 

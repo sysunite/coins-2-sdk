@@ -1631,6 +1631,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   @Override
   public void addOntologyHeader() {
 
+    // Now
+    GregorianCalendar calendar = new GregorianCalendar();
+    calendar.setTime(new Date());
+    XSDDateTime dateTime = new XSDDateTime(calendar);
+    Literal now = graphSet.getInstanceOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+
     // Add header itself
     log.info("Use this as subject for ontology header "+graphSet.getInstanceNamespace());
     graphSet.getInstanceModel().add(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), RDF.type, OWL.Ontology));
@@ -1642,6 +1648,14 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
         new ResourceImpl(getActiveParty().getUri())));
     graphSet.getInstanceModel().add(new StatementImpl(
         new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
+        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creationDate"),
+        now));
+    graphSet.getInstanceModel().add(new StatementImpl(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
+        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#modificationDate"),
+        now));
+    graphSet.getInstanceModel().add(new StatementImpl(
+        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#containerId"),
         graphSet.getInstanceModel().createTypedLiteral(containerId)));
 
@@ -1650,6 +1664,23 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       log.info("Add an imports statement to "+key.toString());
       graphSet.getInstanceModel().add(new StatementImpl(new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()), OWL.imports, new ResourceImpl(key.toString())));
     }
+  }
+
+  public void updateModificationDate() {
+
+    // Remove old
+    removeAllStatements(this.graphSet.getInstanceNamespaceWithoutHash(), "http://www.coinsweb.nl/cbim-2.0.rdf#modificationDate");
+
+    // Now
+    GregorianCalendar calendar = new GregorianCalendar();
+    calendar.setTime(new Date());
+    XSDDateTime dateTime = new XSDDateTime(calendar);
+    Literal now = graphSet.getInstanceOntModel().createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+
+    graphSet.getInstanceModel().add(new StatementImpl(
+      new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
+      new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#modificationDate"),
+      now));
   }
 
   @Override
