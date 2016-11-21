@@ -216,7 +216,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     this.graphSet = graphSet;
 
     // Load an existing
-    this.loadFromFileManager(internalRef, STRICT);
+    this.loadFromFileManager(internalRef, null, STRICT);
 
 
 
@@ -250,7 +250,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
-  public void loadFromFileManager(String internalRef, boolean strict) {
+  public void loadFromFileManager(String internalRef, File injectRdf, boolean strict) {
 
     // Start with a clean sheet
     this.graphSet.reset();
@@ -262,7 +262,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     this.internalRef = internalRef;
 
-    if(rdfFiles.isEmpty()) {
+    if(injectRdf != null) {
+
+      this.rdfFile = injectRdf;
+      this.rdfFileName = injectRdf.getName();
+
+    } else if(rdfFiles.isEmpty()) {
       if(this.graphSet.getInstanceNamespace() == null) {
         throw new InvalidNamespaceException("No rdf file contained in coins container, please specify preferred namespace.");
       }
@@ -352,6 +357,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       internalRef = FileManager.existingCoinsContainer(file, strict);
 
+      loadFromFileManager(internalRef, null, strict);
 
 
     // Try to interpret as rdf-file
@@ -368,12 +374,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       this.originalContainerFile = null;
       internalRef = FileManager.newCoinsContainer();
 
-      this.rdfFile = file;
-      this.rdfFileName = file.getName();
+      loadFromFileManager(internalRef, file, strict);
     }
-
-
-    loadFromFileManager(internalRef, strict);
   }
 
 
