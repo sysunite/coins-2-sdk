@@ -149,18 +149,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     Namespace coreModelNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/cbim-2.0.rdf"), "cbim-2.0.rdf", availableLibraryFiles);
     addImport(null, coreModelNamespace.toString(), loadCoreModels, loadCoreModels, false);
 
-    // Add core model
-    Namespace unitsNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/units-2.0.rdf"), "units-2.0.rdf", availableLibraryFiles);
-    addImport(null, unitsNamespace.toString(), loadCoreModels, loadCoreModels, false);
-
-    // Add core model
-    Namespace woaNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/COINSWOA.rdf"), "COINSWOA.rdf", availableLibraryFiles);
-    addImport(null, woaNamespace.toString(), loadCoreModels, loadCoreModels, false);
-
-    // Add core model
-    Namespace versioningNamespace = FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/BranchVersioning.rdf"), "BranchVersioning.rdf", availableLibraryFiles);
-    addImport(null, versioningNamespace.toString(), loadCoreModels, loadCoreModels, false);
-
     initInjectors();
   }
 
@@ -365,9 +353,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       // Prepare models to be found
       FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/cbim-2.0.rdf"), "cbim-2.0.rdf", availableLibraryFiles);
-      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/units-2.0.rdf"), "units-2.0.rdf", availableLibraryFiles);
-      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/COINSWOA.rdf"), "COINSWOA.rdf", availableLibraryFiles);
-      FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/BranchVersioning.rdf"), "BranchVersioning.rdf", availableLibraryFiles);
 
       log.info("Create CoinsContainer from rdf file: " + file.getName());
 
