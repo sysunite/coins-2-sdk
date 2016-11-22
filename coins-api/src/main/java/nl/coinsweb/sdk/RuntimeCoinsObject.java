@@ -72,7 +72,6 @@ public class RuntimeCoinsObject extends AbstractCoinsObject {
 
     // Save this new instance to model
     coinsModel.addType(getUri(), getClassUri());
-    coinsModel.addCreator(getUri(), coinsModel.getActiveParty());
     coinsModel.addCreatedNow(getUri());
   }
 

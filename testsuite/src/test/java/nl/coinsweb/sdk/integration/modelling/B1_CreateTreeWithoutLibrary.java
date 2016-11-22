@@ -3,7 +3,7 @@ package nl.coinsweb.sdk.integration.modelling;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import nl.coinsweb.cbim.FloatProperty;
 import nl.coinsweb.sdk.AbstractCoinsObject;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.apache.jena.riot.RDFFormat;
@@ -36,15 +36,11 @@ public class B1_CreateTreeWithoutLibrary {
   @Test
   public void instantiateTree() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
-
-
     /**
      * Create a model with two instances
      */
 
-    JenaCoinsContainer container = new JenaCoinsContainer(defaultPerson, "http://gardening.com/");
+    JenaCoinsContainer container = new JenaCoinsContainer();
     AbstractCoinsObject gardenPiece_1 = new RuntimeCoinsObject(container, "http://gardening.com/Tree");
     AbstractCoinsObject gardenPiece_2 = new RuntimeCoinsObject(container, "http://gardening.com/Oak");
 
@@ -92,13 +88,11 @@ public class B1_CreateTreeWithoutLibrary {
   @Test
   public void instantiateTreeBasedOnCoreModel() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
     /**
      * Create a model with two instances
      */
 
-    JenaCoinsContainer container = new JenaCoinsContainer(defaultPerson, "http://gardening.com/");
+    JenaCoinsContainer container = new JenaCoinsContainer();
     AbstractCoinsObject gardenPiece_1 = new RuntimeCoinsObject(container, "http://gardening.com/Tree");
     AbstractCoinsObject gardenPiece_2 = new RuntimeCoinsObject(container, "http://gardening.com/Oak");
 

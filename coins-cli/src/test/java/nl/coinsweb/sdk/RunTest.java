@@ -27,7 +27,7 @@ public class RunTest {
 
 
 
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer(true);
 
 
     ArrayList<String> sourceFileNames = new ArrayList<>();

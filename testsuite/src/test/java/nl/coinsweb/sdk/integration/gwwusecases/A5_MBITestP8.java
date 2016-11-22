@@ -1,7 +1,6 @@
 package nl.coinsweb.sdk.integration.gwwusecases;
 
 import nl.coinsweb.cbim.Concept;
-import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -25,8 +24,6 @@ import java.util.Iterator;
 public class A5_MBITestP8 {
 
   protected static final Logger log = LoggerFactory.getLogger(A5_MBITestP8.class);
-
-  static CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
   static File container = new File("/tmp/coinstest/MBITestP8.ccr");
 
 

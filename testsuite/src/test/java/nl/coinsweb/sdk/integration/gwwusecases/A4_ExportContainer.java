@@ -1,6 +1,5 @@
 package nl.coinsweb.sdk.integration.gwwusecases;
 
-import nl.coinsweb.sdk.CoinsParty;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.junit.After;
 import org.junit.Before;
@@ -23,14 +22,12 @@ public class A4_ExportContainer {
 
   String tempPath = "/tmp/coinstest/A4_test";
   File containerFile = Paths.get("/tmp/coinstest/A4_Test.ccr").toFile();
-  String testNameSpace = "http://www.example.com/";
 
   JenaCoinsContainer container;
 
   @Before
   public void initData() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    container = new JenaCoinsContainer(defaultPerson, testNameSpace);
+    container = new JenaCoinsContainer();
   }
 
   @After

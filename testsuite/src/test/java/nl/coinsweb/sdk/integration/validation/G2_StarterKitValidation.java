@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.validation;
 
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
@@ -36,15 +36,6 @@ public class G2_StarterKitValidation {
 
 
 
-  CoinsParty defaultPerson;
-
-  @Before
-  public void initAssertLists() {
-
-    defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
-
-  }
 
   @AfterClass
   public static void cleanup() {
@@ -58,7 +49,7 @@ public class G2_StarterKitValidation {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", "4.01" + ".rdf").getCanonicalFile();
-      model = new JenaCoinsContainer(defaultPerson, testFile.toString(), "http://www.example.com/");
+      model = new JenaCoinsContainer(testFile.toString());
 
       File libFile = IntegrationHelper.getResourceFile("BS", "4.01" + "-lib.rdf").getCanonicalFile();
       model.addImport(libFile.getCanonicalPath(), null, true, true, true);
@@ -206,7 +197,7 @@ public class G2_StarterKitValidation {
   public void readRdfFile_tdb_4_01() {
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_tdb_4.01.html");
   }
@@ -214,7 +205,7 @@ public class G2_StarterKitValidation {
   public void readRdfFile_fuseki_4_01() {
 
     InMemGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_fuseki_4.01.html");
   }
@@ -243,7 +234,7 @@ public class G2_StarterKitValidation {
   public void readRdfFile_tdb_performanceCheck() {
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath(), false);
     validate(model, "report_tdb_PerfContCOINS2.0.html");
   }
@@ -251,7 +242,7 @@ public class G2_StarterKitValidation {
   public void readRdfFile_tdb_4_core_performanceCheck() {
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath(), false);
     validate(model, "report_tdb_4_core_PerfContCOINS2.0.html");
   }
@@ -260,7 +251,7 @@ public class G2_StarterKitValidation {
 
     log.trace("will start performance tests on fuseki");
     InMemGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
-    JenaCoinsContainer model = new JenaCoinsContainer(defaultPerson, graphSet, false, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath(), false);
     validate(model, "report_fuseki_PerfContCOINS2.0.html");
   }

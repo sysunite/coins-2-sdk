@@ -82,7 +82,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   private HashMap<String, File> attachments = new HashMap<>();
   private HashMap<Namespace, File> availableLibraryFiles = new HashMap<>();
 
-  private CoinsParty party;
   private File originalContainerFile;
 
   private File rdfFile;
@@ -104,23 +103,15 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * Create an empty clean container
    */
   public JenaCoinsContainer() {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), true);
-  }
-  public JenaCoinsContainer(CoinsParty party) {
-    this(party, true);
+    this(true);
   }
   public JenaCoinsContainer(boolean loadCoreModels) {
-    this(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), loadCoreModels);
+    this(new InMemGraphSet(DEFAULT_NAMESPACE), loadCoreModels, true);
   }
-  public JenaCoinsContainer(CoinsParty party, boolean loadCoreModels) {
-    this(party, new InMemGraphSet(DEFAULT_NAMESPACE), loadCoreModels, true);
-  }
-  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, boolean loadCoreModels, boolean initHeader) {
+  public JenaCoinsContainer(CoinsGraphSet graphSet, boolean loadCoreModels, boolean initHeader) {
 
     this.fileName = null;
 
-    this.party = party;
-    this.party.setModel(this);
 
     this.graphSet = graphSet;
 
@@ -157,18 +148,13 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * @param filePath       a container (ccr-file) or an rdf-file
    */
   public JenaCoinsContainer(String filePath) {
-    this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath);
+    this(new InMemGraphSet(DEFAULT_NAMESPACE), filePath);
   }
-  public JenaCoinsContainer(CoinsParty party, String filePath) {
-    this(party, new InMemGraphSet(DEFAULT_NAMESPACE), filePath);
-  }
-  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, String filePath) {
+  public JenaCoinsContainer(CoinsGraphSet graphSet, String filePath) {
 
 
     this.fileName = null;
 
-    this.party = party;
-    this.party.setModel(this);
 
 
     this.graphSet = graphSet;
@@ -187,18 +173,13 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * @param internalRef the id used by the FileManager
    */
   public JenaCoinsContainer(String filePath, String internalRef) {
-    this(new CoinsParty("http://sandbox.rws.nl/defaultUser"), filePath, internalRef);
+    this(new InMemGraphSet(DEFAULT_NAMESPACE), filePath, internalRef);
   }
-  public JenaCoinsContainer(CoinsParty party, String filePath, String internalRef) {
-    this(party, new InMemGraphSet(DEFAULT_NAMESPACE), filePath, internalRef);
-  }
-  public JenaCoinsContainer(CoinsParty party, CoinsGraphSet graphSet, String filePath, String internalRef) {
+  public JenaCoinsContainer(CoinsGraphSet graphSet, String filePath, String internalRef) {
 
 
     this.fileName = null;
 
-    this.party = party;
-    this.party.setModel(this);
 
 
     this.graphSet = graphSet;
@@ -600,22 +581,22 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       loadLibraryContent(namespaceImpl);
     }
   }
-  @Override
-  public CoinsParty getActiveParty() {
-    return party;
-  }
-  @Override
-  public void setActiveParty(CoinsParty party) {
-    this.party = party;
-    graphSet.getInstanceModel().getGraph().remove(
-        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()).asNode(),
-        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator").asNode(),
-        Node.ANY);
-    graphSet.getInstanceModel().add(new StatementImpl(
-        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
-        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
-        new ResourceImpl(party.getUri())));
-  }
+//  @Override
+//  public CoinsParty getActiveParty() {
+//    return party;
+//  }
+//  @Override
+//  public void setActiveParty(CoinsParty party) {
+//    this.party = party;
+//    graphSet.getInstanceModel().getGraph().remove(
+//        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()).asNode(),
+//        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator").asNode(),
+//        Node.ANY);
+//    graphSet.getInstanceModel().add(new StatementImpl(
+//        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
+//        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
+//        new ResourceImpl(party.getUri())));
+//  }
 
   @Override
   public Iterator<String> listClasses() {
@@ -826,15 +807,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   @Override
   public void removeType(Model model, String instanceUri, String classUri) {
     removeStatement(model, instanceUri, RDF.type.getURI(), classUri);
-  }
-
-  @Override
-  public void addCreator(String instanceUri, CoinsParty party) {
-    addStatement(instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creator", party.getUri());
-  }
-  @Override
-  public void addCreator(Model model, String instanceUri, CoinsParty party) {
-    addStatement(model, instanceUri, "http://www.coinsweb.nl/cbim-2.0.rdf#creator", party.getUri());
   }
   @Override
   public void addCreatedNow(String instanceUri) {
@@ -1631,10 +1603,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     // Add creator and containerId
     graphSet.getInstanceModel().add(new StatementImpl(
         new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
-        new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creator"),
-        new ResourceImpl(getActiveParty().getUri())));
-    graphSet.getInstanceModel().add(new StatementImpl(
-        new ResourceImpl(this.graphSet.getInstanceNamespaceWithoutHash()),
         new PropertyImpl("http://www.coinsweb.nl/cbim-2.0.rdf#creationDate"),
         now));
     graphSet.getInstanceModel().add(new StatementImpl(
@@ -1653,7 +1621,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     }
   }
 
-  public void updateModificationDate() {
+  public void updateModifiedNow() {
 
     // Remove old
     removeAllStatements(this.graphSet.getInstanceNamespaceWithoutHash(), "http://www.coinsweb.nl/cbim-2.0.rdf#modificationDate");

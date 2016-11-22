@@ -2,7 +2,7 @@ package nl.coinsweb.sdk.integration.modelnames;
 
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.query.Dataset;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
@@ -36,7 +36,7 @@ public class H1_Getters {
 
     InMemGraphSet graphSet = new InMemGraphSet("http://playground.com/");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, true, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, true, true);
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
 

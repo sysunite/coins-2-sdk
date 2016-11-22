@@ -82,7 +82,6 @@ public abstract class AbstractCoinsObject implements CoinsObject {
     // Create fields for this new instance
     this.uri = coinsModel.generateUri();
     coinsModel.addType(getUri(), getClassUri());
-    coinsModel.addCreator(getUri(), coinsModel.getActiveParty());
     coinsModel.addCreatedNow(getUri());
   }
 
@@ -115,7 +114,6 @@ public abstract class AbstractCoinsObject implements CoinsObject {
 
       // Save this new instance to model
       coinsModel.addType(model, getUri(), getClassUri());
-      coinsModel.addCreator(model, getUri(), coinsModel.getActiveParty());
       coinsModel.addCreatedNow(model, getUri());
     }
 

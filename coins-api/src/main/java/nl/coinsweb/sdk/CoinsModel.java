@@ -101,17 +101,17 @@ public interface CoinsModel {
   public void addImport(Model model, String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc);
 
 
-  /**
-   * Return the active party. The object is not a CoinsObject, but can be cast to it using CoinsParty.as(...).
-   *
-   * @return  the active party
-   */
-  public CoinsParty getActiveParty();
-
-  /**
-   * Register the party that is used to check and record the authority.
-   */
-  public void setActiveParty(CoinsParty party);
+//  /**
+//   * Return the active party. The object is not a CoinsObject, but can be cast to it using CoinsParty.as(...).
+//   *
+//   * @return  the active party
+//   */
+//  public CoinsParty getActiveParty();
+//
+//  /**
+//   * Register the party that is used to check and record the authority.
+//   */
+//  public void setActiveParty(CoinsParty party);
 
 
 
@@ -196,15 +196,6 @@ public interface CoinsModel {
    *          as a map with binding to value ("comment" to "Color used for ...")
    */
   public Iterator<Map<String,String>> query(String sparqlQuery);
-
-  /**
-   * Set the creator.
-   *
-   * @param instanceUri the uri to supply with the extra type definition
-   * @param party the party object carrying the uri of the creator
-   */
-  public void addCreator(String instanceUri, CoinsParty party);
-  public void addCreator(Model model, String instanceUri, CoinsParty party);
 
   /**
    * Set the creator on all individuals in the instance model that do not have a creator yet

@@ -2,7 +2,7 @@ package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.ExpertCoinsModel;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class B6_DatasetUse {
   @Test
   public void listClasses() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://empty.com/");
 
 
 
@@ -71,7 +71,7 @@ public class B6_DatasetUse {
   @Test
   public void createFloat() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.rws.nl/defaultUser"), "http://empty.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("http://empty.com/");
 
 
     Object bovenbouwweg = new Object(model);

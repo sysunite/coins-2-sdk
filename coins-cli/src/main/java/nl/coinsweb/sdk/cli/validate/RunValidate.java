@@ -25,7 +25,7 @@
 package nl.coinsweb.sdk.cli.validate;
 
 import nl.coinsweb.sdk.CoinsGraphSet;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.exceptions.CoinsFileNotFoundException;
@@ -109,7 +109,7 @@ public class RunValidate {
     JenaCoinsContainer.STRICT = true; // Cause the InvalidContainerFileException to fire with wrong file structure
     JenaCoinsContainer container;
     if(emptyRun) {
-      container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, false);
+      container = new JenaCoinsContainer(graphSet, false, false);
     } else {
       if (!options.hasInputOption()) {
         if(!Run.QUIET) {
@@ -121,7 +121,7 @@ public class RunValidate {
       }
       String inputFile = options.getInputOption().toString();
       try {
-        container = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, inputFile);
+        container = new JenaCoinsContainer(graphSet, inputFile);
       } catch (InvalidContainerFileException e) {
         if(!Run.QUIET) {
           System.out.println("(!) the file structure inside the supplied container is wrong:");

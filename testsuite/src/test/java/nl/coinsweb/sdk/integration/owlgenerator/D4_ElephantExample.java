@@ -1,7 +1,7 @@
 package nl.coinsweb.sdk.integration.owlgenerator;
 
 import com.playground.elephant.*;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.ExpertCoinsModel;
 import nl.coinsweb.sdk.exceptions.CoinsObjectCastNotAllowedException;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -36,8 +36,7 @@ public class D4_ElephantExample {
   @Before
   public void init() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    model = new JenaCoinsContainer(defaultPerson, "http://playground.com/elephant#");
+    model = new JenaCoinsContainer();
     olifant = new Olifant(model);
     dier = new Dier(model);
   }

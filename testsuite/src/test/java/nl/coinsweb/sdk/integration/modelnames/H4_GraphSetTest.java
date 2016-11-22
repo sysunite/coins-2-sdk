@@ -1,6 +1,6 @@
 package nl.coinsweb.sdk.integration.modelnames;
 
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.IntegrationHelper;
 import nl.coinsweb.sdk.jena.FusekiGraphSet;
@@ -43,7 +43,7 @@ public class H4_GraphSetTest {
 
 
     InMemGraphSet graphSet = new InMemGraphSet("http://playground.com/");
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://playground.com/"), graphSet, false, false);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, false);
 
 
     try {
@@ -64,7 +64,7 @@ public class H4_GraphSetTest {
 
 
     InMemGraphSet graphSet = new TDBStoreGraphSet("http://playground.com/");
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://p"), graphSet, false, false);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, false);
 
 
     try {
@@ -85,7 +85,7 @@ public class H4_GraphSetTest {
 
 
     InMemGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://p"), graphSet, false, false);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, false);
 
 
     try {

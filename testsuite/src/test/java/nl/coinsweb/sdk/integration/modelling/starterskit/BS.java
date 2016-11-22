@@ -2,7 +2,7 @@ package nl.coinsweb.sdk.integration.modelling.starterskit;
 
 import nl.coinsweb.cbim.*;
 import nl.coinsweb.cbim.Object;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.RuntimeCoinsObject;
 import nl.coinsweb.sdk.integration.DatasetAsserts;
@@ -38,16 +38,8 @@ public class BS {
   private Set<String> emptyZipContent;
   private Set<String> rdfZipContent;
 
-  CoinsParty defaultPerson;
-
   @Before
   public void initAssertLists() {
-
-
-
-
-
-    defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
 
 
     emptyZipContent = new HashSet<>();
@@ -471,7 +463,7 @@ public class BS {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", nr + ".rdf").getCanonicalFile();
-      model = new JenaCoinsContainer(defaultPerson, testFile.toString(), "http://www.example.com/");
+      model = new JenaCoinsContainer(testFile.toString());
       if(withLib) {
 
         File libFile = IntegrationHelper.getResourceFile("BS", nr + "-lib.rdf").getCanonicalFile();
@@ -507,7 +499,7 @@ public class BS {
 
 
     // Reopen the ccr
-    JenaCoinsContainer reopenend = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/starterskit"+nr+"_inmem.ccr", "http://www.example.com/");
+    JenaCoinsContainer reopenend = new JenaCoinsContainer("/tmp/coinstest/starterskit"+nr+"_inmem.ccr");
 
     assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
     return reopenend;

@@ -102,35 +102,29 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createEmptyCcrTDB() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    createEmptyCcr(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
+    createEmptyCcr(new JenaCoinsContainer());
 
   }
 
   @Test
   public void createEmptyCcrExistingTDB() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    createEmptyCcr(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
+    createEmptyCcr(new JenaCoinsContainer());
 
   }
 
   @Test
   public void createEmptyCcrInMem() {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    createEmptyCcr(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
-
+    createEmptyCcr(new JenaCoinsContainer());
 
   }
 
 
   public void createEmptyCcr(CoinsModel workspace) {
 
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
     // Create the container content
-    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer();
     ccr.export(Paths.get("/tmp/coinstest/empty.zip").toFile().toString());
     ccr.close();
 
@@ -154,8 +148,7 @@ public class A1_CreateNewCcrWithAttachments {
 
   @Test
   public void createCcrWithAttachmentInMem() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    createCcrWithAttachment(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
+    createCcrWithAttachment(new JenaCoinsContainer());
   }
 
 
@@ -204,12 +197,8 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createCcrWithOneLineRdf() {
 
-    // Init the coins api
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
-
     // Create the container
-    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer();
 
     // Add the one line rdf
     ExpertCoinsModel instanceModel = ccr;
@@ -237,7 +226,7 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Reopen the ccr
-    JenaCoinsContainer ccr2 = new JenaCoinsContainer(defaultPerson, "/tmp/coinstest/onelineofrdf.zip", "http://www.example.com/");
+    JenaCoinsContainer ccr2 = new JenaCoinsContainer("/tmp/coinstest/onelineofrdf.zip");
     ccr2.close();
   }
 

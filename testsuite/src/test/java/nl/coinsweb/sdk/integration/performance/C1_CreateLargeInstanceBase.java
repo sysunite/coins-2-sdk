@@ -2,7 +2,7 @@ package nl.coinsweb.sdk.integration.performance;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import nl.coinsweb.sdk.CoinsModel;
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.FileManager;
 import nl.coinsweb.sdk.integration.MemoryAsserts;
 import nl.coinsweb.sdk.integration.TimeAsserts;
@@ -65,8 +65,7 @@ public class C1_CreateLargeInstanceBase {
 
   @Test
   public void createCcrWithManyTriplesRdfInMem() {
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-    createCcrWithManyTriplesRdf(new JenaCoinsContainer(defaultPerson, "http://www.example.com/"));
+    createCcrWithManyTriplesRdf(new JenaCoinsContainer());
   }
 
 
@@ -75,11 +74,8 @@ public class C1_CreateLargeInstanceBase {
     MemoryAsserts.sample();
     TimeAsserts.sample();
 
-    // Init the coins api
-    CoinsParty defaultPerson = new CoinsParty("http://sandbox.rws.nl/defaultUser");
-
     // Create the container
-    JenaCoinsContainer ccr = new JenaCoinsContainer(defaultPerson, "http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer();
 
 
 

@@ -24,7 +24,7 @@
  **/
 package nl.coinsweb.sdk.cli.generate;
 
-import nl.coinsweb.sdk.CoinsParty;
+
 import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.cli.validate.ValidateOptions;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -255,7 +255,7 @@ public class RunGenerate {
 
     InMemGraphSet graphSet = new InMemGraphSet("http://empty.com/");
     graphSet.setOntModelSpec(reasoner);
-    JenaCoinsContainer model = new JenaCoinsContainer(new CoinsParty("http://sandbox.coinsweb.nl/defaultUser"), graphSet, false, true);
+    JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
 
 
 
