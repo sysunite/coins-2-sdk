@@ -108,20 +108,20 @@ public class FileManager {
 
     return new JenaCoinsContainer("", internalRef);
   }
-  public static JenaCoinsContainer existingCoinsContainer(File sourceFile, String internalRef, boolean strict) {
+  public static JenaCoinsContainer existingCoinsContainer(File sourceFile, String internalRef, final boolean strict) {
 
     if (!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
     }
 
     Path homePath = getTempZipPath().resolve(internalRef);
-    unzipTo(sourceFile, homePath);
+    unzipTo(sourceFile, homePath, strict);
     initContainer(homePath, strict);
 
     return new JenaCoinsContainer("", internalRef);
   }
 
-  public static String existingCoinsContainer(File sourceFile, boolean strict) {
+  public static String existingCoinsContainer(File sourceFile, final boolean strict) {
 
     if (!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied .ccr-file could not be found.");
@@ -129,7 +129,7 @@ public class FileManager {
 
     String internalRef = RandomStringUtils.random(8, true, true);
     Path homePath = getTempZipPath().resolve(internalRef);
-    unzipTo(sourceFile, homePath);
+    unzipTo(sourceFile, homePath, strict);
     initContainer(homePath, strict);
 
     return internalRef;
@@ -161,7 +161,7 @@ public class FileManager {
 
 
 
-  private static void initContainer(Path homePath, boolean strict) {
+  private static void initContainer(Path homePath, final boolean strict) {
 
     // Create output directory is not exists
     File homePathFile = homePath.toFile();
@@ -181,6 +181,18 @@ public class FileManager {
         throw new CoinsFileNotFoundException("Not able to create temp path "+rdfPathFile+".");
       }
     }
+
+    if(strict) {
+      boolean foundRdfFile = false;
+      File[] files = rdfPathFile.listFiles();
+      for(File file : files) {
+        foundRdfFile &= (file.isFile() && isRdfFile(file));
+      }
+      if(!foundRdfFile) {
+        throw new InvalidContainerFileException("Folder " + RDF_PATH + " does not contain at least one rdf file.");
+      }
+    }
+
     Path ontologiesPath = homePath.resolve(ONTOLOGIES_PATH);
     File ontologiesPathFile = ontologiesPath.toFile();
     if(!ontologiesPathFile.exists()) {
@@ -244,10 +256,7 @@ public class FileManager {
    * Extracts all the content of the .ccr-file specified in the constructor to [TEMP_ZIP_PATH] / [internalRef].
    *
    */
-  public static void unzipTo(File sourceFile, Path destinationPath) {
-    unzipTo(sourceFile, destinationPath, false);
-  }
-  public static void unzipTo(File sourceFile, Path destinationPath, boolean strict) {
+  public static void unzipTo(File sourceFile, Path destinationPath, final boolean strict) {
 
     byte[] buffer = new byte[1024];
     String startFolder = null;
@@ -296,7 +305,7 @@ public class FileManager {
           if(strict) {
             throw new InvalidContainerFileException("File found in the container that was not in the correct folder: "+filePath.toString());
           } else {
-            log.warn("Skipping illegal file: " + filePath.toString());
+            log.warn("Skipping illegal file or folder: " + filePath.toString());
           }
           ze = zis.getNextEntry();
           continue;
