@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+
+  generate-library:
+    build: .
+    volumes:
+    - ../..:/opt

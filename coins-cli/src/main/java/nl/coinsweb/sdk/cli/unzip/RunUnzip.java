@@ -89,7 +89,7 @@ public class RunUnzip {
     }
 
     for(Path zipFile : options.getInputOptions()) {
-      FileManager.unzipTo(zipFile.toFile(), options.getOutputOption().resolve(zipFile.getFileName().toString().substring(0, zipFile.getFileName().toString().length() - 4)));
+      FileManager.unzipTo(zipFile.toFile(), options.getOutputOption().resolve(zipFile.getFileName().toString().substring(0, zipFile.getFileName().toString().length() - 4)), false);
     }
 
 

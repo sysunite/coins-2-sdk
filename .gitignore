@@ -14,3 +14,4 @@ tmp/
 testsuite/libdist/
 testsuite/lib
 dist
+services/generate-library/libraries
