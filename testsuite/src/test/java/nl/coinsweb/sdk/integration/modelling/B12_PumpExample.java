@@ -27,7 +27,7 @@ public class B12_PumpExample {
   @Test
   public void aCreateContainer() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://zhejiangdayuan.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     Assembly a = new Assembly(model);
 
@@ -75,7 +75,7 @@ public class B12_PumpExample {
   @Test
   public void bReopenCcr() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/zhejiangdayuan.ccr","http://zhejiangdayuan.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/zhejiangdayuan.ccr");
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
   }
 

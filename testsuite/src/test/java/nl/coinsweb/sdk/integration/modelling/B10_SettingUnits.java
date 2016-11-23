@@ -30,7 +30,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnits() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     Assembly a = new Assembly(model);
 
@@ -112,7 +112,7 @@ public class B10_SettingUnits {
 
 
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
-    assertEquals(28, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(24, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -139,7 +139,7 @@ public class B10_SettingUnits {
   @Test
   public void listUnitsForExample() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     Assembly a = new Assembly(model);
 

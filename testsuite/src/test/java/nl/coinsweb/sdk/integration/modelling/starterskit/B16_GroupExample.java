@@ -22,7 +22,7 @@ public class B16_GroupExample {
   @Test
   public void listUnitsForExample() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     ContainsRelationGroup group = new ContainsRelationGroup(model);
 

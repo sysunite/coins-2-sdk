@@ -51,10 +51,7 @@ public class H2_Fuseki {
     assertEquals(6, modelNames.size());
     assertTrue("Should contain graph", modelNames.contains("http://www.buildingbits.nl/MBIContainer.rdf#"));
     assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/voorbeeld#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/COINSWOA.rdf#"));
     assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/cbim-2.0.rdf#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/units-2.0.rdf#"));
 
 
     // Check library model names
@@ -64,10 +61,7 @@ public class H2_Fuseki {
     }
 
     assertEquals(4, libraryModelNames.size());
-    assertTrue("Should contain graph", libraryModelNames.contains("http://www.coinsweb.nl/COINSWOA.rdf#"));
     assertTrue("Should contain graph", libraryModelNames.contains("http://www.coinsweb.nl/cbim-2.0.rdf#"));
-    assertTrue("Should contain graph", libraryModelNames.contains("http://www.coinsweb.nl/units-2.0.rdf#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#"));
 
 
     assertEquals( 199, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));

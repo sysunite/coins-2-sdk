@@ -23,7 +23,7 @@ public class B14_RelationsBug {
   @Test
   public void aCreateContainer() {
 
-    JenaCoinsContainer cc = new JenaCoinsContainer("http://sandbox.com/");
+    JenaCoinsContainer cc = new JenaCoinsContainer();
 
 
 

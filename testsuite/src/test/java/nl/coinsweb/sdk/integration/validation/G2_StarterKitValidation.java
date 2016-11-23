@@ -77,119 +77,119 @@ public class G2_StarterKitValidation {
   @Test
   public void readRdfFile_2_01() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.01_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.01.html");
   }
   @Test
   public void readRdfFile_2_02() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.02_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.02.html");
   }
   @Test
   public void readRdfFile_2_03() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.03_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.03.html");
   }
   @Test
   public void readRdfFile_2_04() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.04_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.04.html");
   }
   @Test
   public void readRdfFile_2_05() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.05_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.05.html");
   }
   @Test
   public void readRdfFile_2_06() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.06_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.06.html");
   }
   @Test
   public void readRdfFile_2_07() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.07_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.07.html");
   }
   @Test
   public void readRdfFile_2_08() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.08_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.08.html");
   }
   @Test
   public void readRdfFile_2_09() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.09_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.09.html");
   }
   @Test
   public void readRdfFile_2_10() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.10_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.10.html");
   }
   @Test
   public void readRdfFile_2_11() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.11_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.11.html");
   }
   @Test
   public void readRdfFile_2_12() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit2.12_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_2.12.html");
   }
   @Test
   public void readRdfFile_3_01() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.01_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_3.01.html");
   }
   @Test
   public void readRdfFile_3_02() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.02_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_3.02.html");
   }
   @Test
   public void readRdfFile_3_03() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.03_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_3.03.html");
   }
   @Test
   public void readRdfFile_3_04() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit3.04_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_3.04.html");
   }
   @Test
   public void readRdfFile_4_01() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "starterskit4.01_inmem.ccr").getAbsolutePath(), false);
     validate(model, "report_4.01.html");
   }
@@ -215,7 +215,7 @@ public class G2_StarterKitValidation {
 //  @Test
   public void readRdfFile_performanceCheck() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath(), false);
     validate(model, "report_PerfContCOINS2.0.html");
   }
@@ -226,7 +226,7 @@ public class G2_StarterKitValidation {
 //  @Test
   public void readRdfFile_inmem_performanceCheck() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("G2", "PerformanceContainerCOINS2.0.ccr").getAbsolutePath(), false);
     validate(model, "report_inmem_PerfContCOINS2.0.html");
   }

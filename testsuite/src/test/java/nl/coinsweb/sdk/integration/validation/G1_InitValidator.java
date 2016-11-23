@@ -37,7 +37,7 @@ public class G1_InitValidator {
   @Test
   public void init() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
     Validator validator = new Validator(model, "COINS 2.0 Lite");

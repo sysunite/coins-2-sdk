@@ -27,7 +27,7 @@ public class B13_OTL {
   @Test
   public void aCreateContainer() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://sandbox.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
 
     String fileToImport =  IntegrationHelper.getResourceFile("B13", "otl-coins-subset-2016-02-09.ttl").toPath().toString();
@@ -60,7 +60,7 @@ public class B13_OTL {
   @Test
   public void bReloadContainer() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/otl.ccr", "http://sandbox.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/otl.ccr");
 
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceOntModel());
   }

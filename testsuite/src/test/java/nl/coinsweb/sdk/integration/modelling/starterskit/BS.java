@@ -46,9 +46,6 @@ public class BS {
     emptyZipContent.add("bim/");
     emptyZipContent.add("bim/content.rdf");
     emptyZipContent.add("bim/repository/cbim-2.0.rdf");
-    emptyZipContent.add("bim/repository/units-2.0.rdf");
-    emptyZipContent.add("bim/repository/COINSWOA.rdf");
-    emptyZipContent.add("bim/repository/BranchVersioning.rdf");
     emptyZipContent.add("doc/");
     emptyZipContent.add("woa/woa.rdf");
 

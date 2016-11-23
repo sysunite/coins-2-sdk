@@ -25,13 +25,13 @@ public class B8_Removing {
   public void removeStatement() {
 
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(5, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     model.addStatement("http://subj","http://subj","http://subj");
-    assertEquals(8, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(6, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     model.removeStatement("http://subj", "http://subj", "http://subj");
-    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(5, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -43,10 +43,10 @@ public class B8_Removing {
 
 
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(5, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     Assembly a = new Assembly(model);
 
@@ -58,7 +58,7 @@ public class B8_Removing {
     a.addHasProperties(e);
 
 
-    assertEquals(15, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(14, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
 
 
@@ -72,9 +72,9 @@ public class B8_Removing {
   @Test
   public void removeIndividualWithProperties() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(5, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     Assembly a = new Assembly(model);
 
@@ -85,10 +85,10 @@ public class B8_Removing {
     a.addHasProperties(e);
 
 
-    assertEquals(15, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(14, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     a.removeIndividualAndProperties();
 
-    assertEquals(7, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(8, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
   }
 

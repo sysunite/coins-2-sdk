@@ -25,7 +25,7 @@ public class B7_NextTrunkVersionOverloading {
 
 
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
 
 //    model.setOntModelSpec(OntModelSpec.OWL_MEM);

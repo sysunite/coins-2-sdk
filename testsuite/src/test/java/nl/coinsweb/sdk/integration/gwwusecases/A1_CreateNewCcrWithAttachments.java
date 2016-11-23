@@ -57,18 +57,12 @@ public class A1_CreateNewCcrWithAttachments {
     emptyZipContent = new HashSet<>();
     emptyZipContent.add("bim/content.rdf");
     emptyZipContent.add("bim/repository/cbim-2.0.rdf");
-    emptyZipContent.add("bim/repository/units-2.0.rdf");
-    emptyZipContent.add("bim/repository/COINSWOA.rdf");
-    emptyZipContent.add("bim/repository/BranchVersioning.rdf");
     emptyZipContent.add("doc/");
     emptyZipContent.add("woa/woa.rdf");
 
     attachmentsZipContent = new HashSet<>();
     attachmentsZipContent.add("bim/content.rdf");
     attachmentsZipContent.add("bim/repository/cbim-2.0.rdf");
-    attachmentsZipContent.add("bim/repository/units-2.0.rdf");
-    attachmentsZipContent.add("bim/repository/COINSWOA.rdf");
-    attachmentsZipContent.add("bim/repository/BranchVersioning.rdf");
     attachmentsZipContent.add("doc/koekiemonster.jpeg");
     attachmentsZipContent.add("doc/plan-d117e182-6308-4826-98bd-378163d8814b (2).svg");
     attachmentsZipContent.add("woa/woa.rdf");
@@ -77,9 +71,6 @@ public class A1_CreateNewCcrWithAttachments {
     rdfZipContent.add("bim/content.rdf");
     rdfZipContent.add("doc/");
     rdfZipContent.add("bim/repository/cbim-2.0.rdf");
-    rdfZipContent.add("bim/repository/units-2.0.rdf");
-    rdfZipContent.add("bim/repository/COINSWOA.rdf");
-    rdfZipContent.add("bim/repository/BranchVersioning.rdf");
     rdfZipContent.add("woa/woa.rdf");
 
     nodesPlant = new HashSet();
@@ -158,7 +149,7 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Create the container content
-    JenaCoinsContainer ccr = new JenaCoinsContainer("http://www.example.com/");
+    JenaCoinsContainer ccr = new JenaCoinsContainer();
 
     // Add an attachment
     ccr.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
@@ -244,7 +235,7 @@ public class A1_CreateNewCcrWithAttachments {
   public void createEmptyCcrWithLibraries() {
 
     // 1) An empty container
-    JenaCoinsContainer emptyCcr = new JenaCoinsContainer("http://example.com");
+    JenaCoinsContainer emptyCcr = new JenaCoinsContainer();
 
 
     File otlFile = IntegrationHelper.getResourceFile("A5", "otl-coins-2016-02-09.ttl");
@@ -257,7 +248,7 @@ public class A1_CreateNewCcrWithAttachments {
     log.info("#will reload now");
 
 
-    JenaCoinsContainer reloaded = new JenaCoinsContainer("/tmp/coinstest/testLinkToCore.zip", "http://www.example.com/");
+    JenaCoinsContainer reloaded = new JenaCoinsContainer("/tmp/coinstest/testLinkToCore.zip");
   }
 
 
@@ -266,13 +257,13 @@ public class A1_CreateNewCcrWithAttachments {
   public void createDocumentInStoreButNoFilePresentAsAttachment() {
 
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://example.com");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     InternalDocumentReference doc = new InternalDocumentReference(model);
     StringProperty fileNameProperty = new StringProperty(model);
     fileNameProperty.setSimpleProperty("nonExisting.pdf");
 
-    assertEquals(14, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(13, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     try {
 
@@ -284,7 +275,7 @@ public class A1_CreateNewCcrWithAttachments {
     } finally {
 
       DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
-      assertEquals(14, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+      assertEquals(13, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     }
   }
@@ -294,23 +285,23 @@ public class A1_CreateNewCcrWithAttachments {
   @Test
   public void createDocumentInStoreAndFilePresentAsAttachment() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://example.com");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     model.addAttachment(IntegrationHelper.getResourceFile("A1", "koekiemonster.jpeg").toPath().toString());
 
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
-    assertEquals(15, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(11, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     InternalDocumentReference doc = new InternalDocumentReference(model);
     StringProperty fileNameProperty = new StringProperty(model);
     fileNameProperty.setSimpleProperty("koekiemonster.jpeg");
 
-    assertEquals(22, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(19, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     doc.setFilepath(fileNameProperty);
 
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
-    assertEquals(23, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(20, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
   }
 
 }

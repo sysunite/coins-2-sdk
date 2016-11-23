@@ -26,7 +26,7 @@ public class B9_SettingDates {
   @Test
   public void setDate() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     Assembly a = new Assembly(model);
     a.setModificationDate(new Date());

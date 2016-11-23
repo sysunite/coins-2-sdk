@@ -34,7 +34,7 @@ public class B6_DatasetUse {
   @Test
   public void listClasses() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://empty.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
 
 
@@ -71,7 +71,7 @@ public class B6_DatasetUse {
   @Test
   public void createFloat() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://empty.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
 
     Object bovenbouwweg = new Object(model);

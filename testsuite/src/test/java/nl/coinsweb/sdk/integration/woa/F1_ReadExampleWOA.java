@@ -30,7 +30,7 @@ public class F1_ReadExampleWOA {
   @Test
   public void aOpenContainer() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     try {
 
@@ -64,7 +64,7 @@ public class F1_ReadExampleWOA {
   @Test
   public void bDisabledWOA() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
 
@@ -92,7 +92,7 @@ public class F1_ReadExampleWOA {
 //  @Test
 //  public void cNewContainer() {
 //
-//    JenaCoinsContainer container = new JenaCoinsContainer("http://playground.com/");
+//    JenaCoinsContainer container = new JenaCoinsContainer();
 //    Part landhoofd = new Part(container, "http://www.buildingbits.nl/validatieContainer.rdf#_BB526node1a1hg7ekvx25");
 //
 //    // Because the uri already exists, first we instantiate it

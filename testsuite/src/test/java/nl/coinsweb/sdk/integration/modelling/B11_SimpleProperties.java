@@ -25,7 +25,7 @@ public class B11_SimpleProperties {
   @Test
   public void createProperties() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("http://playground.com/");
+    JenaCoinsContainer model = new JenaCoinsContainer();
 
     Assembly a = new Assembly(model);
 
@@ -46,16 +46,16 @@ public class B11_SimpleProperties {
 
 
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
-    assertEquals(22, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(20, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     intProperty.removeSimpleProperty(112);
-    assertEquals(22, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(20, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     intProperty.removeSimpleProperty(111);
-    assertEquals(21, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(19, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
 
     a.removeAllHasProperties();
-    assertEquals(19, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals(17, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
   }
 
 

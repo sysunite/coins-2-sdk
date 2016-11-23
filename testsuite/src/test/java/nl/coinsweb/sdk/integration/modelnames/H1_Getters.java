@@ -48,13 +48,10 @@ public class H1_Getters {
       modelNames.add(modelName);
     }
 
-    assertEquals(6, modelNames.size());
+    assertEquals(3, modelNames.size());
     assertTrue("Should contain graph", modelNames.contains("http://www.buildingbits.nl/MBIContainer.rdf#"));
     assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/voorbeeld#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/COINSWOA.rdf#"));
     assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/cbim-2.0.rdf#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/units-2.0.rdf#"));
 
 
     // Check library model names
@@ -63,18 +60,15 @@ public class H1_Getters {
       libraryModelNames.add(ns.toString());
     }
 
-    assertEquals(4, libraryModelNames.size());
-    assertTrue("Should contain graph", libraryModelNames.contains("http://www.coinsweb.nl/COINSWOA.rdf#"));
+    assertEquals(1, libraryModelNames.size());
     assertTrue("Should contain graph", libraryModelNames.contains("http://www.coinsweb.nl/cbim-2.0.rdf#"));
-    assertTrue("Should contain graph", libraryModelNames.contains("http://www.coinsweb.nl/units-2.0.rdf#"));
-    assertTrue("Should contain graph", modelNames.contains("http://www.coinsweb.nl/coins2/referencemodel/BranchVersioning#"));
 
 
-    assertEquals( 199, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
+    assertEquals( 197, DatasetAsserts.countTriples(model.getCoinsGraphSet().getInstanceModel()));
     assertEquals(   9, DatasetAsserts.countTriples(model.getCoinsGraphSet().getWoaModel()));
     assertEquals(1348, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaModel()));
-    assertEquals(7646, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaAggregationModel()));
-    assertEquals(7854, DatasetAsserts.countTriples(model.getCoinsGraphSet().getFullUnionModel()));
+    assertEquals(1348, DatasetAsserts.countTriples(model.getCoinsGraphSet().getSchemaAggregationModel()));
+    assertEquals(1554, DatasetAsserts.countTriples(model.getCoinsGraphSet().getFullUnionModel()));
 
     Dataset dataset = model.getCoinsGraphSet().getValidationDataset();
 
@@ -82,7 +76,6 @@ public class H1_Getters {
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     model.getCoinsGraphSet().writeFullToFile(dataset, outputStream, RDFFormat.NQUADS);
-//    System.out.println(outputStream.toString());
 
 
   }
