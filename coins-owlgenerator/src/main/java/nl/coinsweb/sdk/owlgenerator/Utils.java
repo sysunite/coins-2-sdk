@@ -127,8 +127,11 @@ public class Utils {
       // First part comes from host in url
       Iterator<String> parts = Arrays.asList(inputUrl.getHost().split("\\.")).iterator();
       while(parts.hasNext()) {
-        String part = parts.next();
+        String part = onlyAllowedChars(parts.next());
         if("www".equals(part)) {
+          continue;
+        }
+        if("".equals(part)) {
           continue;
         }
         result = part + "." + result;
@@ -140,7 +143,7 @@ public class Utils {
       // Second part comes from path
       parts = Arrays.asList(inputUrl.getPath().split("(/|\\.)")).iterator();
       while(parts.hasNext()) {
-        String part = onlyAlphabet(parts.next());
+        String part = onlyAllowedChars(parts.next());
         if("".equals(part) || "rdf".equals(part) || "owl".equals(part) || "xml".equals(part) || "html".equals(part)|| "htm".equals(part)) {
           continue;
         }
@@ -157,13 +160,16 @@ public class Utils {
     }
   }
 
-  public static String onlyAlphabet(String input) {
+  public static String onlyAllowedChars(String input) {
 
     StringBuffer buf = new StringBuffer();
 
     for (int i = 0; i < input.length(); i++) {
       char c = input.charAt(i);
       if(Character.isLetter(c)) {
+        buf.append(Character.toLowerCase(c));
+      }
+      if(i>0 && Character.isDigit(c)) {
         buf.append(Character.toLowerCase(c));
       }
     }
