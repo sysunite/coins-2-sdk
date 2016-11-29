@@ -147,10 +147,10 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * create a container from existing files
    * @param filePath       a container (ccr-file) or an rdf-file
    */
-  public JenaCoinsContainer(String filePath) {
+  public JenaCoinsContainer(File filePath) {
     this(new InMemGraphSet(DEFAULT_NAMESPACE), filePath);
   }
-  public JenaCoinsContainer(CoinsGraphSet graphSet, String filePath) {
+  public JenaCoinsContainer(CoinsGraphSet graphSet, File filePath) {
 
 
     this.fileName = null;
@@ -169,13 +169,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   /**
    * create a container from existing file structure in FileManager
-   * @param filePath not read
    * @param internalRef the id used by the FileManager
    */
-  public JenaCoinsContainer(String filePath, String internalRef) {
-    this(new InMemGraphSet(DEFAULT_NAMESPACE), filePath, internalRef);
+  public JenaCoinsContainer(String internalRef) {
+    this(new InMemGraphSet(DEFAULT_NAMESPACE), internalRef);
   }
-  public JenaCoinsContainer(CoinsGraphSet graphSet, String filePath, String internalRef) {
+  public JenaCoinsContainer(CoinsGraphSet graphSet, String internalRef) {
 
 
     this.fileName = null;
@@ -297,19 +296,18 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
 
   @Override
-  public void load(String sourceFile, boolean strict) {
+  public void load(File sourceFile, boolean strict) {
 
     String internalRef;
-    File file = new File(sourceFile);
 
-    if(!file.exists()) {
+    if(!sourceFile.exists()) {
       throw new CoinsFileNotFoundException("Supplied file does not exist.");
     }
 
     // See what file type it is
-    if(file.getName().endsWith(".ccr") || file.getName().endsWith(".zip")) {
+    if(sourceFile.getName().endsWith(".ccr") || sourceFile.getName().endsWith(".zip")) {
 
-      this.fileName = file.getName();
+      this.fileName = sourceFile.getName();
 
       log.info("Reset current config");
 
@@ -319,12 +317,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
-      log.info("Create CoinsContainer from ccr/zip file: "+file.getName());
+      log.info("Create CoinsContainer from ccr/zip file: "+sourceFile.getName());
 
       // Keep a pointer to the original .ccr/.zip file
-      this.originalContainerFile = file;
+      this.originalContainerFile = sourceFile;
 
-      internalRef = FileManager.existingCoinsContainer(file, strict);
+      internalRef = FileManager.existingCoinsContainer(sourceFile, strict);
 
       loadFromFileManager(internalRef, null, strict);
 
@@ -335,12 +333,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       // Prepare models to be found
       FileManager.copyAndRegisterLibrary(FileManager.getResourceFileAsStream("libraries/cbim-2.0.rdf"), "cbim-2.0.rdf", availableLibraryFiles);
 
-      log.info("Create CoinsContainer from rdf file: " + file.getName());
+      log.info("Create CoinsContainer from rdf file: " + sourceFile.getName());
 
       this.originalContainerFile = null;
       internalRef = FileManager.newCoinsContainer();
 
-      loadFromFileManager(internalRef, file, strict);
+      loadFromFileManager(internalRef, sourceFile, strict);
     }
   }
 

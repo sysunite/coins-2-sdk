@@ -60,7 +60,7 @@ public interface CoinsContainer {
    * @param strict  set true to let the function throw an InvalidContainerFileException when something is wrong with the filestructure
    *
    */
-  public void load(String target, boolean strict);
+  public void load(File target, boolean strict);
 
 
 

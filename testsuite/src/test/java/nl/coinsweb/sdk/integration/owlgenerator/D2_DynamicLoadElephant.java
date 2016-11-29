@@ -21,13 +21,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
 /**
- * Usecase E1:
- *
- *    Use coins-cli options
- *
- *
- *
- *
  * @author Bastiaan Bijl, Sysunite 2016
  */
 

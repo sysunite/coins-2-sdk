@@ -34,7 +34,7 @@ public class G5_TestContainers {
   public void runTest(CoinsGraphSet graphSet, String ccrFile, String reportName) {
 
     JenaCoinsContainer model = new JenaCoinsContainer(graphSet, false, true);
-    model.load(IntegrationHelper.getResourceFile("G5", ccrFile).getAbsolutePath(), false);
+    model.load(IntegrationHelper.getResourceFile("G5", ccrFile), false);
     Path reportFile = Paths.get("/tmp/"+reportName);
     Validator validator = new Validator(model, "COINS 2.0 Lite");
     validator.validate(reportFile, Validator.GENERATE_BOTH);

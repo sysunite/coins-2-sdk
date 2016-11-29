@@ -24,7 +24,7 @@ public class B15_ReferenceModel {
 
     JenaCoinsContainer model = new JenaCoinsContainer();
 
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
+    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr"), false);
 
     log.info("instance model");
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getModel("http://www.buildingbits.nl/MBIContainer.rdf#"));

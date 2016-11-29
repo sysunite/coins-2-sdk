@@ -31,6 +31,8 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
@@ -87,8 +89,8 @@ public class RunViewer {
     JettyServer server = new JettyServer();
     if(server.getUrl() != null) {
 
-
-      JenaCoinsContainer container = new JenaCoinsContainer(options.getInputOptions().get(0).toString(), "http://www.example.com/");
+      File sourceFile = new File(options.getInputOptions().get(0).toString());
+      JenaCoinsContainer container = new JenaCoinsContainer(sourceFile);
 
       if(container != null) {
 

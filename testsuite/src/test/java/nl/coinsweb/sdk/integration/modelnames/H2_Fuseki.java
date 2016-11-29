@@ -37,7 +37,7 @@ public class H2_Fuseki {
     InMemGraphSet graphSet = new FusekiGraphSet("http://playground.com/", "http://docker:3030", "coins");
     graphSet.setOntModelSpec(OntModelSpec.OWL_MEM);
     JenaCoinsContainer model = new JenaCoinsContainer(graphSet, true, true);
-    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr").getAbsolutePath(), false);
+    model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr"), false);
 
 
     // Check all model names

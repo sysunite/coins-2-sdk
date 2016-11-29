@@ -106,7 +106,7 @@ public class FileManager {
     Path homePath = getTempZipPath().resolve(internalRef);
     initContainer(homePath, strict);
 
-    return new JenaCoinsContainer("", internalRef);
+    return new JenaCoinsContainer(internalRef);
   }
   public static JenaCoinsContainer existingCoinsContainer(File sourceFile, String internalRef, final boolean strict) {
 
@@ -118,7 +118,7 @@ public class FileManager {
     unzipTo(sourceFile, homePath, strict);
     initContainer(homePath, strict);
 
-    return new JenaCoinsContainer("", internalRef);
+    return new JenaCoinsContainer(internalRef);
   }
 
   public static String existingCoinsContainer(File sourceFile, final boolean strict) {
@@ -361,7 +361,7 @@ public class FileManager {
     log.info("Will index "+folder+" for rdf files.");
     listOfFiles = folder.listFiles();
 
-    for (int i = 0; i < listOfFiles.length; i++) {
+    for (int i = 0; i < listOfFiles.length; i++) { // todo: bug
       if (listOfFiles[i].isFile()) {
         log.info("Index file as rdf: "+listOfFiles[i].getName());
         rdfFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
