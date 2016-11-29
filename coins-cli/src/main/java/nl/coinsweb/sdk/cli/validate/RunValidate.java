@@ -119,7 +119,7 @@ public class RunValidate {
         System.exit(1);
         return;
       }
-      String inputFile = options.getInputOption().toString();
+      File inputFile = options.getInputOption().toFile();
       try {
         container = new JenaCoinsContainer(graphSet, inputFile);
       } catch (InvalidContainerFileException e) {
@@ -204,9 +204,9 @@ public class RunValidate {
     if(!Profile.getProfiles().get(profileName).containsKey(profileVersion)) {
 
       if(!Run.QUIET) {
-        System.out.println("(!) profile name " + profileName + " was not found, please choose from:\n");
-        for (String availableProfile : Profile.listProfiles()) {
-          System.out.println(" - " + availableProfile);
+        System.out.println("(!) profile version " + profileVersion + " was not found, please choose from:\n");
+        for (String availableVersion : Profile.getProfiles().get(profileName).keySet()) {
+          System.out.println(" - " + availableVersion);
         }
         System.out.println("");
       }

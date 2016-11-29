@@ -187,7 +187,7 @@ public class FileManager {
       boolean foundRdfFile = false;
       File[] files = rdfPathFile.listFiles();
       for(File file : files) {
-        foundRdfFile &= (file.isFile() && isRdfFile(file));
+        foundRdfFile |= (file.isFile() && isRdfFile(file));
       }
       if(!foundRdfFile) {
         throw new InvalidContainerFileException("Folder " + RDF_PATH + " does not contain at least one rdf file.");
@@ -354,7 +354,6 @@ public class FileManager {
 
     Path homePath = getTempZipPath().resolve(internalRef);
 
-
     File folder;
     File[] listOfFiles;
 
@@ -362,7 +361,7 @@ public class FileManager {
     log.info("Will index "+folder+" for rdf files.");
     listOfFiles = folder.listFiles();
 
-    for (int i = 0; i < listOfFiles.length; i++) { // todo: bug
+    for (int i = 0; i < listOfFiles.length; i++) {
       if (listOfFiles[i].isFile()) {
         log.info("Index file as rdf: "+listOfFiles[i].getName());
         rdfFiles.put(listOfFiles[i].getName(), listOfFiles[i]);
