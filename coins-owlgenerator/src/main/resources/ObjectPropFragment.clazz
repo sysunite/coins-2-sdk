@@ -1,32 +1,32 @@
 <#list objectProperties as property>
 <#if property.single>
 
-  public ${property.returnType} get${property.relationName}() {
+  public ${property.returnType} get${property.relationName}_${property.returnTypeTail}() {
     return coinsModel.getObject(model, getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
-  public void set${property.relationName}(${property.returnType}Class object) {
+  public void set${property.relationName}_${property.returnTypeTail}(${property.returnType}Class object) {
     coinsModel.setObject(model, getUri(), "${property.relationUri}", object);
   }
-  public void set${property.relationName}(String objectUri) {
+  public void set${property.relationName}_${property.returnTypeTail}(String objectUri) {
     coinsModel.setObject(model, getUri(), "${property.relationUri}", objectUri);
   }
 <#else>
 
-  public Iterator<${property.returnType}> get${property.relationName}() {
+  public Iterator<${property.returnType}> get${property.relationName}_${property.returnTypeTail}() {
     return coinsModel.getObjects(model, getUri(), "${property.relationUri}", ${property.returnType}.class);
   }
-  public void add${property.relationName}(${property.returnType}Class object) {
+  public void add${property.relationName}_${property.returnTypeTail}(${property.returnType}Class object) {
     coinsModel.addObject(model, getUri(), "${property.relationUri}", object);
   }
-  public void add${property.relationName}(String objectUri) {
+  public void add${property.relationName}_${property.returnTypeTail}(String objectUri) {
     coinsModel.addObject(model, getUri(), "${property.relationUri}", objectUri);
   }
 </#if>
 
-  public void remove${property.relationName}(${property.simpleReturnType} object) {
+  public void remove${property.relationName}_${property.returnTypeTail}(${property.simpleReturnType} object) {
     coinsModel.removeObject(model, getUri(), "${property.relationUri}", object);
   }
-  public void removeAll${property.relationName}() {
+  public void removeAll${property.relationName}_${property.returnTypeTail}() {
     coinsModel.removeAllStatements(model, getUri(), "${property.relationUri}");
   }
 </#list>

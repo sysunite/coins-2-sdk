@@ -1,6 +1,7 @@
 package nl.coinsweb.sdk.integration.modelling;
 
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
+import nl.coinsweb.sdk.apolda.ontology.impl.PropertyDeclarationImpl;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -33,7 +34,9 @@ public class B7_NextTrunkVersionOverloading {
     Iterator<PropertyDeclaration> iterator = model.listPropertyDeclarations("http://www.coinsweb.nl/cbim-2.0.rdf#FloatProperty");
     while(iterator.hasNext()) {
       PropertyDeclaration prop = iterator.next();
-      log.debug(prop.getPropertyUri() + "  -->  " + prop.getRangeUri() + " (owner "+prop.getPropertyOwner()+")");
+      for(PropertyDeclarationImpl.Range range : prop.getRanges()) {
+        log.debug(prop.getPropertyUri() + "  -->  " + range.getUri() + " (owner " + prop.getPropertyOwner() + ")");
+      }
     }
 
 

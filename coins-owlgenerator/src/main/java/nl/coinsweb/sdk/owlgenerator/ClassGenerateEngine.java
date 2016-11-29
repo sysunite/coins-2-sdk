@@ -16,6 +16,7 @@ import nl.coinsweb.sdk.ExpertCoinsModel;
 import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.apolda.language.Language;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
+import nl.coinsweb.sdk.apolda.ontology.impl.PropertyDeclarationImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -199,7 +200,13 @@ public class ClassGenerateEngine {
 
 
 
-
+  public void initTemplateFields() {
+    literalProperties = new HashSet();
+    objectProperties = new HashSet();
+    imports = new HashSet<>();
+    parents = new HashSet<>();
+    individualsUris = new HashMap<>();
+  }
 
 
 
@@ -221,11 +228,7 @@ public class ClassGenerateEngine {
 
     currentPackage = namespaceToPackage.get(clazz.asResource().getNameSpace());
 
-    literalProperties = new HashSet();
-    objectProperties = new HashSet();
-    imports = new HashSet<>();
-    parents = new HashSet<>();
-    individualsUris = new HashMap<>();
+    initTemplateFields();
 
     ExtendedIterator<? extends OntResource> individuals = clazz.listInstances(false);
     while(individuals.hasNext()) {
@@ -234,7 +237,10 @@ public class ClassGenerateEngine {
 
         String individualUri = individual.asResource().getURI();
         String capitalisedName = Utils.capitalise(individual.asResource().getLocalName());
-        individualsUris.put(individualUri, capitalisedName);
+        if(individualUri != null && !individualUri.isEmpty() &&
+          capitalisedName != null && !capitalisedName.isEmpty()) {
+          individualsUris.put(individualUri, capitalisedName);
+        }
       }
     }
 
@@ -313,10 +319,10 @@ public class ClassGenerateEngine {
 
 
 
-  public void processPropertyDeclarationsSparql(ExpertCoinsModel model, String clazz) {
+  public void processPropertyDeclarationsSparql(ExpertCoinsModel model, String classUri) {
 
 
-    Iterator<PropertyDeclaration> results = model.listPropertyDeclarations(clazz);
+    Iterator<PropertyDeclaration> results = model.listPropertyDeclarations(classUri);
 
 
     // Output query results
@@ -343,25 +349,26 @@ public class ClassGenerateEngine {
 
         literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "String", propertyClassName));
       } else {
-        String rangeClassName = Utils.asLegalJavaID(declaration.getRangeName(), true);
-        if (preRunClassList.containsKey(declaration.getRangeUri())) {
-          String rangeLabelName = Utils.asLegalJavaID(preRunClassList.get(declaration.getRangeUri()), true);
+        for(PropertyDeclarationImpl.Range range : declaration.getRanges()) {
+        String rangeClassName = Utils.asLegalJavaID(range.getName(), true);
+        if (preRunClassList.containsKey(range.getUri())) {
+          String rangeLabelName = Utils.asLegalJavaID(preRunClassList.get(range.getUri()), true);
           if (rangeLabelName != null && !rangeLabelName.isEmpty()) {
             rangeClassName = rangeLabelName;
           }
         }
 
-        RDFDatatype datatype = TypeMapper.getInstance().getTypeByName(declaration.getRangeUri());
+        RDFDatatype datatype = TypeMapper.getInstance().getTypeByName(range.getUri());
 
 
-        if(datatype != null) {
+        if (datatype != null) {
 
-          if("http://www.w3.org/2001/XMLSchema#anySimpleType".equals(datatype.getURI())) {
+          if ("http://www.w3.org/2001/XMLSchema#anySimpleType".equals(datatype.getURI())) {
 
             literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "XSDAnySimpleTypeLiteral", propertyClassName));
             imports.add("XSDAnySimpleTypeLiteral");
 
-          } else if(XSD.integer.getURI().equals(datatype.getURI())) {
+          } else if (XSD.integer.getURI().equals(datatype.getURI())) {
 
             literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "int", "Integer", propertyClassName));
             imports.add("java.lang.Integer");
@@ -370,7 +377,7 @@ public class ClassGenerateEngine {
 //
 //            literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "String", propertyClassName));
 
-          } else if("http://www.w3.org/2001/XMLSchema#dateTime".equals(datatype.getURI())) {
+          } else if ("http://www.w3.org/2001/XMLSchema#dateTime".equals(datatype.getURI())) {
 
             literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "Date", propertyClassName));
             imports.add("java.util.Date");
@@ -387,40 +394,38 @@ public class ClassGenerateEngine {
               literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), simplify(javaClass.getSimpleName()), javaClass.getSimpleName(), propertyClassName));
               imports.add(javaClass.getCanonicalName());
             } else {
-              log.debug("No java class found by TypeMapper/RDFDatatype for range uri " + declaration.getRangeUri() + ", using String.");
+              log.debug("No java class found by TypeMapper/RDFDatatype for range uri " + range.getUri() + ", using String.");
               literalProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), "String", propertyClassName));
             }
           }
 
 
-
-        } else if (namespaceToPackage.containsKey(new Namespace(declaration.getRangeUri())) &&
-            preRunClassList.containsKey(declaration.getRangeUri())) {
-
+        } else if (namespaceToPackage.containsKey(new Namespace(range.getUri())) &&
+          preRunClassList.containsKey(range.getUri())) {
 
 
-
-          if(rangeClassName.equals(currentClassName)) {
-            rangeClassName = namespaceToPackage.get(new Namespace(declaration.getRangeUri())) + "." + rangeClassName;
-          } else if(!namespaceToPackage.get(new Namespace(declaration.getRangeUri())).equals(currentPackage)) {
-            imports.add(namespaceToPackage.get(new Namespace(declaration.getRangeUri())) + "." + rangeClassName+interfaceNamePostFix);
-            imports.add(namespaceToPackage.get(new Namespace(declaration.getRangeUri())) + "." + rangeClassName+classNamePostFix);
+          if (rangeClassName.equals(currentClassName)) {
+            rangeClassName = namespaceToPackage.get(new Namespace(range.getUri())) + "." + rangeClassName;
+          } else if (!namespaceToPackage.get(new Namespace(range.getUri())).equals(currentPackage)) {
+            imports.add(namespaceToPackage.get(new Namespace(range.getUri())) + "." + rangeClassName + interfaceNamePostFix);
+            imports.add(namespaceToPackage.get(new Namespace(range.getUri())) + "." + rangeClassName + classNamePostFix);
           }
 
           objectProperties.add(new PropBlock(declaration.isSingle(), declaration.getPropertyUri(), rangeClassName, propertyClassName));
 
         } else {
-          log.info("Not mapping " + declaration.getPropertyUri() + " " + declaration.getRangeUri());
+          log.info("Not mapping " + declaration.getPropertyUri() + " " + range.getUri());
 
-          if(!namespaceToPackage.containsKey(new Namespace(declaration.getRangeUri()))) {
-            log.info("(reason :) namespace " + new Namespace(declaration.getRangeUri()) + " not contained in namespaceToPackage");
+          if (!namespaceToPackage.containsKey(new Namespace(range.getUri()))) {
+            log.info("(reason :) namespace " + new Namespace(range.getUri()) + " not contained in namespaceToPackage");
           }
-          if(!preRunClassList.containsKey(declaration.getRangeUri())) {
-            log.info("(reason :) range uri " + declaration.getRangeUri() + " not contained in preRunClassList");
+          if (!preRunClassList.containsKey(range.getUri())) {
+            log.info("(reason :) range uri " + range.getUri() + " not contained in preRunClassList");
           }
 
         }
 
+      }
       }
 
 
@@ -527,6 +532,12 @@ public class ClassGenerateEngine {
       return simpleReturnType;
     }
     public String getReturnType() {
+      return returnType;
+    }
+    public String getReturnTypeTail() {
+      if(returnType.contains(".")) {
+        return returnType.substring(returnType.lastIndexOf(".")+1);
+      }
       return returnType;
     }
 

@@ -19,10 +19,10 @@ public class ApoPropertyDeclaration {
 
     PropertyDeclarationImpl a = new PropertyDeclarationImpl();
     a.setPropertyUri("http://baab.nl/dingdong/#");
-    a.setRangeUri("http://baab.nl/bang/#");
+    a.addRange("http://baab.nl/bang/#","Bang");
     PropertyDeclarationImpl b = new PropertyDeclarationImpl();
     b.setPropertyUri("http://baab.nl/dingdong/#");
-    b.setRangeUri("http://baab.nl/bang/#");
+    b.addRange("http://baab.nl/bang/#","Bang");
 
     assertTrue(a.equals(b));
 

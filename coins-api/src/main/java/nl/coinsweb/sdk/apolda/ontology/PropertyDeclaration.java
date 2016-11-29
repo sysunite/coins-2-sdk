@@ -24,6 +24,10 @@
  **/
 package nl.coinsweb.sdk.apolda.ontology;
 
+import nl.coinsweb.sdk.apolda.ontology.impl.PropertyDeclarationImpl;
+
+import java.util.List;
+
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
@@ -40,10 +44,8 @@ public interface PropertyDeclaration {
   void setPropertyOwner(String propertyOwnerUri);
   String getPropertyOwner();
   boolean hasRange();
-  void setRangeUri(String rangeUri);
-  String getRangeUri();
-  void setRangeName(String rangeName);
-  String getRangeName();
+  void addRange(String rangeUri, String rangeName);
+  List<PropertyDeclarationImpl.Range> getRanges();
 
   void setCardinality(int cardinality);
   int getCardinality();

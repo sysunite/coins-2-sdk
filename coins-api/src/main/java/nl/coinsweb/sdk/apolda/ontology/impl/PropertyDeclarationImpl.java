@@ -28,6 +28,9 @@ import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
@@ -39,8 +42,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   private String propertyName;
   private String propertyLabel;
   private String propertyOwnerUri;
-  private String rangeUri;
-  private String rangeName;
+  private ArrayList<Range> rangeList = new ArrayList<>();
   private int cardinality = -1;
   private boolean owlFunctionalProperty = false;
 
@@ -100,35 +102,20 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   }
 
   @Override
-  public void setRangeUri(String rangeUri) {
-    if(this.rangeUri!=null) {
-      log.warn("Overriding "+this.rangeUri+" with "+rangeUri);
-    }
-    this.rangeUri = rangeUri;
+  public void addRange(String rangeUri, String rangeName) {
+    rangeList.add(new Range(rangeUri, rangeName));
   }
 
   @Override
   public boolean hasRange() {
-    return rangeUri != null;
+    return !rangeList.isEmpty();
   }
+
   @Override
-  public String getRangeUri() {
-    if(!hasRange()) {
-      return null;
-    }
-    return rangeUri;
+  public List<Range> getRanges() {
+    return rangeList;
   }
-  @Override
-  public void setRangeName(String rangeName) {
-    if(this.rangeName!=null) {
-      log.warn("Overriding "+this.rangeName+" with "+rangeName);
-    }
-    this.rangeName = rangeName;
-  }
-  @Override
-  public String getRangeName() {
-    return rangeName;
-  }
+
 
   @Override
   public void setCardinality(int cardinality) {
@@ -168,7 +155,7 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
   @Override
   public int hashCode() {
     if(hasRange()) {
-      return getPropertyUri().hashCode() + getRangeUri().hashCode();
+      return getPropertyUri().hashCode() + getRanges().hashCode();
     }
     return getPropertyUri().hashCode();
   }
@@ -182,10 +169,25 @@ public class PropertyDeclarationImpl implements PropertyDeclaration {
 
       if(propertyDeclaration.hasRange() && hasRange()) {
         return propertyDeclaration.getPropertyUri().equals(getPropertyUri()) &&
-            propertyDeclaration.getRangeUri().equals(getRangeUri());
+            propertyDeclaration.getRanges().size() == getRanges().size(); // todo: compare the content of these sets
       }
       return propertyDeclaration.getPropertyUri().equals(getPropertyUri());
     }
     return false;
+  }
+
+  public class Range {
+    private String uri;
+    private String name;
+    public Range(String uri, String name) {
+      this.uri = uri;
+      this.name = name;
+    }
+    public String getUri() {
+      return uri;
+    }
+    public String getName() {
+      return name;
+    }
   }
 }

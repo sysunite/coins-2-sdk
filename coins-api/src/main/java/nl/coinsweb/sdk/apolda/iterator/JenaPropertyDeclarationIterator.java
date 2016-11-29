@@ -106,8 +106,7 @@ public class JenaPropertyDeclarationIterator implements ClosableIterator {
           }
         }
 
-        declaration.setRangeUri(range.getURI());
-        declaration.setRangeName(range.getLocalName());
+        declaration.addRange(range.getURI(), range.getLocalName());
       }
       result.add(declaration);
     }
@@ -145,8 +144,7 @@ public class JenaPropertyDeclarationIterator implements ClosableIterator {
           Resource allValuesFrom = restriction.asAllValuesFromRestriction().getAllValuesFrom();
 
           if (allValuesFrom.isResource()) {
-            declaration.setRangeUri(allValuesFrom.getURI());
-            declaration.setRangeName(allValuesFrom.getLocalName());
+            declaration.addRange(allValuesFrom.getURI(), allValuesFrom.getLocalName());
 
           }
 

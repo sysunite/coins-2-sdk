@@ -24,21 +24,27 @@
  **/
 package nl.coinsweb.sdk.apolda.iterator;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.enhanced.EnhGraph;
+import com.hp.hpl.jena.enhanced.Personality;
+import com.hp.hpl.jena.ontology.*;
+import com.hp.hpl.jena.ontology.impl.OntClassImpl;
 import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.rdf.model.impl.PropertyImpl;
+import com.hp.hpl.jena.rdf.model.impl.RDFListImpl;
 import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 import com.hp.hpl.jena.util.iterator.ClosableIterator;
+import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import nl.coinsweb.sdk.apolda.language.Language;
 import nl.coinsweb.sdk.apolda.ontology.PropertyDeclaration;
 import nl.coinsweb.sdk.apolda.ontology.impl.PropertyDeclarationImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Bastiaan Bijl, Sysunite 2016
@@ -185,6 +191,7 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
         log.error("Found unparsable property " + property + " for querying property declaration");
         continue;
       }
+      log.trace("Handeling property "+property.asResource().getURI());
       result.setPropertyUri(property.asResource().getURI());
       result.setPropertyName(property.asResource().getLocalName());
 
@@ -206,9 +213,17 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
       result.setOwlFunctionalProperty(ontProperty.isFunctionalProperty());
 
       RDFNode range = row.get("range");
+
       if (range != null && range.isResource() && range.asResource().getLocalName() != null) {
-        result.setRangeUri(range.asResource().getURI());
-        result.setRangeName(range.asResource().getLocalName());
+        result.addRange(range.asResource().getURI(), range.asResource().getLocalName());
+      } else if(range != null && range.isAnon()) {
+        OntResource ontRange = ontModel.getOntResource(range.asResource());
+        if(ontRange.asClass().isUnionClass()) {
+          log.info("Range is union class");
+          for(Resource rangeResource : getUnionMembers(ontModel, ontRange)) {
+            result.addRange(rangeResource.getURI(), rangeResource.getLocalName());
+          }
+        }
       }
 
 
@@ -224,12 +239,13 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
 
         // Prefer the same namespace between domain and range
         Resource domain = new ResourceImpl(clazz);
-        if(range == null || !resultCollection.get(property.asResource().getURI()).hasRange()) {
-          log.warn("No way to choose from two property definitions for "+property.asResource().getURI()+", skipping one.");
+        if(range == null) {
+          log.warn("No range found from  property definitions for "+property.asResource().getURI()+", skipping.");
           continue;
         }
         boolean newDeclarationHasEqualNs = domain.getNameSpace().equals(range.asResource().getNameSpace());
-        boolean oldDeclarationHasEqualNs = domain.getNameSpace().equals(new ResourceImpl(resultCollection.get(property.asResource().getURI()).getRangeUri()).getNameSpace());
+        boolean oldDeclarationHasEqualNs = resultCollection.get(property.asResource().getURI()).hasRange() &&
+          domain.getNameSpace().equals(new ResourceImpl(resultCollection.get(property.asResource().getURI()).getRanges().get(0).getUri()).getNameSpace()); // todo: gets the first range, will not function properly with multiple ranges
 
         if(!oldDeclarationHasEqualNs && newDeclarationHasEqualNs) {
           resultCollection.put(property.asResource().getURI(), result);
@@ -242,6 +258,27 @@ public class SparqlPropertyDeclarationIterator implements ClosableIterator {
     }
     queryExecution.close();
     resultIterator = resultCollection.values().iterator();
+  }
+
+  private static ArrayList<Resource> getUnionMembers(OntModel ontModel, OntResource resource) {
+    return getUnionMembers(ontModel, resource, new ArrayList<Resource>());
+  }
+  private static ArrayList<Resource> getUnionMembers(OntModel ontModel, OntResource resource, ArrayList<Resource> result) {
+    RDFNode listNode = resource.getPropertyValue(new PropertyImpl("http://www.w3.org/2002/07/owl#unionOf"));
+    if(listNode != null) {
+      RDFList list = listNode.as(RDFList.class);
+      List<RDFNode> members = list.asJavaList();
+      for(RDFNode member : members) {
+        OntResource ontMember = ontModel.getOntResource(member.asResource());
+        log.info("Found member: "+ member.toString());
+        if(!ontMember.asClass().isUnionClass()) {
+          result.add(ontMember.asResource());
+        } else {
+          getUnionMembers(ontModel, ontMember, result);
+        }
+      }
+    }
+    return result;
   }
 
 
