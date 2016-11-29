@@ -4,5 +4,5 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 VERSION=$1
-sed -i '' -e  '3s/.*/ENV COINSVERSION '$VERSION'/' Dockerfile
+sed -i '' -e  '15s/.*/ENV COINSVERSION '$VERSION'/' Dockerfile
 docker-compose up --build
