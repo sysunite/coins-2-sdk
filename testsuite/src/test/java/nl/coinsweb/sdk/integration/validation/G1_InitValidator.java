@@ -40,13 +40,13 @@ public class G1_InitValidator {
     JenaCoinsContainer model = new JenaCoinsContainer();
     model.load(IntegrationHelper.getResourceFile("F1", "WOAVoorbeeld.ccr"), false);
 
-//    Validator validator = new Validator(model, "COINS 2.0 Lite");
+    Validator validator = new Validator(model, "COINS 2.0 Lite", "0.9.60-Original");
     Set<String> profiles = Profile.listProfiles();
 
     assertEquals(2, profiles.size());
     assertTrue("Profiles should find this profile", profiles.contains("COINS 2.0 Lite"));
     assertTrue("Profiles should find this profile", profiles.contains("COINS 2.0 Lite EQ"));
-//    validator.validate(Paths.get("/tmp/"));
+    validator.validate(Paths.get("/tmp/"));
 
     String reportHtml;
     try {
