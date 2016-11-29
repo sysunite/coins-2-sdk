@@ -217,7 +217,7 @@ public class A1_CreateNewCcrWithAttachments {
 
 
     // Reopen the ccr
-    JenaCoinsContainer ccr2 = new JenaCoinsContainer("/tmp/coinstest/onelineofrdf.zip");
+    JenaCoinsContainer ccr2 = new JenaCoinsContainer(new File("/tmp/coinstest/onelineofrdf.zip"));
     ccr2.close();
   }
 
@@ -248,7 +248,7 @@ public class A1_CreateNewCcrWithAttachments {
     log.info("#will reload now");
 
 
-    JenaCoinsContainer reloaded = new JenaCoinsContainer("/tmp/coinstest/testLinkToCore.zip");
+    JenaCoinsContainer reloaded = new JenaCoinsContainer(new File("/tmp/coinstest/testLinkToCore.zip"));
   }
 
 

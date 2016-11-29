@@ -12,6 +12,7 @@ import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Iterator;
 
 /**
@@ -60,7 +61,7 @@ public class B13_OTL {
   @Test
   public void bReloadContainer() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/otl.ccr");
+    JenaCoinsContainer model = new JenaCoinsContainer(new File("/tmp/coinstest/otl.ccr"));
 
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceOntModel());
   }

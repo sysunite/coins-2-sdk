@@ -24,6 +24,7 @@
  **/
 package nl.coinsweb.sdk;
 
+import com.hp.hpl.jena.Jena;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
@@ -106,7 +107,7 @@ public class FileManager {
     Path homePath = getTempZipPath().resolve(internalRef);
     initContainer(homePath, strict);
 
-    return new JenaCoinsContainer(internalRef);
+    return new JenaCoinsContainer(new InMemGraphSet(JenaCoinsContainer.DEFAULT_NAMESPACE), internalRef);
   }
   public static JenaCoinsContainer existingCoinsContainer(File sourceFile, String internalRef, final boolean strict) {
 
@@ -118,7 +119,7 @@ public class FileManager {
     unzipTo(sourceFile, homePath, strict);
     initContainer(homePath, strict);
 
-    return new JenaCoinsContainer(internalRef);
+    return new JenaCoinsContainer(new InMemGraphSet(JenaCoinsContainer.DEFAULT_NAMESPACE), internalRef);
   }
 
   public static String existingCoinsContainer(File sourceFile, final boolean strict) {

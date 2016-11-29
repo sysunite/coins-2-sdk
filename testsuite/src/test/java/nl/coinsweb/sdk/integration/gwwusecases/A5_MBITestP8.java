@@ -54,7 +54,7 @@ public class A5_MBITestP8 {
 
 
     // Constructing this container will copy the external libraries to a temp folder
-    JenaCoinsContainer ccr = new JenaCoinsContainer(instanceFile.toString());
+    JenaCoinsContainer ccr = new JenaCoinsContainer(instanceFile);
 
 
 
@@ -86,7 +86,7 @@ public class A5_MBITestP8 {
 
     log.info("#will reload now");
 
-    JenaCoinsContainer reloaded = new JenaCoinsContainer("/tmp/coinstest/MBITestP8.ccr");
+    JenaCoinsContainer reloaded = new JenaCoinsContainer(new File("/tmp/coinstest/MBITestP8.ccr"));
 
     reloaded.listIndividuals();
     reloaded.listClasses();

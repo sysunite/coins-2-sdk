@@ -460,7 +460,7 @@ public class BS {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", nr + ".rdf").getCanonicalFile();
-      model = new JenaCoinsContainer(testFile.toString());
+      model = new JenaCoinsContainer(testFile);
       if(withLib) {
 
         File libFile = IntegrationHelper.getResourceFile("BS", nr + "-lib.rdf").getCanonicalFile();
@@ -496,7 +496,7 @@ public class BS {
 
 
     // Reopen the ccr
-    JenaCoinsContainer reopenend = new JenaCoinsContainer("/tmp/coinstest/starterskit"+nr+"_inmem.ccr");
+    JenaCoinsContainer reopenend = new JenaCoinsContainer(new File("/tmp/coinstest/starterskit"+nr+"_inmem.ccr"));
 
     assertTrue(DatasetAsserts.verifyCompleteContent(reopenend, verifyFiles.iterator()));
     return reopenend;

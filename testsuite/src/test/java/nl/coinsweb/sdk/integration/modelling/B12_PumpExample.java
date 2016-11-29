@@ -14,6 +14,8 @@ import org.qudt.schema.qudt.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
@@ -75,7 +77,7 @@ public class B12_PumpExample {
   @Test
   public void bReopenCcr() {
 
-    JenaCoinsContainer model = new JenaCoinsContainer("/tmp/coinstest/zhejiangdayuan.ccr");
+    JenaCoinsContainer model = new JenaCoinsContainer(new File("/tmp/coinstest/zhejiangdayuan.ccr"));
     DatasetAsserts.logTriples(model.getCoinsGraphSet().getInstanceModel());
   }
 

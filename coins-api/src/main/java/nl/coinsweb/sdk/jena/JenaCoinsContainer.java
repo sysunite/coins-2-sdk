@@ -171,9 +171,6 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
    * create a container from existing file structure in FileManager
    * @param internalRef the id used by the FileManager
    */
-  public JenaCoinsContainer(String internalRef) {
-    this(new InMemGraphSet(DEFAULT_NAMESPACE), internalRef);
-  }
   public JenaCoinsContainer(CoinsGraphSet graphSet, String internalRef) {
 
 

@@ -14,7 +14,7 @@ public class JenaModelTest {
 
   @Test
   public void testOntologyHeader() {
-    JenaCoinsContainer container = new JenaCoinsContainer("http://sandbox.coinsweb.nl/");
+    JenaCoinsContainer container = new JenaCoinsContainer();
     log.debug(container.exportAsString());
   }
 }

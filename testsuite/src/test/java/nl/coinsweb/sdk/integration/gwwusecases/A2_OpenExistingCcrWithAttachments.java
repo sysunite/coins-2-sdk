@@ -47,7 +47,7 @@ public class A2_OpenExistingCcrWithAttachments {
   public void aOpenCcr() {
 
     File file = IntegrationHelper.getResourceFile("A2", "MBICOINS2.ccr");
-    JenaCoinsContainer ccr = new JenaCoinsContainer(file.toString());
+    JenaCoinsContainer ccr = new JenaCoinsContainer(file);
   }
 
 
@@ -60,7 +60,7 @@ public class A2_OpenExistingCcrWithAttachments {
     expectedEx.expect(RuntimeException.class);
     expectedEx.expectMessage("Supplied file does not exist.");
 
-    JenaCoinsContainer ccr = new JenaCoinsContainer("/tmp/coinstest/not-existing.ccr");
+    JenaCoinsContainer ccr = new JenaCoinsContainer(new File("/tmp/coinstest/not-existing.ccr"));
     ccr.close();
   }
 
@@ -79,7 +79,7 @@ public class A2_OpenExistingCcrWithAttachments {
     File file = IntegrationHelper.getResourceFile("A2", "sample2.ccr");
 
     // Read the container content
-    JenaCoinsContainer ccr = new JenaCoinsContainer(file.toString());
+    JenaCoinsContainer ccr = new JenaCoinsContainer(file);
 
 
     // Zip the result
@@ -108,12 +108,12 @@ public class A2_OpenExistingCcrWithAttachments {
 
     // The one
     File file1 = IntegrationHelper.getResourceFile("A2","sample.ccr");
-    JenaCoinsContainer ccr1 = new JenaCoinsContainer(file1.toString());
+    JenaCoinsContainer ccr1 = new JenaCoinsContainer(file1);
 
 
     // The other
     File file2 = IntegrationHelper.getResourceFile("A2","sample2.ccr");
-    JenaCoinsContainer ccr2 = new JenaCoinsContainer(file2.toString());
+    JenaCoinsContainer ccr2 = new JenaCoinsContainer(file2);
 
 
 

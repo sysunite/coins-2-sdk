@@ -49,7 +49,7 @@ public class G2_StarterKitValidation {
     JenaCoinsContainer model;
     try {
       File testFile = IntegrationHelper.getResourceFile("BS", "4.01" + ".rdf").getCanonicalFile();
-      model = new JenaCoinsContainer(testFile.toString());
+      model = new JenaCoinsContainer(testFile);
 
       File libFile = IntegrationHelper.getResourceFile("BS", "4.01" + "-lib.rdf").getCanonicalFile();
       model.addImport(libFile.getCanonicalPath(), null, true, true, true);

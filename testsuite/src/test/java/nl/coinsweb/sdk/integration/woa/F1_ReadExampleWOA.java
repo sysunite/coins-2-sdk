@@ -130,7 +130,7 @@ public class F1_ReadExampleWOA {
 //
 //
 //
-//      JenaCoinsContainer reopened = new JenaCoinsContainer("/tmp/newWoaContent.ccr", "http://playground.com/");
+//      JenaCoinsContainer reopened = new JenaCoinsContainer(new File("/tmp/newWoaContent.ccr", "http://playground.com/");
 //
 //      try {
 //
