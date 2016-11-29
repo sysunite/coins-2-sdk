@@ -819,7 +819,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public void batchAddCoinsContainerObjectType() {
     Iterator<String> iterator = listIndividuals();
     while(iterator.hasNext()) {
-      addCoinsContainerObjectType(iterator.next());
+      String individualUri = iterator.next();
+      if(individualUri != null &&
+        !individualUri.equals(graphSet.getInstanceNamespace()) &&
+        !individualUri.equals(graphSet.getInstanceNamespaceWithoutHash())) {
+        addCoinsContainerObjectType(individualUri);
+      }
     }
   }
   @Override
