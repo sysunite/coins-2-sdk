@@ -1,7 +1,5 @@
 FROM mono:latest
 
-ENV COINSVERSION 1.1.602
-
 RUN apt-get update
 RUN apt-get install wget unzip -y -qq
 
@@ -10,6 +8,8 @@ RUN cd /tmp && wget -q https://sourceforge.net/projects/ikvm/files/ikvm/7.2.4630
     unzip ikvmbin-7.2.4630.5.zip && mv /tmp/ikvm-7.2.4630.5 /etc/ikvm
 RUN echo "#!/usr/bin/env bash\nmono /etc/ikvm/bin/ikvmc.exe \"\$@\"" > /usr/bin/ikvmc
 RUN chmod 777 /usr/bin/ikvmc
+
+ENV COINSVERSION 1.1.603
 
 WORKDIR /opt
 CMD \
