@@ -260,13 +260,13 @@ public class G2_StarterKitValidation {
 
 
   public void validate(JenaCoinsContainer model, String reportFileName) {
-    validate(model, reportFileName, "COINS 2.0 Lite");
+    validate(model, reportFileName, "COINS 2.0 Lite", "0.9.60-Original");
   }
-  public void validate(JenaCoinsContainer model, String reportFileName, String profileName) {
+  public void validate(JenaCoinsContainer model, String reportFileName, String profileName, String profileVersion) {
 
     Path reportFile = Paths.get("/tmp/"+reportFileName);
 
-    Validator validator = new Validator(model, profileName);
+    Validator validator = new Validator(model, profileName, profileVersion);
     validator.validate(reportFile);
   }
 }

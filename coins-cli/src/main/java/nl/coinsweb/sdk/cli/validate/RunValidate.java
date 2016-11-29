@@ -151,6 +151,7 @@ public class RunValidate {
 
     // Profile
     String profileName = null;
+    String profileVersion = null;
     if(options.hasCustomProfile()) {
 
       try {
@@ -158,6 +159,7 @@ public class RunValidate {
         File profileFile = options.getCustomProfile().toFile();
         Profile profile = Profile.loadProfile(new FileInputStream(profileFile));
         profileName = profile.getName();
+        profileVersion = profile.getVersion();
       } catch (FileNotFoundException e) {
         if(!Run.QUIET) {
           System.out.println("(!) custom profile file was not found\n");
@@ -175,26 +177,47 @@ public class RunValidate {
 
     if(options.hasProfile()) {
       profileName = options.getProfile();
-      if(!Profile.listProfiles().contains(profileName)) {
-
-        if(!Run.QUIET) {
-          System.out.println("(!) profile name " + profileName + " was not found, please choose from:\n");
-          for (String availableProfile : Profile.listProfiles()) {
-            System.out.println(" - " + availableProfile);
-          }
-          System.out.println("");
-        }
-        System.exit(1);
-        return;
-      }
     }
     if(profileName == null) {
       profileName = "COINS 2.0 Lite";
     }
+    if(!Profile.listProfiles().contains(profileName)) {
+
+      if(!Run.QUIET) {
+        System.out.println("(!) profile name " + profileName + " was not found, please choose from:\n");
+        for (String availableProfile : Profile.listProfiles()) {
+          System.out.println(" - " + availableProfile);
+        }
+        System.out.println("");
+      }
+      System.exit(1);
+      return;
+    }
+
+
+    if(options.hasProfileVersion()) {
+      profileVersion = options.getProfileVersion();
+    }
+    if(profileVersion == null) {
+      profileVersion = "0.9.60-Original";
+    }
+    if(!Profile.getProfiles().get(profileName).containsKey(profileVersion)) {
+
+      if(!Run.QUIET) {
+        System.out.println("(!) profile name " + profileName + " was not found, please choose from:\n");
+        for (String availableProfile : Profile.listProfiles()) {
+          System.out.println(" - " + availableProfile);
+        }
+        System.out.println("");
+      }
+      System.exit(1);
+      return;
+    }
+
 
 
     log.info("Will init validator and start validation.");
-    Validator validator = new Validator(container, profileName);
+    Validator validator = new Validator(container, profileName, profileVersion);
 
     if(options.generateHtml() && options.generateXml()) {
       validator.validate(reportFile, Validator.GENERATE_BOTH);

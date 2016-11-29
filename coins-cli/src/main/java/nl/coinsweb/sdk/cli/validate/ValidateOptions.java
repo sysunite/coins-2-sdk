@@ -51,8 +51,8 @@ public class ValidateOptions {
       options.addOption("h", "help", false, "print help");
       options.addOption("o", true, "output file (default: report.html)");
       options.addOption("p", "profile", true, "profile to use (default: \"COINS 2.0 Lite\")");
+      options.addOption("v", "profileversion", true, "profileversion to use (default: \"0.9.60-Original\")");
       options.addOption("q", false, "quiet, no output to the console");
-      options.addOption("v", false, "verbose logging (in the current build this can not be disabled)");
       options.addOption("x", "xml", false, "generate xml report (html is default)");
     }
     return options;
@@ -97,6 +97,9 @@ public class ValidateOptions {
 
   public boolean hasProfile() { return cmd.hasOption("p"); }
   public String getProfile() { return (!hasProfile()) ? null : cmd.getOptionValue("p"); }
+
+  public boolean hasProfileVersion() { return cmd.hasOption("v"); }
+  public String getProfileVersion() { return (!hasProfileVersion()) ? null : cmd.getOptionValue("v"); }
 
   public boolean hasCustomProfile() { return cmd.hasOption("c"); }
   public Path getCustomProfile() { return (!hasCustomProfile()) ? null : CliOptions.resolvePath(cmd.getOptionValue("c")); }

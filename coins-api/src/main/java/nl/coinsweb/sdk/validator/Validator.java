@@ -61,9 +61,9 @@ public class Validator {
   private CoinsModel model;
 
 
-  public Validator(CoinsModel model, String profileName) {
+  public Validator(CoinsModel model, String profileName, String profileVersion) {
     this.model = model;
-    this.profile = Profile.selectProfile(profileName);
+    this.profile = Profile.selectProfile(profileName, profileVersion);
   }
 
   /**

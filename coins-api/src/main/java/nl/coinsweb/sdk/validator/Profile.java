@@ -104,15 +104,6 @@ public class Profile {
     }
   }
 
-  public static Profile selectProfile(String profileName) {
-    if(!getProfiles().containsKey(profileName)) {
-      throw new RuntimeException("The profile with name \""+profileName+"\" is not registered.");
-    }
-    ArrayList<String> versions = new ArrayList();
-    versions.addAll(getProfiles().get(profileName).keySet());
-    Collections.sort(versions);
-    return selectProfile(profileName, versions.get(versions.size()-1));
-  }
   public static Profile selectProfile(String profileName, String version) {
     if(!getProfiles().containsKey(profileName)) {
       throw new RuntimeException("The profile with name \""+profileName+"\" is not registered.");
@@ -181,7 +172,7 @@ public class Profile {
     }
   }
 
-  private static HashMap<String, HashMap<String, Profile>> getProfiles() {
+  public static HashMap<String, HashMap<String, Profile>> getProfiles() {
     if(profiles == null) {
       try {
         initProfiles();

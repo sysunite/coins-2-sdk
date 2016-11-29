@@ -51,7 +51,7 @@ public class H4_GraphSetTest {
 
       Path reportFile = Paths.get("/tmp/inmem_graphtest.html");
 
-      Validator validator = new Validator(model, profile.getName());
+      Validator validator = new Validator(model, profile.getName(), profile.getVersion());
       validator.validate(reportFile);
 
     } catch (FileNotFoundException e) {
@@ -72,7 +72,7 @@ public class H4_GraphSetTest {
 
       Path reportFile = Paths.get("/tmp/tdb_graphtest.html");
 
-      Validator validator = new Validator(model, profile.getName());
+      Validator validator = new Validator(model, profile.getName(), profile.getVersion());
       validator.validate(reportFile);
 
     } catch (FileNotFoundException e) {
@@ -93,7 +93,7 @@ public class H4_GraphSetTest {
 
       Path reportFile = Paths.get("/tmp/fuseki_graphtest.html");
 
-      Validator validator = new Validator(model, profile.getName());
+      Validator validator = new Validator(model, profile.getName(), profile.getVersion());
       validator.validate(reportFile);
 
     } catch (FileNotFoundException e) {
