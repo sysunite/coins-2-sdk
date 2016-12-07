@@ -469,6 +469,11 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
 
+  public void setOriginalContainerFile(File originalContainerFile) {
+    this.originalContainerFile = originalContainerFile;
+  }
+
+
 
 
 
@@ -521,14 +526,14 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
   @Override
-  public void addImport(String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc) {
-    addImport(graphSet.getInstanceModel(), filePath, namespace, addAsImport, tryToLoad, addToDoc);
+  public void addImport(String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean copyToContainer) {
+    addImport(graphSet.getInstanceModel(), filePath, namespace, addAsImport, tryToLoad, copyToContainer);
   }
-  public void addImport(Model model, String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean addToDoc) {
+  public void addImport(Model model, String filePath, String namespace, boolean addAsImport, boolean tryToLoad, boolean copyToContainer) {
 
     // Check the file
     boolean validFile = false;
-    File checkFile;
+    File checkFile = null;
     if(filePath != null) {
       checkFile = new File(filePath);
       if(checkFile.exists()) {
@@ -536,12 +541,15 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       }
     }
 
-    // Add the file to the doc folder if requested
+    // Add the file to the container folder if requested
     Namespace actualNamespace = null;
-    if(addToDoc) {
+    if(copyToContainer) {
       if(!validFile) {
         throw new CoinsFileNotFoundException("Requested to add file "+filePath+" to the doc folder, but the file cannot be found.");
       }
+
+      FileManager.copyAndLinkLibrary(internalRef, checkFile);
+
       if(namespace != null) {
         actualNamespace = FileManager.registerLibrary(new File(filePath).toURI(), new Namespace(namespace), availableLibraryFiles);
       } else {
