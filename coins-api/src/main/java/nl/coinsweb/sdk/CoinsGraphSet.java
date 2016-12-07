@@ -125,11 +125,6 @@ public interface CoinsGraphSet {
 
 
 
-  // OntModels
-
-  public OntModel asOntModel(Model model);
-  public OntModel asOntModel(Model model, Reasoner reasoner);
-
   /**
    * If implemented as Jena model, return a Jena OntModel object containing the instances.
    *

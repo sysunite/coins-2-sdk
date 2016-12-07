@@ -612,7 +612,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     Namespace key = new Namespace(namespace);
     if(graphSet.getLibraryModels().containsKey(key)) {
 
-      ExtendedIterator<OntClass> iterator = graphSet.asOntModel(graphSet.getLibraryModels().get(key)).listClasses();
+      ExtendedIterator<OntClass> iterator = InMemGraphSet.asOntModel(graphSet.getLibraryModels().get(key)).listClasses();
       while(iterator.hasNext()) {
         OntClass ontClass = iterator.next();
         if(!ontClass.isAnon()) {
@@ -737,7 +737,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public RuntimeCoinsObject getIndividual(Model model, String individualUri) {
-    Individual individual = graphSet.asOntModel(model).getIndividual(individualUri);
+    Individual individual = InMemGraphSet.asOntModel(model).getIndividual(individualUri);
     if(individual!=null) {
       ExtendedIterator<OntClass> classIterator = individual.listOntClasses(true);
       while(classIterator.hasNext()) {
@@ -933,7 +933,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   public Iterator<String> listPropertyDefinitions(String classUri, String propertyTypeClassUri) {
     ArrayList<String> buffer = new ArrayList<>();
 //    Iterator<ApoPropertyDeclaration> iterator =  new JenaPropertyDeclarationIterator(classUri, asOntModel(getFullUnionModel()), propertyTypeClassUri);
-    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, graphSet.asOntModel(graphSet.getFullUnionModel()), propertyTypeClassUri);
+    Iterator<PropertyDeclaration> iterator =  new SparqlPropertyDeclarationIterator(classUri, InMemGraphSet.asOntModel(graphSet.getFullUnionModel()), propertyTypeClassUri);
     while(iterator.hasNext()) {
       buffer.add(iterator.next().getPropertyUri());
     }
@@ -956,7 +956,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     ArrayList<CoinsObject> buffer = new ArrayList<>();
 
-    StmtIterator iterator = graphSet.asOntModel(model).getIndividual(instanceUri).listProperties();
+    StmtIterator iterator = InMemGraphSet.asOntModel(model).getIndividual(instanceUri).listProperties();
     while(iterator.hasNext()) {
 
       Statement statement = iterator.nextStatement();
@@ -965,7 +965,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       if(object.isResource() && !object.isAnon()) {
 
-        Individual property = graphSet.asOntModel(model).getIndividual(object.asResource().getURI());
+        Individual property = InMemGraphSet.asOntModel(model).getIndividual(object.asResource().getURI());
         if(property != null) {
 
           ExtendedIterator<OntClass> classes = property.listOntClasses(true);
@@ -1005,7 +1005,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     ArrayList<T> buffer = new ArrayList<>();
     try {
       String propertyTypeClassUri =  (String) propertyTypeClass.getField("classUri").get(String.class);
-      StmtIterator iterator = graphSet.asOntModel(model).getIndividual(instanceUri).listProperties();
+      StmtIterator iterator = InMemGraphSet.asOntModel(model).getIndividual(instanceUri).listProperties();
       while(iterator.hasNext()) {
         Statement statement = iterator.nextStatement();
         RDFNode object = statement.getObject();
@@ -1038,7 +1038,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     }
 
     ArrayList<RuntimeCoinsObject> buffer = new ArrayList<>();
-    StmtIterator iterator = graphSet.asOntModel(model).getIndividual(instanceUri).listProperties();
+    StmtIterator iterator = InMemGraphSet.asOntModel(model).getIndividual(instanceUri).listProperties();
     while(iterator.hasNext()) {
       Statement statement = iterator.nextStatement();
       RDFNode object = statement.getObject();
@@ -1068,7 +1068,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     ArrayList<T> buffer = new ArrayList<>();
     try {
       String propertyTypeClassUri =  (String) propertyTypeClass.getField("classUri").get(String.class);
-      StmtIterator iterator = graphSet.asOntModel(model).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
+      StmtIterator iterator = InMemGraphSet.asOntModel(model).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
       while(iterator.hasNext()) {
         Statement statement = iterator.nextStatement();
         RDFNode object = statement.getObject();
@@ -1101,7 +1101,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     }
 
     ArrayList<RuntimeCoinsObject> buffer = new ArrayList<>();
-    StmtIterator iterator = graphSet.asOntModel(model).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
+    StmtIterator iterator = InMemGraphSet.asOntModel(model).getIndividual(instanceUri).listProperties(new PropertyImpl(predicate));
     while(iterator.hasNext()) {
       Statement statement = iterator.nextStatement();
       RDFNode object = statement.getObject();
@@ -1306,7 +1306,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       GregorianCalendar calendar = new GregorianCalendar();
       calendar.setTime((Date)object);
       XSDDateTime dateTime = new XSDDateTime(calendar);
-      Literal propValue = graphSet.asOntModel(model).createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
+      Literal propValue = InMemGraphSet.asOntModel(model).createTypedLiteral(dateTime, XSDDatatype.XSDdateTime);
 
       boolean permission = true;
       for(Injector injector : injectors) {
@@ -1314,7 +1314,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       }
       if(permission) {
         OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
-        Individual individual = graphSet.asOntModel(model).getIndividual(subject);
+        Individual individual = InMemGraphSet.asOntModel(model).getIndividual(subject);
         individual.setPropertyValue(prop, propValue);
       } else {
         throw new UnspecifiedInjectorRejectionException();
@@ -1345,7 +1345,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       }
       if(permission) {
         OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
-        Individual individual = graphSet.asOntModel(model).getIndividual(subject);
+        Individual individual = InMemGraphSet.asOntModel(model).getIndividual(subject);
         individual.setPropertyValue(prop, propValue);
       } else {
         throw new UnspecifiedInjectorRejectionException();
@@ -1377,7 +1377,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
       }
       if(permission) {
         OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
-        Individual individual = graphSet.asOntModel(model).getIndividual(subject);
+        Individual individual = InMemGraphSet.asOntModel(model).getIndividual(subject);
         individual.removeProperty(prop, propValue);
       } else {
         throw new UnspecifiedInjectorRejectionException();
@@ -1569,12 +1569,12 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   @Override
   public ExtendedIterator<OntClass> listOntClasses() {
-    return graphSet.asOntModel(graphSet.getFullUnionModel()).listClasses();
+    return InMemGraphSet.asOntModel(graphSet.getFullUnionModel()).listClasses();
   }
 
   @Override
   public Iterator<PropertyDeclaration> listPropertyDeclarations(String classUri) {
-    return new SparqlPropertyDeclarationIterator(classUri, graphSet.asOntModel(graphSet.getFullUnionModel()));
+    return new SparqlPropertyDeclarationIterator(classUri, InMemGraphSet.asOntModel(graphSet.getFullUnionModel()));
 //    return new JenaPropertyDeclarationIterator(clazz, asOntModel(getFullUnionModel()));
   }
 
@@ -1770,7 +1770,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   public void addNamedModelForImports(Model model) {
 
-    OntModel enrichedModel = graphSet.asOntModel(model);
+    OntModel enrichedModel = InMemGraphSet.asOntModel(model);
 
     for(String imp : enrichedModel.listImportedOntologyURIs()) {
       log.trace("Need to load "+imp);

@@ -65,7 +65,7 @@ public class InMemGraphSet implements CoinsGraphSet {
   private static final Logger log = LoggerFactory.getLogger(InMemGraphSet.class);
 
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_MICRO_RULE_INF;
-  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
+  public static OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM_RDFS_INF;
   //  OntModelSpec ontModelSpec = OntModelSpec.OWL_MEM;
 
   protected Namespace instanceNamespace;
@@ -262,8 +262,8 @@ public class InMemGraphSet implements CoinsGraphSet {
 
 
 
-  @Override
-  public OntModel asOntModel(Model model) {
+
+  public static OntModel asOntModel(Model model) {
 
     // Set document manager policy file
     OntDocumentManager dm = new OntDocumentManager();
@@ -277,8 +277,8 @@ public class InMemGraphSet implements CoinsGraphSet {
     return result;
   }
 
-  @Override
-  public OntModel asOntModel(Model model, Reasoner reasoner) {
+
+  public static OntModel asOntModel(Model model, Reasoner reasoner) {
 
     // Set document manager policy file
     OntDocumentManager dm = new OntDocumentManager();
