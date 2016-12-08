@@ -427,7 +427,7 @@ public class InMemGraphSet implements CoinsGraphSet {
 
 
   @Override
-  public void writeModelToFile(Model model, OutputStream output, RDFFormat format) {
+  public void writeModelToFile(Model model, String baseNamespace, OutputStream output, RDFFormat format) {
 
     if(format == RDFFormat.RDFXML || format == RDFFormat.RDFXML_ABBREV ||
         format == RDFFormat.RDFXML_PLAIN || format == RDFFormat.RDFXML_PRETTY) {
@@ -438,18 +438,18 @@ public class InMemGraphSet implements CoinsGraphSet {
       } else {
         writer = model.getWriter( "RDF/XML" );
       }
-      writer.setProperty("xmlbase", getInstanceNamespace() );
+      writer.setProperty("xmlbase", baseNamespace);
       writer.write(model, output, null);
 
     } else {
       Dataset dataset = getDataset();
-      dataset.getNamedModel(instanceNamespace.toString());
+      dataset.getNamedModel(baseNamespace);
       RDFDataMgr.write(output, model, format);
     }
   }
 
   @Override
-  public String writeModelToString(Model model, RDFFormat format) {
+  public String writeModelToString(Model model, String baseNamespace, RDFFormat format) {
 
     log.trace("Starting to export.");
 
@@ -466,12 +466,12 @@ public class InMemGraphSet implements CoinsGraphSet {
       } else {
         writer = model.getWriter( "RDF/XML" );
       }
-      writer.setProperty("xmlbase", getInstanceNamespace() );
+      writer.setProperty("xmlbase", baseNamespace);
       writer.write(model, boas, null);
 
     } else {
       Dataset dataset = getDataset();
-      dataset.getNamedModel(instanceNamespace.toString());
+      dataset.getNamedModel(baseNamespace);
       RDFDataMgr.write(boas, model, format);
     }
 

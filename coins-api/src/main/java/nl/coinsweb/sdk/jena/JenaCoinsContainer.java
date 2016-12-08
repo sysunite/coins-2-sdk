@@ -361,15 +361,15 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
   public void exportModel() {
     File contentFile = FileManager.createRdfFile(internalRef, rdfFileName);
-    exportModel(graphSet.getInstanceModel(), contentFile.getPath(), RDFFormat.RDFXML);
+    exportModel(graphSet.getInstanceModel(), graphSet.getInstanceNamespace(), contentFile.getPath(), RDFFormat.RDFXML);
     File woaFile = FileManager.createWoaFile(internalRef, woaFileName);
-    exportModel(graphSet.getWoaModel(), woaFile.getPath(), RDFFormat.RDFXML);
+    exportModel(graphSet.getWoaModel(), graphSet.getWoaNamespace(), woaFile.getPath(), RDFFormat.RDFXML);
   }
   @Override
-  public void exportModel(Model model, String target) {
-    exportModel(model, target, RDFFormat.RDFXML);
+  public void exportModel(Model model, String baseNamespace, String target) {
+    exportModel(model, baseNamespace, target, RDFFormat.RDFXML);
   }
-  public File exportModel(Model model, String toFileName, RDFFormat format) {
+  public File exportModel(Model model, String baseNamespace, String toFileName, RDFFormat format) {
 
     try {
 
@@ -379,7 +379,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
 
       OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-      getCoinsGraphSet().writeModelToFile(model, out, format);
+      getCoinsGraphSet().writeModelToFile(model, baseNamespace, out, format);
       log.info("Exported to " + file.getAbsolutePath());
       return file;
 
@@ -402,7 +402,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
   @Override
   public String exportAsString(Model model, RDFFormat format) {
-    return getCoinsGraphSet().writeModelToString(graphSet.getInstanceModel(), format);
+    return getCoinsGraphSet().writeModelToString(graphSet.getInstanceModel(), graphSet.getInstanceNamespace(), format);
   }
 
   @Override

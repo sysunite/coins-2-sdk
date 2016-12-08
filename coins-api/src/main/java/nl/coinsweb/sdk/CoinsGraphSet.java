@@ -169,9 +169,9 @@ public interface CoinsGraphSet {
 
   public Dataset getValidationDataset();
 
-  public void writeModelToFile(Model model, OutputStream output, RDFFormat format);
+  public void writeModelToFile(Model model, String baseNamespace, OutputStream output, RDFFormat format);
 
-  public String writeModelToString(Model model, RDFFormat format);
+  public String writeModelToString(Model model, String baseNamespace, RDFFormat format);
 
   public void writeFullToFile(OutputStream output, RDFFormat format);
   public void writeFullToFile(Dataset dataset, OutputStream output, RDFFormat format);
