@@ -24,7 +24,6 @@
  **/
 package nl.coinsweb.sdk;
 
-import com.hp.hpl.jena.Jena;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.vocabulary.OWL;
@@ -559,6 +558,13 @@ public class FileManager {
       log.error(e.getMessage(), e);
     }
     return absoluteTempPath;
+  }
+
+  public static void removeAttachment(String internalRef, String fileName) {
+    Path homePath = getTempZipPath().resolve(internalRef);
+    Path attachmentPath = homePath.resolve(ATTACHMENT_PATH);
+    Path absoluteTempPath = attachmentPath.resolve(fileName);
+    absoluteTempPath.toFile().delete();
   }
 
   public static Path getAttachment(String internalRef, String fileName) {

@@ -467,6 +467,42 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     documentReference.setObject("http://www.coinsweb.nl/cbim-2.0.rdf#filePath", createdProperty);
   }
 
+  @Override
+  public void removeAttachment(String fileName) {
+
+    // Only continue if the attachment exists
+    if (!getAttachments().contains(fileName)) {
+      return;
+    }
+
+    // Remove the file to the right directory
+    FileManager.removeAttachment(internalRef, fileName);
+
+    // Add to internal list of attachments
+    attachments.remove(fileName);
+
+    // Add an rdf element
+    log.info("Will remove rdf mentions of this attachment");
+    String query =
+      "SELECT * WHERE { GRAPH <"+getCoinsGraphSet().getInstanceNamespace()+"> {" +
+        "?documentReference   <http://www.coinsweb.nl/cbim-2.0.rdf#filePath>      ?createdProperty . " +
+        "?createdProperty     <http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue> \""+fileName+"\" }}";
+
+    Iterator<Map<String, String>> result = query(query);
+    if(!result.hasNext()) {
+      log.warn("No reference of this filename was found in the instance graph: "+fileName);
+      return;
+    }
+    Map<String, String> row = result.next();
+
+    removeIndividualAndProperties(row.get("createdProperty"));
+    removeIndividualAndProperties(row.get("documentReference"));
+
+    if(result.hasNext()) {
+      log.warn("More than one reference of this filename was found in the instance graph, only deleted one: "+fileName);
+    }
+  }
+
 
 
   public void setOriginalContainerFile(File originalContainerFile) {
@@ -1381,7 +1417,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
       boolean permission = true;
       for(Injector injector : injectors) {
-        permission &= injector.proposeWrite(this, subject, predicate, propValue.getString());
+        permission &= injector.proposeWrite(this, subject, predicate, null);
       }
       if(permission) {
         OntProperty prop = graphSet.getUnionJenaOntModel().getOntProperty(predicate);
@@ -1682,7 +1718,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     boolean permission = true;
     for(Injector injector : injectors) {
-      permission &= injector.proposeWrite(this, subject, predicate, object);
+      permission &= injector.proposeWrite(this, subject, predicate, null);
     }
     if(permission) {
       model.remove(statement);
@@ -1701,7 +1737,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
 
     boolean permission = true;
     for(Injector injector : injectors) {
-      permission &= injector.proposeWrite(this, subject, predicate, object.toString());
+      permission &= injector.proposeWrite(this, subject, predicate, null);
     }
     if(permission) {
       model.remove(statement);

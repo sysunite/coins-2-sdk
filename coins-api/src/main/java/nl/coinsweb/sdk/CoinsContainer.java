@@ -121,6 +121,13 @@ public interface CoinsContainer {
    */
   public void addAttachment(String filePath);
 
+  /**
+   * Remove the file from the doc folder and remove all rdf mentions of this file.
+   *
+   * @param fileName  the name of the file ('map.pdf')
+   */
+  public void removeAttachment(String fileName);
+
 
   /**
    * Return the associated CoinsModel object.
