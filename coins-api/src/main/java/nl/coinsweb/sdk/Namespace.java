@@ -118,7 +118,7 @@ public class Namespace {
 
   @Override
   public int hashCode() {
-    return toString().hashCode();
+    return getBase().hashCode();
   }
 
   @Override
@@ -139,7 +139,7 @@ public class Namespace {
       return false;
     }
 
-    return normalizedInput.withoutHash().equals(withoutHash());
+    return normalizedInput.getBase().equals(getBase());
   }
 
 
