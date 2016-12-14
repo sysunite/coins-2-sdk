@@ -54,7 +54,7 @@ List<ValidationQueryResult> : validationRules
       </attachments>
     </container>
   </configuration>
-  <run>
+  <execution>
     <date>${date}</date>
     <executionTime>${executionTime?c}</executionTime>
     <maxMemoryUsage>${memMaxUsage}</maxMemoryUsage>
@@ -77,58 +77,42 @@ List<ValidationQueryResult> : validationRules
     <schemaInferences>
       <runs>${schemaInferences.numRuns}</runs>
       <executionTime>${schemaInferences.executionTime?c}</executionTime>
-      <graphs>
-        <#assign keys = schemaInferences.triplesAdded?keys>
-        <#list keys as graphname>
-        <graph>
-          <name>${graphname}</name>
-          <triplesAdded>${schemaInferences.triplesAdded[graphname]?c}</triplesAdded>
-        </graph>
+      <statistics>
+        <#assign runMap = schemaInferences.triplesAddedDetailed>
+        <#list runMap?keys as run>
+        <run key="${run}">
+          <#assign queryMap = runMap[run]>
+          <#list queryMap?keys as query>
+          <query key="${query}">
+            <#assign graphMap = queryMap[query]>
+            <#list graphMap?keys as graph>
+            <graph key="${graph}">${graphMap[graph]?c}</graph>
+            </#list>
+          </query>
+          </#list>
+        </run>
         </#list>
-      </graphs>
-      <#list schemaInferences.queryResults as query>
-      <schemaInference>
-        <reference>${query.reference}</reference>
-        <executionTime>${query.executionTime?c}</executionTime>
-        <graphs>
-          <#assign keys = query.triplesAdded?keys>
-          <#list keys as graphname>
-          <graph>
-            <name>${graphname}</name>
-            <triplesAdded>${query.triplesAdded[graphname]?c}</triplesAdded>
-          </graph>
-        </#list>
-        </graphs>
-      </schemaInference>
-      </#list>
+      </statistics>
     </schemaInferences>
     <dataInferences>
       <runs>${dataInferences.numRuns}</runs>
       <executionTime>${dataInferences.executionTime?c}</executionTime>
-      <graphs>
-        <#assign keys = dataInferences.triplesAdded?keys>
-        <#list keys as graphname>
-        <graph>
-          <name>${graphname}</name>
-          <triplesAdded>${dataInferences.triplesAdded[graphname]?c}</triplesAdded>
-        </graph>
-        </#list>
-      </graphs>
-      <#list dataInferences.queryResults as query>
-      <dataInference>
-        <reference>${query.reference}</reference>
-        <executionTime>${query.executionTime?c}</executionTime>
-        <graphs>
-          <#assign keys = query.triplesAdded?keys>
-          <#list keys as graphname>
-          <graph>
-            <name>${graphname}</name>
-            <triplesAdded>${query.triplesAdded[graphname]?c}</triplesAdded>
-          </graph>
-        </#list>
-        </graphs>
-      </dataInference>
+      <statistics>
+        <#assign runMap = dataInferences.triplesAddedDetailed>
+        <#list runMap?keys as run>
+        <run key="${run}">
+          <#assign queryMap = runMap[run]>
+          <#list queryMap?keys as query>
+          <query key="${query}">
+            <#assign graphMap = queryMap[query]>
+            <#list graphMap?keys as graph>
+            <graph key="${graph}">${graphMap[graph]?c}</graph>
+            </#list>
+          </query>
+          </#list>
+        </run>
       </#list>
+      </statistics>
     </dataInferences>
     <validationRules>
       <#list validationRules as query>
@@ -149,5 +133,5 @@ List<ValidationQueryResult> : validationRules
       </validationRule>
       </#list>
     </validationRules>
-  </run>
+  </execution>
 </profileRun>

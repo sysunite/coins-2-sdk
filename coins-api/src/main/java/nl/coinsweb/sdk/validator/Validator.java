@@ -241,9 +241,7 @@ public class Validator {
   private void addInferences(List<InferenceQuery> queries, InferenceExecution inferenceExecution) {
     addInferences(queries, inferenceExecution, true);
   }
-  private void addInferences(List<InferenceQuery> queries, InferenceExecution inferenceExecution, boolean recursive) {
-
-
+  private void addInferences(List<InferenceQuery> queries, final InferenceExecution inferenceExecution, boolean recursive) {
 
     // Build a map of all results in resultList
     HashMap<String, InferenceQueryResult> resultByReference = new HashMap<>();
@@ -251,16 +249,16 @@ public class Validator {
     long triplesAddedThisRun;
     long start = new Date().getTime();
 
-    do {
+     int run = 1;
 
-      Map<String, Long> initialNumTriples = graphSet.numTriples();
+    do {
 
       // Prepare list of all queries to be executed this round
       ExecutorService executor = Executors.newSingleThreadExecutor();
 
       List<Callable<Object>> todo = new ArrayList<>(queries.size());
 
-      for (final InferenceQuery query : queries) {
+      for (InferenceQuery query : queries) {
         if (query.hasSparqlQuery()) {
 
           // Prepare a resultCarrier
@@ -268,21 +266,13 @@ public class Validator {
             InferenceQueryResult resultCarrier = new InferenceQueryResult(query.getReference(), query.getDescription(), query.getSparqlQuery(graphSet), null);
             resultByReference.put(query.getReference(), resultCarrier);
           }
-          final InferenceQueryResult resultCarrier = resultByReference.get(query.getReference());
+          InferenceQueryResult resultCarrier = resultByReference.get(query.getReference());
 
-          // Create a thread for each insert query
-          Thread queryThread = new Thread() {
-            public void run() {
+          Map<String, Long> before = graphSet.numTriples();
+          graphSet.insert(query, resultCarrier);
+          Map<String, Long> diff = InMemGraphSet.diffNumTriples(before, graphSet.numTriples());
 
-              Map<String, Long> before = graphSet.numTriples();
-              graphSet.insert(query, resultCarrier);
-              Map<String, Long> diff = InMemGraphSet.diffNumTriples(before, graphSet.numTriples());
-              resultCarrier.addTriplesAdded(diff);
-            }
-          };
-          Callable<Object> callable = Executors.callable(queryThread);
-
-          todo.add(callable);
+          inferenceExecution.addTriplesAdded(Integer.toString(run), query.getReference(), diff);
         }
       }
 
@@ -295,12 +285,12 @@ public class Validator {
         log.error(e.getMessage(), e);
       }
 
-      Map<String, Long> diffNumTriples = InMemGraphSet.diffNumTriples(initialNumTriples, graphSet.numTriples());
-      inferenceExecution.addNumRuns(1);
-      inferenceExecution.addTriplesAdded(diffNumTriples);
 
-      triplesAddedThisRun = diffNumTriples.get(graphSet.getFullUnionNamespace());
+
+      triplesAddedThisRun = inferenceExecution.getTriplesAdded(Integer.toString(inferenceExecution.getNumRuns())).get(graphSet.getFullUnionNamespace());
       log.info("This round " + triplesAddedThisRun + " triples were added.");
+
+      run++;
 
     // Loop
     } while (recursive && triplesAddedThisRun > 0l);
@@ -308,6 +298,6 @@ public class Validator {
     // Store all resultCarriers in the allocated list
     long executionTime = new Date().getTime() - start;
     inferenceExecution.setExecutionTime(executionTime);
-    inferenceExecution.getQueryResults().addAll(resultByReference.values());
+//    inferenceExecution.getQueryResults().addAll(resultByReference.values()); // todo: this might be important
   }
 }

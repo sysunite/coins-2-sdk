@@ -37,15 +37,15 @@ public class InferenceExecution {
 
   private static final Logger log = LoggerFactory.getLogger(InferenceExecution.class);
 
-
   private long executionTime = -1l;
 
-  private int numRuns;
-  private Map<String, Long> triplesAdded;
+  // Keep a map of run.nr -> query -> graph -> count
+  private Map<String, Map<String, Map<String, Long>>> triplesAdded = new HashMap();
 
-  private List<InferenceQueryResult> inferences = new ArrayList<>();
+
+//  private List<InferenceQueryResult> inferences = new ArrayList<>();
+
   public InferenceExecution() {
-    this.numRuns = 0;
     this.triplesAdded = new HashMap<>();
   }
 
@@ -58,34 +58,61 @@ public class InferenceExecution {
   }
 
 
-  public List<InferenceQueryResult> getQueryResults() {
-    return inferences;
-  }
+//  public List<InferenceQueryResult> getQueryResults() {
+//    return inferences;
+//  }
 
-  public int addNumRuns(int c ) {
-    numRuns += c;
-    return numRuns;
-  }
   public int getNumRuns() {
-    return numRuns;
+    int max = 0;
+    for(String runNr : triplesAdded.keySet()) {
+      max = Math.max(max, Integer.parseInt(runNr));
+    }
+    return max;
   }
 
-  public void addTriplesAdded(Map<String, Long> counts) {
-    Iterator<String> graphNameIterator = counts.keySet().iterator();
-    while(graphNameIterator.hasNext()) {
-      String graphName = graphNameIterator.next();
+  // Set per run per query
+  public void addTriplesAdded(String runNr, String queryRef, Map<String, Long> counts) {
 
-      Long oldValue;
-      if(triplesAdded.containsKey(graphName)) {
-        oldValue = triplesAdded.get(graphName);
-      } else {
-        oldValue = 0l;
-      }
-      Long diff = counts.get(graphName);
-      triplesAdded.put(graphName, oldValue + diff);
+    if(!triplesAdded.containsKey(runNr)) {
+      triplesAdded.put(runNr, new HashMap());
+    }
+    Map<String, Map<String, Long>> queryCounts = triplesAdded.get(runNr);
+
+    if(!queryCounts.containsKey(queryRef)) {
+      queryCounts.put(queryRef, counts);
+    } else {
+      log.warn("Trying to add the results for this query again for the same run.");
     }
   }
-  public Map<String, Long> getTriplesAdded() {
+  public Map<String, Map<String, Map<String, Long>>> getTriplesAddedDetailed() {
     return triplesAdded;
+  }
+  public Map<String, Long> getTriplesAdded() {
+    Map<String, Long> result = new HashMap();
+    for(String runNr : triplesAdded.keySet()) {
+      for(String queryRef : triplesAdded.get(runNr).keySet()) {
+        for(String graphName : triplesAdded.get(runNr).get(queryRef).keySet()) {
+          if(result.containsKey(graphName)) {
+            result.put(graphName, triplesAdded.get(runNr).get(queryRef).get(graphName) + result.get(graphName));
+          } else {
+            result.put(graphName, triplesAdded.get(runNr).get(queryRef).get(graphName));
+          }
+        }
+      }
+    }
+    return result;
+  }
+  public Map<String, Long> getTriplesAdded(String runNr) {
+    Map<String, Long> result = new HashMap();
+    for(String queryRef : triplesAdded.get(runNr).keySet()) {
+      for(String graphName : triplesAdded.get(runNr).get(queryRef).keySet()) {
+        if(result.containsKey(graphName)) {
+          result.put(graphName, triplesAdded.get(runNr).get(queryRef).get(graphName) + result.get(graphName));
+        } else {
+          result.put(graphName, triplesAdded.get(runNr).get(queryRef).get(graphName));
+        }
+      }
+    }
+    return result;
   }
 }

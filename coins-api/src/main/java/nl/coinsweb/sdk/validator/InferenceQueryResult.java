@@ -28,10 +28,6 @@ package nl.coinsweb.sdk.validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 /**
  * @author Bastiaan Bijl, Sysunite 2016
  */
@@ -46,7 +42,7 @@ public class InferenceQueryResult {
   private String sparqlQuery;
   private String errorMessage;
   private long executionTime;
-  private Map<String, Long> triplesAdded;
+//  private Map<String, Long> triplesAdded;
 
 
 
@@ -62,7 +58,7 @@ public class InferenceQueryResult {
     this.sparqlQuery = sparqlQuery;
     this.errorMessage = errorMessage;
     this.executionTime = 0l;
-    this.triplesAdded = new HashMap<>();
+//    this.triplesAdded = new HashMap<>();
   }
 
 
@@ -88,23 +84,23 @@ public class InferenceQueryResult {
   public long getExecutionTime() {
     return executionTime;
   }
-  public Map<String, Long> getTriplesAdded() {
-    return triplesAdded;
-  }
-  public void addTriplesAdded(Map<String, Long> counts) {
-    Iterator<String> graphNameIterator = counts.keySet().iterator();
-    while(graphNameIterator.hasNext()) {
-      String graphName = graphNameIterator.next();
-
-      Long oldValue;
-      if(triplesAdded.containsKey(graphName)) {
-        oldValue = triplesAdded.get(graphName);
-      } else {
-        oldValue = 0l;
-      }
-      Long diff = counts.get(graphName);
-      triplesAdded.put(graphName, oldValue + diff);
-    }
-  }
+//  public Map<String, Long> getTriplesAdded() {
+//    return triplesAdded;
+//  }
+//  public void addTriplesAdded(Map<String, Long> counts) {
+//    Iterator<String> graphNameIterator = counts.keySet().iterator();
+//    while(graphNameIterator.hasNext()) {
+//      String graphName = graphNameIterator.next();
+//
+//      Long oldValue;
+//      if(triplesAdded.containsKey(graphName)) {
+//        oldValue = triplesAdded.get(graphName);
+//      } else {
+//        oldValue = 0l;
+//      }
+//      Long diff = counts.get(graphName);
+//      triplesAdded.put(graphName, oldValue + diff);
+//    }
+//  }
 
 }

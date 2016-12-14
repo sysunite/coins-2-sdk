@@ -225,12 +225,7 @@ List<ValidationQueryResult> : validationRules
     </#list>
 </table>
 
-<#list schemaInferences.queryResults as query>
-  <a name="${query.id}"></a>
-  <h4>${query.reference}</h4>
-  <p>${query.description}</p>
-  <p>All the runs combined this inference query took ${query.executionTime} ms.</p>
-</#list>
+
 
 <h2>3. Details data inferences</h2>
 
@@ -246,12 +241,7 @@ List<ValidationQueryResult> : validationRules
     </#list>
 </table>
 
-<#list dataInferences.queryResults as query>
-  <a name="${query.id}"></a>
-  <h4>${query.reference}</h4>
-  <p>${query.description}</p>
-  <p>All the runs combined this inference query took ${query.executionTime} ms.</p>
-</#list>
+
 
 
 
