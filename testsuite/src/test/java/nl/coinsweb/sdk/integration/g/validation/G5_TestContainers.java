@@ -10,7 +10,6 @@ import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,7 @@ public class G5_TestContainers {
     validator.validate(reportFile, Validator.GENERATE_HTML);
   }
 
-  @Test
+//  @Test
   public void inmem() {
     runTest(new InMemGraphSet("http://playground.com/"), "VC_CardinalityCheck.ccr",      "VC_CARD-inmem-1.html");
 //    runTest(new InMemGraphSet("http://playground.com/"), "VC_COINS.ccr",                 "VC_COINS-inmem-1.html");

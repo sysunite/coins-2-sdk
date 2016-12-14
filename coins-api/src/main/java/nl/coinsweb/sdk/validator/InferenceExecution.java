@@ -104,6 +104,10 @@ public class InferenceExecution {
   }
   public Map<String, Long> getTriplesAdded(String runNr) {
     Map<String, Long> result = new HashMap();
+    if(!triplesAdded.containsKey(runNr)) {
+      log.warn("RunNr not found: "+runNr);
+      return result;
+    }
     for(String queryRef : triplesAdded.get(runNr).keySet()) {
       for(String graphName : triplesAdded.get(runNr).get(queryRef).keySet()) {
         if(result.containsKey(graphName)) {

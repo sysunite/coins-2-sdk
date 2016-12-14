@@ -259,7 +259,7 @@ public class G2_StarterKitValidation {
 
 
   public void validate(JenaCoinsContainer model, String reportFileName) {
-    validate(model, reportFileName, "COINS 2.0 Lite", "0.9.60-Original");
+    validate(model, reportFileName, "COINS 2.0 Lite EQ0.9.60-Original", "0.9.60-Original");
   }
   public void validate(JenaCoinsContainer model, String reportFileName, String profileName, String profileVersion) {
 

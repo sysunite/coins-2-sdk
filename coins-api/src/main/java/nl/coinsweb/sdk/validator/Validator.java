@@ -249,7 +249,7 @@ public class Validator {
     long triplesAddedThisRun;
     long start = new Date().getTime();
 
-     int run = 1;
+    int run = 1;
 
     do {
 
@@ -285,10 +285,15 @@ public class Validator {
         log.error(e.getMessage(), e);
       }
 
-
-
-      triplesAddedThisRun = inferenceExecution.getTriplesAdded(Integer.toString(inferenceExecution.getNumRuns())).get(graphSet.getFullUnionNamespace());
-      log.info("This round " + triplesAddedThisRun + " triples were added.");
+      String lastRunNr = Integer.toString(inferenceExecution.getNumRuns());
+      Map<String, Long> statistics = inferenceExecution.getTriplesAdded(lastRunNr);
+      if(statistics.containsKey(graphSet.getFullUnionNamespace())) {
+        triplesAddedThisRun = statistics.get(graphSet.getFullUnionNamespace());
+        log.info("This round " + triplesAddedThisRun + " triples were added.");
+      } else {
+        triplesAddedThisRun = 0;
+        log.warn("This round no triples were added to the full union graph, which might have unexpected reasons.");
+      }
 
       run++;
 
