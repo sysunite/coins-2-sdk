@@ -12,13 +12,8 @@ RUN cd /tmp && wget -q https://sourceforge.net/projects/ikvm/files/ikvm/7.2.4630
 RUN echo "#!/usr/bin/env bash\nmono /etc/ikvm/bin/ikvmc.exe \"\$@\"" > /usr/bin/ikvmc
 RUN chmod 777 /usr/bin/ikvmc
 
-ENV COINSVERSION 1.1.603
-
-# install coins-cli
-RUN echo "#!/usr/bin/env bash\njava -jar \"/opt/coins-cli/target/coins-cli-\$COINSVERSION-jar-with-dependencies.jar\" \"\$@\"" > /usr/bin/coins-cli
-RUN chmod 777 /usr/bin/coins-cli
-
 WORKDIR /opt
-CMD cd /opt/services/generate-library/libraries && \
-coins-cli generate -a "/opt/dist/coins-api-$COINSVERSION.dll" -dll -i SE.rdf -o se
-#coins-cli generate -a "/opt/dist/coins-api-$COINSVERSION.dll" -dll -i cbim-2.0.rdf -o cbim
+CMD \
+cd test && \
+mono ../project/coins-cli-$COINSVERSION.exe generate -dll -a ../project/coins-api-$COINSVERSION.dll -i cbim-2.0.rdf -o cbim && \
+sleep 1s
