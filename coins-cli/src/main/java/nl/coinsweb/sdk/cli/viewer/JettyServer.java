@@ -54,6 +54,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.URL;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -148,12 +149,15 @@ public class JettyServer {
 
     try {
 
+      log.info("Configure jetty to use port: " + port);
+
       if(port == 0) {
         return;
       }
 
-
-      String webDir = JettyServer.class.getClassLoader().getResource("html").toExternalForm();
+      URL webDirUrl = JettyServer.class.getClassLoader().getResource("html");
+      String webDir = webDirUrl.toExternalForm();
+      log.info("Configure jetty to use internal html web-dir: " + webDirUrl + " (" + webDir + ")");
 
       Server server = new Server(port);
       ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
