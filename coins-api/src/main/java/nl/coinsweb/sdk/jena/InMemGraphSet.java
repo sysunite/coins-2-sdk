@@ -112,11 +112,6 @@ public class InMemGraphSet implements CoinsGraphSet {
     this.libraryModels = new HashMap<>();
   }
 
-  @Override
-  public boolean supportsMultiThreading() {
-    return false;
-  }
-
 
 
   // Namespaces

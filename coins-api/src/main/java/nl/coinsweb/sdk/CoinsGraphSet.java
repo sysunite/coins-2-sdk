@@ -49,8 +49,6 @@ public interface CoinsGraphSet {
   Map<Namespace, Model> getLibraryModels();
   public void reset();
 
-  public boolean supportsMultiThreading();
-
 
 
 

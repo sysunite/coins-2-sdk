@@ -69,7 +69,7 @@ public class MapOptions {
   public static void usage() {
     if(!Run.QUIET) {
       HelpFormatter formatter = new HelpFormatter();
-      formatter.printHelp("coins-cli validate", getOptions());
+      formatter.printHelp("coins-cli map", getOptions());
     }
   }
 
