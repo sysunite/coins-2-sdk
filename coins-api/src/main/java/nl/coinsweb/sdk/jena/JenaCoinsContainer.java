@@ -302,7 +302,7 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     }
 
     // See what file type it is
-    if(sourceFile.getName().endsWith(".ccr") || sourceFile.getName().endsWith(".zip")) {
+    if(sourceFile.getName().toLowerCase().endsWith(".ccr") || sourceFile.getName().toLowerCase().endsWith(".zip")) {
 
       this.fileName = sourceFile.getName();
 
