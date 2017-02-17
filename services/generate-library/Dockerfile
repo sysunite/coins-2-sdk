@@ -12,7 +12,7 @@ RUN cd /tmp && wget -q https://sourceforge.net/projects/ikvm/files/ikvm/7.2.4630
 RUN echo "#!/usr/bin/env bash\nmono /etc/ikvm/bin/ikvmc.exe \"\$@\"" > /usr/bin/ikvmc
 RUN chmod 777 /usr/bin/ikvmc
 
-ENV COINSVERSION 1.1.603
+ENV COINSVERSION 1.1.604
 
 # install coins-cli
 RUN echo "#!/usr/bin/env bash\njava -jar \"/opt/coins-cli/target/coins-cli-\$COINSVERSION-jar-with-dependencies.jar\" \"\$@\"" > /usr/bin/coins-cli
