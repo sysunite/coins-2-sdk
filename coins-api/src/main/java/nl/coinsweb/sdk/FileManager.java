@@ -282,26 +282,38 @@ public class FileManager {
         Path pathPath = filePath.getParent();
         String pathPathString = (pathPath!=null) ? pathPath.toString().toLowerCase() : "";
 
-        if(pathPathString.endsWith("bim") ||
-           pathPathString.endsWith("bim/repository") || pathPathString.endsWith("bim\\repository") ||
-           pathPathString.endsWith("doc") ||
-           pathPathString.endsWith("woa")) {
+        Path pathRoot = pathPathString.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
 
-          Path pathRoot = pathPathString.endsWith("repository") ? pathPath.getParent().getParent() : pathPath.getParent();
-
-          String prefix = "";
-          if (pathRoot != null) {
-            prefix = pathRoot.toString();
-          }
-
-          if(startFolder == null) {
+        String prefix = "";
+        if (pathRoot != null) {
+          prefix = pathRoot.toString().toLowerCase();
+        }
+        if(!Arrays.asList("bim", "doc", "woa").contains(prefix)) {
+          if (startFolder == null) {
             startFolder = prefix;
-            log.debug("File root set to: "+startFolder);
-
-          } else if(startFolder != null && !prefix.equals(startFolder)) {
-            throw new InvalidContainerFileException("The container file has an inconsistent file root, was "+startFolder+", now dealing with "+prefix+".");
+            log.debug("File root set to: " + startFolder);
+          } else if (startFolder != null && !prefix.equals(startFolder)) {
+            throw new InvalidContainerFileException("The container file has an inconsistent file root, was " + startFolder + ", now dealing with " + prefix + ".");
           }
+        }
+
+        String startUnix = "";
+        String startWin = "";
+        if(startFolder != null) {
+          startUnix = startFolder.isEmpty()?"":startFolder + "/";
+          startWin = startFolder.isEmpty()?"":startFolder + "\\";
+        }
+
+        log.trace("Try folder "+pathPathString+" with prefixes "+startUnix+" / "+startWin);
+        if(pathPathString.startsWith(startUnix + "bim")            || pathPathString.startsWith(startWin + "bim") ||
+           pathPathString.startsWith(startUnix + "bim/repository") || pathPathString.startsWith(startWin + "bim\\repository") ||
+           pathPathString.startsWith(startUnix + "doc")            || pathPathString.startsWith(startWin + "doc") ||
+           pathPathString.startsWith(startUnix + "woa")            || pathPathString.startsWith(startWin + "woa")) {
+
+          // Zip item is allowed
+
         } else {
+
           if(strict) {
             throw new InvalidContainerFileException("File found in the container that was not in the correct folder: "+filePath.toString());
           } else {
