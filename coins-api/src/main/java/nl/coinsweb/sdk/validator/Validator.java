@@ -25,6 +25,7 @@
 package nl.coinsweb.sdk.validator;
 
 
+import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -32,15 +33,24 @@ import freemarker.template.TemplateException;
 import nl.coinsweb.sdk.CoinsGraphSet;
 import nl.coinsweb.sdk.CoinsModel;
 import nl.coinsweb.sdk.Namespace;
+import nl.coinsweb.sdk.exceptions.InvalidContainerFileException;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Bastiaan Bijl
@@ -73,26 +83,88 @@ public class Validator {
    * @return true if no problems were found, false otherwise (see the generated report for reasons)
    */
   public boolean validate(Path reportLocation) {
-    return validate(reportLocation, GENERATE_HTML);
+    return validate(reportLocation, GENERATE_HTML, null);
   }
   public boolean validate(Path reportLocation, int reportType) {
+    return validate(reportLocation, reportType, null);
+  }
+  public boolean validate(Path reportLocation, File inputFile) {
+    return validate(reportLocation, GENERATE_HTML, inputFile);
+  }
+  public boolean validate(Path reportLocation, int reportType, File inputFile) {
+
+    log.info("Check again the sanity of the file structure.");
+    boolean fileStructureSanity = true;
+    String fileStructureMessage = "";
+
+    if(inputFile != null) {
+      try {
+        JenaCoinsContainer.STRICT = true; // Cause the InvalidContainerFileException to fire with wrong file structure
+        new JenaCoinsContainer(new TDBStoreGraphSet("http://validation/"), inputFile);
+      } catch (InvalidContainerFileException e) {
+        fileStructureSanity = false;
+        fileStructureMessage = e.getMessage();
+      }
+      JenaCoinsContainer.STRICT = false;
+    }
+
 
     log.info("Execute profile.");
     ProfileExecution execution = execute(model, profile);
 
-    log.info("Build report.");
+    log.info("Check ontology imports.");
+    boolean allImportsAvailable = false;
+
     List<String> libraries = new ArrayList<>();
     List<String> graphs = new ArrayList<>();
+    List<String> imports = new ArrayList<>();
     for(Namespace ns : ((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().keySet()) {
       graphs.add(ns.toString());
       libraries.add(((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().get(ns).getName());
     }
     Collections.sort(libraries);
 
+    OntModel instanceOntModel = model.getCoinsGraphSet().getInstanceOntModel();
+    for(String importedUri : instanceOntModel.listImportedOntologyURIs()) {
+      Namespace importedUriNs = new Namespace(importedUri);
+      imports.add(importedUriNs.toString());
+
+      // Is it available from the ccr repository
+      if(graphs.contains(importedUriNs)) {
+
+        allImportsAvailable &= true;
+
+      // Try to find it online
+      } else {
+        try {
+          URL resourceAsUrl = new URL(importedUriNs.withoutHash());
+          HttpURLConnection connection = (HttpURLConnection) resourceAsUrl.openConnection();
+          connection.setRequestMethod("HEAD");
+          int responseCode = connection.getResponseCode();
+          if (responseCode == 200) {
+            log.info("Found active link online: "+importedUri);
+            allImportsAvailable &= true;
+            continue;
+          }
+        } catch (MalformedURLException e) {
+        } catch (ProtocolException e) {
+        } catch (IOException e) {
+        }
+
+        log.info("Tried, but did not find active link online for: "+importedUri);
+        allImportsAvailable &= false;
+      }
+    }
+
+
+    log.info("Build report.");
+
+
     // Prepare data to transfer to the template
     Map<String, Object> data = new HashMap<>();
     data.put("filename", model.getCoinsContainer().getFileName());
     data.put("libraries", libraries);
+    data.put("imports", imports);
     data.put("graphs", graphs);
     data.put("attachments", model.getCoinsContainer().getAttachments());
     data.put("date", new Date().toString());
@@ -103,6 +175,9 @@ public class Validator {
     data.put("profileName", this.profile.getName());
     data.put("profileVersion", this.profile.getVersion());
     data.put("profileChecksPassed", execution.profileChecksPassed());
+    data.put("fileStructureSanity", fileStructureSanity);
+    data.put("fileStructureMessage", fileStructureMessage);
+    data.put("allImportsAvailable", allImportsAvailable);
     data.put("validationPassed", execution.validationPassed());
     data.put("profileChecks", execution.getProfileCheckResults());
     data.put("schemaInferences", execution.getSchemaInferenceResults());
@@ -117,7 +192,7 @@ public class Validator {
       writeReportXML(reportLocation, data);
     }
 
-    return execution.profileChecksPassed() && execution.validationPassed();
+    return allImportsAvailable && execution.profileChecksPassed() && execution.validationPassed();
   }
 
   private void writeReport(Path reportLocation, Map<String, Object> data) {

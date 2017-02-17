@@ -32,6 +32,7 @@ Variables posted to this report page
 #####
 
 String                      : filename
+String                      : imports
 String                      : libraries
 String                      : graphs
 String                      : attachments
@@ -39,6 +40,8 @@ String                      : date
 long                        : executionTime
 String                      : profileName
 String                      : profileVersion
+boolean                     : fileStructureSanity
+boolean                     : allImportsAvailable
 boolean                     : profileChecksPassed
 boolean                     : validationPassed
 List<ValidationQueryResult> : profileChecks
@@ -52,6 +55,13 @@ List<ValidationQueryResult> : validationRules
 
 <table>
   <tr><th>name</th><td><#if filename??>📦 ${filename}<#else>not started from .ccr file</#if></td><tr>
+  <tr><th>imports</th><td>
+  <#if imports?has_content>
+  <#list 0..imports?size-1 as i>
+    <#if graphs?seq_contains(imports[i])>✅<#else>⛔</#if>
+     ${imports[i]}<br/>
+  </#list>
+  </#if></td><tr>
   <tr><th>libraries</th><td>
   <#if libraries?has_content>
   <#list 0..libraries?size-1 as i>
@@ -86,6 +96,8 @@ List<ValidationQueryResult> : validationRules
   <tr><th>profile</th><td>${profileName}</td><tr>
   <tr><th>version</th><td>${profileVersion}</td><tr>
   <tr><th>performed steps</th><td>
+<#if fileStructureSanity>✅ file structure is correct<#else>⛔️ not meeting file structure requirements</#if><br/>
+<#if allImportsAvailable>✅ able to find all imports<#else>⛔️ some imports could not be found</#if><br/>
 <#if profileChecksPassed>✅ meets profile requirements<#else>⛔️ not meeting profile requirements</#if><br/>
 ✅ added schema inferences<br/>
 ✅ added data inferences<br/>
@@ -95,9 +107,17 @@ List<ValidationQueryResult> : validationRules
 
 
 
-
-
-
+<h2>File structure check</h2>
+<#if fileStructureSanity>File structure is correct.<#else>Not meeting file structure requirements, this problem was found:<br/>
+<table>
+  <th>
+    <td></td>
+  </th>
+  <tr>
+    <td>⛔️</td><td>${fileStructureMessage}</td>
+  </tr>
+</table>
+</#if>
 
 
 

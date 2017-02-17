@@ -25,11 +25,9 @@
 package nl.coinsweb.sdk.cli.validate;
 
 import nl.coinsweb.sdk.CoinsGraphSet;
-
 import nl.coinsweb.sdk.cli.CliOptions;
 import nl.coinsweb.sdk.cli.Run;
 import nl.coinsweb.sdk.exceptions.CoinsFileNotFoundException;
-import nl.coinsweb.sdk.exceptions.InvalidContainerFileException;
 import nl.coinsweb.sdk.exceptions.InvalidProfileFileException;
 import nl.coinsweb.sdk.jena.FusekiGraphSet;
 import nl.coinsweb.sdk.jena.JenaCoinsContainer;
@@ -106,7 +104,7 @@ public class RunValidate {
     }
 
     // Container
-    JenaCoinsContainer.STRICT = true; // Cause the InvalidContainerFileException to fire with wrong file structure
+    File inputFile = null;
     JenaCoinsContainer container;
     if(emptyRun) {
       container = new JenaCoinsContainer(graphSet, false, false);
@@ -119,16 +117,9 @@ public class RunValidate {
         System.exit(1);
         return;
       }
-      File inputFile = options.getInputOption().toFile();
+      inputFile = options.getInputOption().toFile();
       try {
         container = new JenaCoinsContainer(graphSet, inputFile);
-      } catch (InvalidContainerFileException e) {
-        if(!Run.QUIET) {
-          System.out.println("(!) the file structure inside the supplied container is wrong:");
-          System.out.println(e.getMessage()+"\n");
-        }
-        System.exit(1);
-        return;
       } catch (CoinsFileNotFoundException e) {
         if(!Run.QUIET) {
           System.out.println("(!) input file was not found\n");
@@ -220,13 +211,13 @@ public class RunValidate {
     Validator validator = new Validator(container, profileName, profileVersion);
 
     if(options.generateHtml() && options.generateXml()) {
-      validator.validate(reportFile, Validator.GENERATE_BOTH);
+      validator.validate(reportFile, Validator.GENERATE_BOTH, inputFile);
 
     } else if(options.generateHtml()) {
-      validator.validate(reportFile, Validator.GENERATE_HTML);
+      validator.validate(reportFile, Validator.GENERATE_HTML, inputFile);
 
     } else if(options.generateXml()) {
-      validator.validate(reportFile, Validator.GENERATE_XML);
+      validator.validate(reportFile, Validator.GENERATE_XML, inputFile);
     }
 
     if(!Run.QUIET) {

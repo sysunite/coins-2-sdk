@@ -5,6 +5,7 @@ Variables posted to this report page
 #####
 
 String                      : filename
+String                      : imports
 String                      : libraries
 String                      : graphs
 String                      : attachments
@@ -35,7 +36,16 @@ List<ValidationQueryResult> : validationRules
     </graphSet>
     <container>
       <#if filename??><name>${filename}</name>
-      </#if><libraries>
+      </#if><imports>
+        <#if imports?has_content>
+        <#list 0..imports?size-1 as i>
+        <import>
+          <namespace>${imports[i]}</namespace>
+        </import>
+        </#list>
+        </#if>
+      </imports>
+      <libraries>
         <#if libraries?has_content>
         <#list 0..libraries?size-1 as i>
         <library>
@@ -58,6 +68,19 @@ List<ValidationQueryResult> : validationRules
     <date>${date}</date>
     <executionTime>${executionTime?c}</executionTime>
     <maxMemoryUsage>${memMaxUsage}</maxMemoryUsage>
+    <fileStructureCheck>
+      <passed>
+        <#if fileStructureSanity>true<#else>false</#if>
+      </passed>
+      <message>
+        ${fileStructureMessage}
+      </message>
+    </fileStructureCheck>
+    <importsCheck>
+      <passed>
+        <#if allImportsAvailable>true<#else>false</#if>
+      </passed>
+    </importsCheck>
     <profileChecks>
       <#list profileChecks as query>
       <profileCheck>
