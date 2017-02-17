@@ -55,7 +55,7 @@ public class ClassGenerateEngine {
 
   HashMap<String, String> preRunClassList = new HashMap<>();
 
-  Map<String, String> namespaceToPackage = new HashMap<>();
+  Map<Namespace, String> namespaceToPackage = new HashMap<>();
 
   Set<String> fullyQualifiedJavaClasses = new HashSet<>();
 
@@ -68,7 +68,7 @@ public class ClassGenerateEngine {
     return objectKey;
   }
 
-  public void addNamespace(String rdfNamespace, String javaPackageName) {
+  public void addNamespace(Namespace rdfNamespace, String javaPackageName) {
     log.info("Adding to namespaceToPackage map "+rdfNamespace+" / "+javaPackageName);
     if(!subjectIgnoreList.contains(rdfNamespace)) {
       namespaceToPackage.put(rdfNamespace, javaPackageName);
@@ -115,7 +115,7 @@ public class ClassGenerateEngine {
 
 
   // The main function that calls all the above
-  public Map<String, String> process(ExpertCoinsModel model, List<String> sourceFileNames) {
+  public Map<Namespace, String> process(ExpertCoinsModel model, List<String> sourceFileNames) {
 
 
     this.sourceFileNames = sourceFileNames;
@@ -131,10 +131,10 @@ public class ClassGenerateEngine {
 
       preRunClassList.put(clazz.getURI(), Language.getLabel(clazz));
 
-      if(!namespaceToPackage.containsKey(clazz.asResource().getNameSpace())) {
+      if(!namespaceToPackage.containsKey(new Namespace(clazz.asResource().getNameSpace()))) {
         String javaPackageName = Utils.namespaceUriToPackage(clazz.asResource().getNameSpace());
         if(javaPackageName != null) {
-          addNamespace(clazz.asResource().getNameSpace(), javaPackageName);
+          addNamespace(new Namespace(clazz.asResource().getNameSpace()), javaPackageName);
         } else {
           log.warn("Failed to process class "+clazz.getURI());
         }
@@ -217,7 +217,7 @@ public class ClassGenerateEngine {
       return false;
     }
 
-    if(!namespaceToPackage.containsKey(clazz.asResource().getNameSpace())) {
+    if(!namespaceToPackage.containsKey(new Namespace(clazz.asResource().getNameSpace()))) {
 
       log.warn("Class should have been in namespaceToPackage list: "+clazz.getURI());
       return false;
@@ -226,7 +226,7 @@ public class ClassGenerateEngine {
 
     currentClass = new HashMap<>();
 
-    currentPackage = namespaceToPackage.get(clazz.asResource().getNameSpace());
+    currentPackage = namespaceToPackage.get(new Namespace(clazz.asResource().getNameSpace()));
 
     initTemplateFields();
 

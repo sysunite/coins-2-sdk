@@ -1,9 +1,9 @@
 package nl.coinsweb.sdk.integration.d.owlgenerator;
 
 import com.hp.hpl.jena.ontology.OntModelSpec;
-
-import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.Namespace;
 import nl.coinsweb.sdk.jena.InMemGraphSet;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
 import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
 import org.junit.Test;
 
@@ -46,7 +46,7 @@ public class D1_ClassListing {
 //      sourceFileNames.add(modelPath.getFileName().toString());
 //    }
 
-    Map<String, String> mapping = engine.process(model, sourceFileNames);
+    Map<Namespace, String> mapping = engine.process(model, sourceFileNames);
 
   }
 

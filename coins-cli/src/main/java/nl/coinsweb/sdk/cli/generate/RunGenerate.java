@@ -25,19 +25,21 @@
 package nl.coinsweb.sdk.cli.generate;
 
 
-import nl.coinsweb.sdk.cli.Run;
-import nl.coinsweb.sdk.cli.validate.ValidateOptions;
-import nl.coinsweb.sdk.jena.JenaCoinsContainer;
-import nl.coinsweb.sdk.jena.InMemGraphSet;
-import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
-import org.apache.commons.cli.ParseException;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.tdb.TDB;
+import nl.coinsweb.sdk.Namespace;
+import nl.coinsweb.sdk.cli.Run;
+import nl.coinsweb.sdk.cli.validate.ValidateOptions;
+import nl.coinsweb.sdk.jena.InMemGraphSet;
+import nl.coinsweb.sdk.jena.JenaCoinsContainer;
+import nl.coinsweb.sdk.owlgenerator.ClassGenerateEngine;
+import org.apache.commons.cli.ParseException;
 import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -278,7 +280,7 @@ public class RunGenerate {
 
 
     engine.setTargetFolder(generatedFolder.toString());
-    Map<String, String> mapping = engine.process(model, sourceFileNames);
+    Map<Namespace, String> mapping = engine.process(model, sourceFileNames);
 
     if(!doCompile) {
       return;
@@ -288,7 +290,7 @@ public class RunGenerate {
     // Compile the java code
 
     String fileList = "";
-    for(String namespace : mapping.keySet()) {
+    for(Namespace namespace : mapping.keySet()) {
       String packageFolder = mapping.get(namespace).replace(".", "//");
       fileList += files(generatedFolder.resolve(packageFolder), ".java", " ");
     }
@@ -305,12 +307,29 @@ public class RunGenerate {
 
 
     List<String> producedDllFiles = new ArrayList<>();
-    List<String> pickList = new ArrayList(mapping.keySet());
+    List<Namespace> pickList = new ArrayList(mapping.keySet());
     if(options.hasOrderOption()) {
       log.info("Use specified order.");
-      pickList = options.getOrderOptions();
+
+      // Add all from list
+      List<Namespace> reOrderedPickList = new ArrayList();
+      for(String fromPriorityList : options.getOrderOptions()) {
+        Namespace fromPriorityListNs = new Namespace(fromPriorityList);
+        if(mapping.containsKey(fromPriorityListNs)) {
+          reOrderedPickList.add(fromPriorityListNs);
+        }
+      }
+
+      // Add all remaining
+      for(Namespace fromOriginalListNs : pickList) {
+        if(!reOrderedPickList.contains(fromOriginalListNs)) {
+          reOrderedPickList.add(fromOriginalListNs);
+        }
+      }
+
+      pickList = reOrderedPickList;
     }
-    for(String namespace : pickList) {
+    for(Namespace namespace : pickList) {
 
       log.info("Deal with "+namespace);
       if(!mapping.containsKey(namespace)) {
