@@ -10,6 +10,7 @@ import nl.coinsweb.sdk.jena.TDBStoreGraphSet;
 import nl.coinsweb.sdk.validator.Validator;
 import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +37,15 @@ public class G5_TestContainers {
     model.load(IntegrationHelper.getResourceFile("G5", ccrFile), false);
     Path reportFile = Paths.get("/tmp/"+reportName);
     Validator validator = new Validator(model, "COINS 2.0 Lite EQ0.9.60-Original", "0.9.60-Original");
-    validator.validate(reportFile, Validator.GENERATE_HTML);
+    validator.validate(reportFile, Validator.GENERATE_BOTH, IntegrationHelper.getResourceFile("G5", ccrFile));
   }
 
-//  @Test
+  @Test
   public void inmem() {
-    runTest(new InMemGraphSet("http://playground.com/"), "VC_CardinalityCheck.ccr",      "VC_CARD-inmem-1.html");
+//    runTest(new InMemGraphSet("http://playground.com/"), "ContainerStructureError.ccr",      "ContainerStructureError.html");
+//    runTest(new InMemGraphSet("http://playground.com/"), "Goed.ccr",      "Goed.html");
+    runTest(new InMemGraphSet("http://playground.com/"), "GoedZonderOTL.CCR",      "GoedZonderOTL.html");
+//    runTest(new InMemGraphSet("http://playground.com/"), "VC_CardinalityCheck.ccr",      "VC_CARD-inmem-1.html");
 //    runTest(new InMemGraphSet("http://playground.com/"), "VC_COINS.ccr",                 "VC_COINS-inmem-1.html");
 //    runTest(new InMemGraphSet("http://playground.com/"), "VC_datatypeCheck.ccr",         "VC_DATATYPE-inmem-1.html");
 //    runTest(new InMemGraphSet("http://playground.com/"), "VC_Disjoint.ccr",              "VC_DISJOINT-inmem-1.html");
