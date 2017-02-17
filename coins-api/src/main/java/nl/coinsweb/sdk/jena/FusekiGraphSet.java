@@ -63,11 +63,6 @@ public class FusekiGraphSet extends InMemGraphSet implements CoinsGraphSet {
     sparqlEndPointD = host + "/" + database + "/data";
   }
 
-  @Override
-  public boolean supportsMultiThreading() {
-    return true;
-  }
-
   public boolean checkIfDbAvailable() {
     try {
       return numTriples(getFullUnionNamespace()) > -1l;
