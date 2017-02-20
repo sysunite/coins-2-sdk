@@ -9,7 +9,7 @@ RUN cd /tmp && wget -q https://sourceforge.net/projects/ikvm/files/ikvm/7.2.4630
 RUN echo "#!/usr/bin/env bash\nmono /etc/ikvm/bin/ikvmc.exe \"\$@\"" > /usr/bin/ikvmc
 RUN chmod 777 /usr/bin/ikvmc
 
-ENV COINSVERSION 1.1.604
+ENV COINSVERSION 1.1.605
 
 WORKDIR /opt
 CMD \
