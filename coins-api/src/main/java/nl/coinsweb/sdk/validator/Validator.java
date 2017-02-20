@@ -113,9 +113,10 @@ public class Validator {
     ProfileExecution execution = execute(model, profile);
 
     log.info("Check ontology imports.");
-    boolean allImportsAvailable = false;
+    boolean allImportsAvailable = true;
 
     List<String> libraries = new ArrayList<>();
+    List<String> online = new ArrayList<>();
     List<String> graphs = new ArrayList<>();
     List<String> imports = new ArrayList<>();
     for(Namespace ns : ((JenaCoinsContainer) model.getCoinsContainer()).getAvailableLibraryFiles().keySet()) {
@@ -144,6 +145,7 @@ public class Validator {
           if (responseCode == 200) {
             log.info("Found active link online: "+importedUri);
             allImportsAvailable &= true;
+            online.add(importedUriNs.toString());
             continue;
           }
         } catch (MalformedURLException e) {
@@ -164,6 +166,7 @@ public class Validator {
     Map<String, Object> data = new HashMap<>();
     data.put("filename", model.getCoinsContainer().getFileName());
     data.put("libraries", libraries);
+    data.put("online", online);
     data.put("imports", imports);
     data.put("graphs", graphs);
     data.put("attachments", model.getCoinsContainer().getAttachments());

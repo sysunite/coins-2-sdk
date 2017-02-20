@@ -58,7 +58,7 @@ List<ValidationQueryResult> : validationRules
   <tr><th>imports</th><td>
   <#if imports?has_content>
   <#list 0..imports?size-1 as i>
-    <#if graphs?seq_contains(imports[i])>✅<#else>⛔</#if>
+    <#if graphs?seq_contains(imports[i])>✅<#else><#if online?seq_contains(imports[i])>📡<#else>⛔</#if></#if>
      ${imports[i]}<br/>
   </#list>
   </#if></td><tr>
