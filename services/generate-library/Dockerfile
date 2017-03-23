@@ -20,5 +20,5 @@ RUN chmod 777 /usr/bin/coins-cli
 
 WORKDIR /opt
 CMD cd /opt/services/generate-library/libraries && \
-coins-cli generate -a "/opt/dist/coins-api-$COINSVERSION.dll" -dll -i SE.rdf -o se
-#coins-cli generate -a "/opt/dist/coins-api-$COINSVERSION.dll" -dll -i cbim-2.0.rdf -o cbim
+#coins-cli generate -a "/opt/dist/coins-api-$COINSVERSION.dll" -dll -i SE.rdf -o se
+coins-cli generate -a "/opt/dist/coins-api-$COINSVERSION.dll" -dll -i cbim-2.0.rdf -o cbim
