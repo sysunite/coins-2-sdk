@@ -119,7 +119,7 @@ public interface CoinsContainer {
    *
    * @param filePath  a file path ('/tmp/map.pdf' or 'C:\tmp\pic.jpg')
    */
-  public void addAttachment(String filePath);
+  public RuntimeCoinsObject addAttachment(String filePath);
 
   /**
    * Remove the file from the doc folder and remove all rdf mentions of this file.

@@ -447,11 +447,11 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
   }
 
   @Override
-  public void addAttachment(String filePath) {
+  public RuntimeCoinsObject addAttachment(String filePath) {
 
     // Only continue if the attachment exists
     if (!new File(filePath).exists()) {
-      return;
+      return null;
     }
 
     // Copy the file to the right directory
@@ -465,6 +465,8 @@ public class JenaCoinsContainer implements CoinsContainer, CoinsModel, ExpertCoi
     RuntimeCoinsObject createdProperty = new RuntimeCoinsObject(this, "http://www.coinsweb.nl/cbim-2.0.rdf#StringProperty");
     createdProperty.setLiteralValue("http://www.coinsweb.nl/cbim-2.0.rdf#datatypeValue", absoluteTempPath.getFileName().toString());
     documentReference.setObject("http://www.coinsweb.nl/cbim-2.0.rdf#filePath", createdProperty);
+
+    return documentReference;
   }
 
   @Override
